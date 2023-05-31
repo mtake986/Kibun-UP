@@ -2,8 +2,12 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { auth, provider, signInWithGoogle } from "../config/Firebase";
+import { useAuth } from "../context/AuthContext";
 
 export default function ButtonAppBar() {
+  const { loginEmail, setLoginEmail } = useAuth();
+
   return (
     <header className="bg-violet-500 p-6">
       <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
@@ -29,15 +33,18 @@ export default function ButtonAppBar() {
           </Link>
         </div>
         <div className="flex items-center justify-between">
-          <div>
-            <Link
-              href="/login"
+            <div
+              onClick={() => {
+                signInWithGoogle()
+                setLoginEmail(auth.currentUser?.email || '')
+              }}
+              // href="/login"
               className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
             >
               Login
-            </Link>
-          </div>
+            </div>
         </div>
+        {loginEmail && (<div>{loginEmail}</div>)}
       </nav>
     </header>
   );
