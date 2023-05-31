@@ -1,14 +1,15 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { builtInEvents } from "@/public/CONSTANTS";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import { AiOutlineInfoCircle, AiFillCloseCircle } from "react-icons/ai";
+
 const Event = () => {
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [leftDays, setLeftDays] = useState<number>(-1);
   const [loading, setLoading] = useState<boolean>(true);
   const toggleInfo = () => {
     setShowInfo(!showInfo);
-    setTimeout(() => setShowInfo(false), 3000);
+    // setTimeout(() => setShowInfo(false), 3000);
   };
 
   const calculateLeftDays = () => {
@@ -49,6 +50,12 @@ const Event = () => {
       {showInfo && (
         <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
           <span>{builtInEvents[0].description}</span>
+          <div
+            onClick={() => toggleInfo()}
+            className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
+          >
+            <AiFillCloseCircle />
+          </div>
         </div>
       )}
 
@@ -62,9 +69,7 @@ const Event = () => {
             It's Today! <span className="text-2xl">🎉</span>
           </span>
         ) : leftDays <= -1 ? (
-          <span className="text-center text-xl">
-            Passed
-          </span>
+          <span className="text-center text-xl">Passed</span>
         ) : leftDays >= 2 ? (
           <div>
             <span
