@@ -5,6 +5,7 @@ import { getAnalytics } from "firebase/analytics";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,11 +23,9 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 const auth = getAuth(app);
+
+const user = auth.currentUser;
 const provider = new GoogleAuthProvider();
 // const db = getFirestore(app);
-const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
-  .then((data) => alert(data.user.email))
-  .catch((error) => console.log(error));
-};
-export { auth, provider, signInWithGoogle };
+
+export { auth, provider, user };
