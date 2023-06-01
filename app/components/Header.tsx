@@ -2,15 +2,15 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { auth, provider, user } from "../config/Firebase";
+import { auth } from "../config/Firebase";
 import { useAuth } from "../context/AuthContext";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 export default function ButtonAppBar() {
-  const { signInWithGoogle, loginUserInfo, setLoginUserInfo } = useAuth();
+  const { signInWithGoogle } = useAuth();
   const [user] = useAuthState(auth);
-  
+
   return (
     <header className="bg-violet-500 p-6">
       <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
