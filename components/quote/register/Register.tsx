@@ -31,9 +31,9 @@ const Register = () => {
         uid: user ? user.uid : "undefined",
         createdAt: serverTimestamp(),
       }).then((docRef) => {
-        alert("Document written with ID: " + docRef.id);
+        // alert("Document written with ID: " + docRef.id);
         toast({
-          className: "bg-green-500 text-white",
+          className: "border-none bg-green-500 text-white",
           title: "Successfully Created",
           description: `
             Quote: ${quote}, 
