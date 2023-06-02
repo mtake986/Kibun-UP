@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+// import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
 const Register = () => {
   const [person, setPerson] = useState<string>();
@@ -20,22 +23,37 @@ const Register = () => {
 
   const handleSubmit = async () => {
     // Add a new document with a generated id.
-    const collectionRef = collection(db, "quotes");
-    const docRef = await addDoc(collectionRef, {
-      person,
-      quote,
-      uid: user ? user.uid : "undefined",
-      createdAt: serverTimestamp(),
-    }).then((docRef) => {
-      alert("Document written with ID: " + docRef.id);
-      setPerson("");
-      setQuote("");
-      toast({
-        title: "Scheduled: Catch up ",
-        description: "Friday, February 10, 2023 at 5:57 PM",
-        action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
+    if (quote && person) {
+      const collectionRef = collection(db, "quotes");
+      const docRef = await addDoc(collectionRef, {
+        person,
+        quote,
+        uid: user ? user.uid : "undefined",
+        createdAt: serverTimestamp(),
+      }).then((docRef) => {
+        alert("Document written with ID: " + docRef.id);
+        toast({
+          className: "bg-green-500 text-white",
+          title: "Successfully Created",
+          description: `
+            Quote: ${quote}, 
+            Person: ${person}
+          `,
+          // action: (
+          //   <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+          // ),
+        });
+        setPerson("");
+        setQuote("");
       });
-    });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error occurred (probably missing fields)",
+        description: "Make sure you have filled all the fields ",
+        // action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
+      });
+    }
   };
 
   return (
@@ -65,9 +83,9 @@ const Register = () => {
         />
       </div>
       <Button
-        className="w-full border-none duration-300 hover:bg-violet-50 hover:text-violet-500 sm:w-auto"
+        className={`w-full border-none duration-300  hover:bg-violet-50 hover:text-violet-500 sm:w-auto`}
         onClick={() => handleSubmit()}
-        variant="outline"
+        variant="ghost"
       >
         Regsiter
       </Button>

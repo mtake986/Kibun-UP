@@ -24,7 +24,7 @@ export default function RootLayout({
       <AuthProvider>
         <body className={inter.className}>
           <Header />
-          <main className="container mx-auto max-w-2xl p-3 sm:p-12">
+          <main className="container mx-auto max-w-2xl p-5 sm:p-12">
             {children}
           </main>
           <Toaster />
