@@ -2,17 +2,12 @@
 
 import React, { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-// import { Button, TextField } from "@mui/material";
 import { auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-// import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
 
 const Register = () => {
   const [person, setPerson] = useState<string>();
@@ -39,9 +34,6 @@ const Register = () => {
             Quote: ${quote}, 
             Person: ${person}
           `,
-          // action: (
-          //   <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
-          // ),
         });
         setPerson("");
         setQuote("");
