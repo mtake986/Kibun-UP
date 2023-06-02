@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { auth } from "../config/Firebase";
-import { useAuth } from "../context/AuthContext";
+import { auth } from "../app/config/Firebase";
+import { useAuth } from "../app/context/AuthContext";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";

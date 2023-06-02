@@ -1,8 +1,10 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
-import Header from "./components/Header";
+import Header from "../components/Header";
 import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "@/components/ui/toaster";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const poppins = Poppins({ weight: ["400", "700"], subsets: ["latin"] });
@@ -22,7 +24,10 @@ export default function RootLayout({
       <AuthProvider>
         <body className={inter.className}>
           <Header />
-          <main className="container mx-auto max-w-2xl sm:p-12 p-3">{children}</main>
+          <main className="container mx-auto max-w-2xl p-3 sm:p-12">
+            {children}
+          </main>
+          <Toaster />
         </body>
       </AuthProvider>
     </html>

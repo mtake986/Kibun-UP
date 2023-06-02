@@ -1,5 +1,5 @@
 import React from 'react'
-import Register from '../components/quote/register/Register';
+import Register from '../../components/quote/register/Register';
 
 const QuoteHomePage = () => {
   return (
