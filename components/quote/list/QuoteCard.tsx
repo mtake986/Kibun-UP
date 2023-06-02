@@ -16,24 +16,25 @@ import {
   Trash,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { doc, serverTimestamp, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 
 type Props = {
   q: {
-    [id: string]: {
+    // [id: number]: {
       createdAt: any;
       id: string;
       person: string;
       quote: string;
       uid: string;
     };
-  };
+  // };
+  i: number;
 };
 
 interface Quote {
-  [id: string]: {
+  [id: number]: {
     createdAt: any;
     id: string;
     person: string;
@@ -42,7 +43,7 @@ interface Quote {
   };
 }
 
-const QuoteCard = ({ q }: Quote) => {
+const QuoteCard = ({ q, i }: Props) => {
   console.log(q);
 
   const handleEditMode = () => {
@@ -62,7 +63,7 @@ const QuoteCard = ({ q }: Quote) => {
     person: string;
     id: string;
   }) => {
-    await setDoc(doc(db, "quotes", id), {
+    await updateDoc(doc(db, "quotes", id), {
       quote,
       person,
       updatedAt: serverTimestamp(),
@@ -92,7 +93,7 @@ const QuoteCard = ({ q }: Quote) => {
   };
 
   return (
-    <Card>
+    <Card className="mb-3">
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
@@ -106,6 +107,7 @@ const QuoteCard = ({ q }: Quote) => {
                 onChange={(e) => {
                   setPerson(e.target.value);
                 }}
+                defaultValue={q.person}
                 value={person}
                 id="person"
                 placeholder="NIKE"
@@ -118,7 +120,7 @@ const QuoteCard = ({ q }: Quote) => {
                   setQuote(e.target.value);
                 }}
                 value={quote}
-                // defaultValue={q.quote}
+                defaultValue={q.quote}
                 id="quote"
                 placeholder="just do it"
               />
@@ -128,18 +130,18 @@ const QuoteCard = ({ q }: Quote) => {
           <>
             <div className="mb-2 flex items-center gap-5">
               <BsFillPersonFill size={24} />
-              <p>{q?.person}</p>
+              <p>{q.person}</p>
             </div>
             <div className="flex items-center gap-5">
               <BsChatLeftText size={24} />
-              <p>{q?.quote}</p>
+              <p>{q.quote}</p>
             </div>
           </>
         )}
       </CardContent>
       <CardFooter className="flex items-center justify-between gap-5">
         {editModeOn ? (
-          <div className="gap-3 flex items-center">
+          <div className="flex items-center gap-3">
             <Button
               onClick={() => handleCancelEdit()}
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
