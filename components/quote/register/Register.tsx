@@ -57,7 +57,6 @@ const Register = () => {
             setPerson(e.target.value);
           }}
           value={person}
-          type="person"
           id="person"
           placeholder="NIKE"
         />
@@ -69,7 +68,6 @@ const Register = () => {
             setQuote(e.target.value);
           }}
           value={quote}
-          type="quote"
           id="quote"
           placeholder="JUST DO IT"
         />

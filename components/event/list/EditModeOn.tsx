@@ -24,12 +24,11 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { toast } from "@/components/ui/use-toast";
-import { auth, db } from "@/app/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { IEvent } from "@/types/type";
 
 const formSchema = z.object({
   eventTitle: z.string().min(2).max(50),
@@ -40,16 +39,28 @@ const formSchema = z.object({
   }),
 });
 
-export default function Register() {
+type Props = {
+  event: IEvent;
+  handleCancelEdit: () => void;
+  handleDelete: (id: string) => void;
+  handleSave: (values: z.infer<typeof formSchema>) => void;
+};
+
+export default function EditModeOn ({
+  event,
+  handleCancelEdit,
+  handleDelete,
+  handleSave,
+}: Props) {
   const [user] = useAuthState(auth);
-  const {reset } = useForm();
+  const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      eventTitle: "",
-      description: "",
-      eventDate: new Date(),
+      eventTitle: event.eventTitle,
+      description: event.description,
+      eventDate: event.eventDate.toDate(),
     },
   });
 
@@ -59,24 +70,9 @@ export default function Register() {
     // ✅ This will be type-safe and validated.
     console.log(values);
     // Add a new document with a generated id.
-    const collectionRef = collection(db, "events");
-    const docRef = await addDoc(collectionRef, {
-      ...values,
-      uid: user ? user.uid : "undefined",
-      createdAt: serverTimestamp(),
-    }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Created",
-        description: `
-            Event Title: ${values.eventTitle}, 
-            Description: ${values.description},
-            Event Date: ${values.eventDate.toLocaleDateString("en-US")},
-          `,
-      });
-      reset({ eventTitle: "", description: "", eventDate: new Date()});
-      form.reset();
-    });
+    handleSave(values);
+    reset({ eventTitle: "", description: "", eventDate: new Date() });
+    form.reset();
   }
   return (
     <Form {...form}>
@@ -89,12 +85,7 @@ export default function Register() {
               <FormItem className="w-full">
                 <FormLabel>Event Title</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="My Birthday"
-                    {...field}
-                    id="person"
-                    defaultValue={field.value}
-                  />
+                  <Input placeholder="My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,8 +152,95 @@ export default function Register() {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => handleCancelEdit()}
+              className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
+              variant="ghost"
+            >
+              <Plane size={14} />
+              <span>Cancel</span>
+            </Button>
+            <Button
+              type="submit"
+              // onClick={() => handleSave({ eventInput, id: event.id })}
+              className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
+              variant="ghost"
+            >
+              <Plane size={14} />
+              <span>Save</span>
+            </Button>
+          </div>
+          <Button
+            onClick={() => handleDelete(event.id)}
+            className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+            variant="ghost"
+          >
+            <Trash size={14} />
+            {/* <span>Delete</span> */}
+          </Button>
+        </div>
       </form>
     </Form>
   );
-}
+};
+
+// <div className="flex flex-col gap-3">
+//   <div className="flex items-center gap-5">
+//     <BsFillPersonFill size={24} />
+//     <Input
+//       onChange={(e) => {
+//         setEventInput((prev) => ({
+//           ...prev,
+//           description: e.target.value,
+//         }));
+//       }}
+//       defaultValue={event.description}
+//       value={event.description}
+//       id="Description"
+//       placeholder="My 23rd HBD"
+//     />
+//   </div>
+//   <div className="flex items-center gap-5">
+//     <BsChatLeftText size={24} />
+//     <Input
+//       onChange={(e) => {
+//         setEventInput((prev) => ({
+//           ...prev,
+//           eventTitle: e.target.value,
+//         }));
+//       }}
+//       value={event.eventTitle}
+//       defaultValue={event.eventTitle}
+//       id="Event Title"
+//       placeholder="HBD"
+//     />
+//   </div>
+//   <div className="flex items-center gap-5">
+//     <BsChatLeftText size={24} />
+
+//     <Popover>
+//       <PopoverTrigger asChild>
+//         <Button
+//           variant={"outline"}
+//           className={cn(
+//             "w-[280px] justify-start text-left font-normal",
+//             !date && "text-muted-foreground"
+//           )}
+//         >
+//           <CalendarIcon className="mr-2 h-4 w-4" />
+//           {date ? format(date, "PPP") : <span>Pick a date</span>}
+//         </Button>
+//       </PopoverTrigger>
+//       <PopoverContent className="w-auto p-0">
+//         <Calendar
+//           mode="single"
+//           selected={date}
+//           onSelect={setDate}
+//           initialFocus
+//         />
+//       </PopoverContent>
+//     </Popover>
+//   </div>
+// </div>
