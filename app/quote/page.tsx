@@ -5,7 +5,6 @@ import List from "@/components/quote/list/List";
 const QuoteHomePage = () => {
   return (
     <div>
-      <h1>QuoteHomePage</h1>
       <Register />
       <List />
     </div>
