@@ -71,13 +71,14 @@ export default function EditModeOn ({
     console.log(values);
     // Add a new document with a generated id.
     handleSave(values);
-    reset({ eventTitle: "", description: "", eventDate: new Date() });
+    reset({ eventTitle: values.eventTitle, description: values.description, eventDate: values.eventDate});
     form.reset();
   }
   return (
+    
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex flex-col gap-5 sm:flex-row">
+        <div className="flex flex-col gap-8 sm:flex-row">
           <FormField
             control={form.control}
             name="eventTitle"
@@ -126,9 +127,6 @@ export default function EditModeOn ({
                     />
                   </PopoverContent>
                 </Popover>
-                {/* <FormDescription>
-                Your date of birth is used to calculate your age.
-              </FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}

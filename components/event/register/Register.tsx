@@ -81,7 +81,7 @@ export default function Register() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex flex-col gap-5 sm:flex-row">
+        <div className="flex flex-col gap-8 sm:flex-row">
           <FormField
             control={form.control}
             name="eventTitle"

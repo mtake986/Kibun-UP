@@ -12,9 +12,12 @@ import {
   BsChatLeftText,
   BsCalendar2,
   BsCalendar,
+  BsCalendarEventFill,
+  BsCalendarEvent,
+  BsCalendarDate,
 } from "react-icons/bs";
 import Link from "next/link";
-import { Edit, Plane, Trash } from "lucide-react";
+import { Edit, InfoIcon, Plane, Timer, TimerIcon, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   doc,
@@ -26,20 +29,10 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
-import { string } from "zod";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import EditModeOn from "./EditModeOn";
-
+import { MdPlace } from "react-icons/md";
+import { BiInfoCircle, BiTime } from "react-icons/bi";
 type Props = {
   event: IEvent;
   i: number;
@@ -48,7 +41,6 @@ type Props = {
 import { IEventInputValues, IEvent } from "@/types/type";
 
 const EventCard = ({ event, i }: Props) => {
-
   const handleEditMode = () => {
     setEditModeOn(true);
   };
@@ -56,7 +48,6 @@ const EventCard = ({ event, i }: Props) => {
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>(event);
   const [date, setDate] = React.useState<Date>();
-
 
   const handleSave = async (values: IEventInputValues) => {
     const docRef = doc(db, "events", event.id);
@@ -86,7 +77,7 @@ const EventCard = ({ event, i }: Props) => {
   };
 
   return (
-    <Card className="mb-3">
+    <Card className={`mb-3 ${editModeOn && 'border border-violet-500 bg-violet-50/10'}`}>
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
@@ -104,17 +95,23 @@ const EventCard = ({ event, i }: Props) => {
         <>
           <CardContent>
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-5">
-                <BsFillPersonFill size={24} />
-                <p>{event.description}</p>
+              <div className="">
+                {/* <BsCalendarEvent size={24} /> */}
+                <h3 className="text-center text-2xl font-semibold">
+                  {event.eventTitle}
+                </h3>
               </div>
               <div className="flex items-center gap-5">
-                <BsChatLeftText size={24} />
-                <p>{event.eventTitle}</p>
-              </div>
-              <div className="flex items-center gap-5">
-                <BsCalendar size={24} />
+                <BiTime size={24} />
                 <p>{event.eventDate.toDate().toDateString()}</p>
+              </div>
+              <div className="flex items-center gap-5">
+                <MdPlace size={24} />
+                <p>Bunkhouse</p>
+              </div>
+              <div className="flex items-center gap-5">
+                <BiInfoCircle size={24} />
+                <p>{event.description}</p>
               </div>
             </div>
           </CardContent>
