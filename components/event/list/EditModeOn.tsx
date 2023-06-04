@@ -29,21 +29,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
+import { eventSchema } from "@/form/schema";
 
-const formSchema = z.object({
-  eventTitle: z.string().min(2).max(50),
-  description: z.string().min(2).max(250),
-  eventDate: z.date({
-    required_error: "Please select a date and time",
-    invalid_type_error: "That's not a date!",
-  }),
-});
+// todo: add more fields like place, time, etc.
 
 type Props = {
   event: IEvent;
   handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
-  handleSave: (values: z.infer<typeof formSchema>) => void;
+  handleSave: (values: z.infer<typeof eventSchema>) => void;
 };
 
 export default function EditModeOn ({
@@ -55,82 +49,104 @@ export default function EditModeOn ({
   const [user] = useAuthState(auth);
   const { reset } = useForm();
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof eventSchema>>({
+    resolver: zodResolver(eventSchema),
     defaultValues: {
       eventTitle: event.eventTitle,
+      place: event.place,
       description: event.description,
       eventDate: event.eventDate.toDate(),
     },
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof eventSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
     // Add a new document with a generated id.
     handleSave(values);
-    reset({ eventTitle: values.eventTitle, description: values.description, eventDate: values.eventDate});
+    reset({
+      eventTitle: values.eventTitle,
+      place: values.place,
+      description: values.description,
+      eventDate: values.eventDate,
+    });
     form.reset();
   }
   return (
-    
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex flex-col gap-8 sm:flex-row">
-          <FormField
-            control={form.control}
-            name="eventTitle"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Event Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="My Birthday" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="eventDate"
-            render={({ field }) => (
-              <FormItem className=" flex flex-col justify-between">
-                <FormLabel>Event Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date < new Date()}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <FormField
+          control={form.control}
+          name="eventTitle"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Event Title</FormLabel>
+              <FormControl>
+                <Input placeholder="My Birthday" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+            <div className="flex flex-col gap-8 sm:flex-row">
+        <FormField
+          control={form.control}
+          name="place"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Place</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="My Parent's house (SLC, Utah)"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="eventDate"
+          render={({ field }) => (
+            <FormItem className=" flex flex-col justify-between">
+              <FormLabel>Event Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         </div>
 
         <FormField

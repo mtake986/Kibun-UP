@@ -60,8 +60,9 @@ const EventCard = ({ event, i }: Props) => {
         title: "Successfully Updated",
         description: `
             Event Title: ${values.eventTitle}, 
-            Description: ${values.description},
+            Place: ${values.place}, 
             Event Date: ${values.eventDate.toDateString()},
+            Description: ${values.description},
           `,
       });
       setEditModeOn(false);
@@ -102,12 +103,12 @@ const EventCard = ({ event, i }: Props) => {
                 </h3>
               </div>
               <div className="flex items-center gap-5">
-                <BiTime size={24} />
-                <p>{event.eventDate.toDate().toDateString()}</p>
+                <MdPlace size={24} />
+                <p>{event.place}</p>
               </div>
               <div className="flex items-center gap-5">
-                <MdPlace size={24} />
-                <p>Bunkhouse</p>
+                <BiTime size={24} />
+                <p>{event.eventDate.toDate().toDateString()}</p>
               </div>
               <div className="flex items-center gap-5">
                 <BiInfoCircle size={24} />

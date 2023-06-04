@@ -11,18 +11,12 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
+import { IEvent } from "@/types/type";
 
 const List = () => {
   const [user] = useAuthState(auth);
-  type EventType = {
-      createdAt: Timestamp;
-      id: string;
-      description: string;
-      eventDate: Timestamp;
-      eventTitle: string;
-      uid: string;
-  };
-  const [events, setEvents] = useState<EventType[] | any[]>([]);
+
+  const [events, setEvents] = useState<IEvent[] | any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {

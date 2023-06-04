@@ -30,37 +30,33 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { eventSchema } from "@/form/schema";
+import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 
-const formSchema = z.object({
-  eventTitle: z.string().min(2).max(50),
-  description: z.string().min(2).max(250),
-  eventDate: z.date({
-    required_error: "Please select a date and time",
-    invalid_type_error: "That's not a date!",
-  }),
-});
+type Props = {
+  registerOpen: boolean;
+  setRegisterOpen: (prev: boolean) => void;
+};
 
-export default function Register() {
+export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
-  const {reset } = useForm();
+  const { reset } = useForm();
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof eventSchema>>({
+    resolver: zodResolver(eventSchema),
     defaultValues: {
       eventTitle: "",
+      place: "",
       description: "",
       eventDate: new Date(),
     },
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof eventSchema>) {
     console.log(values);
-    // Add a new document with a generated id.
     const collectionRef = collection(db, "events");
-    const docRef = await addDoc(collectionRef, {
+    await addDoc(collectionRef, {
       ...values,
       uid: user ? user.uid : "undefined",
       createdAt: serverTimestamp(),
@@ -70,30 +66,51 @@ export default function Register() {
         title: "Successfully Created",
         description: `
             Event Title: ${values.eventTitle}, 
+            Place: ${values.place}, 
             Description: ${values.description},
             Event Date: ${values.eventDate.toLocaleDateString("en-US")},
           `,
       });
-      reset({ eventTitle: "", description: "", eventDate: new Date()});
+      reset({
+        eventTitle: "",
+        place: "",
+        description: "",
+        eventDate: new Date(),
+      });
       form.reset();
     });
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="eventTitle"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Event Title</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="My Birthday"
+                  {...field}
+                  // defaultValue={field.value}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField
             control={form.control}
-            name="eventTitle"
+            name="place"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Event Title</FormLabel>
+                <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="My Birthday"
+                    placeholder="My Parent's house (SLC, Utah)"
                     {...field}
-                    id="person"
-                    defaultValue={field.value}
                   />
                 </FormControl>
                 <FormMessage />
@@ -161,7 +178,18 @@ export default function Register() {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <div className="flex items-center gap-3">
+          <Button
+            className="w-full bg-violet-100 text-violet-500 hover:bg-violet-50"
+            type="submit"
+          >
+            Submit
+          </Button>
+          <RegisterFormToggleBtn
+            registerOpen={registerOpen}
+            setRegisterOpen={setRegisterOpen}
+          />
+        </div>
       </form>
     </Form>
   );
