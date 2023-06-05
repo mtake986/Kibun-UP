@@ -9,6 +9,8 @@ import { getRandomInt } from "@/utils/functions";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
+
+// todo: fetch this user's events from firestore
 const Event = () => {
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [leftDays, setLeftDays] = useState<number>(-1);
