@@ -17,12 +17,13 @@ export const builtInQuotes = [
 
 export const builtInEvents = [
   {
-    title: "Birthday",
-    date: {
-      year: 2023,
-      month: 7,
-      day: 30,
-    },
-    description: "This is a birthday event",
+  id: '123',
+  eventTitle: 'birthday',
+  place: 'utah',
+  description: 'description',
+  // eventDate: new Date('2011-05-30'),
+  uid: 'uid',
+  createdAt: new Date(),
+  updatedAt: new Date(),
   },
 ];

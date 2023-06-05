@@ -28,7 +28,7 @@ const List = () => {
 
   console.log("List.tsx: events -> ", events);
   return (
-    <div>
+    <div className="mt-10">
       <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
         Your {events.length} events
       </h2>

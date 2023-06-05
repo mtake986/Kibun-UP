@@ -49,7 +49,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-end justify-between gap-3 sm:flex-row">
+    <div className="mb-10 flex w-full flex-col items-end justify-between gap-3 sm:flex-row">
       <div className="w-full">
         <Label htmlFor="person">Person</Label>
         <Input
