@@ -47,7 +47,7 @@ const Event = () => {
       const collectionRef = collection(db, "events");
       auth.onAuthStateChanged((user) => {
         if (user) {
-          const q = query(collectionRef, where("uid", "==", user?.uid));
+          const q = query(collectionRef, where("uid", "==", user?.uid), where("target", "==", true));
           onSnapshot(q, (snapshot) => {
             snapshot.docs.length > 0
               ? setMyEvents(snapshot.docs.map((doc) => doc.data()))

@@ -15,6 +15,7 @@ import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const List = () => {
   const [user] = useAuthState(auth);
@@ -78,12 +79,12 @@ const List = () => {
             }}
             className="mx-auto mt-4 flex gap-2 rounded-lg border border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow"
           >
-            {/* <img
+            <Image
               className="h-6 w-6"
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               loading="lazy"
               alt="google logo"
-            /> */}
+            />
             <span>Login with Google</span>
           </button>
         </div>
