@@ -7,17 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  BsFillPersonFill,
-  BsChatLeftText,
-  BsCalendar2,
-  BsCalendar,
-  BsCalendarEventFill,
-  BsCalendarEvent,
-  BsCalendarDate,
-} from "react-icons/bs";
 import Link from "next/link";
-import { Edit, InfoIcon, Plane, Timer, TimerIcon, Trash } from "lucide-react";
+import {
+  Edit,
+  InfoIcon,
+  Plane,
+  Timer,
+  TimerIcon,
+  ToggleLeft,
+  ToggleRight,
+  ToggleRightIcon,
+  Trash,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   doc,
@@ -39,6 +40,7 @@ type Props = {
 };
 
 import { IEventInputValues, IEvent } from "@/types/type";
+import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 
 const EventCard = ({ event, i }: Props) => {
   const handleEditMode = () => {
@@ -63,6 +65,7 @@ const EventCard = ({ event, i }: Props) => {
             Place: ${values.place}, 
             Event Date: ${values.eventDate.toDateString()},
             Description: ${values.description},
+            Target: ${values.target},
           `,
       });
       setEditModeOn(false);
@@ -78,7 +81,11 @@ const EventCard = ({ event, i }: Props) => {
   };
 
   return (
-    <Card className={`mb-3 ${editModeOn && 'border border-violet-500 bg-violet-50/10'}`}>
+    <Card
+      className={`mb-3 ${
+        editModeOn && "border border-violet-500 bg-violet-50/10"
+      }`}
+    >
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
@@ -113,6 +120,19 @@ const EventCard = ({ event, i }: Props) => {
               <div className="flex items-center gap-5">
                 <BiInfoCircle size={24} />
                 <p>{event.description}</p>
+              </div>
+              <div className="flex items-center gap-5">
+                {event.target ? (
+                  <>
+                    <BsToggle2Off size={24} />
+                    <p>On</p>
+                  </>
+                ) : (
+                  <>
+                    <BsToggle2On size={24} />
+                    <p>Off</p>
+                  </>
+                )}
               </div>
             </div>
           </CardContent>

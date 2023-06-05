@@ -8,4 +8,5 @@ export const eventSchema = z.object({
     required_error: "Please select a date and time",
     invalid_type_error: "That's not a date!",
   }),
+  target: z.boolean(),
 });

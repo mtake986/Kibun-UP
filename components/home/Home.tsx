@@ -1,6 +1,6 @@
-import React from 'react'
-import Event from './Event/Event'
-import Quote from './Quote/Quote'
+import React from "react";
+import Event from "./event/Event";
+import Quote from "./quote/Quote";
 
 const Home = () => {
   return (
@@ -9,6 +9,6 @@ const Home = () => {
       <Quote />
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

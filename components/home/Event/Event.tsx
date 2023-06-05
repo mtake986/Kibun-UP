@@ -1,11 +1,10 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { builtInEvents } from "@/public/CONSTANTS";
 import { AiOutlineInfoCircle, AiFillCloseCircle } from "react-icons/ai";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { auth, db } from "@/app/config/Firebase";
 import { IEvent } from "@/types/type";
-import { getRandomInt } from "@/utils/functions";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,7 +13,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const Event = () => {
   const [user] = useAuthState(auth);
   const [showInfo, setShowInfo] = useState<boolean>(false);
-  const [leftDays, setLeftDays] = useState<number>(-1);
   const [loading, setLoading] = useState<boolean>(true);
   const [myEvents, setMyEvents] = useState<IEvent[] | any>([]);
 

@@ -30,6 +30,7 @@ import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
+import { Switch } from "@/components/ui/switch";
 
 // todo: add more fields like place, time, etc.
 
@@ -56,6 +57,7 @@ export default function EditModeOn ({
       place: event.place,
       description: event.description,
       eventDate: event.eventDate.toDate(),
+      target: event.target,
     },
   });
 
@@ -91,62 +93,62 @@ export default function EditModeOn ({
           )}
         />
 
-            <div className="flex flex-col gap-8 sm:flex-row">
-        <FormField
-          control={form.control}
-          name="place"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Place</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="My Parent's house (SLC, Utah)"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="eventDate"
-          render={({ field }) => (
-            <FormItem className=" flex flex-col justify-between">
-              <FormLabel>Event Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date()}
-                    initialFocus
+        <div className="flex flex-col gap-8 sm:flex-row">
+          <FormField
+            control={form.control}
+            name="place"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Place</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="My Parent's house (SLC, Utah)"
+                    {...field}
                   />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="eventDate"
+            render={({ field }) => (
+              <FormItem className=" flex flex-col justify-between">
+                <FormLabel>Event Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date < new Date()}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <FormField
@@ -162,6 +164,27 @@ export default function EditModeOn ({
                 />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="target"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Target</FormLabel>
+                <FormDescription>
+                  Check if you want to display on the home page
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

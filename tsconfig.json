@@ -28,8 +28,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/home/Quote",
-    "app/config/firebase-config.js"
-, "app/config/Firebase.js"  ],
+    "components/home/quote",
+    "app/config/firebase-config.js",
+    "app/config/Firebase.js"
+  ],
   "exclude": ["node_modules"]
 }
