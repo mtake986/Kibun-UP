@@ -24,6 +24,8 @@ const Quote = () => {
     });
   }, []);
 
+
+
   if (loading) {
     return (
       <div className="mt-6 p-12 flex-col items-center">

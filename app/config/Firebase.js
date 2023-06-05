@@ -24,9 +24,14 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
+const user = auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("user logged in");
+    return user;
+  } 
+});
 
-export { auth, provider, db };
+export { auth, provider, db, user };
