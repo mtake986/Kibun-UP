@@ -10,3 +10,10 @@ export const eventSchema = z.object({
   }),
   target: z.boolean(),
 });
+
+
+export const quoteSchema = z.object({
+  person: z.string().min(2).max(50),
+  quote: z.string().min(2).max(50),
+  isDraft: z.boolean(),
+});
