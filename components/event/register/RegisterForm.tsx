@@ -86,25 +86,28 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   }
   return (
     <Form {...form}>
+      <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
+        Register Form
+      </h2>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="eventTitle"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Event Title</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="My Birthday"
-                  {...field}
-                  // defaultValue={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <div className="flex flex-col gap-8 sm:flex-row">
+          <FormField
+            control={form.control}
+            name="eventTitle"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Event Title</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="My Birthday"
+                    {...field}
+                    // defaultValue={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="place"
@@ -121,49 +124,49 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="eventDate"
-            render={({ field }) => (
-              <FormItem className=" flex flex-col justify-between">
-                <FormLabel>Event Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date < new Date()}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                {/* <FormDescription>
+        </div>
+        <FormField
+          control={form.control}
+          name="eventDate"
+          render={({ field }) => (
+            <FormItem className=" flex flex-col justify-between">
+              <FormLabel>Event Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              {/* <FormDescription>
                 Your date of birth is used to calculate your age.
               </FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

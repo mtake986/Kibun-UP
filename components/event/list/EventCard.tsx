@@ -125,12 +125,12 @@ const EventCard = ({ event, i }: Props) => {
                 {event.target ? (
                   <>
                     <BsToggle2Off size={24} />
-                    <p>On</p>
+                    <p>Target On</p>
                   </>
                 ) : (
                   <>
                     <BsToggle2On size={24} />
-                    <p>Off</p>
+                    <p>Target Off</p>
                   </>
                 )}
               </div>

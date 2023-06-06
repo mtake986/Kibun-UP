@@ -33,7 +33,7 @@ const Event = () => {
         );
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
         // setLeftDays(diffDays);
-        return diffDays;
+        return diffDays + 1;
       }
     } else {
       return 0;

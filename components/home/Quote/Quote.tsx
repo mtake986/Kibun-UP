@@ -65,12 +65,12 @@ const Quote = () => {
       if (todaysQuote?.length === 0) {
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
-            <p>No event yet.</p>
+            <p>No Quote's to Display</p>
             <Link
               href="/quote"
               className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
             >
-              Click here to set an event
+              Click here to create an quote
             </Link>
           </div>
         );

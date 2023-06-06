@@ -34,9 +34,9 @@ const List = () => {
 
   console.log("List.tsx: quotes -> ", quotes);
   return (
-    <div>
+    <div className="mt-10">
       <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-        Your {quotes.length} Quotes
+        {quotes.length} Quotes
       </h2>
       {quotes.map((quote, i) => (
         <QuoteCard key={i} q={quote} i={i}  />
