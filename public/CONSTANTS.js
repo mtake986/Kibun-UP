@@ -1,3 +1,6 @@
+import { LogInIcon } from "lucide-react";
+import { BsChatQuoteFill, BsFlagFill } from "react-icons/bs";
+
 export const builtInQuotes = [
   {
     quote:
@@ -17,13 +20,27 @@ export const builtInQuotes = [
 
 export const builtInEvents = [
   {
-  id: '123',
-  eventTitle: 'birthday',
-  place: 'utah',
-  description: 'description',
-  // eventDate: new Date('2011-05-30'),
-  uid: 'uid',
-  createdAt: new Date(),
-  updatedAt: new Date(),
+    id: "123",
+    eventTitle: "birthday",
+    place: "utah",
+    description: "description",
+    // eventDate: new Date('2011-05-30'),
+    uid: "uid",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
+];
+
+export const hamburgerMenus = [
+  {
+    name: "Quote",
+    link: "/quote",
+    icon: <BsChatQuoteFill />,
+  },
+  {
+    name: "Event",
+    link: "/event",
+    icon: <BsFlagFill />,
+  },
+  { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];

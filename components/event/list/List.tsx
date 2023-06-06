@@ -72,7 +72,6 @@ const List = () => {
     } else {
       return (
         <div className="mt-10 rounded-lg p-12 text-center">
-          <div>You need to login through Google to see your events</div>
           <button
             onClick={() => {
               signInWithGoogle();
@@ -80,10 +79,11 @@ const List = () => {
             className="mx-auto mt-4 flex gap-2 rounded-lg border border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow"
           >
             <Image
-              className="h-6 w-6"
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               loading="lazy"
               alt="google logo"
+              width={24}
+              height={24}
             />
             <span>Login with Google</span>
           </button>

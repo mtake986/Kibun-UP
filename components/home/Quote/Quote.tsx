@@ -9,12 +9,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/app/context/AuthContext";
 import { IQuote } from "@/types/type";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const Quote = () => {
   const [todaysQuote, setTodaysQuote] = useState<IQuote[] | any[]>([]);
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
-  const { signInWithGoogle } = useAuth();
+
 
   function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
@@ -90,25 +91,7 @@ const Quote = () => {
       }
     } else {
       return (
-        <div className="mt-10 rounded-lg p-12 text-center">
-          <div>You need to login through Google to see your events</div>
-          <button
-            onClick={() => {
-              signInWithGoogle();
-            }}
-            className="mx-auto mt-4 flex gap-2 rounded-lg border border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow"
-          >
-            <Image
-              className="h-6 w-6"
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              loading="lazy"
-              alt="google logo"
-              width={24}
-              height={24}
-            />
-            <span>Login with Google</span>
-          </button>
-        </div>
+        <GoogleLoginBtn />
       );
     }
   }

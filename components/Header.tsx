@@ -4,15 +4,16 @@ import * as React from "react";
 import Link from "next/link";
 import { auth } from "../app/config/Firebase";
 import { useAuth } from "../app/context/AuthContext";
-import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
+import MenuBtn from "./MenuBtn";
 export default function ButtonAppBar() {
   const { signInWithGoogle } = useAuth();
   const [user] = useAuthState(auth);
 
   return (
-    <header className="bg-violet-500 p-6">
+    <header className="bg-violet-500 sm:p-4 px-2 py-4">
       <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <Link href="/">
@@ -35,7 +36,7 @@ export default function ButtonAppBar() {
             Event
           </Link>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="hidden items-center justify-between sm:flex">
           {auth.currentUser ? (
             <div>
               <Image
@@ -60,11 +61,14 @@ export default function ButtonAppBar() {
                 signInWithGoogle();
               }}
               // href="/login"
-              className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
+              className="cursor-pointer text-violet-200 duration-300 hover:text-white lg:mt-0 lg:inline-block"
             >
               Login
             </div>
           )}
+        </div>
+        <div className="sm:hidden">
+          <MenuBtn />
         </div>
         {/* {loginUserInfo?.email && <div>{auth.currentUser?.email}</div>} */}
       </nav>
