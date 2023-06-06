@@ -23,6 +23,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/home/Quote"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/home/quote",
+    "app/config/firebase-config.js",
+    "app/config/Firebase.js"
+  ],
   "exclude": ["node_modules"]
 }

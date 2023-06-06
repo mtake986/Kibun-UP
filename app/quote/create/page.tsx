@@ -2,7 +2,8 @@ import React from 'react'
 
 const QuoteCreatePage = () => {
   return (
-    <div>QuoteCreatePage</div>
+    <div>Create your own Quote</div>
+    
   )
 }
 
