@@ -8,6 +8,8 @@ import { signOut } from "firebase/auth";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
+import ProfilePic from "./ProfilePic";
+
 export default function ButtonAppBar() {
   const { signInWithGoogle } = useAuth();
   const [user] = useAuthState(auth);
@@ -37,24 +39,8 @@ export default function ButtonAppBar() {
           </Link>
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {auth.currentUser ? (
-            <div>
-              <Image
-                width={40}
-                height={40}
-                src={
-                  user?.photoURL ? user?.photoURL : "https://placehold.co/50x50"
-                }
-                alt="profile pic"
-              />
-              <button
-                onClick={() => {
-                  signOut(auth);
-                }}
-              >
-                Logout
-              </button>
-            </div>
+          {user ? (
+            <ProfilePic />
           ) : (
             <div
               onClick={() => {

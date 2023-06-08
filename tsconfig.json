@@ -31,6 +31,6 @@
     "components/home/quote",
     "app/config/firebase-config.js",
     "app/config/Firebase.js"
-  ],
+, "app/user/profile/[uid]"  ],
   "exclude": ["node_modules"]
 }
