@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Popover,
@@ -7,12 +8,14 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
-import { signOut } from "firebase/auth";
 import { LogOut, User2 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
+
+  const { handleLogout } = useAuth();
 
   return (
     <Popover>
@@ -29,7 +32,7 @@ const ProfilePic = () => {
         <div className="flex-col gap-1">
           <div
             className="flex cursor-pointer items-center gap-1 p-1 duration-300 hover:opacity-50"
-            onClick={() => signOut(auth)}
+            onClick={() => handleLogout()}
           >
             <LogOut size={16} className="mr-2" />
             Logout

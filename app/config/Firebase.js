@@ -34,4 +34,4 @@ const user = auth.onAuthStateChanged((user) => {
   } 
 });
 
-export { auth, provider, db, user };
+export { app, auth, provider, db, user };

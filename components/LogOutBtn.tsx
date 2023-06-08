@@ -1,17 +1,12 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-import { signOut } from "firebase/auth";
-import { auth } from "@/app/config/Firebase";
 import { LogOut } from "lucide-react";
+import { useAuth } from "@/app/context/AuthContext";
 
 const LogOutBtn = () => {
-  const router = useRouter();
 
-  const handleLogout = () => {
-    signOut(auth);
-    router.push("/");
-  };
+  const { handleLogout } = useAuth();
+
 
   return (
     <Button

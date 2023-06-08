@@ -1,12 +1,12 @@
-import { auth } from '@/app/config/Firebase';
-import React from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useAuth } from '@/app/context/AuthContext';
-import Image from 'next/image';
+import { auth } from "@/app/config/Firebase";
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuth } from "@/app/context/AuthContext";
+import Image from "next/image";
 
 const LogInBtn = () => {
   const [user] = useAuthState(auth);
-  const {signInWithGoogle} = useAuth();
+  const { signInWithGoogle } = useAuth();
 
   return (
     // <Button
@@ -17,6 +17,7 @@ const LogInBtn = () => {
     //   <BiLogIn size={16} className="mr-2" />
     //   Logout
     // </Button>
+    <div>
       <button
         onClick={() => {
           signInWithGoogle();
@@ -33,7 +34,8 @@ const LogInBtn = () => {
         />
         <span>Login with Google</span>
       </button>
+    </div>
   );
-}
+};
 
-export default LogInBtn
+export default LogInBtn;
