@@ -10,36 +10,22 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
+import { useQuote } from "@/app/context/QuoteContext";
+import { IQuote } from "@/types/type";
 
-const List = () => {
+
+type Props = {
+  q: IQuote[];
+};
+
+const List = ({ q }: Props) => {
   const [user] = useAuthState(auth);
-  type quotesType = {
-    // [id: number]: {
-      createdAt: any;
-      id: string;
-      person: string;
-      quote: string;
-      uid: string;
-    // };
-  };
-  const [quotes, setQuotes] = useState<quotesType[] | any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    onSnapshot(collection(db, "quotes"), (snapshot) => {
-      console.log('onsnapshot ===')
-      setQuotes(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
-  }, []);
-
-  console.log("List.tsx: quotes -> ", quotes);
   return (
-    <div className="mt-10">
-      <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-        {quotes.length} Quotes
-      </h2>
-      {quotes.map((quote, i) => (
-        <QuoteCard key={i} q={quote} i={i}  />
+    <div className="mt-2">
+      {/* {q.length} */}
+      {q.map((quote, i) => (
+        <QuoteCard key={i} q={quote} i={i} />
       ))}
     </div>
   );

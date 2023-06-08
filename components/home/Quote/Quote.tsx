@@ -10,45 +10,17 @@ import Image from "next/image";
 import { useAuth } from "@/app/context/AuthContext";
 import { IQuote } from "@/types/type";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import { useQuote } from "@/app/context/QuoteContext";
 
 const Quote = () => {
-  const [todaysQuote, setTodaysQuote] = useState<IQuote[] | any[]>([]);
+  const { getTodaysQuote, todaysQuotes } = useQuote();
+
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
 
-
-  function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   onSnapshot(collection(db, "quotes"), (snapshot) => {
-  //     snapshot.docs.length > 0
-  //       ? setTodaysQuote(
-  //           snapshot.docs[getRandomInt(snapshot.docs.length)].data()
-  //         )
-  //       : setTodaysQuote(builtInQuotes[0]);
-  //     setLoading(false);
-  //   });
-  // }, []);
-
   useEffect(() => {
     setLoading(true);
-    const getEvents = async () => {
-      const collectionRef = collection(db, "quotes");
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          const q = query(collectionRef, where("uid", "==", user?.uid), where('isDraft', '==', false));
-          onSnapshot(q, (snapshot) => {
-            setTodaysQuote(
-              snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            );
-          });
-        }
-      });
-    };
-    getEvents();
+    getTodaysQuote();
     setLoading(false);
   }, [user]);
 
@@ -63,7 +35,7 @@ const Quote = () => {
     );
   } else {
     if (user) {
-      if (todaysQuote?.length === 0) {
+      if (todaysQuotes?.length === 0) {
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
             <p>No Quote's to Display</p>
@@ -75,15 +47,15 @@ const Quote = () => {
             </Link>
           </div>
         );
-      } else if (todaysQuote?.length > 0) {
+      } else if (todaysQuotes?.length > 0) {
         return (
           <div className="mt-6 p-12">
             <strong className="text-xl">
-              {todaysQuote[getRandomInt(todaysQuote.length)].quote}
+              {todaysQuotes[0].quote}
             </strong>
             <div className="mt-4 text-right">
               <span>
-                - {todaysQuote[getRandomInt(todaysQuote.length)].quote}
+                - {todaysQuotes[0].person}
               </span>
             </div>
           </div>

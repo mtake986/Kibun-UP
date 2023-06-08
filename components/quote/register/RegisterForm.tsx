@@ -33,6 +33,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
+import { useQuote } from "@/app/context/QuoteContext";
 
 type Props = {
   registerOpen: boolean;
@@ -41,6 +42,8 @@ type Props = {
 
 export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
+  const { allQuotes, getAllQuotes } = useQuote();
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -76,6 +79,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
         isDraft: false,
       });
       form.reset();
+      getAllQuotes();
     });
   }
   return (

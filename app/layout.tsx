@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import Header from "../components/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import { QuoteProvider } from "./context/QuoteContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
+        <QuoteProvider>
         <body className={inter.className}>
           <Header />
           <main className="container mx-auto max-w-2xl p-5 sm:p-12">
@@ -29,6 +31,7 @@ export default function RootLayout({
           </main>
           <Toaster />
         </body>
+        </QuoteProvider>
       </AuthProvider>
     </html>
   );
