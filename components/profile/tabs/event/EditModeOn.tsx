@@ -31,23 +31,25 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
+import { DocumentData } from "firebase/firestore";
+import { useEvent } from "@/app/context/EventContext";
 
 // todo: add more fields like place, time, etc.
 
 type Props = {
-  event: IEvent;
-  handleCancelEdit: () => void;
-  handleDelete: (id: string) => void;
-  handleSave: (values: z.infer<typeof eventSchema>) => void;
+  event: DocumentData;
 };
 
-export default function EditModeOn ({
-  event,
-  handleCancelEdit,
-  handleDelete,
-  handleSave,
-}: Props) {
+export default function EditModeOn ({event}: Props) {
   const [user] = useAuthState(auth);
+  const {
+    handleEditMode,
+    editModeOn,
+    handleSave,
+    handleCancelEdit,
+    handleDelete,
+  } = useEvent();
+  
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -67,7 +69,7 @@ export default function EditModeOn ({
     // ✅ This will be type-safe and validated.
     console.log(values);
     // Add a new document with a generated id.
-    handleSave(values);
+    handleSave(event.id, values);
     reset({
       eventTitle: values.eventTitle,
       place: values.place,

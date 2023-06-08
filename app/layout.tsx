@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "./context/QuoteContext";
+import { EventProvider } from "./context/EventContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <QuoteProvider>
+          <EventProvider>
           <body className={inter.className}>
             <Header />
             <main className="container mx-auto max-w-2xl p-5 sm:p-12">
@@ -31,6 +33,7 @@ export default function RootLayout({
             </main>
             <Toaster />
           </body>
+          </EventProvider>
         </QuoteProvider>
       </AuthProvider>
     </html>

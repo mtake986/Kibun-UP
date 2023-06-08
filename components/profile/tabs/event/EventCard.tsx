@@ -38,48 +38,19 @@ import { BiInfoCircle, BiTime } from "react-icons/bi";
 import { IEvent, IEventInputValues } from '@/types/type';
 import { BsToggle2Off, BsToggle2On } from 'react-icons/bs';
 import EditModeOn from './EditModeOn';
+import { useEvent } from '@/app/context/EventContext';
 
 type Props = {
   event: DocumentData;
 };
 const QuoteCard = ({ event }: Props) => {
-  // const { handleEditMode, editModeOn, handleDelete } = useQuote();
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
+  const {
+    handleEditMode,
+    editModeOn,
+    handleDelete,
+  } = useEvent();
 
-  const [editModeOn, setEditModeOn] = useState<boolean>(false);
-  const [eventInput, setEventInput] = useState<IEvent>();
-  const [date, setDate] = React.useState<Date>();
 
-  const handleSave = async (values: IEventInputValues) => {
-    const docRef = doc(db, "events", event.id);
-    await updateDoc(docRef, {
-      ...values,
-      updatedAt: serverTimestamp(),
-    }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Updated",
-        description: `
-            Event Title: ${values.eventTitle}, 
-            Place: ${values.place}, 
-            Event Date: ${values.eventDate.toDateString()},
-            Description: ${values.description},
-            Target: ${values.target},
-          `,
-      });
-      setEditModeOn(false);
-    });
-  };
-
-  const handleCancelEdit = () => {
-    setEditModeOn(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteDoc(doc(db, "events", id));
-  };
   return (
     <Card
       className={`mb-3 ${
@@ -94,9 +65,6 @@ const QuoteCard = ({ event }: Props) => {
         <CardContent>
           <EditModeOn
             event={event}
-            handleCancelEdit={handleCancelEdit}
-            handleDelete={handleDelete}
-            handleSave={handleSave}
           />
         </CardContent>
       ) : (
