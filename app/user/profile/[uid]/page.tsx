@@ -17,7 +17,7 @@ export default function ProfilePage() {
         height={200}
         src={user?.photoURL ? user?.photoURL : "https://placehold.co/50x50"}
         alt="profile pic"
-        className="m-5 mx-auto cursor-pointer rounded-full duration-300 hover:opacity-70"
+        className="m-5 mx-auto  rounded-full"
       />
       <p>{user?.displayName}</p>
       <span>Post: {params.uid}</span>
