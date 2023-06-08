@@ -55,6 +55,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push("/");
     }
   };
+
   
   return (
     <AuthContext.Provider
