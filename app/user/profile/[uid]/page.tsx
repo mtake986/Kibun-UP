@@ -8,18 +8,20 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { getFirestore, collection, where, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import React from "react";
-
+import QuoteCard from "@/components/profile/QuoteCard";
 
 export default function ProfilePage() {
   const [user] = useAuthState(auth);
 
   const params = useParams();
+
   const [value, loading, error] = useCollection(
-    query(collection(getFirestore(app), "quotes"), where('uid', '==', user?.uid)),
+    query(collection(getFirestore(app), "quotes"), (where('uid', '==', params?.uid))),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   );
+  console.log(value?.docs.map((doc) => doc.data()))
   return (
     // <div>
     //   <Image
@@ -37,14 +39,12 @@ export default function ProfilePage() {
         {error ? <strong>Error: {JSON.stringify(error)}</strong> : null}
         {loading ? <span>Collection: Loading...</span> : null}
         {value && (
-          <span>
-            Collection:{value.size}
+          <div>
+            <div>Collection:{value.size}</div>
             {value.docs.map((doc) => (
-              <React.Fragment key={doc.id}>
-                {JSON.stringify(doc.data())},{" "}
-              </React.Fragment>
+              <QuoteCard key={doc.id} quote={{id: doc.id, ...doc.data()}} />
             ))}
-          </span>
+          </div>
         )}
       </>
     </>

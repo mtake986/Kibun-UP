@@ -1,10 +1,5 @@
 "use client";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import { db, auth } from "../config/Firebase";
 import {
   collection,
@@ -12,12 +7,17 @@ import {
   where,
   getDocs,
   onSnapshot,
+  deleteDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 type QuoteProviderProps = {
   children: ReactNode;
 };
-import { IQuote } from "@/types/type";
+import { IQuote, IQuoteInputValues } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "@/components/ui/use-toast";
 
 type QuoteContext = {
   allQuotes: IQuote[] | [];
@@ -26,6 +26,11 @@ type QuoteContext = {
   getLoginUsersQuotes: () => void;
   getTodaysQuote: () => void;
   todaysQuotes: IQuote[] | [];
+  handleEditMode: () => void;
+  editModeOn: boolean;
+  handleSave: (id: string, values: IQuoteInputValues) => void;
+  handleCancelEdit: () => void;
+  handleDelete: (id: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -64,26 +69,70 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const getTodaysQuote = async () => {
     const collectionRef = collection(db, "quotes");
     // auth.onAuthStateChanged((user) => {
-      if (user) {
-        const q = query(
-          collectionRef,
-          where("uid", "==", user?.uid),
-          where("isDraft", "==", false)
+    if (user) {
+      const q = query(
+        collectionRef,
+        where("uid", "==", user?.uid),
+        where("isDraft", "==", false)
+      );
+      onSnapshot(q, (snapshot) => {
+        setTodaysQuotes(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
-        onSnapshot(q, (snapshot) => {
-          setTodaysQuotes(
-            snapshot.docs.map(
-              (doc) => ({ ...doc.data(), id: doc.id } as IQuote)
-            )
-          );
-        });
-      }
+      });
+    }
     // });
   };
 
+  const handleEditMode = () => {
+    setEditModeOn(true);
+  };
+
+  const [editModeOn, setEditModeOn] = useState(false);
+  const [person, setPerson] = useState<string>("");
+
+  const handleSave = async (id: string, values: IQuoteInputValues) => {
+    const docRef = doc(db, "quotes", id);
+    await updateDoc(docRef, {
+      ...values,
+      updatedAt: serverTimestamp(),
+    }).then((res) => {
+      toast({
+        className: "border-none bg-green-500 text-white",
+        title: "Successfully Updated",
+        description: `
+            Quote: ${values.quote}, 
+            Person: ${values.person},
+            Draft: ${values.isDraft},
+          `,
+      });
+      setEditModeOn(false);
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditModeOn(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteDoc(doc(db, "quotes", id));
+  };
+  
   return (
     <QuoteContext.Provider
-      value={{ allQuotes, getAllQuotes, loginUsersQuotes, getLoginUsersQuotes, getTodaysQuote, todaysQuotes }}
+      value={{
+        allQuotes,
+        getAllQuotes,
+        loginUsersQuotes,
+        getLoginUsersQuotes,
+        getTodaysQuote,
+        todaysQuotes,
+        handleEditMode,
+        editModeOn,
+        handleSave,
+        handleCancelEdit,
+        handleDelete,
+      }}
     >
       {children}
     </QuoteContext.Provider>

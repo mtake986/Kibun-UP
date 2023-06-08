@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "./context/QuoteContext";
@@ -24,13 +24,13 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <QuoteProvider>
-        <body className={inter.className}>
-          <Header />
-          <main className="container mx-auto max-w-2xl p-5 sm:p-12">
-            {children}
-          </main>
-          <Toaster />
-        </body>
+          <body className={inter.className}>
+            <Header />
+            <main className="container mx-auto max-w-2xl p-5 sm:p-12">
+              {children}
+            </main>
+            <Toaster />
+          </body>
         </QuoteProvider>
       </AuthProvider>
     </html>

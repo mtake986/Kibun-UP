@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { auth } from "../app/config/Firebase";
-import { useAuth } from "../app/context/AuthContext";
-import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { auth } from "../../app/config/Firebase";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
 

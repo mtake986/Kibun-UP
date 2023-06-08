@@ -9,14 +9,6 @@ const LogInBtn = () => {
   const { signInWithGoogle } = useAuth();
 
   return (
-    // <Button
-    //   className="flex cursor-pointer items-center gap-1 bg-red-500 p-1 duration-300 hover:bg-red-500/90"
-    //   onClick={() => signInWithGoogle()}
-    // >
-    //   <LogIn size={16} className="mr-2" />
-    //   <BiLogIn size={16} className="mr-2" />
-    //   Logout
-    // </Button>
     <div>
       <button
         onClick={() => {
