@@ -15,19 +15,7 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Edit, Plane, Trash } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  doc,
-  serverTimestamp,
-  setDoc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "@/app/config/Firebase";
-import { toast } from "@/components/ui/use-toast";
-import { IQuote, IQuoteInputValues } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { useQuote } from "@/app/context/QuoteContext";
 

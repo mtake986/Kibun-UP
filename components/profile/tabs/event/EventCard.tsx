@@ -1,3 +1,4 @@
+import { DocumentData } from 'firebase/firestore';
 import React, { useState } from "react";
 import {
   Card,
@@ -31,25 +32,24 @@ import {
 import { db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import EditModeOn from "./EditModeOn";
+// import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
+import { IEvent, IEventInputValues } from '@/types/type';
+import { BsToggle2Off, BsToggle2On } from 'react-icons/bs';
+import EditModeOn from './EditModeOn';
 
 type Props = {
-  event: IEvent;
-  i: number;
+  event: DocumentData;
 };
-
-import { IEventInputValues, IEvent } from "@/types/type";
-import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
-
-const EventCard = ({ event, i }: Props) => {
+const QuoteCard = ({ event }: Props) => {
+  // const { handleEditMode, editModeOn, handleDelete } = useQuote();
   const handleEditMode = () => {
     setEditModeOn(true);
   };
 
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
-  const [eventInput, setEventInput] = useState<IEvent>(event);
+  const [eventInput, setEventInput] = useState<IEvent>();
   const [date, setDate] = React.useState<Date>();
 
   const handleSave = async (values: IEventInputValues) => {
@@ -80,7 +80,6 @@ const EventCard = ({ event, i }: Props) => {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
   };
-
   return (
     <Card
       className={`mb-3 ${
@@ -159,4 +158,4 @@ const EventCard = ({ event, i }: Props) => {
   );
 };
 
-export default EventCard;
+export default QuoteCard
