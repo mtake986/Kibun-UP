@@ -4,15 +4,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
 import { signOut } from "firebase/auth";
-import { Button } from "./ui/button";
 import { LogOut, User2 } from "lucide-react";
-import { AiFillProfile } from "react-icons/ai";
 import Link from "next/link";
-import { User } from "lucide-react";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
@@ -31,14 +28,14 @@ const ProfilePic = () => {
       <PopoverContent className="w-auto">
         <div className="flex-col gap-1">
           <div
-            className="p-1 hover:opacity-50 flex cursor-pointer items-center gap-1 duration-300"
+            className="flex cursor-pointer items-center gap-1 p-1 duration-300 hover:opacity-50"
             onClick={() => signOut(auth)}
           >
             <LogOut size={16} className="mr-2" />
             Logout
           </div>
           <Link
-            className="p-1 hover:opacity-50 hover:bg-slate-50 flex cursor-pointer items-center gap-1 duration-300"
+            className="flex cursor-pointer items-center gap-1 p-1 duration-300 hover:bg-slate-50 hover:opacity-50"
             href={`/user/profile/${user?.uid}/`}
           >
             <User2 size={16} className="mr-2" />

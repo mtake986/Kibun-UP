@@ -1,11 +1,6 @@
 import { auth } from '@/app/config/Firebase';
-import Link from 'next/link';
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { BsPerson } from 'react-icons/bs';
-import { Button } from './ui/button';
-import { LogIn } from 'lucide-react';
-import { BiLogIn } from 'react-icons/bi';
 import { useAuth } from '@/app/context/AuthContext';
 import Image from 'next/image';
 

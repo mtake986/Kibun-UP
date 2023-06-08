@@ -4,8 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 import { auth } from "../app/config/Firebase";
 import { useAuth } from "../app/context/AuthContext";
-import { signOut } from "firebase/auth";
-import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
