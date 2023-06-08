@@ -31,14 +31,14 @@ const ProfilePic = () => {
       <PopoverContent className="w-auto">
         <div className="flex-col gap-1">
           <div
-            className="p-1 hover:opacity-50 flex cursor-pointer items-center gap-1"
+            className="p-1 hover:opacity-50 flex cursor-pointer items-center gap-1 duration-300"
             onClick={() => signOut(auth)}
           >
             <LogOut size={16} className="mr-2" />
             Logout
           </div>
           <Link
-            className="p-1 hover:opacity-50 flex cursor-pointer items-center gap-1"
+            className="p-1 hover:opacity-50 hover:bg-slate-50 flex cursor-pointer items-center gap-1 duration-300"
             href={`/user/profile/${user?.uid}/`}
           >
             <User2 size={16} className="mr-2" />

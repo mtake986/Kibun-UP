@@ -1,19 +1,30 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { HomeIcon, MenuIcon, Quote } from "lucide-react";
+import { LucideLogOut, MenuIcon, User2 } from "lucide-react";
 // import { hamburgerMenus } from "@/public/CONSTANTS";
 import Link from "next/link";
 
 import { LogInIcon } from "lucide-react";
-import { BsChatQuote, BsChatQuoteFill, BsFlag, BsFlagFill, BsHouse, BsQuote } from "react-icons/bs";
+import {
+  BsChatQuote,
+  BsChatQuoteFill,
+  BsFlag,
+  BsFlagFill,
+  BsHouse,
+  BsPerson,
+  BsQuote,
+} from "react-icons/bs";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/config/Firebase";
+import { Button } from "./ui/button";
+import { signOut } from "firebase/auth";
+import { LogOut } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
+import GoogleLoginBtn from "./utils/GoogleLoginBtn";
+import LogOutBtn from "./LogOutBtn";
+import LogInBtn from "./LogInBtn";
+
 const hamburgerMenus = [
   {
     name: "Quote",
@@ -31,10 +42,9 @@ const hamburgerMenus = [
 type Anchor = "right";
 
 export default function MenuBtn() {
+  const [user] = useAuthState(auth);
+
   const [state, setState] = React.useState({
-    // top: false,
-    // left: false,
-    // bottom: false,
     right: false,
   });
 
@@ -59,25 +69,48 @@ export default function MenuBtn() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="flex flex-col gap-1 p-5">
-        <div className="flex cursor-pointer items-center gap-5 rounded-lg px-5 py-1 duration-300 hover:bg-violet-50">
-          <BsHouse />
-          <Link href="/">
-            <span className="text-lg ">Home</span>
-          </Link>
+      <div className="flex flex-col justify-between gap-3 p-5">
+        <div className="flex flex-col gap-3">
+          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
+            <Link
+              href="/"
+              className="flex cursor-pointer items-center gap-5 p-1"
+            >
+              <BsHouse />
+              <span className="text-lg ">Home</span>
+            </Link>
+          </div>
+          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
+            <Link
+              href="/quote"
+              className="flex cursor-pointer items-center gap-5 p-1"
+            >
+              <BsChatQuote />
+              <span className="text-lg ">Quote</span>
+            </Link>
+          </div>
+          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
+            <Link
+              href="/event"
+              className="flex cursor-pointer items-center gap-5 p-1"
+            >
+              <BsFlag />
+              <span className="text-lg ">Event</span>
+            </Link>
+          </div>
+          {user ? (
+            <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
+              <Link
+                className="flex cursor-pointer items-center gap-5 p-1"
+                href={`/user/profile/${user?.uid}/`}
+              >
+                <User2 size={16} />
+                Profile
+              </Link>
+            </div>
+          ) : null}
         </div>
-        <div className="flex cursor-pointer items-center gap-5 rounded-lg px-5 py-1 duration-300 hover:bg-violet-50">
-          <BsChatQuote />
-          <Link href="/quote">
-            <span className="text-lg ">Quote</span>
-          </Link>
-        </div>
-        <div className="flex cursor-pointer items-center gap-5 rounded-lg px-5 py-1 duration-300 hover:bg-violet-50">
-          <BsFlag />
-          <Link href="/event">
-            <span className="text-lg ">Event</span>
-          </Link>
-        </div>
+        {user ? <LogOutBtn /> : <GoogleLoginBtn />}
       </div>
     </Box>
   );

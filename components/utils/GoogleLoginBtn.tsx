@@ -5,7 +5,7 @@ import Image from 'next/image';
 const GoogleLoginBtn = () => {
     const { signInWithGoogle } = useAuth();
   return (
-    <div className="rounded-lg p-12 text-center">
+    <div className="rounded-lg pt-12 text-center">
       <button
         onClick={() => {
           signInWithGoogle();
