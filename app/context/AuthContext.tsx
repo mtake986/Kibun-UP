@@ -36,27 +36,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [signOut, loading, error] = useSignOut(auth);
 
   function signInWithGoogle() {
-    signInWithPopup(auth, provider)
-      // .then((result) => {
-      //   const name = result.user.displayName;
-      //   const email = result.user.email;
-      //   const photoUrl = result.user.photoURL;
-      //   setLoginUserInfo({ email, name, photoUrl });
-      // })
-      // .catch((error) => console.log(error));
+    signInWithPopup(auth, provider).then(() => {
+      toast({
+        className: "border-none bg-green-500 text-white",
+        title: "Success: Log In",
+      });
+      router.push("/");
+    });
+
+    // .then((result) => {
+    //   const name = result.user.displayName;
+    //   const email = result.user.email;
+    //   const photoUrl = result.user.photoURL;
+    //   setLoginUserInfo({ email, name, photoUrl });
+    // })
+    // .catch((error) => console.log(error));
   }
   const handleLogout = async () => {
     const success = await signOut();
     if (success) {
       toast({
-        className: "border-none bg-green-500 text-white",
+        className: "border-none bg-blue-500 text-white",
         title: "Success: Log Out",
       });
       router.push("/");
     }
   };
 
-  
   return (
     <AuthContext.Provider
       value={{

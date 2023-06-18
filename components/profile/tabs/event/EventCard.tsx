@@ -1,4 +1,4 @@
-import { DocumentData } from 'firebase/firestore';
+import { DocumentData } from "firebase/firestore";
 import React, { useState } from "react";
 import {
   Card,
@@ -35,21 +35,57 @@ import { Button } from "@/components/ui/button";
 // import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
-import { IEvent, IEventInputValues } from '@/types/type';
-import { BsToggle2Off, BsToggle2On } from 'react-icons/bs';
-import EditModeOn from './EditModeOn';
-import { useEvent } from '@/app/context/EventContext';
+import { IEvent, IEventInputValues } from "@/types/type";
+import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
+import EditModeOn from "./EditModeOn";
+import { useEvent } from "@/app/context/EventContext";
 
 type Props = {
   event: DocumentData;
 };
 const QuoteCard = ({ event }: Props) => {
-  const {
-    handleEditMode,
-    editModeOn,
-    handleDelete,
-  } = useEvent();
 
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const showDetails = () => {
+    setDetailsOpen(!detailsOpen);
+  };
+
+    const handleEditMode = () => {
+      setEditModeOn(true);
+    };
+
+    const [editModeOn, setEditModeOn] = useState<boolean>(false);
+    const [eventInput, setEventInput] = useState<IEvent>();
+    const [date, setDate] = useState<Date>();
+
+    const handleSave = async (id: string, values: IEventInputValues) => {
+      const docRef = doc(db, "events", id);
+      await updateDoc(docRef, {
+        ...values,
+        updatedAt: serverTimestamp(),
+      }).then(() => {
+        toast({
+          className: "border-none bg-green-500 text-white",
+          title: "Successfully Updated",
+          description: `
+            Event Title: ${values.eventTitle}, 
+            Place: ${values.place}, 
+            Event Date: ${values.eventDate.toDateString()},
+            Description: ${values.description},
+            Target: ${values.target},
+          `,
+        });
+        setEditModeOn(false);
+      });
+    };
+
+    const handleCancelEdit = () => {
+      setEditModeOn(false);
+    };
+
+    const handleDelete = async (id: string) => {
+      await deleteDoc(doc(db, "events", id));
+    };
 
   return (
     <Card
@@ -65,46 +101,59 @@ const QuoteCard = ({ event }: Props) => {
         <CardContent>
           <EditModeOn
             event={event}
+            handleSave={handleSave}
+            handleCancelEdit={handleCancelEdit}
+            handleDelete={handleDelete}
           />
         </CardContent>
       ) : (
         <>
           <CardContent>
             <div className="flex flex-col gap-3">
-              <div className="">
+              <div className="flex items-center justify-between">
                 {/* <BsCalendarEvent size={24} /> */}
                 <h3 className="text-center text-2xl font-semibold">
                   {event.eventTitle}
                 </h3>
+                <Button
+                  className="w-auto bg-slate-50 text-black hover:bg-slate-100"
+                  onClick={() => showDetails()}
+                >
+                  {detailsOpen ? "Close" : "Show Details"}
+                </Button>
               </div>
-              <div className="flex items-center gap-5">
-                <MdPlace size={24} />
-                <p>{event.place}</p>
-              </div>
-              <div className="flex items-center gap-5">
-                <BiTime size={24} />
-                <p>{event.eventDate.toDate().toDateString()}</p>
-              </div>
-              <div className="flex items-center gap-5">
-                <BiInfoCircle size={24} />
-                <p>{event.description}</p>
-              </div>
-              <div className="flex items-center gap-5">
-                {event.target ? (
-                  <>
-                    <BsToggle2Off size={24} />
-                    <p>Target On</p>
-                  </>
-                ) : (
-                  <>
-                    <BsToggle2On size={24} />
-                    <p>Target Off</p>
-                  </>
-                )}
-              </div>
+              {detailsOpen ? (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-5">
+                    <MdPlace size={24} />
+                    <p>{event.place}</p>
+                  </div>
+                  <div className="flex items-center gap-5">
+                    <BiTime size={24} />
+                    <p>{event.eventDate.toDate().toDateString()}</p>
+                  </div>
+                  <div className="flex items-center gap-5">
+                    <BiInfoCircle size={24} />
+                    <p>{event.description}</p>
+                  </div>
+                  <div className="flex items-center gap-5">
+                    {event.target ? (
+                      <>
+                        <BsToggle2Off size={24} />
+                        <p>Target On</p>
+                      </>
+                    ) : (
+                      <>
+                        <BsToggle2On size={24} />
+                        <p>Target Off</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </CardContent>
-          <CardFooter className="flex items-center justify-between gap-5">
+          <CardFooter className="flex items-center justify-end gap-5">
             <Button
               onClick={() => handleEditMode()}
               className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
@@ -126,4 +175,4 @@ const QuoteCard = ({ event }: Props) => {
   );
 };
 
-export default QuoteCard
+export default QuoteCard;

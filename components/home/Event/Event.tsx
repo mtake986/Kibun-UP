@@ -42,6 +42,7 @@ const Event = () => {
 
   useEffect(() => {
     setLoading(true);
+    alert("Event.tsx: user -> " + user?.uid);
     const getEvents = async () => {
       console.log(user);
       const collectionRef = collection(db, "events");

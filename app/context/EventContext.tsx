@@ -70,6 +70,8 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
   };
+
+
   return (
     <EventContext.Provider
       value={{
@@ -78,7 +80,6 @@ export function EventProvider({ children }: EventProviderProps) {
         handleSave,
         handleCancelEdit,
         handleDelete,
-
       }}
     >
       {children}

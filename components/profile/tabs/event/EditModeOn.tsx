@@ -28,7 +28,7 @@ import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IEvent } from "@/types/type";
+import { IEvent, IEventInputValues } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { DocumentData } from "firebase/firestore";
@@ -38,18 +38,14 @@ import { useEvent } from "@/app/context/EventContext";
 
 type Props = {
   event: DocumentData;
+  handleSave: (id: string, values: IEventInputValues) => void;
+  handleCancelEdit: () => void;
+  handleDelete: (id: string) => void;
 };
 
-export default function EditModeOn ({event}: Props) {
+export default function EditModeOn({ event, handleSave, handleCancelEdit, handleDelete }: Props) {
   const [user] = useAuthState(auth);
-  const {
-    handleEditMode,
-    editModeOn,
-    handleSave,
-    handleCancelEdit,
-    handleDelete,
-  } = useEvent();
-  
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -223,7 +219,7 @@ export default function EditModeOn ({event}: Props) {
       </form>
     </Form>
   );
-};
+}
 
 // <div className="flex flex-col gap-3">
 //   <div className="flex items-center gap-5">

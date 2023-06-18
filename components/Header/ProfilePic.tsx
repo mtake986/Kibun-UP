@@ -5,28 +5,46 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
 import { LogOut, User2 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
+  const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
 
   const { handleLogout } = useAuth();
+
+  if (!user) {
+    return (
+      <div
+        onClick={() => {
+          signInWithGoogle();
+        }}
+        // href="/login"
+        className="cursor-pointer text-violet-200 duration-300 hover:text-white lg:mt-0 lg:inline-block"
+      >
+        Login
+      </div>
+    );
+  }
 
   return (
     <Popover>
       <PopoverTrigger>
-        <Image
-          width={40}
-          height={40}
-          src={user?.photoURL ? user?.photoURL : "https://placehold.co/50x50"}
-          alt="profile pic"
-          className="cursor-pointer rounded-full duration-300 hover:opacity-70"
-        />
+        {user?.photoURL && (
+          <Image
+            width={40}
+            height={40}
+            src={user?.photoURL}
+            alt="profile pic"
+            className="cursor-pointer rounded-full duration-300 hover:opacity-70"
+          />
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-auto">
         <div className="flex-col gap-1">
@@ -37,13 +55,15 @@ const ProfilePic = () => {
             <LogOut size={16} className="mr-2" />
             Logout
           </div>
-          <Link
-            className="flex cursor-pointer items-center gap-1 p-1 duration-300 hover:bg-slate-50 hover:opacity-50"
-            href={`/user/profile/${user?.uid}/`}
-          >
-            <User2 size={16} className="mr-2" />
-            Profile
-          </Link>
+          <div>
+            <Link
+              className="flex cursor-pointer items-center gap-1 p-1 duration-300 hover:bg-slate-50 hover:opacity-50"
+              href={`/user/profile/${user?.uid}/`}
+            >
+              <User2 size={16} className="mr-2" />
+              Profile
+            </Link>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
