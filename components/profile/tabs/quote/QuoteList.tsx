@@ -9,7 +9,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
 
 const QuoteList = () => {
-  const [user] = useAuthState(auth);
+
 
   const params = useParams();
 
