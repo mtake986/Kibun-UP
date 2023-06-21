@@ -3,14 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { auth } from "../../app/config/Firebase";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
 
 export default function ButtonAppBar() {
   // const { signInWithGoogle } = useAuth();
-  // const [user] = useAuthState(auth);
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [user] = useAuthState(auth);
+  const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
 
   return (
     <header className="bg-violet-500 px-2 py-4 sm:p-4">
