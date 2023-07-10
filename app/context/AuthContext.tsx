@@ -22,6 +22,7 @@ type AuthContext = {
   setLoginUserInfo: (loginUserInfo: any) => void;
   signInWithGoogle: () => void;
   handleLogout: () => void;
+  updateCurrentUser: () => void;
 };
 
 const AuthContext = createContext({} as AuthContext);
@@ -62,6 +63,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push("/");
     }
   };
+  const updateCurrentUser = async () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  };
 
   return (
     <AuthContext.Provider
@@ -70,6 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setLoginUserInfo,
         signInWithGoogle,
         handleLogout,
+        updateCurrentUser,
       }}
     >
       {children}

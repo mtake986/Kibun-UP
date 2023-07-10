@@ -1,23 +1,36 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Edit } from "lucide-react";
-import EditProfileModal from "./EditProfileModal";
+import { MdClose } from "react-icons/md";
 
-const EditBtn = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+type Props = {
+  isEditMode: boolean;
+  setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const EditBtn = ({ isEditMode, setIsEditMode }: Props) => {
   return (
-    <div>
+    <div className="absolute right-0 top-0">
       <Button
-        onClick={() => handleOpen()}
-        className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+        onClick={() => setIsEditMode((prev) => !prev)}
+        className={` ${
+          isEditMode
+            ? "hover:bg-red-50 hover:text-red-500"
+            : "hover:bg-blue-50 hover:text-blue-500"
+        } duration-300 sm:w-auto`}
         variant="ghost"
       >
-        <Edit size={14} className="mr-2" />
-        Edit
+        {isEditMode ? (
+          <>
+            {/* <MdClose size={14} className="mr-2" /> */}
+            <span>Cancel</span>
+          </>
+        ) : (
+          <>
+            <Edit size={14} className="mr-2" />
+            <span>Edit</span>
+          </>
+        )}
       </Button>
-      <EditProfileModal open={open} handleClose={handleClose} />
     </div>
   );
 };

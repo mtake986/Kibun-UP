@@ -4,8 +4,15 @@ import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import { GoogleAuthProvider, getAuth } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  onAuthStateChanged,
+  updateProfile,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { useEffect, useState } from "react";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -27,11 +34,51 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-const user = auth.onAuthStateChanged((user) => {
-  if (user) {
-    console.log("user logged in");
-    return user;
-  } 
-});
+// const user = auth.onAuthStateChanged((user) => {
+//   if (user) {
+//     console.log("user logged in");
+//     return user;
+//   }
+// });
 
-export { app, auth, provider, db, user };
+function useAuth() {
+  const [currentUser, setCurrentUser] = useState();
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
+    return unsub;
+  }, []);
+
+  return currentUser;
+}
+
+const storage = getStorage(app);
+
+const uploadImage = async (
+  file,
+  newUsername,
+  currentUser,
+  setLoading,
+  setIsEditMode
+) => {
+  const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
+  // const fileRef = ref(storage, `${currentUser.uid}.png`);
+
+  setLoading(true);
+
+  const snapshot = await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+  updateProfile(currentUser, { displayName: newUsername, photoURL })
+    .then(() => {
+      // Profile updated!
+      // ...
+      alert("Successfully Updated");
+      setLoading(false);
+      setIsEditMode(false);
+    })
+    .catch((error) => {
+      // An error occurred
+      // ...
+    });
+};
+export { app, auth, provider, db, uploadImage, useAuth };
