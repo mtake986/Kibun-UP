@@ -4,7 +4,7 @@ import { app, auth } from "@/app/config/Firebase";
 import { useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { getFirestore, collection, where, query } from "firebase/firestore";
+import { getFirestore, collection, where, query, orderBy } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
 
@@ -16,7 +16,8 @@ const QuoteList = () => {
   const [value, loading, error] = useCollection(
     query(
       collection(getFirestore(app), "quotes"),
-      where("uid", "==", params?.uid)
+      where("uid", "==", params?.uid),
+      // orderBy("title", "desc")
     ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },

@@ -16,6 +16,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useEvent } from "@/app/context/EventContext";
+import Tabs from "./Tabs";
+import EventListTitle from "./EventListTitle";
 
 const List = () => {
   const [user] = useAuthState(auth);
@@ -24,38 +27,20 @@ const List = () => {
   const [myEvents, setMyEvents] = useState<IEvent[] | any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { loginUserEvents, getLoginUserEvents } = useEvent();
   useEffect(() => {
-    setLoading(true);
-    const getEvents = async () => {
-      console.log("user:", user, "id:", user?.uid);
-      // auth.onAuthStateChanged((user) => {
-      if (user) {
-        const collectionRef = collection(db, "events");
-        const q = query(collectionRef, where("uid", "==", user?.uid));
-        onSnapshot(q, (snapshot) => {
-          setMyEvents(
-            snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-          );
-        });
-      }
-      // });
-    };
-    getEvents();
-    console.log("List.tsx: myEvents -> ", myEvents, "user -> ", user?.uid);
-    setLoading(false);
-  }, [user]);
+    getLoginUserEvents();
+  }, []);
 
   if (loading) {
     return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
   } else {
     if (user) {
-      if (myEvents.length > 0) {
+      if (loginUserEvents.length > 0) {
         return (
-          <div className="mt-10">
-            <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-              My Events
-            </h2>
-            {myEvents.map((event, i) => (
+          <div className="relative mt-10">
+            <EventListTitle />
+            {loginUserEvents.map((event, i) => (
               <EventCard key={i} event={event} i={i} />
             ))}
           </div>

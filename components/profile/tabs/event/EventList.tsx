@@ -9,6 +9,7 @@ import {
   onSnapshot,
   Timestamp,
   getFirestore,
+  orderBy,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
@@ -20,6 +21,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useCollection } from "react-firebase-hooks/firestore";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import { useEvent } from "@/app/context/EventContext";
 
 const EventList = () => {
   const [user] = useAuthState(auth);
@@ -35,27 +37,23 @@ const EventList = () => {
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   );
+
+  const { loginUserEvents, getLoginUserEvents } = useEvent();
+  useEffect(() => {
+    getLoginUserEvents();
+  }, []);
+
   if (loading) {
     return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
   } else {
     if (user) {
-      if (value) {
+      if (loginUserEvents) {
         return (
           <div>
-            {" "}
-            {error ? <strong>Error: {JSON.stringify(error)}</strong> : null}
-            {loading ? <span>Collection: Loading...</span> : null}
-            {value && (
-              <div>
-                <div>Collection:{value.size}</div>
-                {value.docs.map((doc) => (
-                  <EventCard
-                    key={doc.id}
-                    event={{ id: doc.id, ...doc.data() }}
-                  />
-                ))}
-              </div>
-            )}
+            <div>Collection:{loginUserEvents.length}</div>
+            {loginUserEvents.map((doc) => (
+              <EventCard key={doc.id} event={doc} />
+            ))}
           </div>
         );
       } else {
@@ -68,9 +66,7 @@ const EventList = () => {
         );
       }
     } else {
-      return (
-        <GoogleLoginBtn />
-      );
+      return <GoogleLoginBtn />;
     }
   }
   // return <div>Going wrong here</div>;

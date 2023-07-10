@@ -24,6 +24,7 @@ const EventPage = () => {
             setRegisterOpen={setRegisterOpen}
           />
         ))}
+      
       <List />
     </div>
   );

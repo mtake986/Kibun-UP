@@ -11,6 +11,7 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  orderBy,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -25,6 +26,9 @@ type EventContext = {
   handleSave: (id: string, values: IEventInputValues) => void;
   handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
+
+  getLoginUserEvents: () => void;
+  loginUserEvents: IEvent[] | [];
 };
 
 const EventContext = createContext({} as EventContext);
@@ -41,6 +45,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>();
   const [date, setDate] = useState<Date>();
+  const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
 
   const handleSave = async (id: string, values: IEventInputValues) => {
     const docRef = doc(db, "events", id);
@@ -71,6 +76,23 @@ export function EventProvider({ children }: EventProviderProps) {
     await deleteDoc(doc(db, "events", id));
   };
 
+  const [user] = useAuthState(auth);
+
+  const getLoginUserEvents = async () => {
+    const collectionRef = collection(db, "events");
+    if (user?.uid) {
+      const q = query(
+        collectionRef,
+        where("uid", "==", user?.uid),
+        orderBy("eventTitle", "asc")
+      );
+      onSnapshot(q, (snapshot) => {
+        setLoginUserEvents(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+        );
+      });
+    }
+  };
 
   return (
     <EventContext.Provider
@@ -80,6 +102,8 @@ export function EventProvider({ children }: EventProviderProps) {
         handleSave,
         handleCancelEdit,
         handleDelete,
+        getLoginUserEvents,
+        loginUserEvents,
       }}
     >
       {children}
