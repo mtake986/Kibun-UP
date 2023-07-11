@@ -1,23 +1,13 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { auth, db } from "@/app/config/Firebase";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  onSnapshot,
-  Timestamp,
-} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/context/AuthContext";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEvent } from "@/app/context/EventContext";
-import Tabs from "./Tabs";
 import EventListTitle from "./EventListTitle";
 
 const List = () => {

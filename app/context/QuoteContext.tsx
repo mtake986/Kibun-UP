@@ -18,19 +18,23 @@ type QuoteProviderProps = {
 import { IQuote, IQuoteInputValues } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
+import { getRandomNum } from "../../utils/functions";
 
 type QuoteContext = {
   allQuotes: IQuote[] | [];
   getAllQuotes: () => void;
   loginUsersQuotes: IQuote[] | [];
   getLoginUsersQuotes: () => void;
-  getTodaysQuote: () => void;
-  todaysQuotes: IQuote[] | [];
+  getPrimaryQuote: () => void;
+  primaryQuotes: IQuote[] | [];
   handleEditMode: () => void;
   editModeOn: boolean;
   handleSave: (id: string, values: IQuoteInputValues) => void;
   handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
+
+  getRandomQuote: (setLoading: (boo: boolean) => void) => void;
+  randomQuote: IQuote | undefined;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -42,7 +46,8 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [loginUsersQuotes, setLoginUsersQuotes] = useState<IQuote[]>([]);
-  const [todaysQuotes, setTodaysQuotes] = useState<IQuote[]>([]);
+  const [primaryQuotes, setPrimaryQuotes] = useState<IQuote[]>([]);
+  const [randomQuote, setRandomQuote] = useState<IQuote>();
 
   const getAllQuotes = async () => {
     const collectionRef = collection(db, "quotes");
@@ -66,7 +71,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const getTodaysQuote = async () => {
+  const getPrimaryQuote = async () => {
     const collectionRef = collection(db, "quotes");
     // auth.onAuthStateChanged((user) => {
     if (user) {
@@ -76,12 +81,32 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         where("isDraft", "==", false)
       );
       onSnapshot(q, (snapshot) => {
-        setTodaysQuotes(
+        setPrimaryQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
     }
     // });
+  };
+
+  const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
+    // setLoading(true);
+    const collectionRef = collection(db, "quotes");
+    // auth.onAuthStateChanged((user) => {
+    if (user) {
+      const q = query(
+        collectionRef,
+        where("uid", "==", user?.uid),
+        where("isDraft", "==", false)
+      );
+      onSnapshot(q, (snapshot) => {
+        const randomNum = getRandomNum(snapshot.docs.length);
+        const doc = snapshot.docs[randomNum];
+        setRandomQuote({...doc.data(), id: doc.id} as IQuote);
+      });
+    }
+    // });
+    // setLoading(false);
   };
 
   const handleEditMode = () => {
@@ -117,7 +142,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
   };
-  
+
   return (
     <QuoteContext.Provider
       value={{
@@ -125,13 +150,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getAllQuotes,
         loginUsersQuotes,
         getLoginUsersQuotes,
-        getTodaysQuote,
-        todaysQuotes,
+        getPrimaryQuote,
+        primaryQuotes,
         handleEditMode,
         editModeOn,
         handleSave,
         handleCancelEdit,
         handleDelete,
+        getRandomQuote,
+        randomQuote,
       }}
     >
       {children}

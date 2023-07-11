@@ -94,6 +94,25 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
+  const filterEvents = async (type: string) => {
+    if (loginUserEvents.length > 0) {
+      
+    }
+    // const collectionRef = collection(db, "events");
+    // if (user?.uid) {
+    //   const q = query(
+    //     collectionRef,
+    //     where("uid", "==", user?.uid),
+    //     orderBy("eventTitle", "asc")
+    //   );
+    //   onSnapshot(q, (snapshot) => {
+    //     setLoginUserEvents(
+    //       snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+    //     );
+    //   });
+    // }
+  }
+
   return (
     <EventContext.Provider
       value={{

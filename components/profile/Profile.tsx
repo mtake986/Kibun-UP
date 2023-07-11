@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserInfoCard from "./UserInfoCard";
-import { Button } from "../ui/button";
-import { Edit } from "lucide-react";
 import EditMode from "./EditMode";
 import EditBtn from "./EditBtn";
 

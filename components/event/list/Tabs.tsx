@@ -9,15 +9,17 @@ import {
 
 const Tabs = () => {
   return (
-    <div className="w-[100px]">
+    <div className="w-[150px]">
       <Select>
         <SelectTrigger>
-          <SelectValue placeholder="Theme" />
+          <SelectValue placeholder="Filter" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="All">All</SelectItem>
-          <SelectItem value="Target-On">Target-On</SelectItem>
-          <SelectItem value="Target-Off">Target-Off</SelectItem>
+          <SelectItem value="All">
+            All
+          </SelectItem>
+          <SelectItem value="Target-On">Primary</SelectItem>
+          <SelectItem value="Target-Off">Sub</SelectItem>
         </SelectContent>
       </Select>
     </div>
