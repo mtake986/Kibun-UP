@@ -65,7 +65,6 @@ export default function EditModeOn ({
   async function onSubmit(values: z.infer<typeof eventSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     // Add a new document with a generated id.
     handleSave(values);
     reset({

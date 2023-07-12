@@ -34,13 +34,6 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-// const user = auth.onAuthStateChanged((user) => {
-//   if (user) {
-//     console.log("user logged in");
-//     return user;
-//   }
-// });
-
 function useAuth() {
   const [currentUser, setCurrentUser] = useState();
 

@@ -44,14 +44,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
       router.push("/");
     });
-
-    // .then((result) => {
-    //   const name = result.user.displayName;
-    //   const email = result.user.email;
-    //   const photoUrl = result.user.photoURL;
-    //   setLoginUserInfo({ email, name, photoUrl });
-    // })
-    // .catch((error) => console.log(error));
   }
   const handleLogout = async () => {
     const success = await signOut();

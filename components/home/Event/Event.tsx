@@ -43,7 +43,6 @@ const Event = () => {
   useEffect(() => {
     setLoading(true);
     const getEvents = async () => {
-      console.log(user);
       const collectionRef = collection(db, "events");
       auth.onAuthStateChanged((user) => {
         if (user) {
@@ -51,7 +50,7 @@ const Event = () => {
           onSnapshot(q, (snapshot) => {
             snapshot.docs.length > 0
               ? setMyEvents(snapshot.docs.map((doc) => doc.data()))
-              : console.log(builtInEvents[0]);
+              : null;
           });
           calculateLeftDays();
         } else {
@@ -63,7 +62,6 @@ const Event = () => {
     setLoading(false);
   }, [user]);
 
-  console.log(myEvents.length === 0);
   if (loading) {
     return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
   }
@@ -71,7 +69,6 @@ const Event = () => {
   if (!loading) {
     if (user) {
       if (myEvents.length === 0) {
-        console.log(user);
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
             <p>No event yet.</p>

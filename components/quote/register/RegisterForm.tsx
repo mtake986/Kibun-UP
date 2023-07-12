@@ -57,7 +57,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    console.log(values);
     const collectionRef = collection(db, "quotes");
     await addDoc(collectionRef, {
       ...values,

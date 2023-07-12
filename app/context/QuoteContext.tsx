@@ -11,6 +11,8 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 type QuoteProviderProps = {
   children: ReactNode;
@@ -35,6 +37,12 @@ type QuoteContext = {
 
   getRandomQuote: (setLoading: (boo: boolean) => void) => void;
   randomQuote: IQuote | undefined;
+
+  lockThisQuote: (uid: string, data: IQuote) => void;
+  lockedQuote: IQuote | undefined;
+
+  removeLockThisQuote: (uid: string) => void;
+  getLockedQuote: (uid?: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -48,13 +56,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [loginUsersQuotes, setLoginUsersQuotes] = useState<IQuote[]>([]);
   const [primaryQuotes, setPrimaryQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
+  const [lockedQuote, setLockedQuote] = useState<IQuote>();
 
   const getAllQuotes = async () => {
     const collectionRef = collection(db, "quotes");
     const snapshot = await getDocs(collectionRef);
     const results = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     setAllQuotes(results as IQuote[]);
-    console.log(results, allQuotes);
   };
 
   const [user] = useAuthState(auth);
@@ -90,7 +98,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
-    // setLoading(true);
+    setLoading(true);
+    console.log('getRandomQuote started')
     const collectionRef = collection(db, "quotes");
     // auth.onAuthStateChanged((user) => {
     if (user) {
@@ -102,11 +111,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       onSnapshot(q, (snapshot) => {
         const randomNum = getRandomNum(snapshot.docs.length);
         const doc = snapshot.docs[randomNum];
-        setRandomQuote({...doc.data(), id: doc.id} as IQuote);
+        setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
       });
     }
     // });
-    // setLoading(false);
+    setLoading(false);
   };
 
   const handleEditMode = () => {
@@ -143,6 +152,25 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
+  const lockThisQuote = async (uid: string, data: IQuote) => {
+    await setDoc(doc(db, "lockedQuotes", uid), data);
+    setLockedQuote(data);
+  };
+
+  const removeLockThisQuote = async (uid: string) => {
+    await deleteDoc(doc(db, "lockedQuotes", uid));
+    setLockedQuote(undefined);
+  };
+
+  const getLockedQuote = async (uid?: string) => {
+    if (uid) {
+      const docRef = doc(db, "lockedQuotes", uid);
+      const docSnap = await getDoc(docRef);
+      setLockedQuote(docSnap.data() as IQuote);
+      console.log(docSnap.data());
+    }
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -159,6 +187,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         handleDelete,
         getRandomQuote,
         randomQuote,
+        lockThisQuote,
+        lockedQuote,
+        removeLockThisQuote,
+        getLockedQuote,
       }}
     >
       {children}
