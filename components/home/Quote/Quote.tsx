@@ -18,8 +18,6 @@ import { toast } from "@/components/ui/use-toast";
 
 const Quote = () => {
   const {
-    getPrimaryQuote,
-    primaryQuotes,
     randomQuote,
     getRandomQuote,
     lockThisQuote,
@@ -83,7 +81,7 @@ const Quote = () => {
                   className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
                   variant="ghost"
                 >
-                  <BiRefresh size={24} />
+                  <BiRefresh size={20} />
                 </Button>
               ) : (
                 <Button
@@ -97,7 +95,7 @@ const Quote = () => {
                   className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
                   variant="ghost"
                 >
-                  <BiRefresh size={24} />
+                  <BiRefresh size={20} />
                 </Button>
               )}
 
@@ -105,29 +103,21 @@ const Quote = () => {
                 <Button
                   onClick={() => {
                     removeLockThisQuote(user.uid);
-                    toast({
-                      className: "border-none bg-red-50 text-red-500",
-                      title: "Unlocked",
-                    });
                   }}
                   className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
                 >
-                  <BiLock size={24} />
+                  <BiLock size={20} />
                 </Button>
               ) : (
                 <Button
                   onClick={() => {
                     lockThisQuote(user.uid, randomQuote);
-                    toast({
-                      className: "border-none bg-red-50 text-red-500",
-                      title: "Locked",
-                    });
                   }}
                   className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
                 >
-                  <BiLockOpen size={24} />
+                  <BiLockOpen size={20} />
                 </Button>
               )}
             </div>

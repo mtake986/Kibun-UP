@@ -27,12 +27,10 @@ type QuoteContext = {
   getAllQuotes: () => void;
   loginUsersQuotes: IQuote[] | [];
   getLoginUsersQuotes: () => void;
-  getPrimaryQuote: () => void;
-  primaryQuotes: IQuote[] | [];
   handleEditMode: () => void;
   editModeOn: boolean;
   handleSave: (id: string, values: IQuoteInputValues) => void;
-  handleCancelEdit: () => void;
+  handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
   getRandomQuote: (setLoading: (boo: boolean) => void) => void;
@@ -43,6 +41,10 @@ type QuoteContext = {
 
   removeLockThisQuote: (uid: string) => void;
   getLockedQuote: (uid?: string) => void;
+
+  isUpdateMode: boolean;
+  toggleUpdateMode: (boo: boolean) => void;
+  handleUpdate: (qid: string, values: IQuoteInputValues, uid?: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -54,9 +56,9 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [loginUsersQuotes, setLoginUsersQuotes] = useState<IQuote[]>([]);
-  const [primaryQuotes, setPrimaryQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
 
   const getAllQuotes = async () => {
     const collectionRef = collection(db, "quotes");
@@ -79,27 +81,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const getPrimaryQuote = async () => {
-    const collectionRef = collection(db, "quotes");
-    // auth.onAuthStateChanged((user) => {
-    if (user) {
-      const q = query(
-        collectionRef,
-        where("uid", "==", user?.uid),
-        where("isDraft", "==", false)
-      );
-      onSnapshot(q, (snapshot) => {
-        setPrimaryQuotes(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
-        );
-      });
-    }
-    // });
-  };
-
   const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
     setLoading(true);
-    console.log('getRandomQuote started')
+    console.log("getRandomQuote started");
     const collectionRef = collection(db, "quotes");
     // auth.onAuthStateChanged((user) => {
     if (user) {
@@ -111,7 +95,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       onSnapshot(q, (snapshot) => {
         const randomNum = getRandomNum(snapshot.docs.length);
         const doc = snapshot.docs[randomNum];
-        setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
+        if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
       });
     }
     // });
@@ -144,8 +128,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const handleCancelEdit = () => {
-    setEditModeOn(false);
+  const handleCancelUpdate = () => {
+    setIsUpdateMode(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -155,11 +139,19 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const lockThisQuote = async (uid: string, data: IQuote) => {
     await setDoc(doc(db, "lockedQuotes", uid), data);
     setLockedQuote(data);
+    // toast({
+    //   className: "border-none bg-red-50 text-red-500",
+    //   title: "Quote locked",
+    // });
   };
 
   const removeLockThisQuote = async (uid: string) => {
     await deleteDoc(doc(db, "lockedQuotes", uid));
     setLockedQuote(undefined);
+    // toast({
+    //   className: "border-none bg-red-50 text-red-500",
+    //   title: "Quote Unlocked",
+    // });
   };
 
   const getLockedQuote = async (uid?: string) => {
@@ -171,6 +163,46 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const handleUpdate = async (
+    qid: string,
+    values: IQuoteInputValues,
+    uid?: string
+  ) => {
+    const docRef = doc(db, "quotes", qid);
+    await updateDoc(docRef, {
+      ...values,
+      updatedAt: serverTimestamp(),
+    }).then((res) => {
+      if (lockedQuote?.id === qid && values.isDraft) {
+        if (uid) removeLockThisQuote(uid);
+        toast({
+          className: "border-none bg-green-500 text-white",
+          title: "Successfully Updated",
+          description: `
+            Quote: ${values.quote}, 
+            Person: ${values.person},
+            Draft: ${values.isDraft},
+            No Locked Quote.
+          `,
+        });
+      } else {
+        toast({
+          className: "border-none bg-green-500 text-white",
+          title: "Successfully Updated",
+          description: `
+            Quote: ${values.quote}, 
+            Person: ${values.person},
+            Draft: ${values.isDraft},
+          `,
+        });
+      }
+    });
+  };
+
+  const toggleUpdateMode = (boo: boolean) => {
+    setIsUpdateMode(boo);
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -178,12 +210,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getAllQuotes,
         loginUsersQuotes,
         getLoginUsersQuotes,
-        getPrimaryQuote,
-        primaryQuotes,
         handleEditMode,
         editModeOn,
         handleSave,
-        handleCancelEdit,
+        handleCancelUpdate,
         handleDelete,
         getRandomQuote,
         randomQuote,
@@ -191,6 +221,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         lockedQuote,
         removeLockThisQuote,
         getLockedQuote,
+        isUpdateMode,
+        toggleUpdateMode,
+        handleUpdate,
       }}
     >
       {children}

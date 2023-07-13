@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -24,65 +24,56 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "@/app/config/Firebase";
+import { auth, db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 import { IQuote, IQuoteInputValues } from "@/types/type";
 import EditModeOn from "./EditModeOn";
+import { BiLock, BiLockOpen } from "react-icons/bi";
+import { useQuote } from "@/app/context/QuoteContext";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { User, UserProfile } from "firebase/auth";
 type Props = {
   q: IQuote;
   i: number;
 };
 
 const QuoteCard = ({ q, i }: Props) => {
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
-
-  const [editModeOn, setEditModeOn] = useState(false);
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [person, setPerson] = useState<string>(q.person);
   const [quote, setQuote] = useState<string>(q.quote);
 
-  const handleSave = async (values: IQuoteInputValues) => {
-    const docRef = doc(db, "quotes", q.id);
-    await updateDoc(docRef, {
-      ...values,
-      updatedAt: serverTimestamp(),
-    }).then((res) => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Updated",
-        description: `
-            Quote: ${quote}, 
-            Person: ${person},
-            Draft: ${values.isDraft},
-          `,
-      });
-      setEditModeOn(false);
-    });
-  };
+  const {
+    lockThisQuote,
+    lockedQuote,
+    handleDelete,
+    removeLockThisQuote,
+    getLockedQuote,
+  } = useQuote();
 
-  const handleCancelEdit = () => {
-    setEditModeOn(false);
-  };
+  // const [user] = useAuthState(auth);
 
-  const handleDelete = async (id: string) => {
-    await deleteDoc(doc(db, "quotes", id));
-  };
+  const [user, setUser] = useState(auth.currentUser);
+
+  useEffect(() => {
+    // setLoading(true);
+    // getPrimaryQuote();
+    getLockedQuote(user?.uid);
+    // setLoading(false);
+  }, [user]);
 
   return (
-    <Card className={`mb-3 ${editModeOn ? 'border border-violet-500 bg-violet-50/10' : null}`}>
+    <Card
+      className={`mb-3 ${
+        isUpdateMode ? "border border-violet-500 bg-violet-50/10" : null
+      }`}
+    >
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
-      {editModeOn ? (
+      {isUpdateMode ? (
         <CardContent>
-          <EditModeOn
-            q={q}
-            handleCancelEdit={handleCancelEdit}
-            handleDelete={handleDelete}
-            handleSave={handleSave}
-          />
+          <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
         </CardContent>
       ) : (
         <>
@@ -113,16 +104,47 @@ const QuoteCard = ({ q, i }: Props) => {
           </CardContent>
 
           <CardFooter className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between gap-1">
+              <Button
+                onClick={() => setIsUpdateMode(true)}
+                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Edit size={14} />
+                {/* <span>Edit</span> */}
+              </Button>
+              {lockedQuote?.id === q.id ? (
+                <Button
+                  onClick={() => {
+                    if (user) removeLockThisQuote(user?.uid);
+                  }}
+                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLock size={14} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    if (q.isDraft) alert("Needs to be Public.");
+                    else {
+                      if (user) lockThisQuote(user?.uid, q);
+                    }
+                  }}
+                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLockOpen size={14} />
+                </Button>
+              )}
+            </div>
+
             <Button
-              onClick={() => handleEditMode()}
-              className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <Edit size={14} />
-              {/* <span>Edit</span> */}
-            </Button>
-            <Button
-              onClick={() => handleDelete(q.id)}
+              onClick={() => {
+                handleDelete(q.id);
+                if (user && lockedQuote?.id === q.id)
+                  removeLockThisQuote(user?.uid);
+              }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >
