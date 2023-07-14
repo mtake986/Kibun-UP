@@ -45,6 +45,9 @@ type QuoteContext = {
   isUpdateMode: boolean;
   toggleUpdateMode: (boo: boolean) => void;
   handleUpdate: (qid: string, values: IQuoteInputValues, uid?: string) => void;
+
+  quotesNotMine: IQuote[];
+  getQuotesNotMine: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -59,20 +62,30 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
+  const [quotesNotMine, setQuotesNotMine] = useState<IQuote[]>([]);
+
+  const quotesCollectionRef = collection(db, "quotes");
 
   const getAllQuotes = async () => {
-    const collectionRef = collection(db, "quotes");
-    const snapshot = await getDocs(collectionRef);
+    const snapshot = await getDocs(quotesCollectionRef);
     const results = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     setAllQuotes(results as IQuote[]);
+  };
+
+  const getQuotesNotMine = async () => {
+    const q = query(quotesCollectionRef, where("uid", "!=", user?.uid));
+    onSnapshot(q, (snapshot) => {
+      setQuotesNotMine(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+      );
+    });
   };
 
   const [user] = useAuthState(auth);
 
   const getLoginUsersQuotes = async () => {
-    const collectionRef = collection(db, "quotes");
     if (user?.uid) {
-      const q = query(collectionRef, where("uid", "==", user?.uid));
+      const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
       onSnapshot(q, (snapshot) => {
         setLoginUsersQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
@@ -84,11 +97,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
     setLoading(true);
     console.log("getRandomQuote started");
-    const collectionRef = collection(db, "quotes");
     // auth.onAuthStateChanged((user) => {
     if (user) {
       const q = query(
-        collectionRef,
+        quotesCollectionRef,
         where("uid", "==", user?.uid),
         where("isDraft", "==", false)
       );
@@ -107,7 +119,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const [editModeOn, setEditModeOn] = useState(false);
-  const [person, setPerson] = useState<string>("");
 
   const handleSave = async (id: string, values: IQuoteInputValues) => {
     const docRef = doc(db, "quotes", id);
@@ -224,6 +235,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         isUpdateMode,
         toggleUpdateMode,
         handleUpdate,
+        quotesNotMine,
+        getQuotesNotMine,
       }}
     >
       {children}

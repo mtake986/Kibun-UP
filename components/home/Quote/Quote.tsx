@@ -13,8 +13,6 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
-import { Lock } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
 
 const Quote = () => {
   const {

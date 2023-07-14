@@ -8,19 +8,24 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
 import QuoteCard from "./list/QuoteCard";
 import { boolean } from "zod";
+import ListNotMine from "./list/ListNotMine";
 
 const SelectTab = () => {
   const [user] = useAuthState(auth);
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { allQuotes, getAllQuotes, loginUsersQuotes, getLoginUsersQuotes } =
-    useQuote();
+  const {
+    loginUsersQuotes,
+    getLoginUsersQuotes,
+    quotesNotMine,
+    getQuotesNotMine,
+  } = useQuote();
 
   useEffect(() => {
     setLoading(true);
-    getAllQuotes();
     getLoginUsersQuotes();
+    getQuotesNotMine();
     setLoading(false);
 
   }, [user]);
@@ -42,7 +47,7 @@ const SelectTab = () => {
           {user ? <List q={loginUsersQuotes} /> : <GoogleLoginBtn />}
         </TabsContent>
         <TabsContent value="All">
-          <List q={allQuotes} />
+          <ListNotMine quotes={quotesNotMine} />
         </TabsContent>
       </Tabs>
     );

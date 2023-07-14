@@ -15,7 +15,17 @@ import {
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Edit, Plane, Trash } from "lucide-react";
+import {
+  Edit,
+  Heart,
+  HeartCrack,
+  HeartCrackIcon,
+  HeartHandshake,
+  HeartOff,
+  HeartPulse,
+  Plane,
+  Trash,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   doc,
@@ -60,6 +70,8 @@ const QuoteCard = ({ q, i }: Props) => {
     getLockedQuote(user?.uid);
     // setLoading(false);
   }, [user]);
+
+  if (q.uid !== user?.uid && q.isDraft) return null;
 
   return (
     <Card
