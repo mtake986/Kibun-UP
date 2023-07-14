@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   setDoc,
   getDoc,
+  addDoc,
 } from "firebase/firestore";
 type QuoteProviderProps = {
   children: ReactNode;
@@ -48,6 +49,8 @@ type QuoteContext = {
 
   quotesNotMine: IQuote[];
   getQuotesNotMine: () => void;
+
+  registerQuote: (values: IQuoteInputValues, uid?: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -65,6 +68,24 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [quotesNotMine, setQuotesNotMine] = useState<IQuote[]>([]);
 
   const quotesCollectionRef = collection(db, "quotes");
+
+  const registerQuote = async (values: IQuoteInputValues, uid?: string) => {
+    await addDoc(quotesCollectionRef, {
+      ...values,
+      uid,
+      createdAt: serverTimestamp(),
+    }).then(() => {
+      toast({
+        className: "border-none bg-green-500 text-white",
+        title: "Successfully Created",
+        description: `
+            Person: ${values.person}, 
+            Quote: ${values.quote}, 
+            Draft: ${values.isDraft},
+          `,
+      });
+    });
+  }
 
   const getAllQuotes = async () => {
     const snapshot = await getDocs(quotesCollectionRef);
@@ -237,6 +258,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         handleUpdate,
         quotesNotMine,
         getQuotesNotMine,
+        registerQuote,
       }}
     >
       {children}

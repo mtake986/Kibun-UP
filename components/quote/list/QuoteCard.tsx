@@ -14,34 +14,17 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   Edit,
-  Heart,
-  HeartCrack,
-  HeartCrackIcon,
-  HeartHandshake,
-  HeartOff,
-  HeartPulse,
-  Plane,
   Trash,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  doc,
-  serverTimestamp,
-  setDoc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { auth, db } from "@/app/config/Firebase";
-import { toast } from "@/components/ui/use-toast";
-import { IQuote, IQuoteInputValues } from "@/types/type";
+
+import { auth } from "@/app/config/Firebase";
+import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { User, UserProfile } from "firebase/auth";
+
 type Props = {
   q: IQuote;
   i: number;
@@ -49,8 +32,6 @@ type Props = {
 
 const QuoteCard = ({ q, i }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [person, setPerson] = useState<string>(q.person);
-  const [quote, setQuote] = useState<string>(q.quote);
 
   const {
     lockThisQuote,

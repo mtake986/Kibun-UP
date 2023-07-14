@@ -44,7 +44,7 @@ const SelectTab = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="yours">
-          {user ? <List q={loginUsersQuotes} /> : <GoogleLoginBtn />}
+          {user ? <List quotes={loginUsersQuotes} /> : <GoogleLoginBtn />}
         </TabsContent>
         <TabsContent value="All">
           <ListNotMine quotes={quotesNotMine} />

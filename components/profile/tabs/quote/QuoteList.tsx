@@ -1,38 +1,34 @@
 "use client";
-import React from "react";
-import { app, auth } from "@/app/config/Firebase";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useAuthState } from "react-firebase-hooks/auth";
-
-import { getFirestore, collection, where, query, orderBy } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
+import { useQuote } from "@/app/context/QuoteContext";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/config/Firebase";
 
 const QuoteList = () => {
+  const [user] = useAuthState(auth);
+  const [loading, setLoading] = useState(false);
 
+  const { loginUsersQuotes, getLoginUsersQuotes } = useQuote();
 
-  const params = useParams();
+  useEffect(() => {
+    setLoading(true);
+    getLoginUsersQuotes();
+    setLoading(false);
+  }, []);
 
-  const [value, loading, error] = useCollection(
-    query(
-      collection(getFirestore(app), "quotes"),
-      where("uid", "==", params?.uid),
-      // orderBy("title", "desc")
-    ),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
+  if (loading) return <div>loading</div>
+
+  if (!loading && loginUsersQuotes.length === 0) return <div>No Quotes</div>
+  
   return (
     <div>
       {" "}
-      {error ? <strong>Error: {JSON.stringify(error)}</strong> : null}
-      {loading ? <span>Collection: Loading...</span> : null}
-      {value && (
+      {loginUsersQuotes && (
         <div>
-          <div>Collection:{value.size}</div>
-          {value.docs.map((doc) => (
-            <QuoteCard key={doc.id} quote={{ id: doc.id, ...doc.data() }} />
+          {loginUsersQuotes.map((q) => (
+            <QuoteCard key={q.id} q={q} />
           ))}
         </div>
       )}

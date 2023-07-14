@@ -15,16 +15,16 @@ import { IQuote } from "@/types/type";
 
 
 type Props = {
-  q: IQuote[];
+  quotes: IQuote[];
 };
 
-const List = ({ q }: Props) => {
+const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
   return (
     <div className="mt-2">
-      {/* {q.length} */}
-      {q.map((quote, i) => (
+      {/* {quotes.length} */}
+      {quotes.map((quote, i) => (
         <QuoteCard key={i} q={quote} i={i} />
       ))}
     </div>

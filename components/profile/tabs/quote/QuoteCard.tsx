@@ -1,5 +1,4 @@
-import { DocumentData } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,29 +14,55 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { Edit, Plane, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
+
+import { auth } from "@/app/config/Firebase";
+import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
+import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
 
 type Props = {
-  quote: DocumentData;
+  q: IQuote;
 };
-const QuoteCard = ({ quote }: Props) => {
-  const { handleEditMode, editModeOn, handleDelete } = useQuote();
+
+const QuoteCard = ({ q }: Props) => {
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+
+  const {
+    lockThisQuote,
+    lockedQuote,
+    handleDelete,
+    removeLockThisQuote,
+    getLockedQuote,
+  } = useQuote();
+
+  // const [user] = useAuthState(auth);
+
+  const [user, setUser] = useState(auth.currentUser);
+
+  useEffect(() => {
+    // setLoading(true);
+    // getPrimaryQuote();
+    getLockedQuote(user?.uid);
+    // setLoading(false);
+  }, [user]);
+
+  if (q.uid !== user?.uid && q.isDraft) return null;
 
   return (
     <Card
       className={`mb-3 ${
-        editModeOn ? "border border-violet-500 bg-violet-50/10" : null
+        isUpdateMode ? "border border-violet-500 bg-violet-50/10" : null
       }`}
     >
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
-      {editModeOn ? (
+      {isUpdateMode ? (
         <CardContent>
-          <EditModeOn q={quote} />
+          <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
         </CardContent>
       ) : (
         <>
@@ -45,14 +70,14 @@ const QuoteCard = ({ quote }: Props) => {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-5">
                 <BsFillPersonFill size={24} />
-                <p>{quote.person}</p>
+                <p>{q.person}</p>
               </div>
               <div className="flex items-center gap-5">
                 <BsChatLeftText size={24} />
-                <p>{quote.quote}</p>
+                <p>{q.quote}</p>
               </div>
               <div className="flex items-center gap-5">
-                {quote.isDraft ? (
+                {q.isDraft ? (
                   <>
                     <BsToggle2Off size={24} />
                     <p>Draft</p>
@@ -68,16 +93,47 @@ const QuoteCard = ({ quote }: Props) => {
           </CardContent>
 
           <CardFooter className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between gap-1">
+              <Button
+                onClick={() => setIsUpdateMode(true)}
+                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Edit size={14} />
+                {/* <span>Edit</span> */}
+              </Button>
+              {lockedQuote?.id === q.id ? (
+                <Button
+                  onClick={() => {
+                    if (user) removeLockThisQuote(user?.uid);
+                  }}
+                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLock size={14} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    if (q.isDraft) alert("Needs to be Public.");
+                    else {
+                      if (user) lockThisQuote(user?.uid, q);
+                    }
+                  }}
+                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLockOpen size={14} />
+                </Button>
+              )}
+            </div>
+
             <Button
-              onClick={() => handleEditMode()}
-              className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <Edit size={14} />
-              {/* <span>Edit</span> */}
-            </Button>
-            <Button
-              onClick={() => handleDelete(quote.id)}
+              onClick={() => {
+                handleDelete(q.id);
+                if (user && lockedQuote?.id === q.id)
+                  removeLockThisQuote(user?.uid);
+              }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >
