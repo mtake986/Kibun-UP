@@ -19,17 +19,7 @@ const EditBtn = ({ isEditMode, setIsEditMode }: Props) => {
         } duration-300 sm:w-auto`}
         variant="ghost"
       >
-        {isEditMode ? (
-          <>
-            {/* <MdClose size={14} className="mr-2" /> */}
-            <span>Cancel</span>
-          </>
-        ) : (
-          <>
-            <Edit size={14} className="mr-2" />
-            <span>Edit</span>
-          </>
-        )}
+        {isEditMode ? <MdClose size={14} /> : <Edit size={14} />}
       </Button>
     </div>
   );
