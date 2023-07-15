@@ -23,7 +23,7 @@ import { toast } from "@/components/ui/use-toast";
 type EventContext = {
   handleEditMode: () => void;
   editModeOn: boolean;
-  handleSave: (id: string, values: IEventInputValues) => void;
+  handleUpdate: (values: IEventInputValues, id: string) => void;
   handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
 
@@ -47,8 +47,10 @@ export function EventProvider({ children }: EventProviderProps) {
   const [date, setDate] = useState<Date>();
   const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
 
-  const handleSave = async (id: string, values: IEventInputValues) => {
-    const docRef = doc(db, "events", id);
+  const eventCollectionRef = collection(db, "events");
+
+  const handleUpdate = async (values: IEventInputValues, eid: string) => {
+    const docRef = doc(db, "events", eid);
     await updateDoc(docRef, {
       ...values,
       updatedAt: serverTimestamp(),
@@ -64,7 +66,6 @@ export function EventProvider({ children }: EventProviderProps) {
             Target: ${values.target},
           `,
       });
-      setEditModeOn(false);
     });
   };
 
@@ -96,7 +97,6 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const filterEvents = async (type: string) => {
     if (loginUserEvents.length > 0) {
-      
     }
     // const collectionRef = collection(db, "events");
     // if (user?.uid) {
@@ -111,14 +111,14 @@ export function EventProvider({ children }: EventProviderProps) {
     //     );
     //   });
     // }
-  }
+  };
 
   return (
     <EventContext.Provider
       value={{
         handleEditMode,
         editModeOn,
-        handleSave,
+        handleUpdate,
         handleCancelEdit,
         handleDelete,
         getLoginUserEvents,

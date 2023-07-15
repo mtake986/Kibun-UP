@@ -12,6 +12,7 @@ import {
   Edit,
   InfoIcon,
   Plane,
+  Target,
   Timer,
   TimerIcon,
   ToggleLeft,
@@ -42,43 +43,18 @@ type Props = {
 
 import { IEventInputValues, IEvent } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
+import { useEvent } from "@/app/context/EventContext";
 
 const EventCard = ({ event, i }: Props) => {
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
-
+  
+  const { handleDelete } = useEvent();
+  
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>(event);
   const [date, setDate] = React.useState<Date>();
-
-  const handleSave = async (values: IEventInputValues) => {
-    const docRef = doc(db, "events", event.id);
-    await updateDoc(docRef, {
-      ...values,
-      updatedAt: serverTimestamp(),
-    }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Updated",
-        description: `
-            Event Title: ${values.eventTitle}, 
-            Place: ${values.place}, 
-            Event Date: ${values.eventDate.toDateString()},
-            Description: ${values.description},
-            Target: ${values.target},
-          `,
-      });
-      setEditModeOn(false);
-    });
-  };
-
-  const handleCancelEdit = () => {
-    setEditModeOn(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteDoc(doc(db, "events", id));
+  
+  const toggleEditMode = () => {
+    setEditModeOn(!editModeOn);
   };
 
   return (
@@ -93,12 +69,7 @@ const EventCard = ({ event, i }: Props) => {
       </CardHeader>
       {editModeOn ? (
         <CardContent>
-          <EditModeOn
-            event={event}
-            handleCancelEdit={handleCancelEdit}
-            handleDelete={handleDelete}
-            handleSave={handleSave}
-          />
+          <EditModeOn event={event} />
         </CardContent>
       ) : (
         <>
@@ -110,18 +81,22 @@ const EventCard = ({ event, i }: Props) => {
                   {event.eventTitle}
                 </h3>
               </div>
-              <div className="flex items-center gap-5">
-                <MdPlace size={24} />
-                <p>{event.place}</p>
-              </div>
+              {event.place && (
+                <div className="flex items-center gap-5">
+                  <MdPlace size={24} />
+                  <p>{event.place}</p>
+                </div>
+              )}
               <div className="flex items-center gap-5">
                 <BiTime size={24} />
                 <p>{event.eventDate.toDate().toDateString()}</p>
               </div>
-              <div className="flex items-center gap-5">
-                <BiInfoCircle size={24} />
-                <p>{event.description}</p>
-              </div>
+              {event.description && (
+                <div className="flex items-center gap-5">
+                  <BiInfoCircle size={24} />
+                  <p>{event.description}</p>
+                </div>
+              )}
               <div className="flex items-center gap-5">
                 {event.target ? (
                   <>
@@ -138,13 +113,22 @@ const EventCard = ({ event, i }: Props) => {
             </div>
           </CardContent>
           <CardFooter className="flex items-center justify-between gap-5">
-            <Button
-              onClick={() => handleEditMode()}
-              className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <Edit size={14} />
-            </Button>
+            <div className="flex items-center justify-between gap-2">
+              <Button
+                onClick={() => toggleEditMode()}
+                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Edit size={14} />
+              </Button>
+              <Button
+                onClick={() => alert('Set as a target')}
+                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Target size={14} />
+              </Button>
+            </div>
             <Button
               onClick={() => handleDelete(event.id)}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}

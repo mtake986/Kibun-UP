@@ -5,33 +5,35 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/app/context/AuthContext";
-import Image from "next/image";
 import { useEvent } from "@/app/context/EventContext";
 import EventListTitle from "./EventListTitle";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+
+type Props = {
+  events: IEvent[];
+};
 
 const List = () => {
   const [user] = useAuthState(auth);
-  const { signInWithGoogle } = useAuth();
-
-  const [myEvents, setMyEvents] = useState<IEvent[] | any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
   const { loginUserEvents, getLoginUserEvents } = useEvent();
   useEffect(() => {
+    setLoading(true);
     getLoginUserEvents();
+    setLoading(false);
   }, []);
+
 
   if (loading) {
     return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
   } else {
     if (user) {
-      if (loginUserEvents.length > 0) {
+      if (loginUserEvents) {
         return (
-          <div className="relative mt-10">
+          <div>
             <EventListTitle />
-            {loginUserEvents.map((event, i) => (
-              <EventCard key={i} event={event} i={i} />
+            {loginUserEvents.map((doc, i) => (
+              <EventCard key={doc.id} event={doc} i={i} />
             ))}
           </div>
         );
@@ -45,28 +47,9 @@ const List = () => {
         );
       }
     } else {
-      return (
-        <div className="mt-10 rounded-lg p-12 text-center">
-          <button
-            onClick={() => {
-              signInWithGoogle();
-            }}
-            className="mx-auto mt-4 flex gap-2 rounded-lg border border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow"
-          >
-            <Image
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              loading="lazy"
-              alt="google logo"
-              width={24}
-              height={24}
-            />
-            <span>Login with Google</span>
-          </button>
-        </div>
-      );
+      return <GoogleLoginBtn />;
     }
   }
-  // return <div>Going wrong here</div>;
 };
 
 export default List;

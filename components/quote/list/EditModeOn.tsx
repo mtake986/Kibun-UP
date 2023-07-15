@@ -58,15 +58,8 @@ export default function EditModeOn({
   });
 
   const {
-    lockThisQuote,
-    lockedQuote,
-    removeLockThisQuote,
-    getLockedQuote,
-    isUpdateMode,
-    toggleUpdateMode,
     handleUpdate,
     handleDelete,
-    handleCancelUpdate,
   } = useQuote();
 
   // 2. Define a submit handler.
