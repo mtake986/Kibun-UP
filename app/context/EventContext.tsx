@@ -12,6 +12,8 @@ import {
   updateDoc,
   serverTimestamp,
   orderBy,
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -19,8 +21,9 @@ type EventProviderProps = {
 import { IEvent, IEventInputValues } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
+import { getRandomNum } from "@/utils/functions";
 
-type EventContext = {
+type EventContextType = {
   handleEditMode: () => void;
   editModeOn: boolean;
   handleUpdate: (values: IEventInputValues, id: string) => void;
@@ -29,25 +32,38 @@ type EventContext = {
 
   getLoginUserEvents: () => void;
   loginUserEvents: IEvent[] | [];
+
+  lockThisEvent: (data: IEvent) => void;
+  unlockThisEvent: () => void;
+  getLockedEvent: () => void;
+
+  lockedEvent: IEvent | undefined;
+
+  randomEvent: IEvent | undefined;
+  getRandomEvent: (setLoading: (boo: boolean) => void) => void;
 };
 
-const EventContext = createContext({} as EventContext);
+const EventContext = createContext({} as EventContextType);
 
 export function useEvent() {
   return useContext(EventContext);
 }
 
 export function EventProvider({ children }: EventProviderProps) {
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
-
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>();
   const [date, setDate] = useState<Date>();
   const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
 
+  const [lockedEvent, setLockedEvent] = useState<IEvent>();
+  const [randomEvent, setRandomEvent] = useState<IEvent>();
+
   const eventCollectionRef = collection(db, "events");
+  const [user] = useAuthState(auth);
+
+  const handleEditMode = () => {
+    setEditModeOn(true);
+  };
 
   const handleUpdate = async (values: IEventInputValues, eid: string) => {
     const docRef = doc(db, "events", eid);
@@ -76,8 +92,6 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
   };
-
-  const [user] = useAuthState(auth);
 
   const getLoginUserEvents = async () => {
     const collectionRef = collection(db, "events");
@@ -113,6 +127,65 @@ export function EventProvider({ children }: EventProviderProps) {
     // }
   };
 
+  const lockThisEvent = async (data: IEvent) => {
+    if (user?.uid) {
+      await setDoc(doc(db, "lockedEvents", user.uid), data);
+      setLockedEvent(data);
+    } else {
+      alert(
+        "You need to login to lock this event. Please login with Google account."
+      );
+    }
+    // toast({
+    //   className: "border-none bg-red-50 text-red-500",
+    //   title: "Quote locked",
+    // });
+  };
+
+  const unlockThisEvent = async () => {
+    if (user?.uid) {
+      await deleteDoc(doc(db, "lockedQuotes", user.uid));
+      setLockedEvent(undefined);
+    } else {
+      alert(
+        "You need to login to unlock this event. Please login with Google account."
+      );
+    }
+    // toast({
+    //   className: "border-none bg-red-50 text-red-500",
+    //   title: "Quote Unlocked",
+    // });
+  };
+
+  const getLockedEvent = async () => {
+    if (user?.uid) {
+      const docRef = doc(db, "lockedEvents", user.uid);
+      const docSnap = await getDoc(docRef);
+      setLockedEvent(docSnap.data() as IEvent);
+      console.log(docSnap.data());
+    }
+  };
+
+  const getRandomEvent = async (setLoading: (boo: boolean) => void) => {
+    setLoading(true);
+    console.log("getRandom EVENT started");
+    // auth.onAuthStateChanged((user) => {
+    if (user) {
+      const q = query(
+        eventCollectionRef,
+        where("uid", "==", user?.uid),
+        where("isDraft", "==", false)
+      );
+      onSnapshot(q, (snapshot) => {
+        const randomNum = getRandomNum(snapshot.docs.length);
+        const doc = snapshot.docs[randomNum];
+        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
+      });
+    }
+    // });
+    setLoading(false);
+  };
+
   return (
     <EventContext.Provider
       value={{
@@ -123,6 +196,12 @@ export function EventProvider({ children }: EventProviderProps) {
         handleDelete,
         getLoginUserEvents,
         loginUserEvents,
+        lockThisEvent,
+        unlockThisEvent,
+        getLockedEvent,
+        lockedEvent,
+        randomEvent,
+        getRandomEvent,
       }}
     >
       {children}

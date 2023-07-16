@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -46,16 +46,28 @@ import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import { useEvent } from "@/app/context/EventContext";
 
 const EventCard = ({ event, i }: Props) => {
-  
-  const { handleDelete } = useEvent();
-  
+  const {
+    handleDelete,
+    lockThisEvent,
+    lockedEvent,
+    unlockThisEvent,
+    getLockedEvent,
+  } = useEvent();
+
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>(event);
   const [date, setDate] = React.useState<Date>();
-  
+
   const toggleEditMode = () => {
     setEditModeOn(!editModeOn);
   };
+
+  useEffect(() => {
+    // setLoading(true);
+    // getPrimaryQuote();
+    getLockedEvent();
+    // setLoading(false);
+  }, []);
 
   return (
     <Card
@@ -97,37 +109,39 @@ const EventCard = ({ event, i }: Props) => {
                   <p>{event.description}</p>
                 </div>
               )}
-              <div className="flex items-center gap-5">
-                {event.target ? (
-                  <>
-                    <BsToggle2Off size={24} />
-                    <p>Target On</p>
-                  </>
-                ) : (
-                  <>
-                    <BsToggle2On size={24} />
-                    <p>Target Off</p>
-                  </>
-                )}
-              </div>
             </div>
           </CardContent>
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-2">
               <Button
-                onClick={() => toggleEditMode()}
+                onClick={toggleEditMode}
                 className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
                 variant="ghost"
               >
                 <Edit size={14} />
               </Button>
-              <Button
-                onClick={() => alert('Set as a target')}
-                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                variant="ghost"
-              >
-                <Target size={14} />
-              </Button>
+              {lockedEvent?.id === event.id ? (
+                <Button
+                  onClick={() => {
+                    unlockThisEvent();
+                  }}
+                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <Target size={14} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    lockThisEvent(event);
+                    alert("Set as a target");
+                  }}
+                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <Target size={14} />
+                </Button>
+              )}
             </div>
             <Button
               onClick={() => handleDelete(event.id)}

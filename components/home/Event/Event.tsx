@@ -8,6 +8,7 @@ import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useEvent } from "@/app/context/EventContext";
 
 // todo: fetch this user's events from firestore
 const Event = () => {
@@ -40,13 +41,29 @@ const Event = () => {
     }
   }
 
+  const {
+    randomEvent,
+    getRandomEvent,
+    lockThisEvent,
+    lockedEvent,
+    unlockThisEvent,
+    getLockedEvent,
+  } = useEvent();
+
+
+  // todo: implement the functions above in the code below
+
   useEffect(() => {
     setLoading(true);
     const getEvents = async () => {
       const collectionRef = collection(db, "events");
       auth.onAuthStateChanged((user) => {
         if (user) {
-          const q = query(collectionRef, where("uid", "==", user?.uid), where("target", "==", true));
+          const q = query(
+            collectionRef,
+            where("uid", "==", user?.uid),
+            where("target", "==", true)
+          );
           onSnapshot(q, (snapshot) => {
             snapshot.docs.length > 0
               ? setMyEvents(snapshot.docs.map((doc) => doc.data()))
