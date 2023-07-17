@@ -40,7 +40,7 @@ type EventContextType = {
   lockedEvent: IEvent | undefined;
 
   randomEvent: IEvent | undefined;
-  getRandomEvent: (setLoading: (boo: boolean) => void) => void;
+  getRandomEvent: (uid: string) => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -166,24 +166,17 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const getRandomEvent = async (setLoading: (boo: boolean) => void) => {
-    setLoading(true);
-    console.log("getRandom EVENT started");
-    // auth.onAuthStateChanged((user) => {
-    if (user) {
-      const q = query(
-        eventCollectionRef,
-        where("uid", "==", user?.uid),
-        where("isDraft", "==", false)
-      );
-      onSnapshot(q, (snapshot) => {
-        const randomNum = getRandomNum(snapshot.docs.length);
-        const doc = snapshot.docs[randomNum];
-        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
-      });
-    }
-    // });
-    setLoading(false);
+  const getRandomEvent = async (uid: string) => {
+    console.log("getRandom EVENT started", uid);
+    const q = query(
+      eventCollectionRef,
+      where("uid", "==", user?.uid),
+    );
+    onSnapshot(q, (snapshot) => {
+      const randomNum = getRandomNum(snapshot.docs.length);
+      const doc = snapshot.docs[randomNum];
+      if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
+    });
   };
 
   return (
