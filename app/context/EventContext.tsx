@@ -144,7 +144,8 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const unlockThisEvent = async () => {
     if (user?.uid) {
-      await deleteDoc(doc(db, "lockedQuotes", user.uid));
+      console.log(user, 'in unlock ')
+      await deleteDoc(doc(db, "lockedEvents", user.uid));
       setLockedEvent(undefined);
     } else {
       alert(

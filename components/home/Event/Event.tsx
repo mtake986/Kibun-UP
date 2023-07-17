@@ -106,11 +106,11 @@ const Event = () => {
             </Link>
           </div>
         );
-      } else if (lockedEvent) {
+      } else if (lockedEvent || randomEvent) {
         return (
           <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
             <strong className="block text-center text-4xl">
-              {lockedEvent.eventTitle}
+              {lockedEvent ? lockedEvent.eventTitle : randomEvent.eventTitle}
             </strong>
             <div
               onClick={() => toggleInfo()}
@@ -120,7 +120,11 @@ const Event = () => {
             </div>
             {showInfo && (
               <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
-                <span>{lockedEvent.description}</span>
+                <span>
+                  {lockedEvent
+                    ? lockedEvent.description
+                    : randomEvent.description}
+                </span>
                 <div
                   onClick={() => toggleInfo()}
                   className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
@@ -152,9 +156,17 @@ const Event = () => {
             {/* </Suspense> */}
             <div className="mt-4 text-right">
               <span>
-                {lockedEvent?.eventDate.toDate().getMonth() + 1}/
-                {lockedEvent?.eventDate.toDate().getDate()},{" "}
-                {lockedEvent?.eventDate.toDate().getFullYear()}
+                {lockedEvent
+                  ? lockedEvent.eventDate.toDate().getMonth() + 1
+                  : randomEvent.eventDate.toDate().getMonth() + 1}
+                /
+                {lockedEvent
+                  ? lockedEvent.eventDate.toDate().getDate()
+                  : randomEvent.eventDate.toDate().getDate()}
+                ,{" "}
+                {lockedEvent
+                  ? lockedEvent.eventDate.toDate().getFullYear()
+                  : randomEvent.eventDate.toDate().getFullYear()}
               </span>
             </div>
 
@@ -169,109 +181,6 @@ const Event = () => {
                 <BiRefresh size={20} />
               </Button>
               {lockedEvent ? (
-                <Button
-                  onClick={() => {
-                    unlockThisEvent();
-                  }}
-                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <Target size={20} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    lockThisEvent(randomEvent);
-                  }}
-                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <Target size={20} />
-                </Button>
-              )}
-            </div>
-          </div>
-        );
-      } else if (randomEvent) {
-        return (
-          <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
-            <strong className="block text-center text-4xl">
-              {randomEvent.eventTitle}
-            </strong>
-            <div
-              onClick={() => toggleInfo()}
-              className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50"
-            >
-              <AiOutlineInfoCircle />
-            </div>
-            {showInfo && (
-              <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
-                <span>{randomEvent.description}</span>
-                <div
-                  onClick={() => toggleInfo()}
-                  className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
-                >
-                  <AiFillCloseCircle />
-                </div>
-              </div>
-            )}
-
-            <div className="mt-4 text-center">
-              {calculateLeftDays() <= 0 ? (
-                <span className="text-center text-xl">
-                  You Can Do It <span className="text-2xl">🎉</span>
-                </span>
-              ) : (
-                <div>
-                  <strong
-                    className={`block text-3xl ${
-                      calculateLeftDays() <= 3 ? "text-red-500" : null
-                    }`}
-                  >
-                    {calculateLeftDays()}
-                  </strong>
-                  <span className="text-sm"> day left</span>
-                </div>
-              )}
-            </div>
-
-            {/* </Suspense> */}
-            <div className="mt-4 text-right">
-              <span>
-                {randomEvent?.eventDate.toDate().getMonth() + 1}/
-                {randomEvent?.eventDate.toDate().getDate()},{" "}
-                {randomEvent?.eventDate.toDate().getFullYear()}
-              </span>
-            </div>
-
-            <div className="mt-4 flex items-center justify-end gap-2">
-              {randomEvent ? (
-                <Button
-                  onClick={() => {
-                    alert("To refresh, unlock this event first.");
-                  }}
-                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => {
-                      getRandomEvent(user.uid);
-                      setLoading(false);
-                    }, 1000);
-                  }}
-                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              )}
-
-              {randomEvent ? (
                 <Button
                   onClick={() => {
                     unlockThisEvent();
