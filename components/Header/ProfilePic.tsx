@@ -46,7 +46,7 @@ const ProfilePic = () => {
             className="h-10 w-10 cursor-pointer rounded-full object-cover object-center duration-300 hover:opacity-70"
           />
         )} */}
-        <User2 size={24} className="cursor-pointer" />
+        <User2 size={24} className="text-white cursor-pointer" />
       </PopoverTrigger>
       <PopoverContent className="w-auto">
         <div className="flex-col gap-1">

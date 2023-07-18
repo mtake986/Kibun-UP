@@ -27,7 +27,7 @@ const QuoteHomePage = () => {
       </div>
 
       <div className="relative">
-        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">Quotes</h2>
+        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">My Quotes</h2>
         <SelectTab />
       </div>
     </div>
