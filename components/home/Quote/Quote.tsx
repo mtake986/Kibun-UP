@@ -32,11 +32,8 @@ const Quote = () => {
 
   if (loading === true) {
     return (
-      <div className="mt-6 flex-col items-center p-12">
-        <Skeleton className="h-32 w-full" />
-        <span className="mt-4 flex justify-end ">
-          <Skeleton className="h-7 w-32" />
-        </span>
+      <div className="mt-10 flex-col items-center">
+        <Skeleton className="h-48 w-full" />
       </div>
     );
   }

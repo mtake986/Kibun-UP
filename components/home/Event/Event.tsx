@@ -80,7 +80,7 @@ const Event = () => {
   // }, [user]);
 
   if (loading) {
-    return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
+    return <Skeleton className="relative mt-10 h-64 w-full rounded-lg p-12" />;
   }
 
   if (!loading) {
