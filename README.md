@@ -5,15 +5,22 @@
 
 ## Links
 
-- [Repo](https://github.com/mtake986/daily-quotes)
-- [Live](<Homepage url> "Live View")
-- [Bugs](https://github.com/mtake986/daily-quotes/issues)
+- [Repo](https://github.com/mtake986/Kibun-UP)
+- [Live](<https://github.com/mtake986/Kibun-UP> "Live View")
+- [Bugs](https://github.com/mtake986/Kibun-UP/issues)
 
 ## Screenshots
 
+#### Home Page
 ![Home Page](/public/Screenshots/HomePage.png)
+
+#### Quote Page
 ![Quote Page](/public/Screenshots/QuotePage.png)
+
+#### Event Page
 ![Event Page](/public/Screenshots/EventPage.png)
+
+#### Profile Page
 ![Profile Page](/public/Screenshots/ProfilePage.png)
 
 ## Available Commands
