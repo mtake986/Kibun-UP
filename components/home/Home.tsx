@@ -1,6 +1,6 @@
 import React from "react";
-import Event from "./event/Event";
-import Quote from "./quote/Quote";
+import Event from "./Event/Event";
+import Quote from "./Quote/Quote";
 
 const Home = () => {
   return (
