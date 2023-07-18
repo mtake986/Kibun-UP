@@ -55,7 +55,7 @@ const Quote = () => {
       );
     } else if (lockedQuote || randomQuote) {
       return (
-        <div className="mt-6 p-12">
+        <div className="mt-6 p-12 py-16 shadow-xl rounded-lg">
           <strong className="text-xl">
             {lockedQuote ? lockedQuote.quote : randomQuote.quote}
           </strong>

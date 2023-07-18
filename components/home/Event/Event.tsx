@@ -45,8 +45,6 @@ const Event = () => {
     getLockedEvent,
   } = useEvent();
 
-
-
   useEffect(() => {
     setLoading(true);
     getLockedEvent();
@@ -99,11 +97,11 @@ const Event = () => {
             </Link>
           </div>
         );
-      } else if (lockedEvent || randomEvent) {
+      } else if (lockedEvent) {
         return (
           <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
             <strong className="block text-center text-2xl">
-              {lockedEvent ? lockedEvent.eventTitle : randomEvent.eventTitle}
+              {lockedEvent.eventTitle}
             </strong>
             <div
               onClick={() => toggleInfo()}
@@ -113,11 +111,7 @@ const Event = () => {
             </div>
             {showInfo && (
               <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
-                <span>
-                  {lockedEvent
-                    ? lockedEvent.description
-                    : randomEvent.description}
-                </span>
+                <span>{lockedEvent.description}</span>
                 <div
                   onClick={() => toggleInfo()}
                   className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
@@ -128,11 +122,7 @@ const Event = () => {
             )}
 
             <div className="mt-4 text-center">
-              {calculateLeftDays(
-                lockedEvent
-                  ? lockedEvent.eventDate.toDate()
-                  : randomEvent.eventDate.toDate()
-              ) <= 0 ? (
+              {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
                 <span className="text-center text-xl">
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
@@ -140,22 +130,20 @@ const Event = () => {
                 <div>
                   <strong
                     className={`block text-5xl italic ${
-                      calculateLeftDays(
-                        lockedEvent
-                          ? lockedEvent.eventDate.toDate()
-                          : randomEvent.eventDate.toDate()
-                      ) <= 3
+                      calculateLeftDays(lockedEvent.eventDate.toDate()) <= 3
                         ? "text-red-500"
                         : null
                     }`}
                   >
-                    {calculateLeftDays(
-                      lockedEvent
-                        ? lockedEvent.eventDate.toDate()
-                        : randomEvent.eventDate.toDate()
-                    )}
+                    {calculateLeftDays(lockedEvent.eventDate.toDate())}
                   </strong>
-                  <span className="text-sm"> day left</span>
+                  <span className="text-sm">
+                    {" "}
+                    {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
+                      ? "days"
+                      : "day"}{" "}
+                    left
+                  </span>
                 </div>
               )}
             </div>
@@ -163,68 +151,118 @@ const Event = () => {
             {/* </Suspense> */}
             <div className="mt-4 text-right">
               <span>
-                {lockedEvent
-                  ? lockedEvent.eventDate.toDate().getMonth() + 1
-                  : randomEvent.eventDate.toDate().getMonth() + 1}
-                /
-                {lockedEvent
-                  ? lockedEvent.eventDate.toDate().getDate()
-                  : randomEvent.eventDate.toDate().getDate()}
-                ,{" "}
-                {lockedEvent
-                  ? lockedEvent.eventDate.toDate().getFullYear()
-                  : randomEvent.eventDate.toDate().getFullYear()}
+                {lockedEvent.eventDate.toDate().getMonth() + 1}/
+                {lockedEvent.eventDate.toDate().getDate()},{" "}
+                {lockedEvent.eventDate.toDate().getFullYear()}
               </span>
             </div>
 
             <div className="mt-4 flex items-center justify-end gap-2">
-              {lockedEvent ? (
-                <Button
-                  onClick={() => {
-                    alert("To refresh, unlock this quote first.");
-                  }}
-                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => {
-                      getRandomEvent(user?.uid);
-                      setLoading(false);
-                    }, 1000);
-                  }}
-                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              )}
+              <Button
+                onClick={() => {
+                  alert("To refresh, unlock this quote first.");
+                }}
+                className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <BiRefresh size={20} />
+              </Button>
 
-              {lockedEvent ? (
-                <Button
-                  onClick={() => {
-                    unlockThisEvent();
-                  }}
-                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
+              <Button
+                onClick={() => {
+                  unlockThisEvent();
+                }}
+                className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Target size={20} />
+              </Button>
+            </div>
+          </div>
+        );
+      } else if (randomEvent) {
+        return (
+          <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
+            <strong className="block text-center text-2xl">
+              {randomEvent.eventTitle}
+            </strong>
+            <div
+              onClick={() => toggleInfo()}
+              className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50"
+            >
+              <AiOutlineInfoCircle />
+            </div>
+            {showInfo && (
+              <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
+                <span>{randomEvent.description}</span>
+                <div
+                  onClick={() => toggleInfo()}
+                  className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
                 >
-                  <Target size={20} />
-                </Button>
+                  <AiFillCloseCircle />
+                </div>
+              </div>
+            )}
+
+            <div className="mt-4 text-center">
+              {calculateLeftDays(randomEvent.eventDate.toDate()) <= 0 ? (
+                <span className="text-center text-xl">
+                  You Can Do It <span className="text-2xl">🎉</span>
+                </span>
               ) : (
-                <Button
-                  onClick={() => {
-                    lockThisEvent(randomEvent);
-                  }}
-                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <Target size={20} />
-                </Button>
+                <div>
+                  <strong
+                    className={`block text-5xl italic ${
+                      calculateLeftDays(randomEvent.eventDate.toDate()) <= 3
+                        ? "text-red-500"
+                        : null
+                    }`}
+                  >
+                    {calculateLeftDays(randomEvent.eventDate.toDate())}
+                  </strong>
+                  <span className="text-sm">
+                    {" "}
+                    {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
+                      ? "days"
+                      : "day"}{" "}
+                    left
+                  </span>
+                </div>
               )}
+            </div>
+
+            {/* </Suspense> */}
+            <div className="mt-4 text-right">
+              <span>
+                {randomEvent.eventDate.toDate().getMonth() + 1}/
+                {randomEvent.eventDate.toDate().getDate()},{" "}
+                {randomEvent.eventDate.toDate().getFullYear()}
+              </span>
+            </div>
+
+            <div className="mt-4 flex items-center justify-end gap-2">
+              <Button
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    getRandomEvent(user?.uid);
+                    setLoading(false);
+                  }, 1000);
+                }}
+                className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <BiRefresh size={20} />
+              </Button>
+              <Button
+                onClick={() => {
+                  lockThisEvent(randomEvent);
+                }}
+                className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Target size={20} />
+              </Button>
             </div>
           </div>
         );
