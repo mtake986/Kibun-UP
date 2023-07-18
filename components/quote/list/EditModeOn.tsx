@@ -120,7 +120,7 @@ export default function EditModeOn({
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Draft</FormLabel>
                 <FormDescription>
-                  Check if you don't want to display this on the home page
+                  Check if you do not want to display this on the home page
                 </FormDescription>
               </div>
               <FormControl>
