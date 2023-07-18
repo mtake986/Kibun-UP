@@ -15,17 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 
-import { CalendarIcon } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { auth, db } from "@/app/config/Firebase";
@@ -33,6 +23,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
+import { useQuote } from "@/app/context/QuoteContext";
 
 type Props = {
   registerOpen: boolean;
@@ -41,6 +32,8 @@ type Props = {
 
 export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
+  const { allQuotes, getAllQuotes, registerQuote } = useQuote();
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -54,29 +47,15 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    console.log(values);
-    const collectionRef = collection(db, "quotes");
-    await addDoc(collectionRef, {
-      ...values,
-      uid: user ? user.uid : "undefined",
-      createdAt: serverTimestamp(),
-    }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Created",
-        description: `
-            Person: ${values.person}, 
-            Quote: ${values.quote}, 
-            Draft: ${values.isDraft},
-          `,
-      });
-      reset({
-        person: "",
-        quote: "",
-        isDraft: false,
-      });
-      form.reset();
+    registerQuote(values, user?.uid);
+
+    reset({
+      person: "",
+      quote: "",
+      isDraft: false,
     });
+    form.reset();
+    getAllQuotes();
   }
   return (
     <Form {...form}>

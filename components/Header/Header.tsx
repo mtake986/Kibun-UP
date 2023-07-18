@@ -2,18 +2,18 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { auth } from "../app/config/Firebase";
-import { useAuth } from "../app/context/AuthContext";
-import { signOut } from "firebase/auth";
-import Image from "next/image";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../app/config/Firebase";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
+import ProfilePic from "./ProfilePic";
+
 export default function ButtonAppBar() {
-  const { signInWithGoogle } = useAuth();
+  // const { signInWithGoogle } = useAuth();
   const [user] = useAuthState(auth);
+  const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
 
   return (
-    <header className="bg-violet-500 sm:p-4 px-2 py-4">
+    <header className="bg-violet-500 px-2 py-4 sm:p-4">
       <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <Link href="/">
@@ -37,24 +37,8 @@ export default function ButtonAppBar() {
           </Link>
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {auth.currentUser ? (
-            <div>
-              <Image
-                width={40}
-                height={40}
-                src={
-                  user?.photoURL ? user?.photoURL : "https://placehold.co/50x50"
-                }
-                alt="profile pic"
-              />
-              <button
-                onClick={() => {
-                  signOut(auth);
-                }}
-              >
-                Logout
-              </button>
-            </div>
+          {user ? (
+            <ProfilePic />
           ) : (
             <div
               onClick={() => {
@@ -70,7 +54,6 @@ export default function ButtonAppBar() {
         <div className="sm:hidden">
           <MenuBtn />
         </div>
-        {/* {loginUserInfo?.email && <div>{auth.currentUser?.email}</div>} */}
       </nav>
     </header>
   );

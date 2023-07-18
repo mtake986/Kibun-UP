@@ -6,7 +6,6 @@ export interface IEvent {
   place?: string;
   description: string;
   eventDate: Timestamp;
-  target: boolean;
   uid: string;
   createdAt: Date;
   updatedAt?: Date;
@@ -27,7 +26,6 @@ export interface IEventInputValues {
   place?: string;
   description: string;
   eventDate: Date;
-  target: boolean;
 }
 
 export interface IQuoteInputValues {

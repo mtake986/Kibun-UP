@@ -50,7 +50,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       place: "",
       description: "",
       eventDate: new Date(),
-      target: false,
     },
   });
 
@@ -71,7 +70,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             Place: ${values.place}, 
             Description: ${values.description},
             Event Date: ${values.eventDate.toLocaleDateString("en-US")},
-            Target: ${values.target},
           `,
       });
       reset({
@@ -79,7 +77,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
         place: "",
         description: "",
         eventDate: new Date(),
-        target: false,
       });
       form.reset();
     });
@@ -181,26 +178,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
                 />
               </FormControl>
               <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="target"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Target</FormLabel>
-                <FormDescription>
-                  Check if you want to display on the home page
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
             </FormItem>
           )}
         />

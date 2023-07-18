@@ -1,99 +1,122 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { builtInQuotes } from "../../../public/CONSTANTS";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react"
 import { auth, db } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
-import Image from "next/image";
-import { useAuth } from "@/app/context/AuthContext";
-import { IQuote } from "@/types/type";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import { useQuote } from "@/app/context/QuoteContext";
+import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
 
 const Quote = () => {
-  const [todaysQuote, setTodaysQuote] = useState<IQuote[] | any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    randomQuote,
+    getRandomQuote,
+    lockThisQuote,
+    lockedQuote,
+    removeLockThisQuote,
+    getLockedQuote,
+  } = useQuote();
+
+  const [loading, setLoading] = useState<boolean>(true);
   const [user] = useAuthState(auth);
 
-
-  function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   onSnapshot(collection(db, "quotes"), (snapshot) => {
-  //     snapshot.docs.length > 0
-  //       ? setTodaysQuote(
-  //           snapshot.docs[getRandomInt(snapshot.docs.length)].data()
-  //         )
-  //       : setTodaysQuote(builtInQuotes[0]);
-  //     setLoading(false);
-  //   });
-  // }, []);
-
   useEffect(() => {
-    setLoading(true);
-    const getEvents = async () => {
-      const collectionRef = collection(db, "quotes");
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          const q = query(collectionRef, where("uid", "==", user?.uid), where('isDraft', '==', false));
-          onSnapshot(q, (snapshot) => {
-            setTodaysQuote(
-              snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            );
-          });
-        }
-      });
-    };
-    getEvents();
-    setLoading(false);
+    // setLoading(true);
+    // getPrimaryQuote();
+    getLockedQuote(user?.uid);
+    getRandomQuote(setLoading);
+    // setLoading(false);
   }, [user]);
 
-  if (loading) {
+  if (loading === true) {
     return (
-      <div className="mt-6 flex-col items-center p-12">
-        <Skeleton className="h-32 w-full" />
-        <span className="mt-4 flex justify-end ">
-          <Skeleton className="h-7 w-32" />
-        </span>
+      <div className="mt-10 flex-col items-center">
+        <Skeleton className="h-48 w-full" />
       </div>
     );
-  } else {
-    if (user) {
-      if (todaysQuote?.length === 0) {
-        return (
-          <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
-            <p>No Quote's to Display</p>
-            <Link
-              href="/quote"
-              className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
-            >
-              Click here to create an quote
-            </Link>
-          </div>
-        );
-      } else if (todaysQuote?.length > 0) {
-        return (
-          <div className="mt-6 p-12">
-            <strong className="text-xl">
-              {todaysQuote[getRandomInt(todaysQuote.length)].quote}
-            </strong>
+  }
+  if (user) {
+    if (!randomQuote) {
+      return (
+        <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
+          <p>No Quote's to Display</p>
+          <Link
+            href="/quote"
+            className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
+          >
+            Click here to create an quote
+          </Link>
+        </div>
+      );
+    } else if (lockedQuote || randomQuote) {
+      return (
+        <div className="mt-6 p-12 py-16 shadow-xl rounded-lg">
+          <strong className="text-xl">
+            {lockedQuote ? lockedQuote.quote : randomQuote.quote}
+          </strong>
+          <div className="flex flex-col items-end">
             <div className="mt-4 text-right">
               <span>
-                - {todaysQuote[getRandomInt(todaysQuote.length)].quote}
+                - {lockedQuote ? lockedQuote.person : randomQuote.person}
               </span>
             </div>
+            <div className="mt-4 flex items-center gap-2">
+              {lockedQuote ? (
+                <Button
+                  onClick={() => {
+                    alert("To refresh, unlock this quote first.");
+                  }}
+                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiRefresh size={20} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      getRandomQuote(setLoading);
+                      setLoading(false);
+                    }, 1000);
+                  }}
+                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiRefresh size={20} />
+                </Button>
+              )}
+
+              {lockedQuote ? (
+                <Button
+                  onClick={() => {
+                    removeLockThisQuote(user.uid);
+                  }}
+                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLock size={20} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    lockThisQuote(user.uid, randomQuote);
+                  }}
+                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiLockOpen size={20} />
+                </Button>
+              )}
+            </div>
           </div>
-        );
-      }
-    } else {
-      return (
-        <GoogleLoginBtn />
+        </div>
       );
     }
+  } else {
+    return <GoogleLoginBtn />;
   }
   return <div>Going wrong here</div>;
 };

@@ -31,21 +31,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { IQuote } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
+import { useQuote } from "@/app/context/QuoteContext";
+import { MdCancel, MdOutlineCancel } from "react-icons/md";
 
 // todo: add more fields like place, time, etc.
 
 type Props = {
   q: IQuote;
-  handleCancelEdit: () => void;
-  handleDelete: (id: string) => void;
-  handleSave: (values: z.infer<typeof quoteSchema>) => void;
+  setIsUpdateMode: (boo: boolean) => void;
 };
 
 export default function EditModeOn({
   q,
-  handleCancelEdit,
-  handleDelete,
-  handleSave,
+  setIsUpdateMode,
 }: Props) {
   const [user] = useAuthState(auth);
   const { reset } = useForm();
@@ -59,20 +57,27 @@ export default function EditModeOn({
     },
   });
 
+  const {
+    handleUpdate,
+    handleDelete,
+  } = useQuote();
+
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     // Add a new document with a generated id.
-    handleSave(values);
+    // handleSave(values);
+    handleUpdate(q.id, values, user?.uid);
+    setIsUpdateMode(false);
     reset({
-      person: '',
-      quote: '',
+      person: "",
+      quote: "",
       isDraft: false,
     });
     form.reset();
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -131,16 +136,15 @@ export default function EditModeOn({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => handleCancelEdit()}
+              onClick={() => setIsUpdateMode(false)}
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
               variant="ghost"
             >
-              <Plane size={14} />
+              <MdOutlineCancel size={14} />
               <span>Cancel</span>
             </Button>
             <Button
               type="submit"
-              // onClick={() => handleSave({ eventInput, id: event.id })}
               className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
               variant="ghost"
             >

@@ -1,9 +1,11 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import { QuoteProvider } from "./context/QuoteContext";
+import { EventProvider } from "./context/EventContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,13 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
-        <body className={inter.className}>
-          <Header />
-          <main className="container mx-auto max-w-2xl p-5 sm:p-12">
-            {children}
-          </main>
-          <Toaster />
-        </body>
+        <QuoteProvider>
+          <EventProvider>
+          <body className={inter.className}>
+            <Header />
+            <main className="text-slate-800 container mx-auto max-w-2xl p-5 sm:p-12">
+              {children}
+            </main>
+            <Toaster />
+          </body>
+          </EventProvider>
+        </QuoteProvider>
       </AuthProvider>
     </html>
   );
