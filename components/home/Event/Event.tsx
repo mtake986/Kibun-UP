@@ -23,22 +23,16 @@ const Event = () => {
     // setTimeout(() => setShowInfo(false), 3000);
   };
 
-  function calculateLeftDays(): number {
+  function calculateLeftDays(date: Date): number {
     const today = new Date();
-    if (randomEvent) {
-      if (randomEvent?.eventDate.toDate() < today) {
-        // setLeftDays(-1);
-        return -1;
-      } else {
-        const diffTime = Math.abs(
-          randomEvent?.eventDate.toDate().getTime() - today.getTime()
-        );
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
-        // setLeftDays(diffDays);
-        return diffDays + 1;
-      }
+    if (date < today) {
+      // setLeftDays(-1);
+      return -1;
     } else {
-      return 0;
+      const diffTime = Math.abs(date.getTime() - today.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+      // setLeftDays(diffDays);
+      return diffDays + 1;
     }
   }
 
@@ -51,8 +45,7 @@ const Event = () => {
     getLockedEvent,
   } = useEvent();
 
-  // todo: implement the functions above in the code below
-  // todo: isDraft in register
+
 
   useEffect(() => {
     setLoading(true);
@@ -109,7 +102,7 @@ const Event = () => {
       } else if (lockedEvent || randomEvent) {
         return (
           <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
-            <strong className="block text-center text-4xl">
+            <strong className="block text-center text-2xl">
               {lockedEvent ? lockedEvent.eventTitle : randomEvent.eventTitle}
             </strong>
             <div
@@ -135,18 +128,32 @@ const Event = () => {
             )}
 
             <div className="mt-4 text-center">
-              {calculateLeftDays() <= 0 ? (
+              {calculateLeftDays(
+                lockedEvent
+                  ? lockedEvent.eventDate.toDate()
+                  : randomEvent.eventDate.toDate()
+              ) <= 0 ? (
                 <span className="text-center text-xl">
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
               ) : (
                 <div>
                   <strong
-                    className={`block text-3xl ${
-                      calculateLeftDays() <= 3 ? "text-red-500" : null
+                    className={`block text-5xl italic ${
+                      calculateLeftDays(
+                        lockedEvent
+                          ? lockedEvent.eventDate.toDate()
+                          : randomEvent.eventDate.toDate()
+                      ) <= 3
+                        ? "text-red-500"
+                        : null
                     }`}
                   >
-                    {calculateLeftDays()}
+                    {calculateLeftDays(
+                      lockedEvent
+                        ? lockedEvent.eventDate.toDate()
+                        : randomEvent.eventDate.toDate()
+                    )}
                   </strong>
                   <span className="text-sm"> day left</span>
                 </div>
@@ -171,15 +178,32 @@ const Event = () => {
             </div>
 
             <div className="mt-4 flex items-center justify-end gap-2">
-              <Button
-                onClick={() => {
-                  alert("To refresh, unlock this event first.");
-                }}
-                className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                variant="ghost"
-              >
-                <BiRefresh size={20} />
-              </Button>
+              {lockedEvent ? (
+                <Button
+                  onClick={() => {
+                    alert("To refresh, unlock this quote first.");
+                  }}
+                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiRefresh size={20} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      getRandomEvent(user?.uid);
+                      setLoading(false);
+                    }, 1000);
+                  }}
+                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <BiRefresh size={20} />
+                </Button>
+              )}
+
               {lockedEvent ? (
                 <Button
                   onClick={() => {

@@ -1,14 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { builtInQuotes } from "../../../public/CONSTANTS";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react"
 import { auth, db } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
-import Image from "next/image";
-import { useAuth } from "@/app/context/AuthContext";
-import { IQuote } from "@/types/type";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";

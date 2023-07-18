@@ -79,7 +79,6 @@ export function EventProvider({ children }: EventProviderProps) {
             Place: ${values.place}, 
             Event Date: ${values.eventDate.toDateString()},
             Description: ${values.description},
-            Target: ${values.target},
           `,
       });
     });

@@ -54,7 +54,6 @@ export default function EditModeOn ({
       place: event.place,
       description: event.description,
       eventDate: event.eventDate.toDate(),
-      target: event.target,
     },
   });
 
@@ -163,28 +162,6 @@ export default function EditModeOn ({
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="target"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Target</FormLabel>
-                <FormDescription>
-                  Check if you want to display on the home page
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button

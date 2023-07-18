@@ -55,7 +55,6 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
       place: event.place,
       description: event.description,
       eventDate: event.eventDate.toDate(),
-      target: event.target,
     },
   });
 
@@ -165,27 +164,6 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="target"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Target</FormLabel>
-                <FormDescription>
-                  Check if you want to display on the home page
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -219,62 +197,3 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
     </Form>
   );
 }
-
-// <div className="flex flex-col gap-3">
-//   <div className="flex items-center gap-5">
-//     <BsFillPersonFill size={24} />
-//     <Input
-//       onChange={(e) => {
-//         setEventInput((prev) => ({
-//           ...prev,
-//           description: e.target.value,
-//         }));
-//       }}
-//       defaultValue={event.description}
-//       value={event.description}
-//       id="Description"
-//       placeholder="My 23rd HBD"
-//     />
-//   </div>
-//   <div className="flex items-center gap-5">
-//     <BsChatLeftText size={24} />
-//     <Input
-//       onChange={(e) => {
-//         setEventInput((prev) => ({
-//           ...prev,
-//           eventTitle: e.target.value,
-//         }));
-//       }}
-//       value={event.eventTitle}
-//       defaultValue={event.eventTitle}
-//       id="Event Title"
-//       placeholder="HBD"
-//     />
-//   </div>
-//   <div className="flex items-center gap-5">
-//     <BsChatLeftText size={24} />
-
-//     <Popover>
-//       <PopoverTrigger asChild>
-//         <Button
-//           variant={"outline"}
-//           className={cn(
-//             "w-[280px] justify-start text-left font-normal",
-//             !date && "text-muted-foreground"
-//           )}
-//         >
-//           <CalendarIcon className="mr-2 h-4 w-4" />
-//           {date ? format(date, "PPP") : <span>Pick a date</span>}
-//         </Button>
-//       </PopoverTrigger>
-//       <PopoverContent className="w-auto p-0">
-//         <Calendar
-//           mode="single"
-//           selected={date}
-//           onSelect={setDate}
-//           initialFocus
-//         />
-//       </PopoverContent>
-//     </Popover>
-//   </div>
-// </div>

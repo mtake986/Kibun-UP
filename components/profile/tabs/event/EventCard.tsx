@@ -72,7 +72,6 @@ const QuoteCard = ({ event }: Props) => {
             Place: ${values.place}, 
             Event Date: ${values.eventDate.toDateString()},
             Description: ${values.description},
-            Target: ${values.target},
           `,
         });
         setEditModeOn(false);
