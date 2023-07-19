@@ -12,6 +12,12 @@ import { useEvent } from "@/app/context/EventContext";
 import { Button } from "@/components/ui/button";
 import { Target } from "lucide-react";
 import { BiRefresh } from "react-icons/bi";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
 
 const Event = () => {
   const [user] = useAuthState(auth);
@@ -53,32 +59,6 @@ const Event = () => {
     setLoading(false);
   }, [user]);
 
-  // useEffect(() => {
-  //   // setLoading(true);
-  //   const getEvents = async () => {
-  //     const collectionRef = collection(db, "events");
-  //     auth.onAuthStateChanged((user) => {
-  //       if (user) {
-  //         const q = query(
-  //           collectionRef,
-  //           where("uid", "==", user?.uid),
-  //           where("target", "==", true)
-  //         );
-  //         onSnapshot(q, (snapshot) => {
-  //           snapshot.docs.length > 0
-  //             ? setMyEvents(snapshot.docs.map((doc) => doc.data()))
-  //             : null;
-  //         });
-  //         calculateLeftDays();
-  //       } else {
-  //         setMyEvents([]);
-  //       }
-  //     });
-  //   };
-  //   getEvents();
-  //   // setLoading(false);
-  // }, [user]);
-
   if (loading) {
     return <Skeleton className="relative mt-10 h-64 w-full rounded-lg p-12" />;
   }
@@ -103,23 +83,15 @@ const Event = () => {
             <strong className="block text-center text-2xl">
               {lockedEvent.eventTitle}
             </strong>
-            <div
-              onClick={() => toggleInfo()}
-              className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50"
-            >
-              <AiOutlineInfoCircle />
-            </div>
-            {showInfo && (
-              <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
-                <span>{lockedEvent.description}</span>
-                <div
-                  onClick={() => toggleInfo()}
-                  className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
-                >
-                  <AiFillCloseCircle />
-                </div>
-              </div>
-            )}
+            {lockedEvent.description ? (
+            <HoverCard>
+              <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
+                <AiOutlineInfoCircle />
+              </HoverCardTrigger>
+              <HoverCardContent>{lockedEvent.description}</HoverCardContent>
+            </HoverCard>
+
+            ) : null}
 
             <div className="mt-4 text-center">
               {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
@@ -186,23 +158,15 @@ const Event = () => {
             <strong className="block text-center text-2xl">
               {randomEvent.eventTitle}
             </strong>
-            <div
-              onClick={() => toggleInfo()}
-              className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50"
-            >
-              <AiOutlineInfoCircle />
-            </div>
-            {showInfo && (
-              <div className="absolute right-5 top-5 mt-4 rounded-lg bg-violet-100 p-12 text-center">
-                <span>{randomEvent.description}</span>
-                <div
-                  onClick={() => toggleInfo()}
-                  className="absolute right-5 top-5 cursor-pointer text-xl hover:opacity-50"
-                >
-                  <AiFillCloseCircle />
-                </div>
-              </div>
-            )}
+
+            {randomEvent.description ? (
+              <HoverCard>
+                <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
+                  <AiOutlineInfoCircle />
+                </HoverCardTrigger>
+                <HoverCardContent>{randomEvent.description}</HoverCardContent>
+              </HoverCard>
+            ) : null}
 
             <div className="mt-4 text-center">
               {calculateLeftDays(randomEvent.eventDate.toDate()) <= 0 ? (
@@ -230,7 +194,6 @@ const Event = () => {
                 </div>
               )}
             </div>
-
             {/* </Suspense> */}
             <div className="mt-4 text-right">
               <span>
@@ -239,7 +202,6 @@ const Event = () => {
                 {randomEvent.eventDate.toDate().getFullYear()}
               </span>
             </div>
-
             <div className="mt-4 flex items-center justify-end gap-2">
               <Button
                 onClick={() => {

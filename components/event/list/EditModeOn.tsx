@@ -64,7 +64,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     // Add a new document with a generated id.
     handleUpdate(values, event.id);
     setIsUpdateMode(false);
-
     reset({
       eventTitle: values.eventTitle,
       place: values.place,

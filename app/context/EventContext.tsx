@@ -59,6 +59,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const [randomEvent, setRandomEvent] = useState<IEvent>();
 
   const eventCollectionRef = collection(db, "events");
+  const lockedEventCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
 
   const handleEditMode = () => {
@@ -82,6 +83,13 @@ export function EventProvider({ children }: EventProviderProps) {
           `,
       });
     });
+    const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
+    if (lockedEventDocRef) {
+      await updateDoc(lockedEventDocRef, {
+        ...values,
+        updatedAt: serverTimestamp(),
+      });
+    }
   };
 
   const handleCancelEdit = () => {
@@ -143,7 +151,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const unlockThisEvent = async () => {
     if (user?.uid) {
-      console.log(user, 'in unlock ')
+      console.log(user, "in unlock ");
       await deleteDoc(doc(db, "lockedEvents", user.uid));
       setLockedEvent(undefined);
     } else {
@@ -168,10 +176,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getRandomEvent = async (uid: string) => {
     console.log("getRandom EVENT started", uid);
-    const q = query(
-      eventCollectionRef,
-      where("uid", "==", user?.uid),
-    );
+    const q = query(eventCollectionRef, where("uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       const randomNum = getRandomNum(snapshot.docs.length);
       const doc = snapshot.docs[randomNum];
