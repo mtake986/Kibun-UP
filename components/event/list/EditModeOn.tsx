@@ -32,16 +32,16 @@ import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useEvent } from "@/app/context/EventContext";
+import { MdOutlineCancel } from "react-icons/md";
 
 // todo: add more fields like place, time, etc.
 
 type Props = {
   event: IEvent;
+  setIsUpdateMode: (boo: boolean) => void;
 };
 
-export default function EditModeOn ({
-  event,
-}: Props) {
+export default function EditModeOn({ event, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 
@@ -62,7 +62,9 @@ export default function EditModeOn ({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleUpdate(values, event.id)
+    handleUpdate(values, event.id);
+    setIsUpdateMode(false);
+
     reset({
       eventTitle: values.eventTitle,
       place: values.place,
@@ -165,11 +167,11 @@ export default function EditModeOn ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => alert()}
+              onClick={() => setIsUpdateMode(false)}
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
               variant="ghost"
             >
-              <Plane size={14} />
+              <MdOutlineCancel size={14} />
               <span>Cancel</span>
             </Button>
             <Button

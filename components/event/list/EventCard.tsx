@@ -32,7 +32,6 @@ import {
 import { db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
 
@@ -44,6 +43,7 @@ type Props = {
 import { IEventInputValues, IEvent } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import { useEvent } from "@/app/context/EventContext";
+import EditModeOn from "./EditModeOn";
 
 const EventCard = ({ event, i }: Props) => {
   const {
@@ -54,13 +54,9 @@ const EventCard = ({ event, i }: Props) => {
     getLockedEvent,
   } = useEvent();
 
-  const [editModeOn, setEditModeOn] = useState<boolean>(false);
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [eventInput, setEventInput] = useState<IEvent>(event);
   const [date, setDate] = React.useState<Date>();
-
-  const toggleEditMode = () => {
-    setEditModeOn(!editModeOn);
-  };
 
   useEffect(() => {
     // setLoading(true);
@@ -72,16 +68,16 @@ const EventCard = ({ event, i }: Props) => {
   return (
     <Card
       className={`mb-3 ${
-        editModeOn && "border border-violet-500 bg-violet-50/10"
+        isUpdateMode && "border border-violet-500 bg-violet-50/10"
       }`}
     >
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
-      {editModeOn ? (
+      {isUpdateMode ? (
         <CardContent>
-          <EditModeOn event={event} />
+          <EditModeOn event={event} setIsUpdateMode={setIsUpdateMode} />
         </CardContent>
       ) : (
         <>
@@ -114,7 +110,7 @@ const EventCard = ({ event, i }: Props) => {
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-2">
               <Button
-                onClick={toggleEditMode}
+                onClick={() => setIsUpdateMode(true)}
                 className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
                 variant="ghost"
               >
