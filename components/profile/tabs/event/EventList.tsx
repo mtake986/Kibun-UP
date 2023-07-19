@@ -50,7 +50,6 @@ const EventList = () => {
       if (loginUserEvents) {
         return (
           <div>
-            <div>Collection:{loginUserEvents.length}</div>
             {loginUserEvents.map((doc) => (
               <EventCard key={doc.id} event={doc} />
             ))}

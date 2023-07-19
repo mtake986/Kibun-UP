@@ -39,13 +39,12 @@ import { MdOutlineCancel } from "react-icons/md";
 
 type Props = {
   event: DocumentData;
-  handleSave: (id: string, values: IEventInputValues) => void;
-  handleCancelEdit: () => void;
-  handleDelete: (id: string) => void;
+  setIsUpdateMode: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, handleSave, handleCancelEdit, handleDelete }: Props) {
+export default function EditModeOn({ event, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
+  const { handleUpdate, handleDelete } = useEvent();
 
   const { reset } = useForm();
   // 1. Define your form.
@@ -64,7 +63,8 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleSave(event.id, values);
+    handleUpdate(values, event.id);
+    setIsUpdateMode(false);
     reset({
       eventTitle: values.eventTitle,
       place: values.place,
@@ -168,12 +168,12 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => handleCancelEdit()}
+              onClick={() => setIsUpdateMode(false)}
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
               variant="ghost"
             >
               <MdOutlineCancel size={14} />
-              <span>Cancel</span>
+              {/* <span>Cancel</span> */}
             </Button>
             <Button
               type="submit"
@@ -182,7 +182,7 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
               variant="ghost"
             >
               <Plane size={14} />
-              <span>Save</span>
+              {/* <span>Save</span> */}
             </Button>
           </div>
           <Button
