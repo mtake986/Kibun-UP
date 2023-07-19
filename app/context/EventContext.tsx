@@ -41,6 +41,9 @@ type EventContextType = {
 
   randomEvent: IEvent | undefined;
   getRandomEvent: (uid: string) => void;
+
+  eventsNotMine: IEvent[] | [];
+  getEventsNotMine: () => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -57,6 +60,8 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const [lockedEvent, setLockedEvent] = useState<IEvent>();
   const [randomEvent, setRandomEvent] = useState<IEvent>();
+
+  const [eventsNotMine, setEventsNotMine] = useState<IEvent[]>([]);
 
   const eventCollectionRef = collection(db, "events");
   const lockedEventCollectionRef = collection(db, "lockedEvents");
@@ -184,6 +189,15 @@ export function EventProvider({ children }: EventProviderProps) {
     });
   };
 
+  const getEventsNotMine = async () => {
+    const q = query(eventCollectionRef, where("uid", "!=", user?.uid));
+    onSnapshot(q, (snapshot) => {
+      setEventsNotMine(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+      );
+    });
+  };
+
   return (
     <EventContext.Provider
       value={{
@@ -200,6 +214,8 @@ export function EventProvider({ children }: EventProviderProps) {
         lockedEvent,
         randomEvent,
         getRandomEvent,
+        eventsNotMine,
+        getEventsNotMine,
       }}
     >
       {children}
