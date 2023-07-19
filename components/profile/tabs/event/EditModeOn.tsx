@@ -33,6 +33,7 @@ import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { DocumentData } from "firebase/firestore";
 import { useEvent } from "@/app/context/EventContext";
+import { MdOutlineCancel } from "react-icons/md";
 
 // todo: add more fields like place, time, etc.
 
@@ -171,7 +172,7 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
               variant="ghost"
             >
-              <Plane size={14} />
+              <MdOutlineCancel size={14} />
               <span>Cancel</span>
             </Button>
             <Button
