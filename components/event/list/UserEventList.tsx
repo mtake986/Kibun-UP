@@ -4,6 +4,7 @@ import { auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { IEvent } from "@/types/type";
+import Pagination from "./Pagination";
 
 type Props = {
   events: IEvent[];
@@ -23,6 +24,7 @@ const UserEventList = ({ events }: Props) => {
           </h2>
         </div>
       )}
+      <Pagination events={events} />
     </div>
   );
 };
