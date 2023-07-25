@@ -84,22 +84,57 @@ const PaginationComp = ({ nPages, currentPage, setCurrentPage }: Props) => {
           </Button>
         </div>
       );
+    } else {
+      return (
+        <div className="flex items-center gap-1">
+          <Button
+            key={1}
+            className={clsNameNotFocused}
+            variant="outline"
+            onClick={() => setCurrentPage(1)}
+          >
+            1
+          </Button>
+          {1 + 2 <= currentPage && <span>...</span>}
+          {/* currentPage Btn is always shown */}
+          <Button
+            key={currentPage}
+            className={clsNameFocused}
+            variant="outline"
+            onClick={() => setCurrentPage(currentPage)}
+          >
+            {currentPage}
+          </Button>
+          {nPages - 2 >= currentPage && <span>...</span>}
+          <Button
+            key={nPages}
+            className={clsNameNotFocused}
+            variant="outline"
+            onClick={() => setCurrentPage(nPages)}
+          >
+            {nPages}
+          </Button>
+        </div>
+      );
     }
   };
+
   return (
     <nav className="flex gap-1">
       <Button
-        className="border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70"
+        className={`cursor-pointer border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70`}
         variant="outline"
         onClick={prevPage}
+        disabled={currentPage === 1 && true}
       >
         Prev
       </Button>
       {displayButtons()}
       <Button
-        className="border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70"
+        className={`cursor-pointer border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70`}
         variant="outline"
         onClick={nextPage}
+        disabled={currentPage === nPages && true}
       >
         Next
       </Button>
