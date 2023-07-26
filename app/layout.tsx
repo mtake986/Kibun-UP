@@ -26,7 +26,7 @@ export default function RootLayout({
       <AuthProvider>
         <QuoteProvider>
           <EventProvider>
-            <body className={inter.className}>
+            <body className={poppins.className}>
               <Header />
               <main className="container mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
                 {children}

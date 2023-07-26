@@ -7,7 +7,7 @@ type Props = {
   setCurrentPage: (page: number) => void;
 };
 
-const PaginationComp = ({ nPages, currentPage, setCurrentPage }: Props) => {
+const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   const pageNumbers = Array.from({ length: nPages }, (_, index) => index + 1);
 
   const nextPage = () => {
@@ -142,4 +142,4 @@ const PaginationComp = ({ nPages, currentPage, setCurrentPage }: Props) => {
   );
 };
 
-export default PaginationComp;
+export default PaginationBtns;

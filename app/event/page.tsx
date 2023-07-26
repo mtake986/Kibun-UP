@@ -1,5 +1,5 @@
 "use client";
-import List from "@/components/event/list/UserEventList";
+import List from "@/components/event/list/Mine/UserEventList";
 import RegisterForm from "@/components/event/register/RegisterForm";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";

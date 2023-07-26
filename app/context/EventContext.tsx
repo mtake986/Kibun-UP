@@ -190,7 +190,7 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const getEventsNotMine = async () => {
-    const q = query(eventCollectionRef, where("uid", "!=", user?.uid));
+    const q = (user?.uid) ? query(eventCollectionRef, where("uid", "!=", user?.uid)) : eventCollectionRef;
     onSnapshot(q, (snapshot) => {
       setEventsNotMine(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))

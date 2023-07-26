@@ -80,7 +80,7 @@ const EventCard = ({ event, i }: Props) => {
           <EditModeOn event={event} setIsUpdateMode={setIsUpdateMode} />
         </CardContent>
       ) : (
-        <> 
+        <>
           <CardContent>
             <div className="flex flex-col gap-3">
               <div className="">

@@ -23,7 +23,7 @@ type Props = {
   i: number;
 };
 
-const CardNotMine = ({ event, i }: Props) => {
+const EventCard = ({ event, i }: Props) => {
   return (
     <Card className={`mb-3`}>
       <CardHeader>
@@ -73,4 +73,4 @@ const CardNotMine = ({ event, i }: Props) => {
   );
 };
 
-export default CardNotMine;
+export default EventCard;
