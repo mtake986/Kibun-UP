@@ -1,30 +1,37 @@
 "use client";
-
+import React, { Suspense, useEffect, useState } from "react";
 import { auth, db } from "@/app/config/Firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import EventCard from "./EventCard";
-import { IEvent } from "@/types/type";
-import { useState } from "react";
+import QuoteCard from "./QuoteCard";
+import { useQuote } from "@/app/context/QuoteContext";
+import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 
 type Props = {
-  events: IEvent[];
+  quotes: IQuote[];
 };
 
-const UserEventList = ({ events }: Props) => {
+const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = pagination(currentPage, events);
+  const { nPages, currentRecords } = pagination(currentPage, quotes);
 
   return (
     <div>
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
-            <EventCard key={doc.id} event={doc} i={i} />
+            <QuoteCard key={doc.id} q={doc} i={i} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns
@@ -37,7 +44,7 @@ const UserEventList = ({ events }: Props) => {
       ) : (
         <div className="mt-10">
           <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            You have no events
+            You have no quotes
           </h2>
         </div>
       )}
@@ -45,4 +52,4 @@ const UserEventList = ({ events }: Props) => {
   );
 };
 
-export default UserEventList;
+export default List;

@@ -14,10 +14,7 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import {
-  Edit,
-  Trash,
-} from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 
 import { auth } from "@/app/config/Firebase";
 import { IQuote } from "@/types/type";

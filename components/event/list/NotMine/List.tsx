@@ -5,7 +5,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import CardNotMine from "./EventCard";
 import { useState } from "react";
-import PaginationBtns from "../PaginationBtns";
+
+import { pagination } from "@/utils/functions";
+import PaginationBtns from "@/components/utils/PaginationBtns";
 
 type Props = {
   eventsNotMine: IEvent[];
@@ -14,21 +16,10 @@ type Props = {
 const List = ({ eventsNotMine }: Props) => {
   const [user] = useAuthState(auth);
 
-  // User is currently on this page
   const [currentPage, setCurrentPage] = useState(1);
-  // Number of Records to be displayed on each page
-  const RECORDS_PER_PAGE = 2;
-  const [recordsPerPage] = useState(RECORDS_PER_PAGE);
 
-  const indexOfLastRecord = currentPage * recordsPerPage;
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const {nPages, currentRecords} = pagination(currentPage, eventsNotMine);
 
-  // Records to be displayed on the current page
-  const currentRecords = eventsNotMine.slice(
-    indexOfFirstRecord,
-    indexOfLastRecord
-  );
-  const nPages = Math.ceil(eventsNotMine.length / recordsPerPage);
   return (
     <div>
       {currentRecords && currentRecords.length >= 1 ? (
@@ -36,11 +27,13 @@ const List = ({ eventsNotMine }: Props) => {
           {currentRecords.map((doc, i) => (
             <CardNotMine key={doc.id} event={doc} i={i} />
           ))}
-          <PaginationBtns
-            nPages={nPages}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          {nPages >= 2 && (
+            <PaginationBtns
+              nPages={nPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </>
       ) : (
         <div className="mt-10">

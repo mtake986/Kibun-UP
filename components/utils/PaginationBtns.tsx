@@ -35,14 +35,14 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           >
             1
           </Button>
-          <Button
+          {/* <Button
             key={currentPage + 1}
             className={clsNameNotFocused}
             variant="outline"
             onClick={() => setCurrentPage(currentPage + 1)}
           >
             {currentPage + 1}
-          </Button>
+          </Button> */}
           <span>...</span>
           <Button
             key={nPages}
@@ -66,14 +66,14 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
             1
           </Button>
           <span>...</span>
-          <Button
+          {/* <Button
             key={currentPage - 1}
             className={clsNameNotFocused}
             variant="outline"
             onClick={() => setCurrentPage(currentPage - 1)}
           >
             {currentPage - 1}
-          </Button>
+          </Button> */}
           <Button
             key={nPages}
             className={clsNameFocused}
@@ -129,7 +129,20 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       >
         Prev
       </Button>
-      {displayButtons()}
+      {pageNumbers.length <= 5
+        ? pageNumbers.map((pageNumber) => (
+            <Button
+              key={pageNumber}
+              className={
+                pageNumber === currentPage ? clsNameFocused : clsNameNotFocused
+              }
+              variant="outline"
+              onClick={() => setCurrentPage(pageNumber)}
+            >
+              {pageNumber}
+            </Button>
+          ))
+        : displayButtons()}
       <Button
         className={`cursor-pointer border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70`}
         variant="outline"
