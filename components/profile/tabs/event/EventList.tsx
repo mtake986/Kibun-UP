@@ -22,53 +22,45 @@ import { useParams } from "next/navigation";
 import { useCollection } from "react-firebase-hooks/firestore";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useEvent } from "@/app/context/EventContext";
+import { pagination } from "@/utils/functions";
+import PaginationBtns from "@/components/utils/PaginationBtns";
 
 const EventList = () => {
   const [user] = useAuthState(auth);
-
-  const params = useParams();
-
-  const [value, loading, error] = useCollection(
-    query(
-      collection(getFirestore(app), "events"),
-      where("uid", "==", params?.uid)
-    ),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
 
   const { loginUserEvents, getLoginUserEvents } = useEvent();
   useEffect(() => {
     getLoginUserEvents();
   }, []);
 
-  if (loading) {
-    return <Skeleton className="relative mt-10 h-48 w-full rounded-lg p-12" />;
-  } else {
-    if (user) {
-      if (loginUserEvents) {
-        return (
-          <div>
-            {loginUserEvents.map((doc) => (
-              <EventCard key={doc.id} event={doc} />
-            ))}
-          </div>
-        );
-      } else {
-        return (
-          <div className="mt-10">
-            <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-              You have no events
-            </h2>
-          </div>
-        );
-      }
-    } else {
-      return <GoogleLoginBtn />;
-    }
-  }
-  // return <div>Going wrong here</div>;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { nPages, currentRecords } = pagination(currentPage, loginUserEvents);
+
+  return (
+    <div>
+      {currentRecords && currentRecords.length >= 1 ? (
+        <>
+          {currentRecords.map((doc) => (
+            <EventCard key={doc.id} event={doc} />
+          ))}
+          {nPages >= 2 && (
+            <PaginationBtns
+              nPages={nPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </>
+      ) : (
+        <div className="mt-10">
+          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
+            You have no events
+          </h2>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default EventList;
