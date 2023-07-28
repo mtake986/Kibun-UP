@@ -94,7 +94,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
-    const q = query(quotesCollectionRef, where("uid", "!=", user?.uid));
+    const q = user ? query(quotesCollectionRef, where("uid", "!=", user.uid)) : quotesCollectionRef;
     onSnapshot(q, (snapshot) => {
       setQuotesNotMine(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))

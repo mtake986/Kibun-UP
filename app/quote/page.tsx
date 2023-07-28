@@ -11,23 +11,21 @@ const QuoteHomePage = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
   return (
     <div>
-      <div className="mb-10">
-        {user &&
-          (registerOpen ? (
-            <RegisterForm
-              registerOpen={registerOpen}
-              setRegisterOpen={setRegisterOpen}
-            />
-          ) : (
-            <RegisterFormToggleBtn
-              registerOpen={registerOpen}
-              setRegisterOpen={setRegisterOpen}
-            />
-          ))}
-      </div>
+      {user &&
+        (registerOpen ? (
+          <RegisterForm
+            registerOpen={registerOpen}
+            setRegisterOpen={setRegisterOpen}
+          />
+        ) : (
+          <RegisterFormToggleBtn
+            registerOpen={registerOpen}
+            setRegisterOpen={setRegisterOpen}
+          />
+        ))}
 
-      <div className="relative">
-        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">My Quotes</h2>
+      <div className="relative mt-12">
+        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">Quotes</h2>
         <SelectTab />
       </div>
     </div>

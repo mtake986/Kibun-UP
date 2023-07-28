@@ -24,11 +24,6 @@ const Event = () => {
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const toggleInfo = () => {
-    setShowInfo(!showInfo);
-    // setTimeout(() => setShowInfo(false), 3000);
-  };
-
   function calculateLeftDays(date: Date): number {
     const today = new Date();
     if (date < today) {
@@ -65,7 +60,7 @@ const Event = () => {
 
   if (!loading) {
     if (user) {
-      if (!randomEvent) {
+      if (!lockedEvent && !randomEvent) {
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
             <p>No event yet.</p>
@@ -84,13 +79,12 @@ const Event = () => {
               {lockedEvent.eventTitle}
             </strong>
             {lockedEvent.description ? (
-            <HoverCard>
-              <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
-                <AiOutlineInfoCircle />
-              </HoverCardTrigger>
-              <HoverCardContent>{lockedEvent.description}</HoverCardContent>
-            </HoverCard>
-
+              <HoverCard>
+                <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
+                  <AiOutlineInfoCircle />
+                </HoverCardTrigger>
+                <HoverCardContent>{lockedEvent.description}</HoverCardContent>
+              </HoverCard>
             ) : null}
 
             <div className="mt-4 text-center">
@@ -110,8 +104,7 @@ const Event = () => {
                     {calculateLeftDays(lockedEvent.eventDate.toDate())}
                   </strong>
                   <span className="text-sm">
-                    {" "}
-                    {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
+                    {calculateLeftDays(lockedEvent.eventDate.toDate()) >= 2
                       ? "days"
                       : "day"}{" "}
                     left

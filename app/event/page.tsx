@@ -1,5 +1,5 @@
 "use client";
-import List from "@/components/event/list/List";
+import List from "@/components/event/list/Mine/UserEventList";
 import RegisterForm from "@/components/event/register/RegisterForm";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggl
 import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "../context/EventContext";
+import SwitchTab from "@/components/event/list/SwitchTab";
 
 const EventPage = () => {
   const [user] = useAuthState(auth);
@@ -27,25 +28,12 @@ const EventPage = () => {
           />
         ))}
 
-      <List />
+      <div className="relative mt-12">
+        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">Events</h2>
+        <SwitchTab />
+      </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     {registerOpen ? (
-  //       <RegisterForm
-  //         registerOpen={registerOpen}
-  //         setRegisterOpen={setRegisterOpen}
-  //       />
-  //     ) : (
-  //       <RegisterFormToggleBtn
-  //         registerOpen={registerOpen}
-  //         setRegisterOpen={setRegisterOpen}
-  //       />
-  //     )}
-  //     <List />
-  //   </div>
-  // );
 };
 
 export default EventPage;
