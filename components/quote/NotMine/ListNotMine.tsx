@@ -12,7 +12,7 @@ type Props = {
 };
 
 const ListNotMine = ({ quotes }: Props) => {
-  const [user] = useAuthState(auth);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = pagination(currentPage, quotes);

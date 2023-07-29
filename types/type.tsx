@@ -34,3 +34,9 @@ export interface IQuoteInputValues {
   quote: string;
   isDraft: boolean;
 }
+
+export interface IFavQuote {
+  qid: string;
+  uids: string[];
+  id?: string;
+}
