@@ -67,7 +67,6 @@ export default function EditModeOn({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    // handleSave(values);
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({

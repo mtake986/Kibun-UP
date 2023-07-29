@@ -21,6 +21,7 @@ type Props = {
   i: number;
 };
 const CardNotMine = ({ q, i }: Props) => {
+
   return (
     <Card className={`mb-3`}>
       <CardHeader>
@@ -37,6 +38,7 @@ const CardNotMine = ({ q, i }: Props) => {
             <BsChatLeftText size={24} />
             <p>{q.quote}</p>
           </div>
+          {q.displayName}
         </div>
       </CardContent>
 

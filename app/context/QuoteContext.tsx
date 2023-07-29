@@ -30,7 +30,6 @@ type QuoteContext = {
   getLoginUsersQuotes: () => void;
   handleEditMode: () => void;
   editModeOn: boolean;
-  handleSave: (id: string, values: IQuoteInputValues) => void;
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
@@ -50,7 +49,7 @@ type QuoteContext = {
   quotesNotMine: IQuote[];
   getQuotesNotMine: () => void;
 
-  registerQuote: (values: IQuoteInputValues, uid?: string) => void;
+  registerQuote: (values: IQuoteInputValues, uid?: string, displayName?: string | null) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -69,10 +68,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
 
-  const registerQuote = async (values: IQuoteInputValues, uid?: string) => {
+  const registerQuote = async (
+    values: IQuoteInputValues,
+    uid?: string,
+    displayName?: string | null,
+  ) => {
     await addDoc(quotesCollectionRef, {
       ...values,
       uid,
+      displayName,
       createdAt: serverTimestamp(),
     }).then(() => {
       toast({
@@ -85,7 +89,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           `,
       });
     });
-  }
+  };
 
   const getAllQuotes = async () => {
     const snapshot = await getDocs(quotesCollectionRef);
@@ -140,25 +144,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const [editModeOn, setEditModeOn] = useState(false);
-
-  const handleSave = async (id: string, values: IQuoteInputValues) => {
-    const docRef = doc(db, "quotes", id);
-    await updateDoc(docRef, {
-      ...values,
-      updatedAt: serverTimestamp(),
-    }).then((res) => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Updated",
-        description: `
-            Quote: ${values.quote}, 
-            Person: ${values.person},
-            Draft: ${values.isDraft},
-          `,
-      });
-      setEditModeOn(false);
-    });
-  };
 
   const handleCancelUpdate = () => {
     setIsUpdateMode(false);
@@ -244,7 +229,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getLoginUsersQuotes,
         handleEditMode,
         editModeOn,
-        handleSave,
         handleCancelUpdate,
         handleDelete,
         getRandomQuote,

@@ -16,6 +16,7 @@ export interface IQuote {
   person: string;
   quote: string;
   uid: string;
+  displayName: string;
   isDraft: boolean;
   createdAt: Date;
   updatedAt?: Date;
