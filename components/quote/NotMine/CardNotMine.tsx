@@ -60,16 +60,12 @@ const CardNotMine = ({ q, i }: Props) => {
 
             () => {
               if (user) {
-                if (favQuotes.map((favQuote) => favQuote.qid).includes(q.id)) {
-                  if (
-                    favQuotes.map((favQuote) => favQuote.uids)
-                    // .includes(user.uid)
-                  ) {
-                    removeFavQuote(user.uid, q.id);
-                  } else {
-                    storeFavQuote(user.uid, q.id);
-                  }
-                }
+                favQuotes.some(
+                  (favQuote) =>
+                    favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+                )
+                  ? removeFavQuote(user.uid, q.id)
+                  : storeFavQuote(user.uid, q.id);
               }
             }
             // ? removeFavQuote(user.uid, q.id)
@@ -83,30 +79,11 @@ const CardNotMine = ({ q, i }: Props) => {
             (favQuote) =>
               favQuote.qid === q.id && favQuote.uids.includes(user.uid)
           ) ? (
-            <Heart size={14} fill="red" className="text-red-500"/>
+            <Heart size={14} fill="red" className="text-red-500" />
           ) : (
             <Heart size={14} />
           )}
-
-          {/* <span>Delete</span> */}
         </Button>
-
-        {/* // TODO1: add a check if user is logged in
-        // todo2: このQuoteがfavQuotesにあるかどうかを判断する
-        // todo3: なかったら、storeFavQuoteを実行する
-        // todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
-        // todo5: なかったら、storeFavQuoteを実行する
-        // todo6: あったら、removeFavQuoteを実行する */}
-
-        {user &&
-          (favQuotes.some(
-            (favQuote) =>
-              favQuote.qid === q.id && favQuote.uids.includes(user.uid)
-          ) ? (
-            <div>true</div>
-          ) : (
-            <div>false</div>
-          ))}
         <span>{q.displayName}</span>
       </CardFooter>
     </Card>
@@ -114,3 +91,15 @@ const CardNotMine = ({ q, i }: Props) => {
 };
 
 export default CardNotMine;
+
+{
+  /* {user &&
+          (favQuotes.some(
+            (favQuote) =>
+              favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+          ) ? (
+            <div>true</div>
+          ) : (
+            <div>false</div>
+          ))} */
+}
