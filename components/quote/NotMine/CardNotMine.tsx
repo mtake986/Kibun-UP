@@ -49,15 +49,8 @@ const CardNotMine = ({ q, i }: Props) => {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between gap-5">
-        <Button
+        <div
           onClick={
-            // TODO1: add a check if user is logged in
-            // todo2: このQuoteがfavQuotesにあるかどうかを判断する
-            // todo3: なかったら、storeFavQuoteを実行する
-            // todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
-            // todo5: なかったら、storeFavQuoteを実行する
-            // todo6: あったら、removeFavQuoteを実行する
-
             () => {
               if (user) {
                 favQuotes.some(
@@ -71,26 +64,43 @@ const CardNotMine = ({ q, i }: Props) => {
             // ? removeFavQuote(user.uid, q.id)
             // : storeFavQuote(user.uid, q.id);
           }
-          className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-          variant="ghost"
+          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50 sm:w-auto`}
         >
           {user &&
           favQuotes.some(
             (favQuote) =>
               favQuote.qid === q.id && favQuote.uids.includes(user.uid)
           ) ? (
-            <Heart size={14} fill="red" className="text-red-500" />
+            <>
+              <Heart size={14} fill="red" className="text-red-500" />
+              {favQuotes.map((favQuote) =>
+                favQuote.qid === q.id ? (
+                  <span className="text-xs">{favQuote.uids.length}</span>
+                ) : null
+              )}
+            </>
           ) : (
-            <Heart size={14} />
+            <>
+              <Heart size={14} />
+              <span className="text-xs">0</span>
+            </>
           )}
-        </Button>
-        <span>{q.displayName}</span>
+          {/* todo: number of favs */}
+        </div>
+        <span className="text-xs">{q.displayName}</span>
       </CardFooter>
     </Card>
   );
 };
 
 export default CardNotMine;
+
+// TODO1: add a check if user is logged in
+// todo2: このQuoteがfavQuotesにあるかどうかを判断する
+// todo3: なかったら、storeFavQuoteを実行する
+// todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
+// todo5: なかったら、storeFavQuoteを実行する
+// todo6: あったら、removeFavQuoteを実行する
 
 {
   /* {user &&
