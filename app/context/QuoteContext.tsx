@@ -256,9 +256,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docRef = doc(db, "favQuotes", qid);
     const docSnap = await getDoc(docRef);
     console.log(docSnap.data());
-    await updateDoc(docRef, {
-      uids: arrayRemove(uid),
-    });
+    const data = docSnap.data();
+    if (data?.uids.length === 1) {
+      await deleteDoc(doc(db, "favQuotes", qid));
+    } else {
+      await updateDoc(docRef, {
+        uids: arrayRemove(uid),
+      });
+    }
   };
 
   const fetchFavQuotes = async () => {
