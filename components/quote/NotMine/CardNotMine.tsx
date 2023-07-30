@@ -7,7 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BsFillPersonFill, BsChatLeftText } from "react-icons/bs";
+import {
+  BsFillPersonFill,
+  BsChatLeftText,
+  BsHeartFill,
+  BsHouseHeartFill,
+} from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
@@ -46,45 +51,62 @@ const CardNotMine = ({ q, i }: Props) => {
       <CardFooter className="flex items-center justify-between gap-5">
         <Button
           onClick={
+            // TODO1: add a check if user is logged in
+            // todo2: このQuoteがfavQuotesにあるかどうかを判断する
+            // todo3: なかったら、storeFavQuoteを実行する
+            // todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
+            // todo5: なかったら、storeFavQuoteを実行する
+            // todo6: あったら、removeFavQuoteを実行する
+
             () => {
-              favQuotes.map((favQuote) => {
-                if (
-                  user &&
-                  favQuote.uids.includes(user?.uid) &&
-                  favQuote.qid === q.id
-                ) {
-                  removeFavQuote(user.uid, q.id);
-                } else if (user) {
-                  storeFavQuote(user.uid, q.id);
+              if (user) {
+                if (favQuotes.map((favQuote) => favQuote.qid).includes(q.id)) {
+                  if (
+                    favQuotes.map((favQuote) => favQuote.uids)
+                    // .includes(user.uid)
+                  ) {
+                    removeFavQuote(user.uid, q.id);
+                  } else {
+                    storeFavQuote(user.uid, q.id);
+                  }
                 }
-              });
+              }
             }
             // ? removeFavQuote(user.uid, q.id)
             // : storeFavQuote(user.uid, q.id);
           }
-          className={`${favQuotes.map((favQuote) => {
-            if (
-              user &&
-              favQuote.uids.includes(user?.uid) &&
-              favQuote.qid === q.id
-            ) {
-              ("text-red-500");
-            }
-          })} duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+          className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
           variant="ghost"
         >
-          <Heart size={14} />
+          {user &&
+          favQuotes.some(
+            (favQuote) =>
+              favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+          ) ? (
+            <Heart size={14} fill="red" className="text-red-500"/>
+          ) : (
+            <Heart size={14} />
+          )}
+
           {/* <span>Delete</span> */}
         </Button>
-        {favQuotes.map((favQuote) => {
-          if (
-            user &&
-            favQuote.uids.includes(user?.uid) &&
-            favQuote.qid === q.id
-          ) {
-            return <p>fav</p>;
-          }
-        })}
+
+        {/* // TODO1: add a check if user is logged in
+        // todo2: このQuoteがfavQuotesにあるかどうかを判断する
+        // todo3: なかったら、storeFavQuoteを実行する
+        // todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
+        // todo5: なかったら、storeFavQuoteを実行する
+        // todo6: あったら、removeFavQuoteを実行する */}
+
+        {user &&
+          (favQuotes.some(
+            (favQuote) =>
+              favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+          ) ? (
+            <div>true</div>
+          ) : (
+            <div>false</div>
+          ))}
         <span>{q.displayName}</span>
       </CardFooter>
     </Card>

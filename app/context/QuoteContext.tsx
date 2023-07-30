@@ -254,6 +254,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const removeFavQuote = async (uid: string, qid: string) => {
     const docRef = doc(db, "favQuotes", qid);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data());
     await updateDoc(docRef, {
       uids: arrayRemove(uid),
     });
@@ -279,7 +281,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data() as IFavQuote;
-      console.log(data)
+      console.log(data);
       return data.uids.includes(uid);
     }
   };
