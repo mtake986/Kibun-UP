@@ -12,7 +12,6 @@ type Props = {
 };
 
 const ListNotMine = ({ quotes }: Props) => {
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = pagination(currentPage, quotes);
