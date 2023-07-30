@@ -12,9 +12,11 @@ const Profile = () => {
       {isEditMode ? (
         <EditMode setIsEditMode={setIsEditMode} />
       ) : (
-        <UserInfoCard />
+        <>
+          <UserInfoCard />
+          <EditBtn isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
+        </>
       )}
-      <EditBtn isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
     </div>
   );
 };

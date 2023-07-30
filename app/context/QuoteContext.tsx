@@ -60,7 +60,7 @@ type QuoteContext = {
   removeFavQuote: (uid: string, qid: string) => void;
   fetchFavQuotes: () => void;
   favQuotes: IFavQuote[];
-  isFav: (uid: string, qid: string) => boolean;
+  isFav: (uid: string, qid: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -80,9 +80,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
-  // todo: store user icon
-  // todo: optional to update user icon
-  // todo: create users in firestore
+
 
   const registerQuote = async (
     values: IQuoteInputValues,
@@ -280,7 +278,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const isFav = async (uid: string, qid: string): boolean => {
+  const isFav = async (uid: string, qid: string) => {
     console.log(uid, qid, favQuotes);
     const docRef = doc(db, "favQuotes", qid);
     const docSnap = await getDoc(docRef);

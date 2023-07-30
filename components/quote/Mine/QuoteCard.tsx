@@ -93,6 +93,7 @@ const QuoteCard = ({ q, i }: Props) => {
             </div>
           </CardContent>
 
+          {/* // todo: display numn of heart of the current user's quotes */}
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-1">
               <Button

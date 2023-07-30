@@ -69,7 +69,8 @@ const CardNotMine = ({ q, i }: Props) => {
           {user &&
           favQuotes.some(
             (favQuote) =>
-              favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+              // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+              favQuote.qid === q.id
           ) ? (
             <>
               <Heart size={14} fill="red" className="text-red-500" />
