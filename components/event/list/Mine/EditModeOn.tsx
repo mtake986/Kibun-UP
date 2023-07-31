@@ -34,7 +34,6 @@ import { Switch } from "@/components/ui/switch";
 import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 
-// todo: add more fields like place, time, etc.
 
 type Props = {
   event: IEvent;

@@ -34,8 +34,6 @@ import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
 import { MdCancel, MdOutlineCancel } from "react-icons/md";
 
-// todo: add more fields like place, time, etc.
-
 type Props = {
   q: IQuote;
   setIsUpdateMode: (boo: boolean) => void;

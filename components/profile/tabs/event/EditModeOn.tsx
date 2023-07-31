@@ -35,8 +35,6 @@ import { DocumentData } from "firebase/firestore";
 import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 
-// todo: add more fields like place, time, etc.
-
 type Props = {
   event: DocumentData;
   setIsUpdateMode: (boo: boolean) => void;

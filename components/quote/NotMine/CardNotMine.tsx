@@ -86,7 +86,6 @@ const CardNotMine = ({ q, i }: Props) => {
               <span className="text-xs">0</span>
             </>
           )}
-          {/* todo: number of favs */}
         </div>
         <span className="text-xs">{q.displayName}</span>
       </CardFooter>
@@ -96,12 +95,12 @@ const CardNotMine = ({ q, i }: Props) => {
 
 export default CardNotMine;
 
-// TODO1: add a check if user is logged in
-// todo2: このQuoteがfavQuotesにあるかどうかを判断する
-// todo3: なかったら、storeFavQuoteを実行する
-// todo4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
-// todo5: なかったら、storeFavQuoteを実行する
-// todo6: あったら、removeFavQuoteを実行する
+// 1: add a check if user is logged in
+// 2: このQuoteがfavQuotesにあるかどうかを判断する
+// 3: なかったら、storeFavQuoteを実行する
+// 4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
+// 5: なかったら、storeFavQuoteを実行する
+// 6: あったら、removeFavQuoteを実行する
 
 {
   /* {user &&
