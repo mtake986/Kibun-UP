@@ -17,17 +17,20 @@ const Quote = () => {
     lockedQuote,
     removeLockThisQuote,
     getLockedQuote,
+    setRandomQuote,
+    setLockedQuote,
   } = useQuote();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    // setLoading(true);
-    // getPrimaryQuote();
+    setLoading(true);
+    setRandomQuote(undefined) 
+    setLockedQuote(undefined) 
     getLockedQuote(user?.uid);
     getRandomQuote(setLoading);
-    // setLoading(false);
+    setLoading(false);
   }, [user]);
 
   if (loading === true) {
