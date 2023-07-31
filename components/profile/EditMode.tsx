@@ -140,14 +140,21 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!currentUser) return;
-    e.preventDefault();
-    uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
+    if (!photo && !newUsername) {
+      alert("At least one field is required.");
+      e.preventDefault();
+      return;
+    }
+    else {
+
+      e.preventDefault();
+      uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
+    }
   };
 
   if (loading) return <p>Updating...</p>;
 
   // todo: store user icon
-  // todo: optional to update user icon
   // todo: create users in firestore
 
   return (
