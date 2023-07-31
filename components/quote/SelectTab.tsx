@@ -20,12 +20,14 @@ const SelectTab = () => {
     getLoginUsersQuotes,
     quotesNotMine,
     getQuotesNotMine,
+    fetchFavQuotes,
   } = useQuote();
 
   useEffect(() => {
     setLoading(true);
     getLoginUsersQuotes();
     getQuotesNotMine();
+    fetchFavQuotes();
     setLoading(false);
   }, [user]);
 

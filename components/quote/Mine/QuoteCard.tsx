@@ -70,12 +70,12 @@ const QuoteCard = ({ q, i }: Props) => {
           <CardContent>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-5">
-                <BsFillPersonFill size={24} />
-                <p>{q.person}</p>
-              </div>
-              <div className="flex items-center gap-5">
                 <BsChatLeftText size={24} />
                 <p>{q.quote}</p>
+              </div>
+              <div className="flex items-center gap-5">
+                <BsFillPersonFill size={24} />
+                <p>{q.person}</p>
               </div>
               <div className="flex items-center gap-5">
                 {q.isDraft ? (
@@ -93,6 +93,7 @@ const QuoteCard = ({ q, i }: Props) => {
             </div>
           </CardContent>
 
+          {/* // todo: display numn of heart of the current user's quotes */}
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-1">
               <Button

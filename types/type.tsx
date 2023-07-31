@@ -16,6 +16,7 @@ export interface IQuote {
   person: string;
   quote: string;
   uid: string;
+  displayName: string;
   isDraft: boolean;
   createdAt: Date;
   updatedAt?: Date;
@@ -32,4 +33,10 @@ export interface IQuoteInputValues {
   person: string;
   quote: string;
   isDraft: boolean;
+}
+
+export interface IFavQuote {
+  qid: string;
+  uids: string[];
+  id?: string;
 }

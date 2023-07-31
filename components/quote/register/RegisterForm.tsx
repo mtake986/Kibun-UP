@@ -47,7 +47,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    registerQuote(values, user?.uid);
+    registerQuote(values, user?.uid, user?.displayName);
 
     reset({
       person: "",

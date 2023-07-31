@@ -35,8 +35,6 @@ import { DocumentData } from "firebase/firestore";
 import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 
-// todo: add more fields like place, time, etc.
-
 type Props = {
   event: DocumentData;
   setIsUpdateMode: (boo: boolean) => void;
@@ -177,7 +175,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
             </Button>
             <Button
               type="submit"
-              // onClick={() => handleSave({ eventInput, id: event.id })}
               className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
               variant="ghost"
             >

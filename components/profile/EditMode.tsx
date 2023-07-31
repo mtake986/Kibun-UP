@@ -140,14 +140,28 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!currentUser) return;
-    e.preventDefault();
-    uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
+    if (!photo && !newUsername) {
+      alert("At least one field is required.");
+      e.preventDefault();
+      return;
+    }
+    else {
+
+      e.preventDefault();
+      uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
+    }
   };
 
   if (loading) return <p>Updating...</p>;
 
+  // todo: store user icon
+  // todo: create users in firestore
+
   return (
-    <form className="mx-auto flex max-w-[250px] flex-col gap-5" onSubmit={onSubmit}>
+    <form
+      className="mx-auto flex max-w-[250px] flex-col gap-5"
+      onSubmit={onSubmit}
+    >
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="picture">Profile Picture</Label>
         <Input
@@ -177,9 +191,9 @@ const EditMode = ({ setIsEditMode }: Props) => {
         </Button>
         <Button
           className="bg-slate-50 text-slate-500 hover:bg-slate-100"
-          type="reset"
+          onClick={() => setIsEditMode(false)}
         >
-          Reset
+          Close
         </Button>
       </div>
     </form>

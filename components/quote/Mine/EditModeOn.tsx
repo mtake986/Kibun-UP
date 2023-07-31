@@ -34,8 +34,6 @@ import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
 import { MdCancel, MdOutlineCancel } from "react-icons/md";
 
-// todo: add more fields like place, time, etc.
-
 type Props = {
   q: IQuote;
   setIsUpdateMode: (boo: boolean) => void;
@@ -67,7 +65,6 @@ export default function EditModeOn({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    // handleSave(values);
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({

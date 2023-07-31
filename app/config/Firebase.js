@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import {
@@ -54,14 +53,21 @@ const uploadImage = async (
   setLoading,
   setIsEditMode
 ) => {
-  const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
-  // const fileRef = ref(storage, `${currentUser.uid}.png`);
-
   setLoading(true);
 
-  const snapshot = await uploadBytes(fileRef, file);
-  const photoURL = await getDownloadURL(fileRef);
-  updateProfile(currentUser, { displayName: newUsername, photoURL })
+  let payload = {};
+  if (file) {
+    const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
+    const snapshot = await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+    payload.photoURL = photoURL;
+  }
+  if (newUsername) {
+    payload['displayName'] = newUsername;
+  }
+  console.log(payload)
+
+  updateProfile(currentUser, payload)
     .then(() => {
       // Profile updated!
       // ...
@@ -70,8 +76,9 @@ const uploadImage = async (
       setIsEditMode(false);
     })
     .catch((error) => {
-      // An error occurred
-      // ...
+      alert("Something went wrong! Please try later.");
     });
+
+  // const fileRef = ref(storage, `${currentUser.uid}.png`);
 };
 export { app, auth, provider, db, uploadImage, useAuth };

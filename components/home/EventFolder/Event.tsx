@@ -18,7 +18,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-
 const Event = () => {
   const [user] = useAuthState(auth);
   const [showInfo, setShowInfo] = useState<boolean>(false);
@@ -137,7 +136,7 @@ const Event = () => {
                 onClick={() => {
                   unlockThisEvent();
                 }}
-                className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                className={`text-red-500 duration-200 hover:text-red-500 hover:opacity-70 sm:w-auto`}
                 variant="ghost"
               >
                 <Target size={20} />
@@ -213,7 +212,7 @@ const Event = () => {
                 onClick={() => {
                   lockThisEvent(randomEvent);
                 }}
-                className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                className={`duration-300 hover:opacity-50 sm:w-auto`}
                 variant="ghost"
               >
                 <Target size={20} />
