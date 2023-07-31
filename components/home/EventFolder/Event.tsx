@@ -43,13 +43,16 @@ const Event = () => {
     lockedEvent,
     unlockThisEvent,
     getLockedEvent,
+    setRandomEvent,
+    setLockedEvent,
   } = useEvent();
 
   useEffect(() => {
     setLoading(true);
+    setRandomEvent(undefined)
+    setLockedEvent(undefined);
     getLockedEvent();
     if (user) getRandomEvent(user.uid);
-    console.log(randomEvent);
     setLoading(false);
   }, [user]);
 

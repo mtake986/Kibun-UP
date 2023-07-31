@@ -61,6 +61,8 @@ type QuoteContext = {
   fetchFavQuotes: () => void;
   favQuotes: IFavQuote[];
   isFav: (uid: string, qid: string) => void;
+  setRandomQuote: (quote: IQuote | undefined) => void;
+  setLockedQuote: (quote: IQuote | undefined) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -317,6 +319,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         fetchFavQuotes,
         favQuotes,
         isFav,
+        setRandomQuote,
+        setLockedQuote,
       }}
     >
       {children}

@@ -44,6 +44,8 @@ type EventContextType = {
 
   eventsNotMine: IEvent[] | [];
   getEventsNotMine: () => void;
+  setRandomEvent: (event: IEvent | undefined) => void;
+  setLockedEvent: (event: IEvent | undefined) => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -54,8 +56,6 @@ export function useEvent() {
 
 export function EventProvider({ children }: EventProviderProps) {
   const [editModeOn, setEditModeOn] = useState<boolean>(false);
-  const [eventInput, setEventInput] = useState<IEvent>();
-  const [date, setDate] = useState<Date>();
   const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
 
   const [lockedEvent, setLockedEvent] = useState<IEvent>();
@@ -64,7 +64,6 @@ export function EventProvider({ children }: EventProviderProps) {
   const [eventsNotMine, setEventsNotMine] = useState<IEvent[]>([]);
 
   const eventCollectionRef = collection(db, "events");
-  const lockedEventCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
 
   const handleEditMode = () => {
@@ -216,6 +215,8 @@ export function EventProvider({ children }: EventProviderProps) {
         getRandomEvent,
         eventsNotMine,
         getEventsNotMine,
+        setRandomEvent,
+        setLockedEvent,
       }}
     >
       {children}

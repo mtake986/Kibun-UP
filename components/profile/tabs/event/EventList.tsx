@@ -1,26 +1,8 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { app, auth, db } from "@/app/config/Firebase";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  onSnapshot,
-  Timestamp,
-  getFirestore,
-  orderBy,
-} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
-import { IEvent } from "@/types/type";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/app/context/AuthContext";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useCollection } from "react-firebase-hooks/firestore";
-import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useEvent } from "@/app/context/EventContext";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
