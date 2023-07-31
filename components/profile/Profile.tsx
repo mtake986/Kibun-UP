@@ -4,7 +4,6 @@ import EditMode from "./EditMode";
 import EditBtn from "./EditBtn";
 
 const Profile = () => {
-  const [photoURL, setPhotoURL] = React.useState<File | null>();
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   return (
