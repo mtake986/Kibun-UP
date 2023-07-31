@@ -74,9 +74,9 @@ const CardNotMine = ({ q, i }: Props) => {
           ) ? (
             <>
               <Heart size={14} fill="red" className="text-red-500" />
-              {favQuotes.map((favQuote) =>
+              {favQuotes.map((favQuote, i) =>
                 favQuote.qid === q.id ? (
-                  <span className="text-xs">{favQuote.uids.length}</span>
+                  <span key={i} className="text-xs">{favQuote.uids.length}</span>
                 ) : null
               )}
             </>
