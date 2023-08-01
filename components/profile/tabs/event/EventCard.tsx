@@ -34,15 +34,11 @@ const QuoteCard = ({ event }: Props) => {
 
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
 
-  const [eventInput, setEventInput] = useState<IEvent>();
-  const [date, setDate] = useState<Date>();
-
   const {
     handleDelete,
     lockThisEvent,
     lockedEvent,
     unlockThisEvent,
-    getLockedEvent,
   } = useEvent();
 
   return (

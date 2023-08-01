@@ -12,22 +12,28 @@ const QuoteList = () => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
 
-  const { loginUsersQuotes, getLoginUsersQuotes } = useQuote();
+  const {
+    loginUsersQuotes,
+    getLoginUsersQuotes,
+    getLockedQuote,
+    fetchFavQuotes,
+  } = useQuote();
 
   useEffect(() => {
     setLoading(true);
     getLoginUsersQuotes();
+    getLockedQuote(user?.uid);
+    fetchFavQuotes();
     setLoading(false);
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = pagination(currentPage, loginUsersQuotes);
-  
+
   if (loading) return <div>loading</div>;
 
   if (!loading && loginUsersQuotes.length === 0) return <div>No Quotes</div>;
-
 
   return (
     <div>
