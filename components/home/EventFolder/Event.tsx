@@ -231,7 +231,7 @@ const Event = () => {
         href="/event"
         className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
       > */}
-          login to set an event
+          Login to set events
           {/* </Link> */}
         </div>
       );

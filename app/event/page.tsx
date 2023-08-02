@@ -8,11 +8,13 @@ import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "../context/EventContext";
 import SwitchTab from "@/components/event/list/SwitchTab";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const EventPage = () => {
   const [user] = useAuthState(auth);
   const [registerOpen, setRegisterOpen] = useState(false);
 
+  if (!user) return <GoogleLoginBtn />;
   return (
     <div>
       {user &&
