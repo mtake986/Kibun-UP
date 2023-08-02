@@ -20,7 +20,7 @@ import {
 type QuoteProviderProps = {
   children: ReactNode;
 };
-import { IQuote, IQuoteInputValues, IFavQuote } from "@/types/type";
+import { IQuote, IQuoteInputValues, IFavQuote, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../../utils/functions";
@@ -53,8 +53,7 @@ type QuoteContext = {
 
   registerQuote: (
     values: IQuoteInputValues,
-    uid?: string,
-    displayName?: string | null
+    userInfo: IUserInfo
   ) => void;
   storeFavQuote: (uid: string, qid: string) => void;
   removeFavQuote: (uid: string, qid: string) => void;
@@ -86,13 +85,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const registerQuote = async (
     values: IQuoteInputValues,
-    uid?: string,
-    displayName?: string | null
+    userInfo: IUserInfo
   ) => {
     await addDoc(quotesCollectionRef, {
       ...values,
-      uid,
-      displayName,
+      userInfo,
       createdAt: serverTimestamp(),
     }).then(() => {
       toast({
@@ -115,7 +112,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getQuotesNotMine = async () => {
     const q = user
-      ? query(quotesCollectionRef, where("uid", "!=", user.uid))
+      ? query(quotesCollectionRef, where("userInfo.uid", "!=", user.uid))
       : quotesCollectionRef;
     onSnapshot(q, (snapshot) => {
       setQuotesNotMine(
@@ -128,7 +125,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getLoginUsersQuotes = async () => {
     if (user?.uid) {
-      const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
+      const q = query(quotesCollectionRef, where("userInfo.uid", "==", user?.uid));
       onSnapshot(q, (snapshot) => {
         setLoginUsersQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
@@ -144,7 +141,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user) {
       const q = query(
         quotesCollectionRef,
-        where("uid", "==", user?.uid),
+        where("userInfo.uid", "==", user?.uid),
         where("isDraft", "==", false)
       );
       onSnapshot(q, (snapshot) => {

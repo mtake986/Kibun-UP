@@ -24,6 +24,7 @@ import { quoteSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
+import { IUserInfo } from "@/types/type";
 
 type Props = {
   registerOpen: boolean;
@@ -47,7 +48,12 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    registerQuote(values, user?.uid, user?.displayName);
+    const userInfo: IUserInfo = {
+      uid: user?.uid,
+      displayName: user?.displayName,
+      photoUrl: user?.photoURL,
+    };
+    registerQuote(values, userInfo);
 
     reset({
       person: "",

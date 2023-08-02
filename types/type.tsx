@@ -9,7 +9,7 @@ export interface IEvent {
   uid: string;
   createdAt: Date;
   updatedAt?: Date;
-};
+}
 
 export interface IQuote {
   id: string;
@@ -20,7 +20,7 @@ export interface IQuote {
   isDraft: boolean;
   createdAt: Date;
   updatedAt?: Date;
-};
+}
 
 export interface IEventInputValues {
   eventTitle: string;
@@ -39,4 +39,10 @@ export interface IFavQuote {
   qid: string;
   uids: string[];
   id?: string;
+}
+
+export interface IUserInfo {
+  uid: string | undefined;
+  displayName: string | null | undefined;
+  photoUrl: string | null | undefined;
 }
