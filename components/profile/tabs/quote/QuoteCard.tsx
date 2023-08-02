@@ -41,7 +41,7 @@ const QuoteCard = ({ q }: Props) => {
 
   const [user] = useAuthState(auth);
 
-  if (q.uid !== user?.uid && q.isDraft) return null;
+  if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
 
   return (
     <Card

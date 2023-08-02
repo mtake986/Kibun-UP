@@ -15,11 +15,10 @@ export interface IQuote {
   id: string;
   person: string;
   quote: string;
-  uid: string;
-  displayName: string;
   isDraft: boolean;
   createdAt: Date;
   updatedAt?: Date;
+  userInfo: IUserInfo;
 }
 
 export interface IEventInputValues {
