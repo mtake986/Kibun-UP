@@ -15,6 +15,8 @@ const EventPage = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
 
   if (!user) return <GoogleLoginBtn />;
+
+  
   return (
     <div>
       {user &&

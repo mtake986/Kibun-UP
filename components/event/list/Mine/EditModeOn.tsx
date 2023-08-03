@@ -33,14 +33,15 @@ import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
-
+import { useState } from "react";
 
 type Props = {
   event: IEvent;
   setIsUpdateMode: (boo: boolean) => void;
+  setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, setIsUpdateMode }: Props) {
+export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 
@@ -61,7 +62,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleUpdate(values, event.id);
+    handleUpdate(values, event.id, setIsLoading);
     setIsUpdateMode(false);
     reset({
       eventTitle: values.eventTitle,
@@ -71,6 +72,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     });
     form.reset();
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -193,6 +195,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
       </form>
     </Form>
   );
-};
+}
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

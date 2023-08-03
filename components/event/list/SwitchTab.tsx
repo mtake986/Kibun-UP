@@ -23,7 +23,9 @@ const SwitchTab = () => {
     getLoginUserEvents();
     getEventsNotMine();
     setLoading(false);
-  }, []);
+  }, [user]);
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>
@@ -37,7 +39,11 @@ const SwitchTab = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="yours">
-          <UserEventList events={loginUserEvents} />
+          {user ? (
+            <UserEventList events={loginUserEvents} />
+          ) : (
+            <GoogleLoginBtn />
+          )}
         </TabsContent>
         <TabsContent value="All">
           <ListNotMine eventsNotMine={eventsNotMine} />

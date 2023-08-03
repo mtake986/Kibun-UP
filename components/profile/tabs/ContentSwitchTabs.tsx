@@ -12,13 +12,13 @@ const ContentSwitchTabs = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { allQuotes, getAllQuotes, loginUsersQuotes, getLoginUsersQuotes } =
+  const { getAllQuotes, getLoginUserQuotes } =
     useQuote();
 
   useEffect(() => {
     setLoading(true);
     getAllQuotes();
-    getLoginUsersQuotes();
+    getLoginUserQuotes();
     setLoading(false);
   }, [user]);
 

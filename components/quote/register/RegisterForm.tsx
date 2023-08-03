@@ -71,20 +71,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="person"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Person</FormLabel>
-              <FormControl>
-                <Input placeholder="NIKE" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="quote"
           render={({ field }) => (
             <FormItem className="w-full">
@@ -100,6 +86,21 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="person"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Person</FormLabel>
+              <FormControl>
+                <Input placeholder="NIKE" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="isDraft"

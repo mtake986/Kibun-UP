@@ -39,8 +39,6 @@ const QuoteCard = ({ q, i }: Props) => {
     favQuotes,
   } = useQuote();
 
-  // const [user] = useAuthState(auth);
-
   const [user, setUser] = useState(auth.currentUser);
 
   useEffect(() => {
@@ -50,8 +48,7 @@ const QuoteCard = ({ q, i }: Props) => {
     // setLoading(false);
   }, [user]);
 
-  if (q.uid !== user?.uid && q.isDraft) return null;
-
+  // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (
     <Card
       className={`mb-3 ${

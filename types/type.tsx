@@ -24,7 +24,7 @@ export interface IQuote {
 export interface IEventInputValues {
   eventTitle: string;
   place?: string;
-  description: string;
+  description?: string;
   eventDate: Date;
 }
 

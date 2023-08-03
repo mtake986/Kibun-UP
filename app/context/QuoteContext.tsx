@@ -28,8 +28,8 @@ import { getRandomNum } from "../../utils/functions";
 type QuoteContext = {
   allQuotes: IQuote[] | [];
   getAllQuotes: () => void;
-  loginUsersQuotes: IQuote[] | [];
-  getLoginUsersQuotes: () => void;
+  loginUserQuotes: IQuote[] | [];
+  getLoginUserQuotes: () => void;
   handleEditMode: () => void;
   editModeOn: boolean;
   handleCancelUpdate: () => void;
@@ -51,10 +51,7 @@ type QuoteContext = {
   quotesNotMine: IQuote[];
   getQuotesNotMine: () => void;
 
-  registerQuote: (
-    values: IQuoteInputValues,
-    userInfo: IUserInfo
-  ) => void;
+  registerQuote: (values: IQuoteInputValues, userInfo: IUserInfo) => void;
   storeFavQuote: (uid: string, qid: string) => void;
   removeFavQuote: (uid: string, qid: string) => void;
   fetchFavQuotes: () => void;
@@ -73,7 +70,7 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
-  const [loginUsersQuotes, setLoginUsersQuotes] = useState<IQuote[]>([]);
+  const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
@@ -82,6 +79,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
 
+  const [user] = useAuthState(auth);
 
   const registerQuote = async (
     values: IQuoteInputValues,
@@ -121,13 +119,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const [user] = useAuthState(auth);
-
-  const getLoginUsersQuotes = async () => {
+  const getLoginUserQuotes = async () => {
     if (user?.uid) {
-      const q = query(quotesCollectionRef, where("userInfo.uid", "==", user?.uid));
+      const q = query(
+        quotesCollectionRef,
+        where("userInfo.uid", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
-        setLoginUsersQuotes(
+        setLoginUserQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
@@ -293,8 +292,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       value={{
         allQuotes,
         getAllQuotes,
-        loginUsersQuotes,
-        getLoginUsersQuotes,
+        loginUserQuotes,
+        getLoginUserQuotes,
         handleEditMode,
         editModeOn,
         handleCancelUpdate,

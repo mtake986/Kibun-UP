@@ -39,10 +39,7 @@ type Props = {
   setIsUpdateMode: (boo: boolean) => void;
 };
 
-export default function EditModeOn({
-  q,
-  setIsUpdateMode,
-}: Props) {
+export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const { reset } = useForm();
   // 1. Define your form.
@@ -55,10 +52,7 @@ export default function EditModeOn({
     },
   });
 
-  const {
-    handleUpdate,
-    handleDelete,
-  } = useQuote();
+  const { handleUpdate, handleDelete } = useQuote();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
@@ -80,20 +74,6 @@ export default function EditModeOn({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="person"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Person</FormLabel>
-              <FormControl>
-                <Input placeholder="NIKE" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="quote"
           render={({ field }) => (
             <FormItem className="w-full">
@@ -104,6 +84,20 @@ export default function EditModeOn({
                   {...field}
                   // defaultValue={field.value}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="person"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Person</FormLabel>
+              <FormControl>
+                <Input placeholder="NIKE" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
