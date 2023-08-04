@@ -39,11 +39,7 @@ const SwitchTab = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="yours">
-          {user ? (
-            <List events={loginUserEvents} />
-          ) : (
-            <GoogleLoginBtn />
-          )}
+          {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
         </TabsContent>
         <TabsContent value="All">
           <ListNotMine eventsNotMine={eventsNotMine} />

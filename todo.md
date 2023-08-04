@@ -10,11 +10,13 @@ Aug. 3
 - [x] event: not fetching when loading
 - [x] event: after saving the first event, paginatino bug
 
+- [] profile: bug lockedEvent when deleting the event on the profile 
 - [] Event Cheer
 - [] Quote sort
 - [] create users in firestore
 - [] quote tag to filter
 - [] quote card order of elements
+- [] DROPDOWN: dropdown from hover card
 - [] bug handleUpdate
 <!-- ./components/profile/tabs/event/EditModeOn.tsx:64:5
 Type error: Expected 3 arguments, but got 2.
