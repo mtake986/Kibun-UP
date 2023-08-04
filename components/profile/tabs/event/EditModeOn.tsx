@@ -38,9 +38,10 @@ import { MdOutlineCancel } from "react-icons/md";
 type Props = {
   event: DocumentData;
   setIsUpdateMode: (boo: boolean) => void;
+  setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, setIsUpdateMode }: Props) {
+export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 
@@ -61,7 +62,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleUpdate(values, event.id);
+    handleUpdate(values, event.id, setIsLoading);
     setIsUpdateMode(false);
     reset({
       eventTitle: values.eventTitle,
