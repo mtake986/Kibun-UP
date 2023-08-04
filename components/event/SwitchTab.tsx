@@ -5,8 +5,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
-import UserEventList from "./Mine/UserEventList";
-import ListNotMine from "./NotMine/List";
+import List from "./list/Mine/List";
+import ListNotMine from "./list/NotMine/List";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -40,7 +40,7 @@ const SwitchTab = () => {
         </TabsList>
         <TabsContent value="yours">
           {user ? (
-            <UserEventList events={loginUserEvents} />
+            <List events={loginUserEvents} />
           ) : (
             <GoogleLoginBtn />
           )}

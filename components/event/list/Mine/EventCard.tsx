@@ -20,15 +20,6 @@ import {
   ToggleRightIcon,
   Trash,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  doc,
-  serverTimestamp,
-  setDoc,
-  deleteDoc,
-  updateDoc,
-  Timestamp,
-} from "firebase/firestore";
 import { auth, db } from "@/app/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -41,7 +32,6 @@ type Props = {
 };
 
 import { IEventInputValues, IEvent } from "@/types/type";
-import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import { useEvent } from "@/app/context/EventContext";
 import EditModeOn from "./EditModeOn";
 
@@ -157,7 +147,10 @@ const EventCard = ({ event, i }: Props) => {
               )}
             </div>
             <Button
-              onClick={() => handleDelete(event.id)}
+              onClick={() => {
+                handleDelete(event.id);
+                if (user && lockedEvent?.id === event.id) unlockThisEvent();
+              }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >

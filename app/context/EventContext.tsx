@@ -27,7 +27,11 @@ import { getRandomNum } from "@/utils/functions";
 type EventContextType = {
   handleEditMode: () => void;
   editModeOn: boolean;
-  handleUpdate: (values: IEventInputValues, id: string, setIsLoading: (boo: boolean)=> void) => void;
+  handleUpdate: (
+    values: IEventInputValues,
+    id: string,
+    setIsLoading: (boo: boolean) => void
+  ) => void;
   handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
 
@@ -98,35 +102,27 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleUpdate = async (
     values: IEventInputValues,
     eid: string,
-    setIsLoading: (boo: boolean) => void  
+    setIsLoading: (boo: boolean) => void
   ) => {
     setIsLoading(true);
     const docRef = doc(db, "events", eid);
     await updateDoc(docRef, {
       ...values,
       updatedAt: serverTimestamp(),
-    }).then(() => {
-      // toast({
-      //   className: "border-none bg-green-500 text-white",
-      //   title: "Successfully Updated",
-      //   description: `
-      //       Event Title: ${values.eventTitle}, 
-      //       Place: ${values.place}, 
-      //       Event Date: ${values.eventDate.toDateString()},
-      //       Description: ${values.description},
-      //     `,
-      // });
     });
-    const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
-    if (lockedEventDocRef) {
-      await updateDoc(lockedEventDocRef, {
-        ...values,
-        updatedAt: serverTimestamp(),
-      });
-    }
-    getLoginUserEvents();
-    setIsLoading(false);
 
+    if (lockedEvent?.id === eid) {
+      // console.log('need to edit a lock event')
+      const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
+      console.log(lockedEventDocRef);
+      if (lockedEventDocRef) {
+        await updateDoc(lockedEventDocRef, {
+          ...values,
+          updatedAt: serverTimestamp(),
+        });
+      }
+    }
+    setIsLoading(false);
   };
 
   const handleCancelEdit = () => {
@@ -135,7 +131,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
-    getLoginUserEvents();
+    // alert(123)
   };
 
   const getLoginUserEvents = async () => {

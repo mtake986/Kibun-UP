@@ -144,7 +144,10 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             </Button>
           </div>
           <Button
-            onClick={() => handleDelete(q.id)}
+            onClick={() => {
+              setIsUpdateMode(false);
+              handleDelete(q.id)
+            }}
             className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
             variant="ghost"
           >

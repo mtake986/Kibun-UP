@@ -184,7 +184,10 @@ export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Pro
             </Button>
           </div>
           <Button
-            onClick={() => handleDelete(event.id)}
+            onClick={() => {
+              setIsUpdateMode(false)
+              handleDelete(event.id)
+            }}
             className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
             variant="ghost"
           >
