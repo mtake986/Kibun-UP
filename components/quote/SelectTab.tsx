@@ -16,8 +16,8 @@ const SelectTab = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
-    loginUsersQuotes,
-    getLoginUsersQuotes,
+    loginUserQuotes,
+    getLoginUserQuotes,
     quotesNotMine,
     getQuotesNotMine,
     fetchFavQuotes,
@@ -25,7 +25,7 @@ const SelectTab = () => {
 
   useEffect(() => {
     setLoading(true);
-    getLoginUsersQuotes();
+    getLoginUserQuotes();
     getQuotesNotMine();
     fetchFavQuotes();
     setLoading(false);
@@ -45,7 +45,7 @@ const SelectTab = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="yours">
-        {user ? <List quotes={loginUsersQuotes} /> : <GoogleLoginBtn />}
+        {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="All">
         <ListNotMine quotes={quotesNotMine} />

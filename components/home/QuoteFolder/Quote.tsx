@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import { auth, db } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -26,8 +26,8 @@ const Quote = () => {
 
   useEffect(() => {
     setLoading(true);
-    setRandomQuote(undefined) 
-    setLockedQuote(undefined) 
+    setRandomQuote(undefined);
+    setLockedQuote(undefined);
     getLockedQuote(user?.uid);
     getRandomQuote(setLoading);
     setLoading(false);
@@ -55,7 +55,7 @@ const Quote = () => {
       );
     } else if (lockedQuote || randomQuote) {
       return (
-        <div className="mt-6 p-12 py-16 shadow-sm rounded-lg">
+        <div className="mt-6 rounded-lg p-12 py-16 shadow">
           <strong className="text-xl">
             {lockedQuote ? lockedQuote.quote : randomQuote.quote}
           </strong>
@@ -119,7 +119,12 @@ const Quote = () => {
       );
     }
   } else {
-    return <GoogleLoginBtn />;
+    return (
+      <div className="mt-6 rounded-lg p-12 py-16 shadow flex flex-col items-center">
+        <p>Login to create quotes</p>
+        <GoogleLoginBtn />
+      </div>
+    );
   }
   return <div>Going wrong here</div>;
 };

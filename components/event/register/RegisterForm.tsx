@@ -33,6 +33,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
+import { IUserInfo } from "@/types/type";
+import { useEvent } from "@/app/context/EventContext";
 
 type Props = {
   registerOpen: boolean;
@@ -41,6 +43,8 @@ type Props = {
 
 export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
+  const { getLoginUserEvents, registerEvent } = useEvent();
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -55,31 +59,21 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof eventSchema>) {
-    console.log(values);
     const collectionRef = collection(db, "events");
-    await addDoc(collectionRef, {
-      ...values,
-      uid: user ? user.uid : "undefined",
-      createdAt: serverTimestamp(),
-    }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Created",
-        description: `
-            Event Title: ${values.eventTitle}, 
-            Place: ${values.place}, 
-            Description: ${values.description},
-            Event Date: ${values.eventDate.toLocaleDateString("en-US")},
-          `,
-      });
-      reset({
-        eventTitle: "",
-        place: "",
-        description: "",
-        eventDate: new Date(),
-      });
-      form.reset();
+    const userInfo: IUserInfo = {
+      uid: user?.uid,
+      displayName: user?.displayName,
+      photoUrl: user?.photoURL,
+    };
+    registerEvent(values, userInfo);
+    reset({
+      eventTitle: "",
+      place: "",
+      description: "",
+      eventDate: new Date(),
     });
+    form.reset();
+    getLoginUserEvents();
   }
   return (
     <Form {...form}>

@@ -14,7 +14,7 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Heart, Trash } from "lucide-react";
 
 import { auth } from "@/app/config/Firebase";
 import { IQuote } from "@/types/type";
@@ -36,9 +36,8 @@ const QuoteCard = ({ q, i }: Props) => {
     handleDelete,
     removeLockThisQuote,
     getLockedQuote,
+    favQuotes,
   } = useQuote();
-
-  // const [user] = useAuthState(auth);
 
   const [user, setUser] = useState(auth.currentUser);
 
@@ -49,8 +48,7 @@ const QuoteCard = ({ q, i }: Props) => {
     // setLoading(false);
   }, [user]);
 
-  if (q.uid !== user?.uid && q.isDraft) return null;
-
+  // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (
     <Card
       className={`mb-3 ${
@@ -126,6 +124,39 @@ const QuoteCard = ({ q, i }: Props) => {
                   variant="ghost"
                 >
                   <BiLockOpen size={14} />
+                </Button>
+              )}
+
+              {user &&
+              favQuotes.some(
+                (favQuote) =>
+                  // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+                  favQuote.qid === q.id
+              ) ? (
+                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
+                  {user &&
+                    (favQuotes.some(
+                      (favQuote) =>
+                        favQuote.qid === q.id &&
+                        favQuote.uids.includes(user.uid)
+                    ) ? (
+                      <Heart size={14} fill="red" className="text-red-500" />
+                    ) : (
+                      <Heart size={14} />
+                    ))}
+
+                  {favQuotes.map((favQuote, i) =>
+                    favQuote.qid === q.id ? (
+                      <span key={i} className="text-xs">
+                        {favQuote.uids.length}
+                      </span>
+                    ) : null
+                  )}
+                </Button>
+              ) : (
+                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
+                  <Heart size={14} />
+                  <span className="text-xs">0</span>
                 </Button>
               )}
             </div>

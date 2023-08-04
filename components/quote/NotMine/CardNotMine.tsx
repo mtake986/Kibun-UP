@@ -20,6 +20,13 @@ import { IQuote } from "@/types/type";
 import { useQuote } from "@/app/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
+import Image from "next/image";
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type Props = {
   q: IQuote;
@@ -64,7 +71,7 @@ const CardNotMine = ({ q, i }: Props) => {
             // ? removeFavQuote(user.uid, q.id)
             // : storeFavQuote(user.uid, q.id);
           }
-          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50 sm:w-auto`}
+          className={`flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto`}
         >
           {user &&
           favQuotes.some(
@@ -92,13 +99,28 @@ const CardNotMine = ({ q, i }: Props) => {
               )}
             </>
           ) : (
-            <>
+            <div className="flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto">
               <Heart size={14} />
               <span className="text-xs">0</span>
-            </>
+            </div>
           )}
         </div>
-        <span className="text-xs">{q.displayName}</span>
+        {q.userInfo.photoUrl && (
+          <HoverCard>
+            <HoverCardTrigger>
+              <Image
+                width={20}
+                height={20}
+                src={q.userInfo.photoUrl}
+                alt="profile pic"
+                className="rounded-full object-cover object-center duration-300"
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="text-center text-xs">
+              {q.userInfo.displayName}
+            </HoverCardContent>
+          </HoverCard>
+        )}
       </CardFooter>
     </Card>
   );

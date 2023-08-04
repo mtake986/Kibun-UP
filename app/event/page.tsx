@@ -1,5 +1,5 @@
 "use client";
-import List from "@/components/event/list/Mine/UserEventList";
+import List from "@/components/event/list/Mine/List";
 import RegisterForm from "@/components/event/register/RegisterForm";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,14 @@ import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggl
 import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "../context/EventContext";
-import SwitchTab from "@/components/event/list/SwitchTab";
+import SwitchTab from "@/components/event/SwitchTab";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const EventPage = () => {
   const [user] = useAuthState(auth);
   const [registerOpen, setRegisterOpen] = useState(false);
+
+  if (!user) return <GoogleLoginBtn />;
 
   return (
     <div>

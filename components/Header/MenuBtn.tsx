@@ -12,18 +12,11 @@ import {
   BsFlag,
   BsFlagFill,
   BsHouse,
-  BsPerson,
-  BsQuote,
 } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
-import { Button } from "../ui/button";
-import { signOut } from "firebase/auth";
-import { LogOut } from "lucide-react";
-import { LogOutIcon } from "lucide-react";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import LogOutBtn from "./LogOutBtn";
-import LogInBtn from "./LogInBtn";
 
 const hamburgerMenus = [
   {

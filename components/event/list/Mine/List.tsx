@@ -12,7 +12,7 @@ type Props = {
   events: IEvent[];
 };
 
-const UserEventList = ({ events }: Props) => {
+const List = ({ events }: Props) => {
   const [user] = useAuthState(auth);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,4 +45,4 @@ const UserEventList = ({ events }: Props) => {
   );
 };
 
-export default UserEventList;
+export default List;

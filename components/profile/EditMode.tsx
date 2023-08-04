@@ -144,18 +144,13 @@ const EditMode = ({ setIsEditMode }: Props) => {
       alert("At least one field is required.");
       e.preventDefault();
       return;
-    }
-    else {
-
+    } else {
       e.preventDefault();
       uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
     }
   };
 
   if (loading) return <p>Updating...</p>;
-
-  // todo: store user icon
-  // todo: create users in firestore
 
   return (
     <form

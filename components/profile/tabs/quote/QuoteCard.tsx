@@ -21,6 +21,8 @@ import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
+import { Heart } from "lucide-react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type Props = {
   q: IQuote;
@@ -34,21 +36,12 @@ const QuoteCard = ({ q }: Props) => {
     lockedQuote,
     handleDelete,
     removeLockThisQuote,
-    getLockedQuote,
+    favQuotes,
   } = useQuote();
 
-  // const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
-  const [user, setUser] = useState(auth.currentUser);
-
-  useEffect(() => {
-    // setLoading(true);
-    // getPrimaryQuote();
-    getLockedQuote(user?.uid);
-    // setLoading(false);
-  }, [user]);
-
-  if (q.uid !== user?.uid && q.isDraft) return null;
+  if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
 
   return (
     <Card
@@ -72,7 +65,7 @@ const QuoteCard = ({ q }: Props) => {
                 <BsChatLeftText size={24} />
                 <p>{q.quote}</p>
               </div>
-            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-5">
                 <BsFillPersonFill size={24} />
                 <p>{q.person}</p>
               </div>
@@ -124,6 +117,39 @@ const QuoteCard = ({ q }: Props) => {
                   variant="ghost"
                 >
                   <BiLockOpen size={14} />
+                </Button>
+              )}
+
+              {user &&
+              favQuotes.some(
+                (favQuote) =>
+                  // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+                  favQuote.qid === q.id
+              ) ? (
+                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
+                  {user &&
+                    (favQuotes.some(
+                      (favQuote) =>
+                        favQuote.qid === q.id &&
+                        favQuote.uids.includes(user.uid)
+                    ) ? (
+                      <Heart size={14} fill="red" className="text-red-500" />
+                    ) : (
+                      <Heart size={14} />
+                    ))}
+
+                  {favQuotes.map((favQuote, i) =>
+                    favQuote.qid === q.id ? (
+                      <span key={i} className="text-xs">
+                        {favQuote.uids.length}
+                      </span>
+                    ) : null
+                  )}
+                </Button>
+              ) : (
+                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
+                  <Heart size={14} />
+                  <span className="text-xs">0</span>
                 </Button>
               )}
             </div>

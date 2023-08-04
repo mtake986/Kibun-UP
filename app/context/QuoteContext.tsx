@@ -20,7 +20,7 @@ import {
 type QuoteProviderProps = {
   children: ReactNode;
 };
-import { IQuote, IQuoteInputValues, IFavQuote } from "@/types/type";
+import { IQuote, IQuoteInputValues, IFavQuote, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../../utils/functions";
@@ -28,8 +28,8 @@ import { getRandomNum } from "../../utils/functions";
 type QuoteContext = {
   allQuotes: IQuote[] | [];
   getAllQuotes: () => void;
-  loginUsersQuotes: IQuote[] | [];
-  getLoginUsersQuotes: () => void;
+  loginUserQuotes: IQuote[] | [];
+  getLoginUserQuotes: () => void;
   handleEditMode: () => void;
   editModeOn: boolean;
   handleCancelUpdate: () => void;
@@ -51,11 +51,7 @@ type QuoteContext = {
   quotesNotMine: IQuote[];
   getQuotesNotMine: () => void;
 
-  registerQuote: (
-    values: IQuoteInputValues,
-    uid?: string,
-    displayName?: string | null
-  ) => void;
+  registerQuote: (values: IQuoteInputValues, userInfo: IUserInfo) => void;
   storeFavQuote: (uid: string, qid: string) => void;
   removeFavQuote: (uid: string, qid: string) => void;
   fetchFavQuotes: () => void;
@@ -74,7 +70,7 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
-  const [loginUsersQuotes, setLoginUsersQuotes] = useState<IQuote[]>([]);
+  const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
@@ -83,16 +79,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
 
+  const [user] = useAuthState(auth);
 
   const registerQuote = async (
     values: IQuoteInputValues,
-    uid?: string,
-    displayName?: string | null
+    userInfo: IUserInfo
   ) => {
     await addDoc(quotesCollectionRef, {
       ...values,
-      uid,
-      displayName,
+      userInfo,
       createdAt: serverTimestamp(),
     }).then(() => {
       toast({
@@ -115,7 +110,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getQuotesNotMine = async () => {
     const q = user
-      ? query(quotesCollectionRef, where("uid", "!=", user.uid))
+      ? query(quotesCollectionRef, where("userInfo.uid", "!=", user.uid))
       : quotesCollectionRef;
     onSnapshot(q, (snapshot) => {
       setQuotesNotMine(
@@ -124,13 +119,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const [user] = useAuthState(auth);
-
-  const getLoginUsersQuotes = async () => {
+  const getLoginUserQuotes = async () => {
     if (user?.uid) {
-      const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
+      const q = query(
+        quotesCollectionRef,
+        where("userInfo.uid", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
-        setLoginUsersQuotes(
+        setLoginUserQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
@@ -144,7 +140,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user) {
       const q = query(
         quotesCollectionRef,
-        where("uid", "==", user?.uid),
+        where("userInfo.uid", "==", user?.uid),
         where("isDraft", "==", false)
       );
       onSnapshot(q, (snapshot) => {
@@ -296,8 +292,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       value={{
         allQuotes,
         getAllQuotes,
-        loginUsersQuotes,
-        getLoginUsersQuotes,
+        loginUserQuotes,
+        getLoginUserQuotes,
         handleEditMode,
         editModeOn,
         handleCancelUpdate,

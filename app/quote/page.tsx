@@ -5,10 +5,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/Firebase";
 import RegisterFormToggleBtn from "../../components/quote/register/RegisterFormToggleBtn";
 import SelectTab from "@/components/quote/SelectTab";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const QuoteHomePage = () => {
   const [user] = useAuthState(auth);
   const [registerOpen, setRegisterOpen] = useState(false);
+  
+  if (!user) return <GoogleLoginBtn />;
+
   return (
     <div>
       {user &&
