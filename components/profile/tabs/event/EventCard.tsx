@@ -33,6 +33,7 @@ const QuoteCard = ({ event }: Props) => {
   };
 
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     handleDelete,
@@ -53,7 +54,11 @@ const QuoteCard = ({ event }: Props) => {
       </CardHeader>
       {isUpdateMode ? (
         <CardContent>
-          <EditModeOn event={event} setIsUpdateMode={setIsUpdateMode} />
+          <EditModeOn
+            event={event}
+            setIsUpdateMode={setIsUpdateMode}
+            setIsLoading={setIsLoading}
+          />
         </CardContent>
       ) : (
         <>

@@ -29,7 +29,7 @@ type EventContextType = {
   editModeOn: boolean;
   handleUpdate: (
     values: IEventInputValues,
-    id: string,
+    eid: string,
     setIsLoading: (boo: boolean) => void
   ) => void;
   handleCancelEdit: () => void;
