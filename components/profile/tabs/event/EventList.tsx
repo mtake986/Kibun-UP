@@ -37,7 +37,7 @@ const EventList = () => {
       ) : (
         <div className="mt-10">
           <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            You have no events
+            No events
           </h2>
         </div>
       )}

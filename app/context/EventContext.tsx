@@ -112,6 +112,7 @@ export function EventProvider({ children }: EventProviderProps) {
     });
 
     if (lockedEvent?.id === eid) {
+      alert(lockedEvent?.id + ',' + eid)
       // console.log('need to edit a lock event')
       const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
       console.log(lockedEventDocRef);
@@ -131,7 +132,6 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
-    // alert(123)
   };
 
   const getLoginUserEvents = async () => {
@@ -169,7 +169,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const lockThisEvent = async (data: IEvent) => {
     if (user?.uid) {
-      await setDoc(doc(db, "lockedEvents", user.uid), data);
+      await setDoc(doc(db, "lockedEvents", data.id), data);
       setLockedEvent(data);
     } else {
       alert(
