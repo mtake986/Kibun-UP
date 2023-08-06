@@ -14,6 +14,7 @@ Aug. 6
 - [x] bug lockedEvent on Home
 - [x] profile: bug lockedEvent when deleting the event on the profile 
 - [x] quote card order of elements
+- [x] Header & Profile: LogOutBtn
 
 - [] Event Cheer
 - [] Quote sort
