@@ -54,7 +54,6 @@ const Event = () => {
     getLockedEvent();
     if (user) getRandomEvent(user.uid);
     setLoading(false);
-    console.log('lockedebvent: ', lockedEvent);
   }, [user]);
 
   if (loading) {

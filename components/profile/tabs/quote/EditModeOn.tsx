@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,24 +14,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 
-import { CalendarIcon, Plane, Trash } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { Plane, Trash } from "lucide-react";
 import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IQuote } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
-import { MdCancel, MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel } from "react-icons/md";
 
 type Props = {
   q: IQuote;
@@ -52,17 +42,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     },
   });
 
-  const {
-    lockThisQuote,
-    lockedQuote,
-    removeLockThisQuote,
-    getLockedQuote,
-    isUpdateMode,
-    toggleUpdateMode,
-    handleUpdate,
-    handleDelete,
-    handleCancelUpdate,
-  } = useQuote();
+  const { handleUpdate, handleDelete } = useQuote();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
@@ -84,20 +64,6 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="person"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Person</FormLabel>
-              <FormControl>
-                <Input placeholder="NIKE" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="quote"
           render={({ field }) => (
             <FormItem className="w-full">
@@ -113,6 +79,21 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="person"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Person</FormLabel>
+              <FormControl>
+                <Input placeholder="NIKE" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="isDraft"
