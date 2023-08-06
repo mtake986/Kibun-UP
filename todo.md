@@ -15,12 +15,12 @@ Aug. 6
 - [x] profile: bug lockedEvent when deleting the event on the profile 
 - [x] quote card order of elements
 - [x] Header & Profile: LogOutBtn
+- [x] DROPDOWN: dropdown from hover card
 
 - [] Event Cheer
 - [] Quote sort
 - [] create users in firestore
 - [] quote tag to filter
-- [] DROPDOWN: dropdown from hover card
 - [] bug handleUpdate
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
