@@ -200,4 +200,3 @@ export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Pro
   );
 }
 
-// ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

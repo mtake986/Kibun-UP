@@ -71,6 +71,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const [eventsNotMine, setEventsNotMine] = useState<IEvent[]>([]);
 
   const eventCollectionRef = collection(db, "events");
+  const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
 
   const handleEditMode = () => {
@@ -112,6 +113,7 @@ export function EventProvider({ children }: EventProviderProps) {
     });
 
     if (lockedEvent?.id === eid) {
+      alert(lockedEvent?.id + "," + eid);
       // console.log('need to edit a lock event')
       const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
       console.log(lockedEventDocRef);
@@ -131,7 +133,6 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
-    // alert(123)
   };
 
   const getLoginUserEvents = async () => {
@@ -168,47 +169,30 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const lockThisEvent = async (data: IEvent) => {
-    if (user?.uid) {
-      await setDoc(doc(db, "lockedEvents", user.uid), data);
-      setLockedEvent(data);
-    } else {
-      alert(
-        "You need to login to lock this event. Please login with Google account."
-      );
-    }
-    // toast({
-    //   className: "border-none bg-red-50 text-red-500",
-    //   title: "Quote locked",
-    // });
+    user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
+    setLockedEvent(data);
   };
 
   const unlockThisEvent = async () => {
-    if (user?.uid) {
-      console.log(user, "in unlock ");
-      await deleteDoc(doc(db, "lockedEvents", user.uid));
-      setLockedEvent(undefined);
-    } else {
-      alert(
-        "You need to login to unlock this event. Please login with Google account."
-      );
-    }
-    // toast({
-    //   className: "border-none bg-red-50 text-red-500",
-    //   title: "Quote Unlocked",
-    // });
+    user && (await deleteDoc(doc(db, "lockedEvents", user?.uid)));
+    setLockedEvent(undefined);
   };
 
   const getLockedEvent = async () => {
     if (user?.uid) {
-      const docRef = doc(db, "lockedEvents", user.uid);
-      const docSnap = await getDoc(docRef);
-      setLockedEvent(docSnap.data() as IEvent);
-      console.log(docSnap.data());
+      const q = query(
+        lockedEventsCollectionRef,
+        where("userInfo.uid", "==", user?.uid)
+      );
+      onSnapshot(q, (snapshot) => {
+        console.log(snapshot.docs[0]?.data())
+        setLockedEvent(snapshot.docs[0]?.data() as IEvent);
+      });
     }
+    console.log("EventCvontext: ", lockedEvent);
   };
 
   const getRandomEvent = async (uid: string) => {
-    console.log("getRandom EVENT started", uid);
     const q = query(eventCollectionRef, where("userInfo.uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       const randomNum = getRandomNum(snapshot.docs.length);

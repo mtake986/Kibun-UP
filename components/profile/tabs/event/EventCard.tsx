@@ -22,6 +22,8 @@ import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import EditModeOn from "./EditModeOn";
 import { useEvent } from "@/app/context/EventContext";
 import { Target } from "lucide-react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/config/Firebase";
 
 type Props = {
   event: IEvent;
@@ -42,6 +44,7 @@ const QuoteCard = ({ event }: Props) => {
     unlockThisEvent,
   } = useEvent();
 
+  const [user] = useAuthState(auth);
   return (
     <Card
       className={`mb-3 ${
@@ -127,7 +130,10 @@ const QuoteCard = ({ event }: Props) => {
               )}
             </div>
             <Button
-              onClick={() => handleDelete(event.id)}
+              onClick={() => {
+                handleDelete(event.id)
+                if (user && lockedEvent?.id === event.id) unlockThisEvent();
+              }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >
