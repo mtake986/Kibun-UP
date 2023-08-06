@@ -135,7 +135,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
     setLoading(true);
-    console.log("getRandomQuote started");
     // auth.onAuthStateChanged((user) => {
     if (user) {
       const q = query(

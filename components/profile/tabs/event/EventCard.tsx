@@ -132,7 +132,6 @@ const QuoteCard = ({ event }: Props) => {
             <Button
               onClick={() => {
                 handleDelete(event.id)
-              
                 if (user && lockedEvent?.id === event.id) unlockThisEvent();
               }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}

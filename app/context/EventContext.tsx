@@ -169,29 +169,30 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const lockThisEvent = async (data: IEvent) => {
-    user && await setDoc(doc(db, "lockedEvents", user?.uid), data);
+    user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
     setLockedEvent(data);
   };
 
   const unlockThisEvent = async () => {
-    user && await deleteDoc(doc(db, "lockedEvents", user?.uid));
+    user && (await deleteDoc(doc(db, "lockedEvents", user?.uid)));
     setLockedEvent(undefined);
   };
 
   const getLockedEvent = async () => {
     if (user?.uid) {
       const q = query(
-        eventCollectionRef,
-        where("userInfo.uid", "==", user?.uid),
+        lockedEventsCollectionRef,
+        where("userInfo.uid", "==", user?.uid)
       );
       onSnapshot(q, (snapshot) => {
+        console.log(snapshot.docs[0]?.data())
         setLockedEvent(snapshot.docs[0]?.data() as IEvent);
       });
     }
+    console.log("EventCvontext: ", lockedEvent);
   };
 
   const getRandomEvent = async (uid: string) => {
-    console.log("getRandom EVENT started", uid);
     const q = query(eventCollectionRef, where("userInfo.uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       const randomNum = getRandomNum(snapshot.docs.length);

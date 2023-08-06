@@ -18,6 +18,7 @@ Aug. 3
 - [] quote card order of elements
 - [] DROPDOWN: dropdown from hover card
 - [] bug handleUpdate
+- [] bug lockedEvent on Home
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
