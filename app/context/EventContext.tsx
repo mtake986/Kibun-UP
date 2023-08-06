@@ -114,9 +114,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
     if (lockedEvent?.id === eid) {
       alert(lockedEvent?.id + "," + eid);
-      // console.log('need to edit a lock event')
       const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
-      console.log(lockedEventDocRef);
       if (lockedEventDocRef) {
         await updateDoc(lockedEventDocRef, {
           ...values,
@@ -185,11 +183,9 @@ export function EventProvider({ children }: EventProviderProps) {
         where("userInfo.uid", "==", user?.uid)
       );
       onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs[0]?.data())
         setLockedEvent(snapshot.docs[0]?.data() as IEvent);
       });
     }
-    console.log("EventCvontext: ", lockedEvent);
   };
 
   const getRandomEvent = async (uid: string) => {

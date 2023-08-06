@@ -65,7 +65,6 @@ const uploadImage = async (
   if (newUsername) {
     payload['displayName'] = newUsername;
   }
-  console.log(payload)
 
   updateProfile(currentUser, payload)
     .then(() => {

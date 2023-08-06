@@ -1,19 +1,19 @@
+import { useAuth } from "@/app/context/AuthContext";
+import { LogOut } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
-import { LogOut } from "lucide-react";
-import { useAuth } from "@/app/context/AuthContext";
 
 const LogOutBtn = () => {
   const { handleLogout } = useAuth();
 
   return (
-    <Button
-      className="flex cursor-pointer items-center gap-1 bg-red-50 p-1 text-red-500 duration-300 hover:bg-red-50 hover:opacity-70"
+    <div
+      className="flex cursor-pointer items-center gap-1 px-5 py-2 bg-red-50 text-red-500 duration-300 hover:opacity-50"
       onClick={() => handleLogout()}
     >
       <LogOut size={16} className="mr-2" />
       Logout
-    </Button>
+    </div>
   );
 };
 

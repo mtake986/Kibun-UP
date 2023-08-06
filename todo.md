@@ -12,13 +12,14 @@ Aug. 3
 
 Aug. 6
 - [x] bug lockedEvent on Home
+- [x] profile: bug lockedEvent when deleting the event on the profile 
+- [x] quote card order of elements
+- [x] Header & Profile: LogOutBtn
 
-- [] profile: bug lockedEvent when deleting the event on the profile 
 - [] Event Cheer
 - [] Quote sort
 - [] create users in firestore
 - [] quote tag to filter
-- [] quote card order of elements
 - [] DROPDOWN: dropdown from hover card
 - [] bug handleUpdate
 

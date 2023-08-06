@@ -235,7 +235,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const storeFavQuote = async (uid: string, qid: string) => {
-    console.log(uid);
     const docRef = doc(db, "favQuotes", qid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -250,7 +249,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const removeFavQuote = async (uid: string, qid: string) => {
     const docRef = doc(db, "favQuotes", qid);
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
     const data = docSnap.data();
     if (data?.uids.length === 1) {
       await deleteDoc(doc(db, "favQuotes", qid));
@@ -276,12 +274,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const isFav = async (uid: string, qid: string) => {
-    console.log(uid, qid, favQuotes);
     const docRef = doc(db, "favQuotes", qid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data() as IFavQuote;
-      console.log(data);
       return data.uids.includes(uid);
     }
   };
