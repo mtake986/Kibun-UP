@@ -3,6 +3,7 @@ import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import defaultIcon from "@/public/defaultUserImage.png";
+import LogOutBtn from "./LogOutBtn";
 
 const UserInfoCard = () => {
   const [user] = useAuthState(auth);
@@ -17,6 +18,7 @@ const UserInfoCard = () => {
         className="h-48 w-48 rounded-full object-cover object-center"
       />
       {user ? <p>{user.displayName}</p> : null}
+      <LogOutBtn />
     </div>
   );
 };
