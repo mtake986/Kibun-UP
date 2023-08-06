@@ -10,6 +10,9 @@ Aug. 3
 - [x] event: not fetching when loading
 - [x] event: after saving the first event, paginatino bug
 
+Aug. 6
+- [x] bug lockedEvent on Home
+
 - [] profile: bug lockedEvent when deleting the event on the profile 
 - [] Event Cheer
 - [] Quote sort
@@ -18,7 +21,6 @@ Aug. 3
 - [] quote card order of elements
 - [] DROPDOWN: dropdown from hover card
 - [] bug handleUpdate
-- [] bug lockedEvent on Home
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
