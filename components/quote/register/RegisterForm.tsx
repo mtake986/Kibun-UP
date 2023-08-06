@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,15 +14,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { toast } from "@/components/ui/use-toast";
-import { auth, db } from "@/app/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
 import { IUserInfo } from "@/types/type";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { MdAdd, MdClose } from "react-icons/md";
+import { handleClientScriptLoad } from "next/script";
 
 type Props = {
   registerOpen: boolean;
@@ -33,8 +33,18 @@ type Props = {
 
 export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
-  const { allQuotes, getAllQuotes, registerQuote } = useQuote();
-
+  const { getAllQuotes, registerQuote } = useQuote();
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const addTag = (tagInput: string) => {
+    if (tagInput) {
+      setTags([...tags, tagInput]);
+      setTagInput("");
+    }
+  };
+  const removeTag = (tagInput: string) => {
+    setTags(tags.filter((tag) => tag !== tagInput));
+  };
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -43,6 +53,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       person: "",
       quote: "",
       isDraft: false,
+      tags: [],
     },
   });
 
@@ -53,12 +64,14 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       displayName: user?.displayName,
       photoUrl: user?.photoURL,
     };
+    values.tags = tags;
     registerQuote(values, userInfo);
 
     reset({
       person: "",
       quote: "",
       isDraft: false,
+      tags: [],
     });
     form.reset();
     getAllQuotes();
@@ -122,9 +135,55 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
           )}
         />
 
+        <div>
+          <FormLabel>Tags</FormLabel>
+
+          <div className="mt-2 flex items-center gap-5">
+            <Input
+              placeholder="Motivation"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+            />
+            <MdAdd
+              onClick={() => {
+                addTag(tagInput);
+              }}
+              size={36}
+              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
+            />
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {tags.map((tag) => (
+              <Badge variant="outline" onClick={() => removeTag(tag)} className="hover:bg-red-50 cursor-pointer hover:text-red-500">
+                {tag}
+                <MdClose
+                  onClick={() => removeTag(tag)}
+                  className="ml-1 cursor-pointer rounded-full"
+                />
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        {/* <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Tags</FormLabel>
+              <FormControl>
+                <Input placeholder="Motivation" onChange={(e) => setTagInput(e.target.value)} />
+                <div>{tagInput}</div>
+                <Button onClick={() => setTags([tags, tagInput])}>Add</Button>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+
         <div className="flex items-center gap-3">
           <Button
-            className="w-full bg-violet-100 text-violet-500 hover:bg-violet-50"
+            className="w-full bg-violet-100 text-violet-500 hover:bg-violet-100 hover:opacity-70"
             type="submit"
           >
             Submit
