@@ -207,9 +207,8 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             {tags.map((tag, i) => (
               <Badge
                 key={i}
-                variant={null}
                 onClick={() => removeTag(tag.tag)}
-                className={`border-none hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                className={`border-none font-light hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
               >
                 #{tag.tag}
                 <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -217,8 +216,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             ))}
             {tagInput && (
               <Badge
-                variant="outline"
-                className={`cursor-pointer border-none hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500`}
+                className={`font-light cursor-pointer border-none hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500`}
               >
                 #{tagInput}
               </Badge>
