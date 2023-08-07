@@ -19,6 +19,7 @@ export interface IQuote {
   createdAt: Date;
   updatedAt?: Date;
   userInfo: IUserInfo;
+  tags: string[];
 }
 
 export interface IEventInputValues {
@@ -32,6 +33,7 @@ export interface IQuoteInputValues {
   person: string;
   quote: string;
   isDraft: boolean;
+  tags: string[];
 }
 
 export interface IFavQuote {

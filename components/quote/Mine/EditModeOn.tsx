@@ -32,7 +32,9 @@ import { IQuote } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
-import { MdCancel, MdOutlineCancel } from "react-icons/md";
+import { MdAdd, MdCancel, MdClose, MdOutlineCancel } from "react-icons/md";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   q: IQuote;
@@ -42,6 +44,29 @@ type Props = {
 export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const { reset } = useForm();
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>(q.tags || []);
+
+  const addTag = (tagInput: string) => {
+    if (tagInput) {
+      if (!tags.includes(tagInput)) {
+        if (tags.length === 0) {
+          setTags([tagInput]);
+        } else if (tags.length === 5) {
+          alert("Maximum 5 tags.");
+        } else {
+          setTags([...tags, tagInput]);
+        }
+        setTagInput("");
+      } else {
+        alert("Not Allowed The Same Tag.");
+      }
+    }
+  };
+  const removeTag = (tagInput: string) => {
+    setTags(tags.filter((tag) => tag !== tagInput));
+  };
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
@@ -49,6 +74,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       person: q.person,
       quote: q.quote,
       isDraft: q.isDraft,
+      tags: [],
     },
   });
 
@@ -59,6 +85,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
+    values.tags = tags;
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({
@@ -124,6 +151,43 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           )}
         />
 
+        <div>
+          <FormLabel>Tags</FormLabel>
+
+          <div className="mt-2 flex items-center gap-5">
+            <Input
+              placeholder="Motivation"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+            />
+            <MdAdd
+              onClick={() => {
+                addTag(tagInput);
+              }}
+              size={36}
+              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
+            />
+          </div>
+          {tags && (
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {tags.map((tag, i) => (
+                <Badge
+                  key={i}
+                  variant="outline"
+                  onClick={() => removeTag(tag)}
+                  className="cursor-pointer hover:bg-red-50 hover:text-red-500"
+                >
+                  {tag}
+                  <MdClose
+                    onClick={() => removeTag(tag)}
+                    className="ml-1 cursor-pointer rounded-full"
+                  />
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -146,7 +210,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           <Button
             onClick={() => {
               setIsUpdateMode(false);
-              handleDelete(q.id)
+              handleDelete(q.id);
             }}
             className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
             variant="ghost"

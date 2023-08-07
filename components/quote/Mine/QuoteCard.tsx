@@ -21,6 +21,7 @@ import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   q: IQuote;
@@ -88,6 +89,13 @@ const QuoteCard = ({ q, i }: Props) => {
                   </>
                 )}
               </div>
+              {q.tags && (
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  {q.tags.map((tag,i) => (
+                    <Badge key={i} variant="outline">{tag}</Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </CardContent>
 

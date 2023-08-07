@@ -97,6 +97,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             Person: ${values.person}, 
             Quote: ${values.quote}, 
             Draft: ${values.isDraft},
+            Tags: ${values.tags.map((value, i) => value)}
           `,
       });
     });
@@ -213,6 +214,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             Quote: ${values.quote}, 
             Person: ${values.person},
             Draft: ${values.isDraft},
+            Tags: ${values.tags.map((value, i) => value)}
             No Locked Quote.
           `,
         });
@@ -224,6 +226,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             Quote: ${values.quote}, 
             Person: ${values.person},
             Draft: ${values.isDraft},
+            Tags: ${values.tags.map((value, i) => value)}
           `,
         });
       }

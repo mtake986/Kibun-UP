@@ -18,7 +18,7 @@ const UserInfoCard = () => {
         className="h-48 w-48 rounded-full object-cover object-center"
       />
       {user ? <p>{user.displayName}</p> : null}
-      <LogOutBtn />
+      {user && <LogOutBtn />}
     </div>
   );
 };

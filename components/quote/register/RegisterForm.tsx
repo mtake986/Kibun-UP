@@ -24,7 +24,6 @@ import { IUserInfo } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdAdd, MdClose } from "react-icons/md";
-import { handleClientScriptLoad } from "next/script";
 
 type Props = {
   registerOpen: boolean;
@@ -36,10 +35,21 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const { getAllQuotes, registerQuote } = useQuote();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+
   const addTag = (tagInput: string) => {
     if (tagInput) {
-      setTags([...tags, tagInput]);
-      setTagInput("");
+      if (!tags.includes(tagInput)) {
+        if (tags.length === 0) {
+          setTags([tagInput]);
+        } else if (tags.length === 5) {
+          alert("Maximum 5 tags.");
+        } else {
+          setTags([...tags, tagInput]);
+        }
+        setTagInput("");
+      } else {
+        alert("Not Allowed The Same Tag.");
+      }
     }
   };
   const removeTag = (tagInput: string) => {
@@ -153,8 +163,8 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             />
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            {tags.map((tag) => (
-              <Badge variant="outline" onClick={() => removeTag(tag)} className="hover:bg-red-50 cursor-pointer hover:text-red-500">
+            {tags.map((tag, i) => (
+              <Badge key={i} variant="outline" onClick={() => removeTag(tag)} className="hover:bg-red-50 cursor-pointer hover:text-red-500">
                 {tag}
                 <MdClose
                   onClick={() => removeTag(tag)}

@@ -22,6 +22,7 @@ Aug. 6
 - [] Event Cheer
 - [] create users in firestore
 - [] bug handleUpdate
+- [] bug lock quote in Quote Page
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
