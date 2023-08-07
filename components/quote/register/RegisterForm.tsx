@@ -24,6 +24,16 @@ import { IUserInfo } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdAdd, MdClose } from "react-icons/md";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { tagColors } from "@/public/CONSTANTS";
+import { ITag } from "@/types/type";
+import { changeTagColor } from "@/utils/functions";
 
 type Props = {
   registerOpen: boolean;
@@ -34,27 +44,36 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
   const { getAllQuotes, registerQuote } = useQuote();
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<ITag[]>([]);
+  const [tagColor, setTagColor] = useState<string>("white");
 
   const addTag = (tagInput: string) => {
-    if (tagInput) {
-      if (!tags.includes(tagInput)) {
+    if (tagInput.length === 0) {
+      alert("Min 0 character.");
+    } else if (tagInput.length > 20) {
+      alert("Maximum 20 characters.");
+    } else {
+      if (!tags.map((tag) => tag.tag).includes(tagInput)) {
         if (tags.length === 0) {
-          setTags([tagInput]);
+          setTags([{ tag: tagInput, tagColor }]);
         } else if (tags.length === 5) {
           alert("Maximum 5 tags.");
         } else {
-          setTags([...tags, tagInput]);
+          setTags([...tags, { tag: tagInput, tagColor }]);
         }
         setTagInput("");
+        setTagColor("white");
       } else {
         alert("Not Allowed The Same Tag.");
       }
     }
+    setTagInput("");
+    setTagColor("white");
   };
   const removeTag = (tagInput: string) => {
-    setTags(tags.filter((tag) => tag !== tagInput));
+    setTags(tags.filter((tag) => tag.tag !== tagInput));
   };
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -84,6 +103,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       tags: [],
     });
     form.reset();
+    setTags([])
     getAllQuotes();
   }
   return (
@@ -147,6 +167,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
 
         <div>
           <FormLabel>Tags</FormLabel>
+          {tagColor}
 
           <div className="mt-2 flex items-center gap-5">
             <Input
@@ -154,6 +175,26 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
             />
+            <Select
+              onValueChange={(color) => {
+                setTagColor(color);
+              }}
+              value={tagColor}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Color" />
+              </SelectTrigger>
+              <SelectContent>
+                {tagColors.map((color) => (
+                  <SelectItem
+                    className={`bg-${color}-50 text-${color}-500`}
+                    value={color}
+                  >
+                    {color}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <MdAdd
               onClick={() => {
                 addTag(tagInput);
@@ -164,14 +205,24 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {tags.map((tag, i) => (
-              <Badge key={i} variant="outline" onClick={() => removeTag(tag)} className="hover:bg-red-50 cursor-pointer hover:text-red-500">
-                {tag}
-                <MdClose
-                  onClick={() => removeTag(tag)}
-                  className="ml-1 cursor-pointer rounded-full"
-                />
+              <Badge
+                key={i}
+                variant={null}
+                onClick={() => removeTag(tag.tag)}
+                className={`border-none hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+              >
+                #{tag.tag}
+                <MdClose className="ml-1 cursor-pointer rounded-full" />
               </Badge>
             ))}
+            {tagInput && (
+              <Badge
+                variant="outline"
+                className={`cursor-pointer border-none hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500`}
+              >
+                #{tagInput}
+              </Badge>
+            )}
           </div>
         </div>
 

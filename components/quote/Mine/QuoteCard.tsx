@@ -91,15 +91,20 @@ const QuoteCard = ({ q, i }: Props) => {
               </div>
               {q.tags && (
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  {q.tags.map((tag,i) => (
-                    <Badge key={i} variant="outline">{tag}</Badge>
+                  {q.tags.map((tag, i) => (
+                    <Badge
+                      key={i}
+                      variant={null}
+                      className={`border-none bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                    >
+                      #{tag.tag}
+                    </Badge>
                   ))}
                 </div>
               )}
             </div>
           </CardContent>
 
-          {/* // todo: display numn of heart of the current user's quotes */}
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-1">
               <Button

@@ -17,11 +17,15 @@ Aug. 6
 - [x] Header & Profile: LogOutBtn
 - [x] DROPDOWN: dropdown from hover card
 
+Aug. 7
+- [x] quote tag when registering 
+- [x] Quote tag color
+
+
 - [] Quote sort
 - [] quote tag to filter
 - [] Event Cheer
 - [] create users in firestore
-- [] bug handleUpdate
 - [] bug lock quote in Quote Page
 
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

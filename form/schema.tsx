@@ -10,11 +10,15 @@ export const eventSchema = z.object({
   }),
 });
 
-
 export const quoteSchema = z.object({
   person: z.string().min(2).max(100),
   quote: z.string().min(2).max(1000),
   isDraft: z.boolean(),
   // tags: z.tuple([z.string()]),
-  tags: z.string().array().max(5),
+  tags: z.array(
+    z.object({
+      tag: z.string(),
+      tagColor: z.string(),
+    })
+  ),
 });

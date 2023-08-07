@@ -86,7 +86,13 @@ const QuoteCard = ({ q }: Props) => {
               {q.tags && (
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   {q.tags.map((tag, i) => (
-                    <Badge key={i} variant="outline">{tag}</Badge>
+                    <Badge
+                      key={i}
+                      variant={null}
+                      className={`border-none bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                    >
+                      #{tag.tag}
+                    </Badge>
                   ))}
                 </div>
               )}

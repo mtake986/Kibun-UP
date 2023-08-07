@@ -44,3 +44,12 @@ export const hamburgerMenus = [
   },
   { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];
+
+export const tagColors = [
+  "white",
+  "red",
+  "orange",
+  "green",
+  "blue",
+  "purple",
+];
