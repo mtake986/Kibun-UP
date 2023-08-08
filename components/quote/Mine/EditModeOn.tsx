@@ -26,6 +26,8 @@ import { useQuote } from "@/app/context/QuoteContext";
 import { MdAdd, MdCancel, MdClose, MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { changeTagColor } from "@/utils/functions";
+
 import {
   Select,
   SelectContent,
@@ -45,7 +47,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const { reset } = useForm();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>(q.tags || []);
-  const [tagColor, setTagColor] = useState<string>("white");
+  const [tagColor, setTagColor] = useState<string>("");
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {
@@ -57,20 +59,18 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         if (tags.length === 0) {
           setTags([{ tag: tagInput, tagColor }]);
           setTagInput("");
-          setTagColor("white");
+          setTagColor("");
         } else if (tags.length === 5) {
           alert("Maximum 5 tags.");
         } else {
           setTags([...tags, { tag: tagInput, tagColor }]);
           setTagInput("");
-          setTagColor("white");
+          setTagColor("");
         }
       } else {
         alert("Not Allowed The Same Tag.");
       }
     }
-    setTagInput("");
-    setTagColor("white");
   };
   const removeTag = (tagInput: string) => {
     setTags(tags.filter((tag) => tag.tag !== tagInput));
@@ -181,10 +181,10 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <SelectContent>
                 {tagColors.map((color) => (
                   <SelectItem
-                    className={`bg-${color}-50 text-${color}-500`}
+                    className={`${changeTagColor(color)}`}
                     value={color}
                   >
-                    {color}
+                    {tagInput}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -202,7 +202,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.tag)}
-                className={`cursor-pointer border-none font-light hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
+                className={`cursor-pointer border-none font-light ${changeTagColor(tag.tagColor)}`}
               >
                 #{tag.tag}
                 <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -210,7 +210,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             ))}
             {tagInput && (
               <Badge
-                className={` border-none font-light hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500 hover:bg-${tagColor}-50 hover:text-${tagColor}-500`}
+                className={` border-none font-light hover:opacity-70 ${changeTagColor(tagColor)}`}
               >
                 #{tagInput}
               </Badge>

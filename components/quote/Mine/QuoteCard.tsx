@@ -22,6 +22,7 @@ import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
+import { changeTagColor } from "@/utils/functions";
 
 type Props = {
   q: IQuote;
@@ -94,7 +95,7 @@ const QuoteCard = ({ q, i }: Props) => {
                   {q.tags.map((tag, i) => (
                     <Badge
                       key={i}
-                      className={`border-none font-light bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
+                      className={`border-none font-light ${changeTagColor(tag.tagColor)}`}
                     >
                       #{tag.tag}
                     </Badge>

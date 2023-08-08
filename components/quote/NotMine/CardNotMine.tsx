@@ -28,6 +28,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
+import { changeTagColor } from "@/utils/functions";
 
 type Props = {
   q: IQuote;
@@ -58,7 +59,7 @@ const CardNotMine = ({ q, i }: Props) => {
               {q.tags.map((tag, i) => (
                 <Badge
                   key={i}
-                  className={`border-none font-light bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
+                  className={`border-none font-light ${changeTagColor(tag.tagColor)}`}
                 >
                   #{tag.tag}
                 </Badge>

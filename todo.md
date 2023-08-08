@@ -1,3 +1,4 @@
+## Updates and Bug Fix
 Aug. 2, 2023
 - [x] display only google login btn when no user
 - [x] store user info of Event in firestore
@@ -24,14 +25,16 @@ Aug. 7
 
 Aug. 8
 - [x] Quote tag hover design
+- [x] quote tag to filter
+- [x] bug: Quote tag when edit adn regisrter
 
+- [] fetch no-tag quotes
+- [] bug lock quote in Quote Page
 - [] Quote sort
-- [] Quote tag when edit
-- [] quote tag to filter
 - [] Event Cheer
 - [] create users in firestore
-- [] bug lock quote in Quote Page
-
+- [] contact, github issue, email.js
+- [] tag.tagColor => tag.color
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 <!-- ./components/profile/tabs/event/EditModeOn.tsx:64:5
