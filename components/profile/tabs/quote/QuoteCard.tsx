@@ -89,7 +89,7 @@ const QuoteCard = ({ q }: Props) => {
                     <Badge
                       key={i}
                       variant={null}
-                      className={`border-none bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                      className={`border-none bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
                     >
                       #{tag.tag}
                     </Badge>

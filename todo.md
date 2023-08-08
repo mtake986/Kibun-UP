@@ -20,8 +20,8 @@ Aug. 6
 Aug. 7
 - [x] quote tag when registering 
 - [x] Quote tag color
+- [x] quote card text thin better ???
 
-- [] quote card text bold better ???
 - [] Quote sort
 - [] quote tag to filter
 - [] Event Cheer

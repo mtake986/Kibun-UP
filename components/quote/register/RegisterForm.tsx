@@ -56,19 +56,19 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       if (!tags.map((tag) => tag.tag).includes(tagInput)) {
         if (tags.length === 0) {
           setTags([{ tag: tagInput, tagColor }]);
+          setTagInput("");
+          setTagColor("white");
         } else if (tags.length === 5) {
           alert("Maximum 5 tags.");
         } else {
           setTags([...tags, { tag: tagInput, tagColor }]);
+          setTagInput("");
+          setTagColor("white");
         }
-        setTagInput("");
-        setTagColor("white");
       } else {
         alert("Not Allowed The Same Tag.");
       }
     }
-    setTagInput("");
-    setTagColor("white");
   };
   const removeTag = (tagInput: string) => {
     setTags(tags.filter((tag) => tag.tag !== tagInput));
@@ -103,7 +103,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
       tags: [],
     });
     form.reset();
-    setTags([])
+    setTags([]);
     getAllQuotes();
   }
   return (
@@ -208,7 +208,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.tag)}
-                className={`border-none font-light hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                className={`cursor-pointer border-none font-light hover:opacity-70 bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
               >
                 #{tag.tag}
                 <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -216,7 +216,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             ))}
             {tagInput && (
               <Badge
-                className={`font-light cursor-pointer border-none hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500`}
+                className={` border-none font-light hover:opacity-70 bg-${tagColor}-50 text-${tagColor}-500 hover:bg-${tagColor}-50 hover:text-${tagColor}-500`}
               >
                 #{tagInput}
               </Badge>

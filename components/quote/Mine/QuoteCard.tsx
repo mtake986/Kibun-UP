@@ -94,7 +94,7 @@ const QuoteCard = ({ q, i }: Props) => {
                   {q.tags.map((tag, i) => (
                     <Badge
                       key={i}
-                      className={`font-light border-none bg-${tag.tagColor}-50 text-${tag.tagColor}-500`}
+                      className={`border-none font-light bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
                     >
                       #{tag.tag}
                     </Badge>
