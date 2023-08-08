@@ -165,7 +165,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
           <div className="mt-2 flex items-center gap-5">
             <Input
-              mqxLength={20}
+              maxLength={20}
               placeholder="Motivation"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
