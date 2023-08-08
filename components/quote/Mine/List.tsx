@@ -14,6 +14,8 @@ import { useQuote } from "@/app/context/QuoteContext";
 import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
+import { SearchBar } from "./SearchBar";
+import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {
   quotes: IQuote[];
@@ -28,6 +30,7 @@ const List = ({ quotes }: Props) => {
 
   return (
     <div>
+      <SearchBar />
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
@@ -42,11 +45,7 @@ const List = ({ quotes }: Props) => {
           )}
         </>
       ) : (
-        <div className="mt-10">
-          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            No quotes
-          </h2>
-        </div>
+        <NoFetchedData text="No quotes found" />
       )}
     </div>
   );

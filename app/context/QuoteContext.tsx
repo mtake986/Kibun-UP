@@ -30,8 +30,6 @@ type QuoteContext = {
   getAllQuotes: () => void;
   loginUserQuotes: IQuote[] | [];
   getLoginUserQuotes: () => void;
-  handleEditMode: () => void;
-  editModeOn: boolean;
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
@@ -59,6 +57,13 @@ type QuoteContext = {
   isFav: (uid: string, qid: string) => void;
   setRandomQuote: (quote: IQuote | undefined) => void;
   setLockedQuote: (quote: IQuote | undefined) => void;
+
+  searchTagForMine: string | undefined;
+  setSearchTagForMine: (tag: string | undefined) => void;
+  searchTagForNotMine: string | undefined;
+  setSearchTagForNotMine: (tag: string | undefined) => void;
+  fetchFilteredMyQuotes: () => void;
+  fetchFilteredNotMyQuotes: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -78,6 +83,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
+  const [searchTagForMine, setSearchTagForMine] = useState<string>();
+  const [searchTagForNotMine, setSearchTagForNotMine] = useState<string>();
 
   const [user] = useAuthState(auth);
 
@@ -94,8 +101,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         className: "border-none bg-green-500 text-white",
         title: "Successfully Created",
         // description: `
-        //     Person: ${values.person}, 
-        //     Quote: ${values.quote}, 
+        //     Person: ${values.person},
+        //     Quote: ${values.quote},
         //     Draft: ${values.isDraft},
         //     Tags: ${values.tags.map((value, i) => value.tag: )}
         //   `,
@@ -110,14 +117,17 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
-    const q = user
-      ? query(quotesCollectionRef, where("userInfo.uid", "!=", user.uid))
-      : quotesCollectionRef;
-    onSnapshot(q, (snapshot) => {
-      setQuotesNotMine(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+    if (user) {
+      const q = query(
+        quotesCollectionRef,
+        where("userInfo.uid", "!=", user.uid)
       );
-    });
+      onSnapshot(q, (snapshot) => {
+        setQuotesNotMine(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+        );
+      });
+    }
   };
 
   const getLoginUserQuotes = async () => {
@@ -152,12 +162,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     // });
     setLoading(false);
   };
-
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
-
-  const [editModeOn, setEditModeOn] = useState(false);
 
   const handleCancelUpdate = () => {
     setIsUpdateMode(false);
@@ -211,7 +215,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           className: "border-none bg-green-500 text-white",
           title: "Successfully Updated",
           // description: `
-          //   Quote: ${values.quote}, 
+          //   Quote: ${values.quote},
           //   Person: ${values.person},
           //   Draft: ${values.isDraft},
           //   Tags: ${values.tags.map((value, i) => value)}
@@ -223,7 +227,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           className: "border-none bg-green-500 text-white",
           title: "Successfully Updated",
           // description: `
-          //   Quote: ${values.quote}, 
+          //   Quote: ${values.quote},
           //   Person: ${values.person},
           //   Draft: ${values.isDraft},
           //   Tags: ${values.tags.map((value, i) => value)}
@@ -285,6 +289,36 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const fetchFilteredMyQuotes = async () => {
+    if (searchTagForMine) {
+      setLoginUserQuotes(
+        loginUserQuotes.filter((q) => {
+          console.log(q.tags);
+          if (q.tags) {
+            return q.tags.some((tag) => tag.tag == searchTagForMine);
+          }
+        })
+      );
+    } else {
+      getLoginUserQuotes();
+    }
+  };
+
+  const fetchFilteredNotMyQuotes = async () => {
+    if (searchTagForNotMine) {
+      setQuotesNotMine(
+        quotesNotMine.filter((q) => {
+          console.log(q.tags);
+          if (q.tags) {
+            return q.tags.some((tag) => tag.tag == searchTagForNotMine);
+          }
+        })
+      );
+    } else {
+      getQuotesNotMine();
+    }
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -292,8 +326,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getAllQuotes,
         loginUserQuotes,
         getLoginUserQuotes,
-        handleEditMode,
-        editModeOn,
         handleCancelUpdate,
         handleDelete,
         getRandomQuote,
@@ -315,6 +347,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         isFav,
         setRandomQuote,
         setLockedQuote,
+        searchTagForMine,
+        setSearchTagForMine,
+        searchTagForNotMine,
+        setSearchTagForNotMine,
+        fetchFilteredMyQuotes,
+        fetchFilteredNotMyQuotes,
       }}
     >
       {children}

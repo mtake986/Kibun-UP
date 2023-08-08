@@ -6,11 +6,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
-import QuoteCard from "./Mine/QuoteCard";
-import { boolean } from "zod";
 import ListNotMine from "./NotMine/ListNotMine";
 
-const SelectTab = () => {
+const SwitchTab = () => {
   const [user] = useAuthState(auth);
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,4 +52,4 @@ const SelectTab = () => {
   );
 };
 
-export default SelectTab;
+export default SwitchTab;

@@ -22,7 +22,11 @@ Aug. 7
 - [x] Quote tag color
 - [x] quote card text thin better ???
 
+Aug. 8
+- [x] Quote tag hover design
+
 - [] Quote sort
+- [] Quote tag when edit
 - [] quote tag to filter
 - [] Event Cheer
 - [] create users in firestore

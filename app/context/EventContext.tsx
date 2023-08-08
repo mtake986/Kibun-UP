@@ -25,14 +25,11 @@ import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "@/utils/functions";
 
 type EventContextType = {
-  handleEditMode: () => void;
-  editModeOn: boolean;
   handleUpdate: (
     values: IEventInputValues,
     eid: string,
     setIsLoading: (boo: boolean) => void
   ) => void;
-  handleCancelEdit: () => void;
   handleDelete: (id: string) => void;
 
   getLoginUserEvents: () => void;
@@ -62,7 +59,6 @@ export function useEvent() {
 }
 
 export function EventProvider({ children }: EventProviderProps) {
-  const [editModeOn, setEditModeOn] = useState<boolean>(false);
   const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
 
   const [lockedEvent, setLockedEvent] = useState<IEvent>();
@@ -73,10 +69,6 @@ export function EventProvider({ children }: EventProviderProps) {
   const eventCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
-
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
 
   const registerEvent = async (
     values: IEventInputValues,
@@ -123,10 +115,6 @@ export function EventProvider({ children }: EventProviderProps) {
       }
     }
     setIsLoading(false);
-  };
-
-  const handleCancelEdit = () => {
-    setEditModeOn(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -211,10 +199,7 @@ export function EventProvider({ children }: EventProviderProps) {
   return (
     <EventContext.Provider
       value={{
-        handleEditMode,
-        editModeOn,
         handleUpdate,
-        handleCancelEdit,
         handleDelete,
         getLoginUserEvents,
         loginUserEvents,

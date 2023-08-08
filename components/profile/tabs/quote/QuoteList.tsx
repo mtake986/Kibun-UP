@@ -7,6 +7,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
+import { SearchBar } from "./SearchBar";
+import NoFetchedData from "@/components/utils/NoFetchedData";
 
 const QuoteList = () => {
   const [user] = useAuthState(auth);
@@ -33,10 +35,10 @@ const QuoteList = () => {
 
   if (loading) return <div>loading</div>;
 
-  if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
-
+  // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
     <div>
+      <SearchBar />
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc) => (
@@ -51,11 +53,7 @@ const QuoteList = () => {
           )}
         </>
       ) : (
-        <div className="mt-10">
-          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            No events
-          </h2>
-        </div>
+        <NoFetchedData text="No quotes found" />
       )}
     </div>
   );
