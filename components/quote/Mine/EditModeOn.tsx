@@ -165,6 +165,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
           <div className="mt-2 flex items-center gap-5">
             <Input
+              mqxLength={20}
               placeholder="Motivation"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -202,7 +203,9 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.tag)}
-                className={`cursor-pointer border-none font-light ${changeTagColor(tag.tagColor)}`}
+                className={`cursor-pointer border-none font-light ${changeTagColor(
+                  tag.tagColor
+                )}`}
               >
                 #{tag.tag}
                 <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -210,7 +213,9 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             ))}
             {tagInput && (
               <Badge
-                className={` border-none font-light hover:opacity-70 ${changeTagColor(tagColor)}`}
+                className={` border-none font-light hover:opacity-70 ${changeTagColor(
+                  tagColor
+                )}`}
               >
                 #{tagInput}
               </Badge>
