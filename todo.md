@@ -31,8 +31,7 @@ Aug. 8
 - [x] maxLength for a tag name
 
 Aug. 9
-- [] fetch no-tag quotes
-- [] bug lock quote in Quote Page
+- [x] fetch no-tag quotes
 - [] Quote sort
 
 - [] Event Cheer
