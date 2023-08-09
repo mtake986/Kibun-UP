@@ -54,12 +54,14 @@ const CardNotMine = ({ q, i }: Props) => {
             <BsFillPersonFill size={24} />
             <p>{q.person}</p>
           </div>
-          {q.tags && (
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+          {q.tags?.length >= 1 && (
+            <div className="flex flex-wrap items-center gap-2">
               {q.tags.map((tag, i) => (
                 <Badge
                   key={i}
-                  className={`border-none font-light ${changeTagColor(tag.tagColor)}`}
+                  className={`border-none font-light ${changeTagColor(
+                    tag.tagColor
+                  )}`}
                 >
                   #{tag.tag}
                 </Badge>

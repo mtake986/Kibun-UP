@@ -1,4 +1,5 @@
-## Updates and Bug Fix
+## Updates and Bug Fix 
+No record before Aug. 2
 Aug. 2, 2023
 - [x] display only google login btn when no user
 - [x] store user info of Event in firestore
@@ -27,10 +28,13 @@ Aug. 8
 - [x] Quote tag hover design
 - [x] quote tag to filter
 - [x] bug: Quote tag when edit adn regisrter
+- [x] maxLength for a tag name
 
+Aug. 9
 - [] fetch no-tag quotes
 - [] bug lock quote in Quote Page
 - [] Quote sort
+
 - [] Event Cheer
 - [] create users in firestore
 - [] contact, github issue, email.js

@@ -300,7 +300,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         })
       );
     } else {
-      getLoginUserQuotes();
+      setLoginUserQuotes(
+        loginUserQuotes.filter((q) => q.tags?.length === 0)
+      );
     }
   };
 
@@ -315,7 +317,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         })
       );
     } else {
-      getQuotesNotMine();
+      setQuotesNotMine(quotesNotMine.filter((q) => q.tags?.length === 0));
     }
   };
 
