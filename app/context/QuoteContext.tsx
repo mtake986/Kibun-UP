@@ -16,6 +16,7 @@ import {
   addDoc,
   arrayUnion,
   arrayRemove,
+  orderBy,
 } from "firebase/firestore";
 type QuoteProviderProps = {
   children: ReactNode;
@@ -64,6 +65,8 @@ type QuoteContext = {
   setSearchTagForNotMine: (tag: string | undefined) => void;
   fetchFilteredMyQuotes: () => void;
   fetchFilteredNotMyQuotes: () => void;
+  sortByElement: string;
+  setSortByElement: (ele: string) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -85,6 +88,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const favQuotesCollectionRef = collection(db, "favQuotes");
   const [searchTagForMine, setSearchTagForMine] = useState<string>();
   const [searchTagForNotMine, setSearchTagForNotMine] = useState<string>();
+
+  const [sortByElement, setSortByElement] = useState<string>("");
 
   const [user] = useAuthState(auth);
 
@@ -134,14 +139,44 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user?.uid) {
       const q = query(
         quotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid)
+        where("userInfo.uid", "==", user?.uid),
+        orderBy('createdAt', 'desc')
       );
       onSnapshot(q, (snapshot) => {
         setLoginUserQuotes(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+            .sort((a, b) => {
+              if (sortByElement === "quote") {
+                return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
+              } else if (sortByElement === "person") {
+                return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
+              } else if (sortByElement === "createdAt") {
+                return a.createdAt > b.createdAt
+                  ? -1
+                  : a.createdAt < b.createdAt
+                  ? 1
+                  : 0;
+              } else return 0;
+            })
         );
       });
     }
+    // if (sortByElement) {
+    //   loginUserQuotes.sort((a, b) => {
+    //     if (sortByElement === "quote") {
+    //       return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
+    //     } else if (sortByElement === "person") {
+    //       return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
+    //     } else if (sortByElement === "createdAt") {
+    //       return a.createdAt > b.createdAt
+    //         ? -1
+    //         : a.createdAt < b.createdAt
+    //         ? 1
+    //         : 0;
+    //     } else return 0;
+    //   });
+    // }
   };
 
   const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
@@ -292,16 +327,44 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const fetchFilteredMyQuotes = async () => {
     if (searchTagForMine) {
       setLoginUserQuotes(
-        loginUserQuotes.filter((q) => {
-          console.log(q.tags);
-          if (q.tags) {
-            return q.tags.some((tag) => tag.tag == searchTagForMine);
-          }
-        })
+        loginUserQuotes
+          .filter((q) => {
+            console.log(q.tags);
+            if (q.tags) {
+              return q.tags.some((tag) => tag.tag == searchTagForMine);
+            }
+          })
+          .sort((a, b) => {
+            if (sortByElement === "quote") {
+              return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
+            } else if (sortByElement === "person") {
+              return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
+            } else if (sortByElement === "createdAt") {
+              return a.createdAt > b.createdAt
+                ? -1
+                : a.createdAt < b.createdAt
+                ? 1
+                : 0;
+            } else return 0;
+          })
       );
     } else {
       setLoginUserQuotes(
-        loginUserQuotes.filter((q) => q.tags?.length === 0)
+        loginUserQuotes
+          .filter((q) => q.tags?.length === 0)
+          .sort((a, b) => {
+            if (sortByElement === "quote") {
+              return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
+            } else if (sortByElement === "person") {
+              return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
+            } else if (sortByElement === "createdAt") {
+              return a.createdAt > b.createdAt
+                ? -1
+                : a.createdAt < b.createdAt
+                ? 1
+                : 0;
+            } else return 0;
+          })
       );
     }
   };
@@ -355,6 +418,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         setSearchTagForNotMine,
         fetchFilteredMyQuotes,
         fetchFilteredNotMyQuotes,
+        sortByElement,
+        setSortByElement,
       }}
     >
       {children}

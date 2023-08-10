@@ -187,7 +187,19 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
               <SelectContent>
                 {tagColors.map((color) => (
                   <SelectItem
-                    className={`bg-${color}-50 text-${color}-500`}
+                    className={`${
+                      color === "red"
+                        ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
+                        : color === "orange"
+                        ? "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500"
+                        : color === "green"
+                        ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
+                        : color === "blue"
+                        ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
+                        : color === "purple"
+                        ? "bg-purple-50 text-purple-500 hover:bg-purple-50 hover:text-purple-500"
+                        : "bg-white text-black hover:bg-white hover:text-black"
+                    }`}
                     value={color}
                   >
                     {tagInput}

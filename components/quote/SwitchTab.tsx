@@ -19,6 +19,7 @@ const SwitchTab = () => {
     quotesNotMine,
     getQuotesNotMine,
     fetchFavQuotes,
+    sortByElement,
   } = useQuote();
 
   useEffect(() => {
@@ -28,6 +29,25 @@ const SwitchTab = () => {
     fetchFavQuotes();
     setLoading(false);
   }, [user]);
+
+  useEffect(() => {
+    setLoading(true)
+    loginUserQuotes.sort((a, b) => {
+      if (sortByElement === "quote") {
+        return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
+      } else if (sortByElement === "person") {
+        return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
+      } else if (sortByElement === "createdAt") {
+        return a.createdAt > b.createdAt
+          ? -1
+          : a.createdAt < b.createdAt
+          ? 1
+          : 0;
+      } else return 0;
+    });
+    console.log(loginUserQuotes);
+    setLoading(false)
+  }, [sortByElement]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,7 +63,7 @@ const SwitchTab = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="yours">
-        {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
+        {user ? <List quotes={loginUserQuotes}  /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="All">
         <ListNotMine quotes={quotesNotMine} />

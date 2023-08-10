@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useQuote } from "@/app/context/QuoteContext";
 import { SearchIcon } from "lucide-react";
-import SortBtn from "./SortBtn";
 
 export function SearchBar() {
   const {
@@ -13,8 +12,7 @@ export function SearchBar() {
     getLoginUserQuotes,
   } = useQuote();
   return (
-    <div className="my-2 flex w-full flex-grow justify-between gap-2">
-      <SortBtn />
+    <div className="flex w-full flex-grow justify-between gap-2">
       <Input
         placeholder="Search a tag"
         className="w-full"
