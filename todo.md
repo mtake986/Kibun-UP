@@ -35,8 +35,10 @@ Aug. 9
 - [x] Quote sort: import dialog
 
 Aug. 10
-- [] Quote sort
+- [x] Quote sort in Quote Page
+- [x] Quote sort() to orderBy()
 
+- [] Quote sort desc or asc
 - [] Event Cheer
 - [] create users in firestore
 - [] contact, github issue, email.js

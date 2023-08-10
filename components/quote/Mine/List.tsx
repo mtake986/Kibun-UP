@@ -16,7 +16,7 @@ import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import { SearchBar } from "./SearchBar";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortBtn from "./SortBtn";
+import SortBtn from "./Sort/DialogBtn";
 
 type Props = {
   quotes: IQuote[];

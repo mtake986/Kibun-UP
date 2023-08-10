@@ -137,28 +137,30 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getLoginUserQuotes = async () => {
     if (user?.uid) {
-      const q = query(
-        quotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid),
-        orderBy('createdAt', 'desc')
-      );
+      let q;
+      if (sortByElement === "quote") {
+        q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          orderBy("quote", "desc")
+        );
+      } else if (sortByElement === "person") {
+        q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          orderBy("person", "desc")
+        );
+      } else {
+        q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          orderBy("createdAt", "desc")
+        );
+      }
+
       onSnapshot(q, (snapshot) => {
         setLoginUserQuotes(
-          snapshot.docs
-            .map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
-            .sort((a, b) => {
-              if (sortByElement === "quote") {
-                return a.quote > b.quote ? -1 : a.quote < b.quote ? 1 : 0;
-              } else if (sortByElement === "person") {
-                return a.person > b.person ? -1 : a.person < b.person ? 1 : 0;
-              } else if (sortByElement === "createdAt") {
-                return a.createdAt > b.createdAt
-                  ? -1
-                  : a.createdAt < b.createdAt
-                  ? 1
-                  : 0;
-              } else return 0;
-            })
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
     }
