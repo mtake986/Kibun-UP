@@ -52,3 +52,9 @@ export interface ITag {
   tag: string;
   tagColor: string;
 }
+
+export interface ISortFilterBy {
+  order: string;
+  sortByElement: string;
+  searchTag: string;
+}

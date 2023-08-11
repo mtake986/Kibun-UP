@@ -17,6 +17,8 @@ import PaginationBtns from "@/components/utils/PaginationBtns";
 import { SearchBar } from "./SearchBar";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortBtn from "./Sort/DialogBtn";
+import OrderSelect from "./Sort/OrderSelect";
+import ElementSelect from "./Sort/ElementSelect";
 
 type Props = {
   quotes: IQuote[];
@@ -32,7 +34,9 @@ const List = ({ quotes }: Props) => {
   return (
     <div>
       <div className="my-2 flex items-center gap-2">
-        <SortBtn />
+        {/* <SortBtn /> */}
+        <OrderSelect />
+        <ElementSelect />
         <SearchBar />
       </div>
       {currentRecords && currentRecords.length >= 1 ? (

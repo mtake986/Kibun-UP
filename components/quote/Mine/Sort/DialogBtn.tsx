@@ -7,10 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import SortDialogContent from "./Content";
+import { FilterIcon } from "lucide-react";
 
 const SortBtn = () => {
   const {
@@ -24,7 +22,9 @@ const SortBtn = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
+      <DialogTrigger>
+        <FilterIcon />
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Sort</DialogTitle>

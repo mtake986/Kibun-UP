@@ -20,20 +20,15 @@ import { useQuote } from "@/app/context/QuoteContext";
 import { SearchIcon } from "lucide-react";
 
 export function SearchBar() {
-  const {
-    searchTagForNotMine,
-    setSearchTagForNotMine,
-    fetchFilteredNotMyQuotes,
-    getQuotesNotMine,
-  } = useQuote();
+  const { fetchFilteredNotMyQuotes, getQuotesNotMine, updateSortFilterBy } =
+    useQuote();
   return (
     <div className="my-2 flex w-full flex-grow justify-between gap-2">
       <Input
         placeholder="Search a tag"
         className="w-full"
-        value={searchTagForNotMine}
         onChange={(e) => {
-          setSearchTagForNotMine(e.target.value);
+          updateSortFilterBy('searchTag', e.target.value);
         }}
       />
       <Button
@@ -45,7 +40,7 @@ export function SearchBar() {
       <Button
         className={`flex-none cursor-pointer bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
         onClick={() => {
-          setSearchTagForNotMine("");
+          updateSortFilterBy("searchTag", '');
           getQuotesNotMine();
         }}
       >

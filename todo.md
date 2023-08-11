@@ -37,10 +37,12 @@ Aug. 9
 Aug. 10
 - [x] Quote sort in Quote Page
 - [x] Quote sort() to orderBy()
+- [x] Quote sort UI: select to dialog
 
-- [] Quote sort desc or asc
+- [] Quote sort functions: select to dialog
 - [] Event Cheer
 - [] create users in firestore
 - [] contact, github issue, email.js
+- [] fav in quotes
 - [] tag.tagColor => tag.color, tag.tag => tag.name
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

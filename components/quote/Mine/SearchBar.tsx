@@ -6,31 +6,36 @@ import { SearchIcon } from "lucide-react";
 
 export function SearchBar() {
   const {
-    searchTagForMine,
-    setSearchTagForMine,
-    fetchFilteredMyQuotes,
+    updateSortFilterBy,
     getLoginUserQuotes,
+    sortFilterByForMine,
+    filterLoginUserQuotes,
+    fetchFilteredMyQuotes,
   } = useQuote();
+
   return (
-    <div className="flex w-full flex-grow justify-between gap-2">
+    <div className=" flex w-full flex-grow justify-between gap-2">
       <Input
         placeholder="Search a tag"
-        className="w-full"
-        value={searchTagForMine}
+        className="w-full text-xs"
         onChange={(e) => {
-          setSearchTagForMine(e.target.value);
+          updateSortFilterBy("searchTag", e.target.value);
         }}
+        value={sortFilterByForMine.searchTag}
       />
       <Button
         className={`flex-none cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-50 hover:text-sky-500 hover:opacity-70`}
-        onClick={fetchFilteredMyQuotes}
+        onClick={() => {
+          // getLoginUserQuotes();
+          filterLoginUserQuotes();
+        }}
       >
         <SearchIcon size={20} />
       </Button>
       <Button
         className={`flex-none cursor-pointer bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
         onClick={() => {
-          setSearchTagForMine("");
+          updateSortFilterBy("searchTag", "");
           getLoginUserQuotes();
         }}
       >
