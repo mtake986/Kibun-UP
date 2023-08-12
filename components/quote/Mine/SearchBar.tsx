@@ -9,8 +9,9 @@ export function SearchBar() {
     updateSortFilterBy,
     getLoginUserQuotes,
     sortFilterByForMine,
-    filterLoginUserQuotes,
+    sortLoginUserQuotes,
     fetchFilteredMyQuotes,
+    setFilteredLoginUserQuotes,
   } = useQuote();
 
   return (
@@ -26,8 +27,7 @@ export function SearchBar() {
       <Button
         className={`flex-none cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-50 hover:text-sky-500 hover:opacity-70`}
         onClick={() => {
-          // getLoginUserQuotes();
-          filterLoginUserQuotes();
+          fetchFilteredMyQuotes();
         }}
       >
         <SearchIcon size={20} />
@@ -35,11 +35,11 @@ export function SearchBar() {
       <Button
         className={`flex-none cursor-pointer bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
         onClick={() => {
-          updateSortFilterBy("searchTag", "");
+          setFilteredLoginUserQuotes([]);
           getLoginUserQuotes();
         }}
       >
-        All
+        Reset
       </Button>
     </div>
   );

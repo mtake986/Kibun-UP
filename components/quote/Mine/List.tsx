@@ -16,7 +16,6 @@ import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import { SearchBar } from "./SearchBar";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortBtn from "./Sort/DialogBtn";
 import OrderSelect from "./Sort/OrderSelect";
 import ElementSelect from "./Sort/ElementSelect";
 
@@ -26,6 +25,8 @@ type Props = {
 
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
+
+  const { filteredLoginUserQuotes } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 
