@@ -182,6 +182,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <SelectContent>
                 {tagColors.map((color) => (
                   <SelectItem
+                    key={color}
                     className={`${changeTagColor(color)}`}
                     value={color}
                   >

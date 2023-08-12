@@ -166,7 +166,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
           <div className="mt-2 flex items-center gap-5">
             <Input
-            maxLength={20}
+              maxLength={20}
               placeholder="Motivation"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -183,6 +183,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <SelectContent>
                 {tagColors.map((color) => (
                   <SelectItem
+                    key={color}
                     className={`${changeTagColor(color)}`}
                     value={color}
                   >
