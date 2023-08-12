@@ -187,6 +187,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
               <SelectContent>
                 {tagColors.map((color) => (
                   <SelectItem
+                    key={color}
                     className={`${
                       color === "red"
                         ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
@@ -239,22 +240,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
             )}
           </div>
         </div>
-
-        {/* <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Tags</FormLabel>
-              <FormControl>
-                <Input placeholder="Motivation" onChange={(e) => setTagInput(e.target.value)} />
-                <div>{tagInput}</div>
-                <Button onClick={() => setTags([tags, tagInput])}>Add</Button>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
 
         <div className="flex items-center gap-3">
           <Button
