@@ -68,7 +68,6 @@ type QuoteContext = {
   setLockedQuote: (quote: IQuote | undefined) => void;
 
   fetchFilteredMyQuotes: () => void;
-  fetchFilteredNotMyQuotes: () => void;
 
   updateSortFilterBy: (which: string, ele: string) => void;
   sortFilterByForMine: ISortFilterBy;
@@ -459,21 +458,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const fetchFilteredNotMyQuotes = async () => {
-    // if (searchTagForNotMine) {
-    //   setQuotesNotMine(
-    //     quotesNotMine.filter((q) => {
-    //       console.log(q.tags);
-    //       if (q.tags) {
-    //         return q.tags.some((tag) => tag.tag == searchTagForNotMine);
-    //       }
-    //     })
-    //   );
-    // } else {
-    //   setQuotesNotMine(quotesNotMine.filter((q) => q.tags?.length === 0));
-    // }
-  };
-
   const updateSortFilterBy = (which: string, ele: string) => {
     if (which === "order") {
       setSortFilterByForMine((prev) => ({
@@ -523,7 +507,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         setLockedQuote,
 
         fetchFilteredMyQuotes,
-        fetchFilteredNotMyQuotes,
 
         updateSortFilterBy,
         sortFilterByForMine,
