@@ -14,6 +14,10 @@ import { useQuote } from "@/app/context/QuoteContext";
 import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
+import { SearchBar } from "./SearchBar";
+import NoFetchedData from "@/components/utils/NoFetchedData";
+import OrderSelect from "./Sort/OrderSelect";
+import ElementSelect from "./Sort/ElementSelect";
 
 type Props = {
   quotes: IQuote[];
@@ -22,12 +26,20 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
+  const { filteredLoginUserQuotes } = useQuote();
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = pagination(currentPage, quotes);
 
   return (
     <div>
+      <div className="my-2 flex items-center gap-2">
+        {/* <SortBtn /> */}
+        <OrderSelect />
+        <ElementSelect />
+        <SearchBar />
+      </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
@@ -42,11 +54,7 @@ const List = ({ quotes }: Props) => {
           )}
         </>
       ) : (
-        <div className="mt-10">
-          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            No quotes
-          </h2>
-        </div>
+        <NoFetchedData text="No quotes found" />
       )}
     </div>
   );

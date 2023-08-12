@@ -1,4 +1,6 @@
+'use client'
 import React, { useEffect, useState } from "react";
+
 import {
   Card,
   CardContent,
@@ -21,6 +23,8 @@ import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
+import { Badge } from "@/components/ui/badge";
+import { changeTagColor } from "@/utils/functions";
 
 type Props = {
   q: IQuote;
@@ -88,10 +92,21 @@ const QuoteCard = ({ q, i }: Props) => {
                   </>
                 )}
               </div>
+              {q.tags?.length >= 1 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {q.tags.map((tag, i) => (
+                    <Badge
+                      key={i}
+                      className={`border-none font-light ${changeTagColor(tag.tagColor)}`}
+                    >
+                      #{tag.tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </CardContent>
 
-          {/* // todo: display numn of heart of the current user's quotes */}
           <CardFooter className="flex items-center justify-between gap-5">
             <div className="flex items-center justify-between gap-1">
               <Button

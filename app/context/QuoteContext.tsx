@@ -16,11 +16,20 @@ import {
   addDoc,
   arrayUnion,
   arrayRemove,
+  orderBy,
+  DocumentData,
 } from "firebase/firestore";
 type QuoteProviderProps = {
   children: ReactNode;
 };
-import { IQuote, IQuoteInputValues, IFavQuote, IUserInfo } from "@/types/type";
+import {
+  IQuote,
+  IQuoteInputValues,
+  IFavQuote,
+  IUserInfo,
+  ISortFilterBy,
+  ITag,
+} from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../../utils/functions";
@@ -30,8 +39,6 @@ type QuoteContext = {
   getAllQuotes: () => void;
   loginUserQuotes: IQuote[] | [];
   getLoginUserQuotes: () => void;
-  handleEditMode: () => void;
-  editModeOn: boolean;
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
@@ -59,6 +66,16 @@ type QuoteContext = {
   isFav: (uid: string, qid: string) => void;
   setRandomQuote: (quote: IQuote | undefined) => void;
   setLockedQuote: (quote: IQuote | undefined) => void;
+
+  fetchFilteredMyQuotes: () => void;
+  fetchFilteredNotMyQuotes: () => void;
+
+  updateSortFilterBy: (which: string, ele: string) => void;
+  sortFilterByForMine: ISortFilterBy;
+
+  sortLoginUserQuotes: () => void;
+  filteredLoginUserQuotes: IQuote[];
+  setFilteredLoginUserQuotes: (quotes: IQuote[]) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -81,6 +98,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const [user] = useAuthState(auth);
 
+  const [sortFilterByForMine, setSortFilterByForMine] = useState<ISortFilterBy>(
+    { order: "desc", sortByElement: "createdAt", searchTag: "" }
+  );
+  const [filteredLoginUserQuotes, setFilteredLoginUserQuotes] = useState<
+    IQuote[]
+  >([]);
+
   const registerQuote = async (
     values: IQuoteInputValues,
     userInfo: IUserInfo
@@ -93,11 +117,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Successfully Created",
-        description: `
-            Person: ${values.person}, 
-            Quote: ${values.quote}, 
-            Draft: ${values.isDraft},
-          `,
+        // description: `
+        //     Person: ${values.person},
+        //     Quote: ${values.quote},
+        //     Draft: ${values.isDraft},
+        //     Tags: ${values.tags.map((value, i) => value.tag: )}
+        //   `,
       });
     });
   };
@@ -109,22 +134,92 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
-    const q = user
-      ? query(quotesCollectionRef, where("userInfo.uid", "!=", user.uid))
-      : quotesCollectionRef;
-    onSnapshot(q, (snapshot) => {
-      setQuotesNotMine(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+    if (user) {
+      const q = query(
+        quotesCollectionRef,
+        where("userInfo.uid", "!=", user.uid)
       );
-    });
+      onSnapshot(q, (snapshot) => {
+        setQuotesNotMine(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+        );
+      });
+    }
   };
 
   const getLoginUserQuotes = async () => {
+    setSortFilterByForMine({
+      order: "desc",
+      sortByElement: "createdAt",
+      searchTag: "",
+    });
     if (user?.uid) {
       const q = query(
         quotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid)
+        where("userInfo.uid", "==", user?.uid),
+        orderBy("createdAt", "desc")
       );
+
+      onSnapshot(q, (snapshot) => {
+        setLoginUserQuotes(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+        );
+      });
+    }
+  };
+  const sortLoginUserQuotes = async () => {
+    if (user?.uid) {
+      let q;
+      if (sortFilterByForMine.sortByElement === "quote") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "person") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "createdAt") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "desc")
+          );
+      }
+
+      if (!q) {
+        console.log("didnt match query");
+        q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          orderBy("createdAt", "desc")
+        );
+      }
+
       onSnapshot(q, (snapshot) => {
         setLoginUserQuotes(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
@@ -151,12 +246,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     // });
     setLoading(false);
   };
-
-  const handleEditMode = () => {
-    setEditModeOn(true);
-  };
-
-  const [editModeOn, setEditModeOn] = useState(false);
 
   const handleCancelUpdate = () => {
     setIsUpdateMode(false);
@@ -209,22 +298,24 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         toast({
           className: "border-none bg-green-500 text-white",
           title: "Successfully Updated",
-          description: `
-            Quote: ${values.quote}, 
-            Person: ${values.person},
-            Draft: ${values.isDraft},
-            No Locked Quote.
-          `,
+          // description: `
+          //   Quote: ${values.quote},
+          //   Person: ${values.person},
+          //   Draft: ${values.isDraft},
+          //   Tags: ${values.tags.map((value, i) => value)}
+          //   No Locked Quote.
+          // `,
         });
       } else {
         toast({
           className: "border-none bg-green-500 text-white",
           title: "Successfully Updated",
-          description: `
-            Quote: ${values.quote}, 
-            Person: ${values.person},
-            Draft: ${values.isDraft},
-          `,
+          // description: `
+          //   Quote: ${values.quote},
+          //   Person: ${values.person},
+          //   Draft: ${values.isDraft},
+          //   Tags: ${values.tags.map((value, i) => value)}
+          // `,
         });
       }
     });
@@ -282,6 +373,126 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const fetchFilteredMyQuotes = async () => {
+    let qs: DocumentData[] = [];
+
+    if (user?.uid) {
+      let q = query(
+        quotesCollectionRef,
+        where("userInfo.uid", "==", user?.uid),
+        orderBy("createdAt", "desc")
+      );
+      if (sortFilterByForMine.sortByElement === "quote") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "person") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "createdAt") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "desc")
+          );
+      }
+      if (sortFilterByForMine.searchTag) {
+        onSnapshot(q, (snapshot) => {
+          console.log("onsanpshot SORT in setFilteredLoginUserQuotes");
+          qs = snapshot.docs.filter((doc) => {
+            if (doc.data().tags) {
+              return doc
+                .data()
+                // below return true or false
+                .tags.some(
+                  (tag: ITag) => tag.tag === sortFilterByForMine.searchTag
+                );
+            }
+          });
+          console.log(qs);
+          setLoginUserQuotes(qs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        });
+        console.log(
+          `sortFilterByForMine.searchTag: ${sortFilterByForMine.searchTag}, filteredLoginUserQuotes.length: ${filteredLoginUserQuotes.length}, setFilteredLoginUserQuotes`
+        );
+      } else {
+        onSnapshot(q, (snapshot) => {
+          console.log("onsanpshot SORT in setFilteredLoginUserQuotes");
+          qs = snapshot.docs.filter((doc) => {
+            if (
+              doc.data().tags?.length === 0 ||
+              !doc.data().tags
+            ) {
+              return true;
+            }
+          });
+          console.log(qs);
+          setLoginUserQuotes(qs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        });
+      }
+    }
+  };
+
+  const fetchFilteredNotMyQuotes = async () => {
+    // if (searchTagForNotMine) {
+    //   setQuotesNotMine(
+    //     quotesNotMine.filter((q) => {
+    //       console.log(q.tags);
+    //       if (q.tags) {
+    //         return q.tags.some((tag) => tag.tag == searchTagForNotMine);
+    //       }
+    //     })
+    //   );
+    // } else {
+    //   setQuotesNotMine(quotesNotMine.filter((q) => q.tags?.length === 0));
+    // }
+  };
+
+  const updateSortFilterBy = (which: string, ele: string) => {
+    if (which === "order") {
+      setSortFilterByForMine((prev) => ({
+        ...prev,
+        order: ele,
+      }));
+    } else if (which === "sortByElement") {
+      setSortFilterByForMine((prev) => ({
+        ...prev,
+        sortByElement: ele,
+      }));
+    } else if (which === "searchTag") {
+      setSortFilterByForMine((prev) => ({
+        ...prev,
+        searchTag: ele,
+      }));
+    }
+    console.log(sortFilterByForMine);
+  };
   return (
     <QuoteContext.Provider
       value={{
@@ -289,8 +500,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getAllQuotes,
         loginUserQuotes,
         getLoginUserQuotes,
-        handleEditMode,
-        editModeOn,
         handleCancelUpdate,
         handleDelete,
         getRandomQuote,
@@ -312,6 +521,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         isFav,
         setRandomQuote,
         setLockedQuote,
+
+        fetchFilteredMyQuotes,
+        fetchFilteredNotMyQuotes,
+
+        updateSortFilterBy,
+        sortFilterByForMine,
+        sortLoginUserQuotes,
+
+        filteredLoginUserQuotes,
+        setFilteredLoginUserQuotes,
       }}
     >
       {children}

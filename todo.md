@@ -1,3 +1,5 @@
+## Updates and Bug Fix 
+No record before Aug. 2
 Aug. 2, 2023
 - [x] display only google login btn when no user
 - [x] store user info of Event in firestore
@@ -17,21 +19,30 @@ Aug. 6
 - [x] Header & Profile: LogOutBtn
 - [x] DROPDOWN: dropdown from hover card
 
+Aug. 7
+- [x] quote tag when registering 
+- [x] Quote tag color
+- [x] quote card text thin better ???
+
+Aug. 8
+- [x] Quote tag hover design
+- [x] quote tag to filter
+- [x] bug: Quote tag when edit adn regisrter
+- [x] maxLength for a tag name
+
+Aug. 9
+- [x] fetch no-tag quotes
+- [x] Quote sort: import dialog
+
+Aug. 10
+- [x] Quote sort in Quote Page
+- [x] Quote sort() to orderBy()
+- [x] Quote sort UI: select to dialog
+
+- [] Quote sort functions: select to dialog
 - [] Event Cheer
-- [] Quote sort
 - [] create users in firestore
-- [] quote tag to filter
-- [] bug handleUpdate
-
+- [] contact, github issue, email.js
+- [] fav in quotes
+- [] tag.tagColor => tag.color, tag.tag => tag.name
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
-
-<!-- ./components/profile/tabs/event/EditModeOn.tsx:64:5
-Type error: Expected 3 arguments, but got 2.
-  62 |     // ✅ This will be type-safe and validated.
-  63 |     // Add a new document with a generated id.
-> 64 |     handleUpdate(values, event.id);
-     |     ^
-  65 |     setIsUpdateMode(false);
-  66 |     reset({
-  67 |       eventTitle: values.eventTitle,
-Error: Command "npm run build" exited with 1 -->

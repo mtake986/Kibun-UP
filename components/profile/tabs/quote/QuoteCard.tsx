@@ -23,6 +23,7 @@ import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/app/context/QuoteContext";
 import { Heart } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   q: IQuote;
@@ -82,6 +83,19 @@ const QuoteCard = ({ q }: Props) => {
                   </>
                 )}
               </div>
+              {q.tags?.length >= 1 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {q.tags.map((tag, i) => (
+                    <Badge
+                      key={i}
+                      variant={null}
+                      className={`border-none font-light bg-${tag.tagColor}-50 text-${tag.tagColor}-500 hover:bg-${tag.tagColor}-50 hover:text-${tag.tagColor}-500`}
+                    >
+                      #{tag.tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </CardContent>
 

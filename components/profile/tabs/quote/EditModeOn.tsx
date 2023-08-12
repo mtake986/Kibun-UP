@@ -18,11 +18,22 @@ import { Input } from "@/components/ui/input";
 import { Plane, Trash } from "lucide-react";
 import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IQuote } from "@/types/type";
+import { IQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/app/context/QuoteContext";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdAdd, MdClose, MdOutlineCancel } from "react-icons/md";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { tagColors } from "@/public/CONSTANTS";
+import { changeTagColor } from "@/utils/functions";
 
 type Props = {
   q: IQuote;
@@ -31,6 +42,37 @@ type Props = {
 
 export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<ITag[]>(q.tags || []);
+  const [tagColor, setTagColor] = useState<string>("");
+
+  const addTag = (tagInput: string) => {
+    if (tagInput.length === 0) {
+      alert("Min 0 character.");
+    } else if (tagInput.length > 20) {
+      alert("Maximum 20 characters.");
+    } else {
+      if (!tags.map((tag) => tag.tag).includes(tagInput)) {
+        if (tags.length === 0) {
+          setTags([{ tag: tagInput, tagColor }]);
+          setTagInput("");
+          setTagColor("");
+        } else if (tags.length === 5) {
+          alert("Maximum 5 tags.");
+        } else {
+          setTags([...tags, { tag: tagInput, tagColor }]);
+          setTagInput("");
+          setTagColor("");
+        }
+      } else {
+        alert("Not Allowed The Same Tag.");
+      }
+    }
+  };
+  const removeTag = (tagInput: string) => {
+    setTags(tags.filter((tag) => tag.tag !== tagInput));
+  };
+
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -39,6 +81,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       person: q.person,
       quote: q.quote,
       isDraft: q.isDraft,
+      tags: [],
     },
   });
 
@@ -49,12 +92,14 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
+    values.tags = tags;
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({
       person: "",
       quote: "",
       isDraft: false,
+      tags: [],
     });
     form.reset();
   }
@@ -114,6 +159,71 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             </FormItem>
           )}
         />
+
+        <div>
+          <FormLabel>Tags</FormLabel>
+          {tagColor}
+
+          <div className="mt-2 flex items-center gap-5">
+            <Input
+            maxLength={20}
+              placeholder="Motivation"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+            />
+            <Select
+              onValueChange={(color) => {
+                setTagColor(color);
+              }}
+              value={tagColor}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Color" />
+              </SelectTrigger>
+              <SelectContent>
+                {tagColors.map((color) => (
+                  <SelectItem
+                    className={`${changeTagColor(color)}`}
+                    value={color}
+                  >
+                    {tagInput}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <MdAdd
+              onClick={() => {
+                addTag(tagInput);
+              }}
+              size={36}
+              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
+            />
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {tags.map((tag, i) => (
+              <Badge
+                key={i}
+                onClick={() => removeTag(tag.tag)}
+                className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
+                  tag.tagColor
+                )}`}
+              >
+                #{tag.tag}
+                <MdClose className="ml-1 cursor-pointer rounded-full" />
+              </Badge>
+            ))}
+            {tagInput && (
+              <Badge
+                variant="outline"
+                className={`border-none font-light hover:opacity-70 ${changeTagColor(
+                  tagColor
+                )}`}
+              >
+                #{tagInput}
+              </Badge>
+            )}
+          </div>
+        </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

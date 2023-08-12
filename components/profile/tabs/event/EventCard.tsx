@@ -120,7 +120,7 @@ const QuoteCard = ({ event }: Props) => {
                 <Button
                   onClick={() => {
                     lockThisEvent(event);
-                    alert("Set as a target");
+                    // alert("Set as a target");
                   }}
                   className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
