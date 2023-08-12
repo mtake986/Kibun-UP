@@ -6,7 +6,6 @@ import CardNotMine from "./CardNotMine";
 import { useState } from "react";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import { SearchBar } from "./SearchBar";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {
@@ -20,7 +19,6 @@ const ListNotMine = ({ quotes }: Props) => {
 
   return (
     <div>
-      <SearchBar />
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
