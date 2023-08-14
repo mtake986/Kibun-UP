@@ -9,15 +9,15 @@ import {
 import { useQuote } from "@/app/context/QuoteContext";
 
 const OrderSelect = () => {
-  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
+  const { updateSortFilterByForNotMine, sortFilterByForNotMine } = useQuote();
 
   return (
     <Select
       onValueChange={(ele) => {
-        updateSortFilterByForMine("order", ele);
+        updateSortFilterByForNotMine("order", ele);
       }}
-      value={sortFilterByForMine.order}
-      defaultValue={sortFilterByForMine.order}
+      value={sortFilterByForNotMine.order}
+      defaultValue={sortFilterByForNotMine.order}
     >
       <SelectTrigger className="w-[120px] text-xs">
         <SelectValue placeholder="Order" />
