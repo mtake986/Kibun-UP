@@ -508,40 +508,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           );
         });
       }
-      // if (sortFilterByForNotMine.searchTag) {
-      //   if (q) {
-      //     onSnapshot(q, (snapshot) => {
-      //       let qs = snapshot.docs.map(
-      //         (doc) => ({ ...doc.data(), id: doc.id } as IQuote)
-      //       );
-      //       setQuotesNotMine(
-      //         qs.filter((q) => {
-      //           if (q.tags) {
-      //             return q.tags.some(
-      //               (tag: ITag) => tag.tag === sortFilterByForNotMine.searchTag
-      //             );
-      //           }
-      //         })
-      //       );
-      //     });
-      //   }
-      // } else {
-      //   if (q) {
-      //     onSnapshot(q, (snapshot) => {
-      //       const qs = snapshot.docs.map(
-      //         (doc) => ({ ...doc.data(), id: doc.id } as IQuote)
-      //       );
-
-      //       setQuotesNotMine(
-      //         qs.filter((q) => {
-      //           if (q.tags?.length === 0 || !q.tags) {
-      //             return true;
-      //           }
-      //         })
-      //       );
-      //     });
-      //   }
-      // }
     }
   };
 

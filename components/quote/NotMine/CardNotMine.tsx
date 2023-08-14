@@ -54,7 +54,7 @@ const CardNotMine = ({ q, i }: Props) => {
             <BsFillPersonFill size={24} />
             <p>{q.person}</p>
           </div>
-          {q.tags?.length >= 1 && (
+          {q.tags && q.tags?.length >= 1 && (
             <div className="flex flex-wrap items-center gap-2">
               {q.tags.map((tag, i) => (
                 <Badge
