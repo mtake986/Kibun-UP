@@ -10,14 +10,14 @@ import { useQuote } from "@/app/context/QuoteContext";
 import { ISortFilterBy } from "@/types/type";
 
 const ElementSelect = () => {
-  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
+  const { updateSortFilterByForNotMine, sortFilterByForNotMine } = useQuote();
 
   return (
     <Select
       onValueChange={(ele) => {
-        updateSortFilterByForMine("sortByElement", ele);
+        updateSortFilterByForNotMine("sortByElement", ele);
       }}
-      value={sortFilterByForMine.sortByElement}
+      value={sortFilterByForNotMine.sortByElement}
       defaultValue="createdAt"
     >
       <SelectTrigger className="w-[180px] text-xs">

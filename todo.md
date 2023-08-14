@@ -39,7 +39,11 @@ Aug. 10
 - [x] Quote sort() to orderBy()
 - [x] Quote sort UI: select to dialog
 
-- [] Quote sort functions: select to dialog
+Aug. 12
+- [x] My Quote sort functions: select
+
+
+- [] All Quote sort functions: select
 - [] Event Cheer
 - [] create users in firestore
 - [] contact, github issue, email.js

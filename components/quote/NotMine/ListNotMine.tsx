@@ -7,6 +7,9 @@ import { useState } from "react";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
+import OrderSelect from "./Sort/OrderSelect";
+import ElementSelect from "./Sort/ElementSelect";
+import { SearchBar } from "./SearchBar";
 
 type Props = {
   quotes: IQuote[];
@@ -19,6 +22,12 @@ const ListNotMine = ({ quotes }: Props) => {
 
   return (
     <div>
+      <div className="my-2 flex items-center gap-2">
+        {/* <SortBtn /> */}
+        <OrderSelect />
+        <ElementSelect />
+        <SearchBar />
+      </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

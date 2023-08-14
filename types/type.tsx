@@ -17,9 +17,9 @@ export interface IQuote {
   quote: string;
   isDraft: boolean;
   createdAt: Date;
-  updatedAt?: Date;
   userInfo: IUserInfo;
-  tags: ITag[];
+  updatedAt?: Date;
+  tags?: ITag[];
 }
 
 export interface IEventInputValues {
