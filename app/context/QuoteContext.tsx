@@ -400,7 +400,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             }
           });
           console.log(qs);
-          setLoginUserQuotes(qs.map((doc) => ({ ...doc.data(), id: doc.id })));
+          setLoginUserQuotes(
+            qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+          );
         });
       } else {
         onSnapshot(q, (snapshot) => {
@@ -410,7 +412,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             }
           });
           console.log(qs);
-          setLoginUserQuotes(qs.map((doc) => ({ ...doc.data(), id: doc.id })));
+          setLoginUserQuotes(
+            qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+          );
         });
       }
     }
@@ -422,8 +426,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       // where("userInfo.uid", "!=", user?.uid),
       orderBy("createdAt", "desc")
     );
-    console.log(123)
-    
+    console.log(123);
+
     let qs;
 
     if (user?.uid) {
@@ -488,7 +492,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           });
           console.log(qs);
           setQuotesNotMine(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
         });
       } else {
@@ -500,7 +504,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           });
           console.log(qs);
           setQuotesNotMine(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
         });
       }
