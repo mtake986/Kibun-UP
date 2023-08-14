@@ -431,6 +431,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
+            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'person' instead.
             // where("userInfo.uid", "!=", user?.uid),
             orderBy("quote", "asc")
           );

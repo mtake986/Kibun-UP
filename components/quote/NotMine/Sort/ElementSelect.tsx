@@ -18,7 +18,7 @@ const ElementSelect = () => {
         updateSortFilterByForNotMine("sortByElement", ele);
       }}
       value={sortFilterByForNotMine.sortByElement}
-      defaultValue="createdAt"
+      defaultValue={sortFilterByForNotMine.sortByElement}
     >
       <SelectTrigger className="w-[180px] text-xs">
         <SelectValue placeholder="By" />

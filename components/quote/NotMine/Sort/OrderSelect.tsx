@@ -17,7 +17,7 @@ const OrderSelect = () => {
         updateSortFilterByForNotMine("order", ele);
       }}
       value={sortFilterByForNotMine.order}
-      defaultValue="desc"
+      defaultValue={sortFilterByForNotMine.order}
     >
       <SelectTrigger className="w-[120px] text-xs">
         <SelectValue placeholder="Order" />

@@ -12,13 +12,20 @@ const ContentSwitchTabs = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { getAllQuotes, getLoginUserQuotes } =
-    useQuote();
+  const {
+    getLockedQuote,
+    fetchFavQuotes,
+    getAllQuotes,
+    getLoginUserQuotes,
+    loginUserQuotes,
+  } = useQuote();
 
   useEffect(() => {
     setLoading(true);
     getAllQuotes();
     getLoginUserQuotes();
+    getLockedQuote(user?.uid);
+    fetchFavQuotes();
     setLoading(false);
   }, [user]);
 
@@ -37,7 +44,7 @@ const ContentSwitchTabs = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="quotes">
-        <QuoteList />
+        <QuoteList quotes={loginUserQuotes} />
       </TabsContent>
       <TabsContent value="Events">
         <EventList />
