@@ -9,7 +9,7 @@ import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import { LogOut, User2 } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/app/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
@@ -42,7 +42,7 @@ const ProfilePic = () => {
 
   return (
     <Link
-      className="p-1 text-white duration-300 hover:opacity-50"
+      className="p-1 duration-300 hover:opacity-50 text-white"
       href={`/user/profile/${user?.uid}/`}
     >
       <User2 size={24} />

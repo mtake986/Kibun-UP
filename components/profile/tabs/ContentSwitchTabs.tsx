@@ -3,10 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 import QuoteList from "./quote/QuoteList";
 import EventList from "./event/EventList";
-import Loading from "@/components/utils/Loading";
 
 const ContentSwitchTabs = () => {
   const [user] = useAuthState(auth);
@@ -31,7 +30,7 @@ const ContentSwitchTabs = () => {
   }, [user]);
 
   if (loading) {
-    return <Loading />
+    return <div>Loading...</div>;
   }
 
   return (

@@ -9,7 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Edit, Trash } from "lucide-react";
+import {
+  Edit,
+  Trash,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
@@ -17,7 +20,7 @@ import { BiInfoCircle, BiTime } from "react-icons/bi";
 import { IEvent, IEventInputValues } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import EditModeOn from "./EditModeOn";
-import { useEvent } from "@/context/EventContext";
+import { useEvent } from "@/app/context/EventContext";
 import { Target } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
@@ -34,8 +37,12 @@ const QuoteCard = ({ event }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { handleDelete, lockThisEvent, lockedEvent, unlockThisEvent } =
-    useEvent();
+  const {
+    handleDelete,
+    lockThisEvent,
+    lockedEvent,
+    unlockThisEvent,
+  } = useEvent();
 
   const [user] = useAuthState(auth);
   return (
@@ -124,7 +131,7 @@ const QuoteCard = ({ event }: Props) => {
             </div>
             <Button
               onClick={() => {
-                handleDelete(event.id);
+                handleDelete(event.id)
                 if (user && lockedEvent?.id === event.id) unlockThisEvent();
               }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
