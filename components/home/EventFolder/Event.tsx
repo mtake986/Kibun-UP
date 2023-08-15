@@ -8,7 +8,7 @@ import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { Button } from "@/components/ui/button";
 import { Target } from "lucide-react";
 import { BiRefresh } from "react-icons/bi";
@@ -49,7 +49,7 @@ const Event = () => {
 
   useEffect(() => {
     setLoading(true);
-    setRandomEvent(undefined)
+    setRandomEvent(undefined);
     setLockedEvent(undefined);
     getLockedEvent();
     if (user) getRandomEvent(user.uid);
