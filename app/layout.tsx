@@ -1,13 +1,11 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
-// import Header from "../components/Header/Header";
-// import Footer from "@/components/Footer/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import Header from "../components/Header/Header";
+import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
-import { QuoteProvider } from "../context/QuoteContext";
-import { EventProvider } from "../context/EventContext";
-import { Header, Footer } from "../components/index";
+import { QuoteProvider } from "./context/QuoteContext";
+import { EventProvider } from "./context/EventContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,12 +27,9 @@ export default function RootLayout({
         <QuoteProvider>
           <EventProvider>
             <body className={poppins.className}>
-              <main className="relative min-h-screen">
-                <Header />
-                <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
-                  {children}
-                </div>
-                <Footer />
+              <Header />
+              <main className="container mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
+                {children}
               </main>
               <Toaster />
             </body>

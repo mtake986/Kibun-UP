@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
 import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEvent } from "../../context/EventContext";
+import { useEvent } from "../context/EventContext";
 import SwitchTab from "@/components/event/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 

@@ -31,7 +31,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
-import { useEvent } from "@/context/EventContext";
+import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 
@@ -41,11 +41,7 @@ type Props = {
   setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({
-  event,
-  setIsUpdateMode,
-  setIsLoading,
-}: Props) {
+export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 
@@ -189,8 +185,8 @@ export default function EditModeOn({
           </div>
           <Button
             onClick={() => {
-              setIsUpdateMode(false);
-              handleDelete(event.id);
+              setIsUpdateMode(false)
+              handleDelete(event.id)
             }}
             className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
             variant="ghost"
@@ -203,3 +199,4 @@ export default function EditModeOn({
     </Form>
   );
 }
+

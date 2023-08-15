@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 
@@ -120,7 +120,7 @@ const Quote = () => {
     }
   } else {
     return (
-      <div className="mt-6 flex flex-col items-center rounded-lg p-12 py-16 shadow">
+      <div className="mt-6 rounded-lg p-12 py-16 shadow flex flex-col items-center">
         <p>Login to create quotes</p>
         <GoogleLoginBtn />
       </div>
