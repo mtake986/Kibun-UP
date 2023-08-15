@@ -34,7 +34,7 @@ import { eventSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 
 type Props = {
   registerOpen: boolean;

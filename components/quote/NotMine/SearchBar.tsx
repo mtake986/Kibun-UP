@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { SearchIcon } from "lucide-react";
 
 export function SearchBar() {

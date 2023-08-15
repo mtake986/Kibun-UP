@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
+import Loading from "../utils/Loading";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -30,7 +31,7 @@ const SwitchTab = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <Tabs defaultValue="yours" className="w-full">
@@ -43,7 +44,7 @@ const SwitchTab = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="yours">
-        {user ? <List quotes={loginUserQuotes}  /> : <GoogleLoginBtn />}
+        {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="All">
         <ListNotMine quotes={quotesNotMine} />

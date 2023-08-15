@@ -22,3 +22,10 @@ export const quoteSchema = z.object({
     })
   ),
 });
+
+export const contactEmailSchema = z.object({
+  sender_name: z.string().min(2).max(20),
+  sender_email: z.string().email(),
+  title: z.string().min(2).max(30),
+  message: z.string().min(2).max(1000),
+});
