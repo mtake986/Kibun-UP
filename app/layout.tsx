@@ -29,9 +29,11 @@ export default function RootLayout({
         <QuoteProvider>
           <EventProvider>
             <body className={poppins.className}>
-              <Header />
-              <main className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
-                {children}
+              <main className="relative min-h-screen">
+                <Header />
+                <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
+                  {children}
+                </div>
                 <Footer />
               </main>
               <Toaster />
