@@ -1,4 +1,5 @@
 import React from 'react'
+import HeadingTwo from './HeadingTwo';
 
 type Props = {
   text: string
@@ -6,7 +7,7 @@ type Props = {
 const NoFetchedData = ({text}: Props) => {
   return (
     <div className="mt-10">
-      <h2 className="mb-2 mt-4 text-center text-2xl">{text}</h2>
+      <HeadingTwo text={text} />
     </div>
   );
 }

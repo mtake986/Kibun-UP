@@ -9,6 +9,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "../../context/EventContext";
 import SwitchTab from "@/components/event/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import HeadingTwo from "@/components/utils/HeadingTwo";
 
 const EventPage = () => {
   const [user] = useAuthState(auth);
@@ -31,8 +32,8 @@ const EventPage = () => {
           />
         ))}
 
-      <div className="relative mt-12">
-        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">Events</h2>
+      <div className="relative mt-10">
+        <HeadingTwo text="Events" />
         <SwitchTab />
       </div>
     </div>

@@ -1,5 +1,5 @@
 ## Updates and Bug Fix 
-No record before Aug. 2
+Start on Aug. 2
 Aug. 2, 2023
 - [x] display only google login btn when no user
 - [x] store user info of Event in firestore
@@ -47,15 +47,15 @@ Aug. 14
 - [x] Profile sort functions: select
 
 Aug. 15
-- [x] contact, github issue, email.js
+- [x] contact, email.js
+- [x] contact, github issue
+- [x] Link to UrlLink
 
 Aug. 16
+- [x] Replace h2 with HeadingTwo component
 
 - [] Event Cheer
+- [] Duplicate quote
 - [] create users in firestore
-- [] contact, github issues
-- [] Replace h2 with HeadingTwo component
-- [] Replace Link with UrlLink component
-- [] fav in quotes
 - [] tag.tagColor => tag.color, tag.tag => tag.name
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

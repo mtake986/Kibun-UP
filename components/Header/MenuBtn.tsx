@@ -1,7 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import { LucideLogOut, MenuIcon, User2 } from "lucide-react";
+import {
+  Contact,
+  LucideLogOut,
+  MenuIcon,
+  MessageCircle,
+  User2,
+} from "lucide-react";
 // import { hamburgerMenus } from "@/public/CONSTANTS";
 import Link from "next/link";
 
@@ -21,6 +27,9 @@ import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
 import { Button } from "../ui/button";
+import { BiSolidContact } from "react-icons/bi";
+import { MdContacts } from "react-icons/md";
+import { AiOutlineContacts } from "react-icons/ai";
 
 type Anchor = "right";
 
@@ -30,27 +39,33 @@ export default function MenuBtn() {
   const headerListItems = [
     {
       href: "/",
-      className: "flex items-center gap-5 p-1",
+      className: "flex items-center gap-5",
       target: "_self",
       clickOn: HomeListItem,
     },
     {
       href: "/quote",
-      className: "flex items-center gap-5 p-1",
+      className: "flex items-center gap-5",
       target: "_self",
       clickOn: QuoteListItem,
     },
     {
       href: "/event",
-      className: "flex items-center gap-5 p-1",
+      className: "flex items-center gap-5",
       target: "_self",
       clickOn: EventListItem,
     },
     {
-      href: `/user/profile/${user?.uid}/`,
-      className: "flex items-center gap-5 p-1",
+      href: `/user/profile/${user?.uid}`,
+      className: "flex items-center gap-5",
       target: "_self",
       clickOn: ProfileListItem,
+    },
+    {
+      href: `/contact`,
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: ContactListItem,
     },
   ];
 
@@ -74,15 +89,15 @@ export default function MenuBtn() {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 150 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="flex flex-col justify-between gap-3 p-5">
+      <div className="flex flex-col justify-between gap-2 p-5">
         {/* <div className="flex flex-col gap-3"> */}
         {headerListItems.map((item, i) => (
-          <Button className="flex cursor-pointer items-center gap-1 bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50">
+          <Button className="flex items-center justify-start bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50">
             <UrlLink
               key={i}
               href={item.href}
@@ -140,5 +155,12 @@ const ProfileListItem = (
   <>
     <BsPerson />
     <span className="text-sm">Profile</span>
+  </>
+);
+
+const ContactListItem = (
+  <>
+    <AiOutlineContacts />
+    <span className="text-sm">Contact</span>
   </>
 );

@@ -34,6 +34,7 @@ import {
 import { tagColors } from "@/public/CONSTANTS";
 import { ITag } from "@/types/type";
 import { changeTagColor } from "@/utils/functions";
+import HeadingTwo from "@/components/utils/HeadingTwo";
 
 type Props = {
   registerOpen: boolean;
@@ -108,9 +109,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   }
   return (
     <Form {...form}>
-      <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-        Register Form
-      </h2>
+      <HeadingTwo text='Register Form' />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}

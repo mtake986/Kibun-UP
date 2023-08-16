@@ -7,6 +7,8 @@ import { IEvent } from "@/types/type";
 import { useState } from "react";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
+import HeadingTwo from "@/components/utils/HeadingTwo";
+import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {
   events: IEvent[];
@@ -35,11 +37,7 @@ const List = ({ events }: Props) => {
           )}
         </>
       ) : (
-        <div className="mt-10">
-          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            No events
-          </h2>
-        </div>
+        <NoFetchedData text="No events found" />
       )}
     </div>
   );

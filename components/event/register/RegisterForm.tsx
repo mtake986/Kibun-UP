@@ -35,6 +35,7 @@ import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
 import { useEvent } from "@/context/EventContext";
+import HeadingTwo from "@/components/utils/HeadingTwo";
 
 type Props = {
   registerOpen: boolean;
@@ -77,9 +78,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   }
   return (
     <Form {...form}>
-      <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-        Register Form
-      </h2>
+      <HeadingTwo text="Register Form" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField

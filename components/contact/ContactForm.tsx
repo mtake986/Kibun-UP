@@ -27,7 +27,7 @@ import UrlLink from "../utils/UrlLink";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
-  
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof contactEmailSchema>>({
     resolver: zodResolver(contactEmailSchema),
@@ -164,17 +164,16 @@ export default function ContactForm() {
           </form>
         </Form>
       )}
-      <p>
+      <p className="mt-5 text-center">
         Or, you can{" "}
         <UrlLink
           className="text-sky-500 hover:underline"
           target="_blank"
           href="https://github.com/mtake986/Kibun-UP/issues"
           clickOn="create an issue"
-        />
+        />{" "}
         in GitHub.
       </p>
-      <p>important to make this app better!!</p>
     </div>
   );
 }

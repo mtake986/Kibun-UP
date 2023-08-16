@@ -45,7 +45,7 @@ const Quote = () => {
     if (!randomQuote) {
       return (
         <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
-          <p>No Quotes to Display</p>
+          <p className="text-xl">You have no quotes yet.</p>
           <UrlLink
             href="/quote"
             className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"

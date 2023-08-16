@@ -66,7 +66,7 @@ const Event = () => {
       if (!lockedEvent && !randomEvent) {
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
-            <p>No event yet.</p>
+            <p>You have no events yet.</p>
             <UrlLink
               href="/event"
               className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
