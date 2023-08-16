@@ -46,10 +46,16 @@ Aug. 14
 - [x] All Quote sort functions: select
 - [x] Profile sort functions: select
 
+Aug. 15
+- [x] contact, github issue, email.js
 
-- [] contact, github issue, email.js
+Aug. 16
+
 - [] Event Cheer
 - [] create users in firestore
+- [] contact, github issues
+- [] Replace h2 with HeadingTwo component
+- [] Replace Link with UrlLink component
 - [] fav in quotes
 - [] tag.tagColor => tag.color, tag.tag => tag.name
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

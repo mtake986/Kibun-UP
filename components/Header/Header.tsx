@@ -7,6 +7,7 @@ import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
 import { ContactIcon } from "lucide-react";
+import UrlLink from "../utils/UrlLink";
 
 export default function ButtonAppBar() {
   // const { signInWithGoogle } = useAuth();
@@ -17,32 +18,32 @@ export default function ButtonAppBar() {
     <header className="bg-violet-500 px-2 py-4 sm:p-4">
       <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
-          <Link href="/">
-            <span className="text-xl font-semibold tracking-tight">
-              Kibun UP
-            </span>
-          </Link>
+          <UrlLink
+            clickOn="Kibun UP"
+            href="/"
+            target="_self"
+            className="text-xl font-semibold tracking-tight"
+          />
         </div>
         <div className="hidden gap-3 text-sm sm:flex ">
-          <Link
+          <UrlLink
             href="/quote"
+            target="_self"
             className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
-          >
-            Quote
-          </Link>
-          <Link
+            clickOn="Quote"
+          />
+          <UrlLink
             href="/event"
             className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
-          >
-            Event
-          </Link>
-          <Link
+            target="_self"
+            clickOn="Event"
+          />
+          <UrlLink
             href="/contact"
             className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
-          >
-            <ContactIcon className="inline-block" size={16} />
-            Contact
-          </Link>
+            target="_self"
+            clickOn="Contact"
+          />
         </div>
         <div className="hidden items-center justify-between sm:flex">
           {user ? (

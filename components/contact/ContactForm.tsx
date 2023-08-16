@@ -22,15 +22,12 @@ import { init, send } from "@emailjs/browser";
 import { toast } from "../ui/use-toast";
 import { useState } from "react";
 import Loading from "../utils/Loading";
+import HeadingTwo from "../utils/HeadingTwo";
+import UrlLink from "../utils/UrlLink";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const userID = process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY;
-  const serviceID = process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID;
-  const templateID = process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID;
-
-  const [user] = useAuthState(auth);
-  const { reset } = useForm();
+  
   // 1. Define your form.
   const form = useForm<z.infer<typeof contactEmailSchema>>({
     resolver: zodResolver(contactEmailSchema),
@@ -90,9 +87,7 @@ export default function ContactForm() {
 
   return (
     <div>
-      <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-        Contact Form
-      </h2>
+      <HeadingTwo text="Contact Form" />
       {loading ? (
         <Loading />
       ) : (
@@ -169,6 +164,17 @@ export default function ContactForm() {
           </form>
         </Form>
       )}
+      <p>
+        Or, you can{" "}
+        <UrlLink
+          className="text-sky-500 hover:underline"
+          target="_blank"
+          href="https://github.com/mtake986/Kibun-UP/issues"
+          clickOn="create an issue"
+        />
+        in GitHub.
+      </p>
+      <p>important to make this app better!!</p>
     </div>
   );
 }

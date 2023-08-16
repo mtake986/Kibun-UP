@@ -1,21 +1,21 @@
-'use client'
-import Link from 'next/link';
-import React, { useState } from 'react'
+"use client";
+import Link from "next/link";
+import React, { useState } from "react";
+import UrlLink from "../utils/UrlLink";
 
 const Footer = () => {
   const [today, setToday] = useState<number>(new Date().getFullYear());
   return (
-    <footer className="w-full py-1 m-auto text-center text-sm text-slate-400 absolute bottom-0">
+    <footer className="absolute bottom-0 m-auto w-full py-1 pt-10 text-center text-sm text-slate-400">
       &copy; Copyright <span>{today}</span>{" "}
-      <Link
-        target="_blank"
-        href="https://github.com/mtake986"
+      <UrlLink
+        href="/creator-info"
+        clickOn="Masahiro Takechi"
+        target="_self"
         className="text-sky-500 hover:underline"
-      >
-        Masahiro Takechi
-      </Link>
+      />
     </footer>
   );
-}
+};
 
-export default Footer
+export default Footer;

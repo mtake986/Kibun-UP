@@ -12,30 +12,47 @@ import {
   BsFlag,
   BsFlagFill,
   BsHouse,
+  BsPerson,
+  BsQuote,
 } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
+import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
-
-const hamburgerMenus = [
-  {
-    name: "Quote",
-    link: "/quote",
-    icon: <BsChatQuoteFill />,
-  },
-  {
-    name: "Event",
-    link: "/event",
-    icon: <BsFlagFill />,
-  },
-  { name: "Login", link: "/login", icon: <LogInIcon /> },
-];
+import { Button } from "../ui/button";
 
 type Anchor = "right";
 
 export default function MenuBtn() {
   const [user] = useAuthState(auth);
+
+  const headerListItems = [
+    {
+      href: "/",
+      className: "flex items-center gap-5 p-1",
+      target: "_self",
+      clickOn: HomeListItem,
+    },
+    {
+      href: "/quote",
+      className: "flex items-center gap-5 p-1",
+      target: "_self",
+      clickOn: QuoteListItem,
+    },
+    {
+      href: "/event",
+      className: "flex items-center gap-5 p-1",
+      target: "_self",
+      clickOn: EventListItem,
+    },
+    {
+      href: `/user/profile/${user?.uid}/`,
+      className: "flex items-center gap-5 p-1",
+      target: "_self",
+      clickOn: ProfileListItem,
+    },
+  ];
 
   const [state, setState] = React.useState({
     right: false,
@@ -63,46 +80,19 @@ export default function MenuBtn() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <div className="flex flex-col justify-between gap-3 p-5">
-        <div className="flex flex-col gap-3">
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsHouse />
-              <span className="text-lg ">Home</span>
-            </Link>
-          </div>
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/quote"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsChatQuote />
-              <span className="text-lg ">Quote</span>
-            </Link>
-          </div>
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/event"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsFlag />
-              <span className="text-lg ">Event</span>
-            </Link>
-          </div>
-          {user ? (
-            <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-              <Link
-                className="flex cursor-pointer items-center gap-5 p-1"
-                href={`/user/profile/${user?.uid}/`}
-              >
-                <User2 size={16} />
-                Profile
-              </Link>
-            </div>
-          ) : null}
-        </div>
+        {/* <div className="flex flex-col gap-3"> */}
+        {headerListItems.map((item, i) => (
+          <Button className="flex cursor-pointer items-center gap-1 bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50">
+            <UrlLink
+              key={i}
+              href={item.href}
+              className={item.className}
+              target={item.target}
+              clickOn={item.clickOn}
+            />
+          </Button>
+        ))}
+        {/* </div> */}
         {user ? <LogOutBtn /> : <GoogleLoginBtn />}
       </div>
     </Box>
@@ -124,3 +114,31 @@ export default function MenuBtn() {
     </div>
   );
 }
+
+const HomeListItem = (
+  <>
+    <BsHouse />
+    <span className="text-sm ">Home</span>
+  </>
+);
+
+const QuoteListItem = (
+  <>
+    <BsChatQuote />
+    <span className="text-sm">Quote</span>
+  </>
+);
+
+const EventListItem = (
+  <>
+    <BsFlag />
+    <span className="text-sm">Event</span>
+  </>
+);
+
+const ProfileListItem = (
+  <>
+    <BsPerson />
+    <span className="text-sm">Profile</span>
+  </>
+);

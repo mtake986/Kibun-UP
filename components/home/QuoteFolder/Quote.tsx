@@ -8,6 +8,7 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
+import UrlLink from "@/components/utils/UrlLink";
 
 const Quote = () => {
   const {
@@ -45,12 +46,12 @@ const Quote = () => {
       return (
         <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
           <p>No Quotes to Display</p>
-          <Link
+          <UrlLink
             href="/quote"
             className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
-          >
-            Click here to create an quote
-          </Link>
+            clickOn="Click here to create an quote"
+            target='_self'
+          />
         </div>
       );
     } else if (lockedQuote || randomQuote) {

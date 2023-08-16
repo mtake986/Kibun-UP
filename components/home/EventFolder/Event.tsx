@@ -17,6 +17,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import UrlLink from "@/components/utils/UrlLink";
 
 const Event = () => {
   const [user] = useAuthState(auth);
@@ -66,12 +67,12 @@ const Event = () => {
         return (
           <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
             <p>No event yet.</p>
-            <Link
+            <UrlLink
               href="/event"
               className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
-            >
-              Click here to set an event
-            </Link>
+              target="_self"
+              clickOn="Click here to set an event"
+            />
           </div>
         );
       } else if (lockedEvent) {

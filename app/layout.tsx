@@ -11,7 +11,10 @@ import { Header, Footer } from "../components/index";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const poppins = Poppins({ weight: ["400", "700"], subsets: ["latin"] });
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Create Next App",
