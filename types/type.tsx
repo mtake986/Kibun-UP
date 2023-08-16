@@ -42,6 +42,12 @@ export interface IFavQuote {
   id?: string;
 }
 
+export interface IBookmark {
+  uid: string;
+  qids: string[];
+  id?: string;
+}
+
 export interface IUserInfo {
   uid: string | undefined;
   displayName: string | null | undefined;

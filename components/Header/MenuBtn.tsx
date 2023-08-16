@@ -97,9 +97,11 @@ export default function MenuBtn() {
       <div className="flex flex-col justify-between gap-2 p-5">
         {/* <div className="flex flex-col gap-3"> */}
         {headerListItems.map((item, i) => (
-          <Button className="flex items-center justify-start bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50">
+          <Button
+            key={i}
+            className="flex items-center justify-start bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50"
+          >
             <UrlLink
-              key={i}
               href={item.href}
               className={item.className}
               target={item.target}

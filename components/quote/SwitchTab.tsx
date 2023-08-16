@@ -20,6 +20,7 @@ const SwitchTab = () => {
     quotesNotMine,
     getQuotesNotMine,
     fetchFavQuotes,
+    fetchMyBookmarks,
   } = useQuote();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const SwitchTab = () => {
     getLoginUserQuotes();
     getQuotesNotMine();
     fetchFavQuotes();
+    fetchMyBookmarks();
     setLoading(false);
   }, [user]);
 

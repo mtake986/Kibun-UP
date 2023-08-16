@@ -29,6 +29,7 @@ import {
   IUserInfo,
   ISortFilterBy,
   ITag,
+  IBookmark,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -82,6 +83,11 @@ type QuoteContext = {
 
   filteredNotLoginUserQuotes: IQuote[];
   setFilteredNotLoginUserQuotes: (quotes: IQuote[]) => void;
+
+  storeQuoteInBookmarks: (uid: string, qid: string) => void;
+  removeQuoteFromBookmarks: (uid: string, qid: string) => void;
+  fetchMyBookmarks: () => void;
+  myBookmarks: IBookmark | undefined;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -93,6 +99,7 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
+  const [myBookmarks, setMyBookmarks] = useState<IBookmark>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
@@ -101,6 +108,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
+  const bookmarksCollectionRef = collection(db, "bookmarks");
 
   const [user] = useAuthState(auth);
 
@@ -221,10 +229,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const lockThisQuote = async (uid: string, data: IQuote) => {
     await setDoc(doc(db, "lockedQuotes", uid), data);
     setLockedQuote(data);
-    // toast({
-    //   className: "border-none bg-red-50 text-red-500",
-    //   title: "Quote locked",
-    // });
   };
 
   const removeLockThisQuote = async (uid: string) => {
@@ -549,6 +553,48 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const storeQuoteInBookmarks = async (uid: string, qid: string) => {
+    const docRef = doc(db, "bookmarks", uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    console.log(data);
+    if (data) {
+      await updateDoc(docRef, {
+        qids: arrayUnion(qid),
+      });
+    } else {
+      await setDoc(doc(db, "bookmarks", uid), { uid, qids: [qid] });
+      console.log(123);
+    }
+  };
+
+  const removeQuoteFromBookmarks = async (uid: string, qid: string) => {
+    const docRef = doc(db, "bookmarks", uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    console.log(data);
+    if (data?.qids.includes(qid) && data?.qids.length === 1) {
+      await deleteDoc(doc(db, "bookmarks", uid));
+    } else {
+      await updateDoc(docRef, {
+        qids: arrayRemove(qid),
+      });
+    }
+  };
+
+  const fetchMyBookmarks = async () => {
+    let q = query(
+      bookmarksCollectionRef,
+      where("uid", "==", user?.uid),
+    );
+
+    onSnapshot(q, (snapshot) => {
+      setMyBookmarks(
+        snapshot.docs.map(doc => doc.data() as IBookmark)[0]
+      );
+    })
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -593,6 +639,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         filteredNotLoginUserQuotes,
         setFilteredNotLoginUserQuotes,
+
+        storeQuoteInBookmarks,
+        removeQuoteFromBookmarks,
+        fetchMyBookmarks,
+        myBookmarks,
       }}
     >
       {children}
