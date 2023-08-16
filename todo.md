@@ -53,9 +53,14 @@ Aug. 15
 
 Aug. 16
 - [x] Replace h2 with HeadingTwo component
+- [x] Bookmark quote by clicking on the card not mine
 
+- [] add bookmark tab on QuotePage  
+- [] add bookmark tab on Profile  
 - [] Event Cheer
-- [] Duplicate quote
 - [] create users in firestore
 - [] tag.tagColor => tag.color, tag.tag => tag.name
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
+
+favQuote ：　何人にFavされてるかをみたいから　
+Bookmarks: ログインユーザーがどのQuoteをブックマークしてるかをみたいから
