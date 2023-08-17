@@ -21,6 +21,7 @@ const SwitchTab = () => {
     getQuotesNotMine,
     fetchFavQuotes,
     fetchMyBookmarks,
+    fetchNumOfBookmarks,
   } = useQuote();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const SwitchTab = () => {
     getQuotesNotMine();
     fetchFavQuotes();
     fetchMyBookmarks();
+    fetchNumOfBookmarks();
     setLoading(false);
   }, [user]);
 
@@ -39,7 +41,7 @@ const SwitchTab = () => {
     <Tabs defaultValue="yours" className="w-full">
       <TabsList className="flex items-stretch">
         <TabsTrigger value="yours" className="w-full text-center">
-          Yours
+          Mine
         </TabsTrigger>
         <TabsTrigger value="All" className="w-full text-center">
           All

@@ -46,6 +46,7 @@ const CardNotMine = ({ q, i }: Props) => {
     storeQuoteInBookmarks,
     removeQuoteFromBookmarks,
     myBookmarks,
+    numOfBookmarks,
   } = useQuote();
   const [user] = useAuthState(auth);
 
@@ -95,7 +96,7 @@ const CardNotMine = ({ q, i }: Props) => {
                   : storeFavQuote(user.uid, q.id);
               }
             }}
-            className={`flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto`}
+            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50 sm:w-auto`}
           >
             {user &&
             favQuotes.some(
@@ -143,14 +144,18 @@ const CardNotMine = ({ q, i }: Props) => {
                 console.log(e);
               }
             }}
-            className={`"hover:bg-green-50 duration-300`}
-            variant="ghost"
+            className={`bg-white duration-300 hover:bg-green-50`}
           >
             {myBookmarks && myBookmarks.qids.includes(q.id) ? (
               <BsBookmarkFill size={12} className="text-green-500" />
             ) : (
               <BsBookmark size={12} className="text-green-500" />
             )}
+            <span className="ml-1 text-xs text-black">
+              {numOfBookmarks?.map((bookmark, i) =>
+                bookmark.qid === q.id ? bookmark.uids.length : null
+              )}
+            </span>
             {/* <span>Edit</span> */}
           </Button>
         </div>

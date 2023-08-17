@@ -1,4 +1,4 @@
-## Updates and Bug Fix 
+## Updates and Bug Fixes
 Start on Aug. 2
 Aug. 2, 2023
 - [x] display only google login btn when no user
@@ -63,4 +63,5 @@ Aug. 16
 // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人にFavされてるかをみたいから　
-Bookmarks: ログインユーザーがどのQuoteをブックマークしてるかをみたいから
+bookmarks: ログインユーザーがどのQuoteをブックマークしてるかをみたいから
+numOfBookmarks: to display the number of bookmarks

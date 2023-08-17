@@ -42,12 +42,6 @@ export interface IFavQuote {
   id?: string;
 }
 
-export interface IBookmark {
-  uid: string;
-  qids: string[];
-  id?: string;
-}
-
 export interface IUserInfo {
   uid: string | undefined;
   displayName: string | null | undefined;
@@ -63,4 +57,16 @@ export interface ISortFilterBy {
   order: string;
   sortByElement: string;
   searchTag: string;
+}
+
+export interface IBookmark {
+  uid: string;
+  qids: string[];
+  id?: string;
+}
+
+export interface INumOfBookmarks {
+  qid: string;
+  uids: string[];
+  id?: string;
 }

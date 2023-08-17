@@ -30,6 +30,7 @@ import {
   ISortFilterBy,
   ITag,
   IBookmark,
+  INumOfBookmarks,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -88,6 +89,9 @@ type QuoteContext = {
   removeQuoteFromBookmarks: (uid: string, qid: string) => void;
   fetchMyBookmarks: () => void;
   myBookmarks: IBookmark | undefined;
+
+  fetchNumOfBookmarks: () => void;
+  numOfBookmarks: INumOfBookmarks[] | undefined;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -100,6 +104,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
   const [myBookmarks, setMyBookmarks] = useState<IBookmark>();
+  const [numOfBookmarks, setNumOfBookmarks] = useState<INumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
   const [lockedQuote, setLockedQuote] = useState<IQuote>();
@@ -108,7 +113,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
-  const bookmarksCollectionRef = collection(db, "bookmarks");
+  const whoBookmarkedWhichQuoteCollectionRef = collection(
+    db,
+    "whoBookmarkedWhichQuote"
+  );
+  const numOfBookmarksCollectionRef = collection(db, "numOfBookmarks");
 
   const [user] = useAuthState(auth);
 
@@ -554,7 +563,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const storeQuoteInBookmarks = async (uid: string, qid: string) => {
-    const docRef = doc(db, "bookmarks", uid);
+    const docRef = doc(db, "whoBookmarkedWhichQuote", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
     console.log(data);
@@ -563,36 +572,68 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         qids: arrayUnion(qid),
       });
     } else {
-      await setDoc(doc(db, "bookmarks", uid), { uid, qids: [qid] });
-      console.log(123);
+      await setDoc(doc(db, "whoBookmarkedWhichQuote", uid), {
+        uid,
+        qids: [qid],
+      });
+    }
+
+    const numOfBookmarksRef = doc(db, "numOfBookmarks", qid);
+    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
+    const nobData = numOfBookmarksDocSnap.data();
+    console.log(nobData);
+    if (nobData) {
+      await updateDoc(numOfBookmarksRef, {
+        uids: arrayUnion(uid),
+      });
+    } else {
+      await setDoc(doc(db, "numOfBookmarks", qid), { qid, uids: [uid] });
     }
   };
 
   const removeQuoteFromBookmarks = async (uid: string, qid: string) => {
-    const docRef = doc(db, "bookmarks", uid);
+    const docRef = doc(db, "whoBookmarkedWhichQuote", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log(data);
+    console.log('data: ' + data)
     if (data?.qids.includes(qid) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "bookmarks", uid));
+      await deleteDoc(doc(db, "whoBookmarkedWhichQuote", uid));
     } else {
       await updateDoc(docRef, {
         qids: arrayRemove(qid),
+      });
+    }
+
+    const numOfBookmarksDocRef = doc(db, "numOfBookmarks", qid);
+    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
+    const nobData = numOfBookmarksDocSnap.data();
+    console.log('nobData', nobData);
+    if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
+      await deleteDoc(doc(db, "numOfBookmarks", qid));
+    } else {
+      await updateDoc(numOfBookmarksDocRef, {
+        uids: arrayRemove(uid),
       });
     }
   };
 
   const fetchMyBookmarks = async () => {
     let q = query(
-      bookmarksCollectionRef,
-      where("uid", "==", user?.uid),
+      whoBookmarkedWhichQuoteCollectionRef,
+      where("uid", "==", user?.uid)
     );
 
     onSnapshot(q, (snapshot) => {
-      setMyBookmarks(
-        snapshot.docs.map(doc => doc.data() as IBookmark)[0]
+      setMyBookmarks(snapshot.docs.map((doc) => doc.data() as IBookmark)[0]);
+    });
+  };
+
+  const fetchNumOfBookmarks = async () => {
+    onSnapshot(numOfBookmarksCollectionRef, (snapshot) => {
+      setNumOfBookmarks(
+        snapshot.docs.map((doc) => doc.data() as INumOfBookmarks)
       );
-    })
+    });
   };
 
   return (
@@ -644,6 +685,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         removeQuoteFromBookmarks,
         fetchMyBookmarks,
         myBookmarks,
+
+        fetchNumOfBookmarks,
+        numOfBookmarks,
       }}
     >
       {children}
