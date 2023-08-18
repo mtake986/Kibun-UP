@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
 import FtrFolder from "@/components/footerFolder/FtrFolder";
-import Hdr from "@/components/hdr/hdr";
+import Hdr from "@/components/hdrFolder/Hdr";
 
 const inter = Inter({ subsets: ["latin"] });
 
