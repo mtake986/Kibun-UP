@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import UrlLink from "../utils/UrlLink";
 
-const Footer = () => {
+const FtrFolder = () => {
   const [today, setToday] = useState<number>(new Date().getFullYear());
   return (
     <footer className="absolute bottom-0 m-auto w-full py-1 pt-10 text-center text-sm text-slate-400">
@@ -18,4 +18,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default FtrFolder;
