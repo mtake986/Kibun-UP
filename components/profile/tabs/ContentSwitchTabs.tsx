@@ -6,12 +6,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuote } from "@/app/context/QuoteContext";
 import QuoteList from "./quote/QuoteList";
 import EventList from "./event/EventList";
-<<<<<<< HEAD
-import Loading from "@/components/utils/Loading";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
-=======
->>>>>>> main
 
 const ContentSwitchTabs = () => {
   const [user] = useAuthState(auth);

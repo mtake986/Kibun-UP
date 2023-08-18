@@ -6,11 +6,8 @@ import { auth } from "../../app/config/Firebase";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
-<<<<<<< HEAD
 import { ContactIcon } from "lucide-react";
 import UrlLink from "../utils/UrlLink";
-=======
->>>>>>> main
 
 export default function ButtonAppBar() {
   // const { signInWithGoogle } = useAuth();
@@ -38,7 +35,6 @@ export default function ButtonAppBar() {
           <UrlLink
             href="/event"
             className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
-<<<<<<< HEAD
             target="_self"
             clickOn="Event"
           />
@@ -48,11 +44,6 @@ export default function ButtonAppBar() {
             target="_self"
             clickOn="Contact"
           />
-=======
-          >
-            Event
-          </Link>
->>>>>>> main
         </div>
         <div className="hidden items-center justify-between sm:flex">
           {user ? (

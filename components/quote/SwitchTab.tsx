@@ -7,12 +7,9 @@ import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
-<<<<<<< HEAD
-import Loading from "../utils/Loading";
+import Loading from '../utils/Loading';
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
 import NoFetchedData from "../utils/NoFetchedData";
-=======
->>>>>>> main
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);

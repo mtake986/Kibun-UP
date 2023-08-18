@@ -51,7 +51,6 @@ Aug. 12
 
 - [x] My Quote sort functions: select
 
-<<<<<<< HEAD
 Aug. 14
 
 - [x] All Quote sort functions: select
@@ -72,14 +71,6 @@ Aug. 16
 - [] add bookmark tab on Profile
 - [] Event Cheer
 - [] create users in firestore
-=======
-
-- [] All Quote sort functions: select
-- [] Event Cheer
-- [] create users in firestore
-- [] contact, github issue, email.js
-- [] fav in quotes
->>>>>>> main
 - [] tag.tagColor => tag.color, tag.tag => tag.name
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 

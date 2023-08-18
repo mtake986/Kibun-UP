@@ -17,12 +17,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-<<<<<<< HEAD
 } from "@/components/ui/dropdown-menu";
 import UrlLink from "../utils/UrlLink";
-=======
-} from "@/components/ui/dropdown-menu"
->>>>>>> main
 
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
@@ -46,15 +42,10 @@ const ProfilePic = () => {
   }
 
   return (
-<<<<<<< HEAD
     <UrlLink
       target="_self"
       clickOn={<User2 size={24} />}
       className="p-1 text-white duration-300 hover:opacity-50"
-=======
-    <Link
-      className="p-1 duration-300 hover:opacity-50 text-white"
->>>>>>> main
       href={`/user/profile/${user?.uid}/`}
     />
     // <DropdownMenu>
