@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
 import FtrFolder from "@/components/footerFolder/FtrFolder";
+import Hdr from "@/components/hdr/hdr";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +34,7 @@ export default function RootLayout({
           <EventProvider>
             <body className={poppins.className}>
               <main className="relative min-h-screen">
-                {/* <Header /> */}
+                <Hdr />
                 <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
                   {children}
                 </div>
