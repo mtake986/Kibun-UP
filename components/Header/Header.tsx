@@ -9,7 +9,7 @@ import ProfilePic from "./ProfilePic";
 import { ContactIcon } from "lucide-react";
 import UrlLink from "../utils/UrlLink";
 
-export default function ButtonAppBar() {
+export default function Header() {
   // const { signInWithGoogle } = useAuth();
   const [user] = useAuthState(auth);
   const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);

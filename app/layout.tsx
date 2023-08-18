@@ -7,7 +7,9 @@ import { AuthProvider } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
-import { Header, Footer } from "../components/index";
+import Header from "@/components/header/Header";
+import Footer from "@/components/footer/Footer";
+// import { Header, Footer } from "../components/index";
 
 const inter = Inter({ subsets: ["latin"] });
 
