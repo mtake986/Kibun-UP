@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 
 const OrderSelect = () => {
   const { updateSortFilterByForNotMine, sortFilterByForNotMine } = useQuote();

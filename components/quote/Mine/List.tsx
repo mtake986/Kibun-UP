@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import { pagination } from "@/utils/functions";
