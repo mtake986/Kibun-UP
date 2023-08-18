@@ -7,9 +7,8 @@ import { AuthProvider } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
-// import { Header, Footer } from "../components/index";
+// import Footer from "../components/footer/Footer";
+// import Header from "../components/header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,11 +34,11 @@ export default function RootLayout({
           <EventProvider>
             <body className={poppins.className}>
               <main className="relative min-h-screen">
-                <Header />
+                {/* <Header /> */}
                 <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
                   {children}
                 </div>
-                <Footer />
+                {/* <Footer /> */}
               </main>
               <Toaster />
             </body>
