@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/app/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
@@ -50,7 +50,7 @@ const Quote = () => {
             href="/quote"
             className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
             clickOn="Click here to create an quote"
-            target='_self'
+            target="_self"
           />
         </div>
       );
@@ -121,7 +121,7 @@ const Quote = () => {
     }
   } else {
     return (
-      <div className="mt-6 rounded-lg p-12 py-16 shadow flex flex-col items-center">
+      <div className="mt-6 flex flex-col items-center rounded-lg p-12 py-16 shadow">
         <p>Login to create quotes</p>
         <GoogleLoginBtn />
       </div>

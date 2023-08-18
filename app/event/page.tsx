@@ -2,7 +2,7 @@
 import RegisterForm from "@/components/event/register/RegisterForm";
 import React, { useState } from "react";
 import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
-import { auth } from "../config/Firebase";
+import { auth } from "../../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import SwitchTab from "@/components/event/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";

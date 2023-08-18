@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { builtInEvents } from "@/public/CONSTANTS";
 import { AiOutlineInfoCircle, AiFillCloseCircle } from "react-icons/ai";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { auth, db } from "@/app/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { IEvent } from "@/types/type";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -50,7 +50,7 @@ const Event = () => {
 
   useEffect(() => {
     setLoading(true);
-    setRandomEvent(undefined)
+    setRandomEvent(undefined);
     setLockedEvent(undefined);
     getLockedEvent();
     if (user) getRandomEvent(user.uid);

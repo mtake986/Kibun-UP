@@ -1,4 +1,4 @@
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/app/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
-import Loading from '../utils/Loading';
+import Loading from "../utils/Loading";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
 import NoFetchedData from "../utils/NoFetchedData";
 
@@ -56,13 +56,13 @@ const SwitchTab = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="yours">
-        {user ? <List quotes={loginUserQuotes}  /> : <GoogleLoginBtn />}
+        {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="Bookmarks">
         {myBookmarks?.quotes ? (
           <ListOfBookmarks quotes={myBookmarks.quotes} />
         ) : (
-          <NoFetchedData text='No Bookmarks' />
+          <NoFetchedData text="No Bookmarks" />
         )}
       </TabsContent>
       <TabsContent value="All">

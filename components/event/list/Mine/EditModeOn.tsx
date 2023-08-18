@@ -26,7 +26,7 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
@@ -41,7 +41,11 @@ type Props = {
   setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
+export default function EditModeOn({
+  event,
+  setIsUpdateMode,
+  setIsLoading,
+}: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 
@@ -185,8 +189,8 @@ export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Pro
           </div>
           <Button
             onClick={() => {
-              setIsUpdateMode(false)
-              handleDelete(event.id)
+              setIsUpdateMode(false);
+              handleDelete(event.id);
             }}
             className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
             variant="ghost"
@@ -199,4 +203,3 @@ export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Pro
     </Form>
   );
 }
-

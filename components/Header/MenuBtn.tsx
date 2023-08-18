@@ -22,7 +22,7 @@ import {
   BsQuote,
 } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";

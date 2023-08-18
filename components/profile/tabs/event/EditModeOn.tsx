@@ -26,7 +26,7 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import { DocumentData } from "firebase/firestore";
@@ -39,7 +39,11 @@ type Props = {
   setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
+export default function EditModeOn({
+  event,
+  setIsUpdateMode,
+  setIsLoading,
+}: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 

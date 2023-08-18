@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Heart, Trash } from "lucide-react";
 
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
@@ -43,7 +43,6 @@ const QuoteCard = ({ q, i }: Props) => {
   } = useQuote();
 
   const [user, setUser] = useState(auth.currentUser);
-
 
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (

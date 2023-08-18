@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Plane, Trash } from "lucide-react";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";

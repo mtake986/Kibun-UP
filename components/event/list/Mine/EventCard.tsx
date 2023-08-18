@@ -20,7 +20,7 @@ import {
   ToggleRightIcon,
   Trash,
 } from "lucide-react";
-import { auth, db } from "@/app/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { MdPlace } from "react-icons/md";

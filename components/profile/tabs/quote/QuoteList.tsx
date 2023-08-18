@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
 import { useQuote } from "@/app/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
