@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { IUserInfo } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";

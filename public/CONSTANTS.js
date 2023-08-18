@@ -1,17 +1,10 @@
 import { LogInIcon } from "lucide-react";
-import {
-  BsChatQuote,
-  BsChatQuoteFill,
-  BsFlag,
-  BsFlagFill,
-  BsHouse,
-  BsPerson,
-} from "react-icons/bs";
+import { BsChatQuote, BsChatQuoteFill, BsFlag, BsFlagFill, BsHouse, BsPerson } from "react-icons/bs";
 import YouTubeIcon from "./assets/icons/youtube.svg";
 import InstagramIcon from "./assets/icons/instagram.svg";
 import TwitterIcon from "./assets/icons/twitter.svg";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 
 export const builtInQuotes = [
   {
@@ -57,7 +50,15 @@ export const hamburgerMenus = [
   { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];
 
-export const tagColors = ["white", "red", "orange", "green", "blue", "purple"];
+export const tagColors = [
+  "white",
+  "red",
+  "orange",
+  "green",
+  "blue",
+  "purple",
+];
+
 
 export const mySnsInfo = [
   {
@@ -76,3 +77,5 @@ export const mySnsInfo = [
     link: "https://twitter.com/byui_masa",
   },
 ];
+
+

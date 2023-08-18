@@ -6,10 +6,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { LogOut, User2 } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,

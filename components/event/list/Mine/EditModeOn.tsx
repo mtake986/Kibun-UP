@@ -26,12 +26,12 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 

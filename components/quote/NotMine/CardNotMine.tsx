@@ -20,9 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Bookmark, BookmarkPlusIcon, Heart } from "lucide-react";
 
 import { IQuote } from "@/types/type";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
 
 import {

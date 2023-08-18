@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { auth, db } from "@/config/Firebase";
+import { auth, db } from "@/app/config/Firebase";
 import {
   collection,
   query,

@@ -17,10 +17,10 @@ import { BiInfoCircle, BiTime } from "react-icons/bi";
 import { IEvent, IEventInputValues } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import EditModeOn from "./EditModeOn";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { Target } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 
 type Props = {
   event: IEvent;

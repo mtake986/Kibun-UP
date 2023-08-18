@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import RegisterForm from "../../components/quote/register/RegisterForm";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../config/Firebase";
+import { auth } from "../config/Firebase";
 import RegisterFormToggleBtn from "../../components/quote/register/RegisterFormToggleBtn";
 import SelectTab from "@/components/quote/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";

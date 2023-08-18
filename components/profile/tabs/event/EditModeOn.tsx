@@ -26,11 +26,11 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import { DocumentData } from "firebase/firestore";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 
 type Props = {

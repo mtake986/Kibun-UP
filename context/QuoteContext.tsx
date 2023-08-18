@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { db, auth } from "../../config/Firebase";
+import { db, auth } from "../app/config/Firebase";
 import {
   collection,
   query,
@@ -34,7 +34,7 @@ import {
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
-import { getRandomNum } from "../../utils/functions";
+import { getRandomNum } from "../utils/functions";
 
 type QuoteContext = {
   allQuotes: IQuote[] | [];
@@ -604,7 +604,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     } else {
       await updateDoc(docRef, {
         qids: arrayRemove(q.id),
-        quotes: arrayRemove(q),
+        quotes: arrayRemove(q)
       });
     }
 

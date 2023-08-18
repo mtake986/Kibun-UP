@@ -1,11 +1,12 @@
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import QuoteList from "./quote/QuoteList";
 import EventList from "./event/EventList";
+import Loading from "@/components/utils/Loading";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
 
@@ -37,7 +38,7 @@ const ContentSwitchTabs = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   return (

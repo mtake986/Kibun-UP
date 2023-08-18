@@ -28,15 +28,14 @@ import { CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
-import { auth, db } from "@/config/Firebase";
+import { auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
-
-import HeadingThree from "@/components/utils/HeadingThree";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
+import HeadingTwo from "@/components/utils/HeadingTwo";
 
 type Props = {
   registerOpen: boolean;
@@ -79,7 +78,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   }
   return (
     <Form {...form}>
-      <HeadingThree text="Register Form" />
+      <HeadingTwo text="Register Form" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField

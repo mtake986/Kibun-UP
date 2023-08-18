@@ -8,20 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import {
-  Edit,
-  InfoIcon,
-  Plane,
-  Target,
-  Timer,
-  TimerIcon,
-  ToggleLeft,
-  ToggleRight,
-  ToggleRightIcon,
-  Trash,
-} from "lucide-react";
-import { auth, db } from "@/config/Firebase";
-import { toast } from "@/components/ui/use-toast";
+import { Edit, Target, Trash } from "lucide-react";
+import { auth } from "@/app/config/Firebase";
 import { Button } from "@/components/ui/button";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
@@ -32,8 +20,9 @@ type Props = {
 };
 
 import { IEventInputValues, IEvent } from "@/types/type";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import EditModeOn from "./EditModeOn";
+import Loading from "@/components/utils/Loading";
 
 const EventCard = ({ event, i }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
@@ -61,7 +50,7 @@ const EventCard = ({ event, i }: Props) => {
       <Card className="mb-3">
         <CardHeader></CardHeader>
         <CardContent>
-          <p className="flex justify-center">Loading...</p>
+          <Loading />
         </CardContent>
         <CardFooter></CardFooter>
       </Card>

@@ -2,7 +2,7 @@
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { auth, provider } from "../../config/Firebase";
+import { auth, provider } from "../app/config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";

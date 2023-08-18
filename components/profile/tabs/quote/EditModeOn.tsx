@@ -16,12 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Plane, Trash } from "lucide-react";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { MdAdd, MdClose, MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";

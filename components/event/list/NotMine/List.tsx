@@ -1,6 +1,6 @@
 "use client";
 
-import { auth, db } from "@/config/Firebase";
+import { auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import CardNotMine from "./EventCard";
@@ -8,7 +8,6 @@ import { useState } from "react";
 
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import HeadingThree from "@/components/utils/HeadingThree";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {

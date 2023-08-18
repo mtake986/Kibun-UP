@@ -18,11 +18,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Heart, Trash } from "lucide-react";
 
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/utils/functions";
 
@@ -43,6 +43,7 @@ const QuoteCard = ({ q, i }: Props) => {
   } = useQuote();
 
   const [user, setUser] = useState(auth.currentUser);
+
 
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (

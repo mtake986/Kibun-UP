@@ -1,12 +1,11 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { app, auth, db } from "@/config/Firebase";
+import { app, auth, db } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import HeadingThree from "@/components/utils/HeadingThree";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 const EventList = () => {

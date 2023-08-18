@@ -1,11 +1,11 @@
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
 import Loading from "../utils/Loading";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
@@ -40,7 +40,7 @@ const SwitchTab = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <Tabs defaultValue="yours" className="w-full">
@@ -62,7 +62,7 @@ const SwitchTab = () => {
         {myBookmarks?.quotes ? (
           <ListOfBookmarks quotes={myBookmarks.quotes} />
         ) : (
-          <NoFetchedData text="No Bookmarks" />
+          <NoFetchedData text='No Bookmarks' />
         )}
       </TabsContent>
       <TabsContent value="All">

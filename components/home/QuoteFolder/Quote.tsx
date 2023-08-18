@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/config/Firebase";
+import { auth, db } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Link from "next/link";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
@@ -50,7 +50,7 @@ const Quote = () => {
             href="/quote"
             className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
             clickOn="Click here to create an quote"
-            target="_self"
+            target='_self'
           />
         </div>
       );

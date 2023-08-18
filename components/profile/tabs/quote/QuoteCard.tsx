@@ -16,11 +16,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { Heart } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Badge } from "@/components/ui/badge";

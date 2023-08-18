@@ -1,5 +1,5 @@
 import React from "react";
-import { auth } from "@/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import defaultIcon from "@/public/defaultUserImage.png";
