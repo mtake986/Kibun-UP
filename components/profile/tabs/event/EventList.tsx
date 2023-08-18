@@ -6,6 +6,8 @@ import EventCard from "./EventCard";
 import { useEvent } from "@/app/context/EventContext";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
+import HeadingThree from "@/components/utils/HeadingThree";
+import NoFetchedData from "@/components/utils/NoFetchedData";
 
 const EventList = () => {
   const [user] = useAuthState(auth);
@@ -35,11 +37,7 @@ const EventList = () => {
           )}
         </>
       ) : (
-        <div className="mt-10">
-          <h2 className="mb-2 mt-4 text-center text-3xl font-bold">
-            No events
-          </h2>
-        </div>
+        <NoFetchedData text="No events found" />
       )}
     </div>
   );

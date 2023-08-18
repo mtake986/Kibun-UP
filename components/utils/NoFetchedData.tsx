@@ -1,14 +1,15 @@
-import React from 'react'
+import React from "react";
+import HeadingThree from "./HeadingThree";
 
 type Props = {
-  text: string
-}
-const NoFetchedData = ({text}: Props) => {
+  text: string;
+};
+const NoFetchedData = ({ text }: Props) => {
   return (
     <div className="mt-10">
-      <h2 className="mb-2 mt-4 text-center text-2xl">{text}</h2>
+      <HeadingThree text={text} />
     </div>
   );
-}
+};
 
-export default NoFetchedData
+export default NoFetchedData;

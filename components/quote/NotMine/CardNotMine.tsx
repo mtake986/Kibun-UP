@@ -12,9 +12,12 @@ import {
   BsChatLeftText,
   BsHeartFill,
   BsHouseHeartFill,
+  BsBookmarkFill,
+  BsBookmarks,
+  BsBookmark,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Bookmark, BookmarkPlusIcon, Heart } from "lucide-react";
 
 import { IQuote } from "@/types/type";
 import { useQuote } from "@/app/context/QuoteContext";
@@ -29,13 +32,22 @@ import {
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/utils/functions";
+import { BiDuplicate } from "react-icons/bi";
 
 type Props = {
   q: IQuote;
   i: number;
 };
 const CardNotMine = ({ q, i }: Props) => {
-  const { storeFavQuote, removeFavQuote, favQuotes, isFav } = useQuote();
+  const {
+    storeFavQuote,
+    removeFavQuote,
+    favQuotes,
+    storeQuoteInBookmarks,
+    removeQuoteFromBookmarks,
+    myBookmarks,
+    numOfBookmarks,
+  } = useQuote();
   const [user] = useAuthState(auth);
 
   return (
@@ -72,9 +84,9 @@ const CardNotMine = ({ q, i }: Props) => {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between gap-5">
-        <div
-          onClick={
-            () => {
+        <div className="flex gap-5">
+          <div
+            onClick={() => {
               if (user) {
                 favQuotes.some(
                   (favQuote) =>
@@ -83,44 +95,71 @@ const CardNotMine = ({ q, i }: Props) => {
                   ? removeFavQuote(user.uid, q.id)
                   : storeFavQuote(user.uid, q.id);
               }
-            }
-            // ? removeFavQuote(user.uid, q.id)
-            // : storeFavQuote(user.uid, q.id);
-          }
-          className={`flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto`}
-        >
-          {user &&
-          favQuotes.some(
-            (favQuote) =>
-              // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
-              favQuote.qid === q.id
-          ) ? (
-            <>
-              {user &&
-                (favQuotes.some(
-                  (favQuote) =>
-                    favQuote.qid === q.id && favQuote.uids.includes(user.uid)
-                ) ? (
-                  <Heart size={14} fill="red" className="text-red-500" />
-                ) : (
-                  <Heart size={14} />
-                ))}
+            }}
+            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50 sm:w-auto`}
+          >
+            {user &&
+            favQuotes.some(
+              (favQuote) =>
+                // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+                favQuote.qid === q.id
+            ) ? (
+              <>
+                {user &&
+                  (favQuotes.some(
+                    (favQuote) =>
+                      favQuote.qid === q.id && favQuote.uids.includes(user.uid)
+                  ) ? (
+                    <Heart size={14} fill="red" className="text-red-500" />
+                  ) : (
+                    <Heart size={14} />
+                  ))}
 
-              {favQuotes.map((favQuote, i) =>
-                favQuote.qid === q.id ? (
-                  <span key={i} className="text-xs">
-                    {favQuote.uids.length}
-                  </span>
-                ) : null
+                {favQuotes.map((favQuote, i) =>
+                  favQuote.qid === q.id ? (
+                    <span key={i} className="text-xs">
+                      {favQuote.uids.length}
+                    </span>
+                  ) : null
+                )}
+              </>
+            ) : (
+              <div className="flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto">
+                <Heart size={14} />
+                <span className="text-xs">0</span>
+              </div>
+            )}
+          </div>
+          <Button
+            onClick={() => {
+              try {
+                if (user) {
+                  if (myBookmarks && myBookmarks.qids.includes(q.id)) {
+                    removeQuoteFromBookmarks(user.uid, q);
+                  } else {
+                    storeQuoteInBookmarks(user.uid, q);
+                  }
+                }
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+            className={`bg-white duration-300 hover:bg-green-50`}
+          >
+            {myBookmarks && myBookmarks.qids.includes(q.id) ? (
+              <BsBookmarkFill size={12} className="text-green-500" />
+            ) : (
+              <BsBookmark size={12} className="text-green-500" />
+            )}
+            <span className="ml-1 text-xs text-black">
+              {numOfBookmarks?.map((bookmark, i) =>
+                bookmark.qid === q.id ? bookmark.uids.length : null
               )}
-            </>
-          ) : (
-            <div className="flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto">
-              <Heart size={14} />
-              <span className="text-xs">0</span>
-            </div>
-          )}
+            </span>
+            {/* <span>Edit</span> */}
+          </Button>
         </div>
+
         {q.userInfo.photoUrl && (
           <HoverCard>
             <HoverCardTrigger>

@@ -38,6 +38,7 @@
     "eslint-config-next": "13.4.4",
     "firebase": "^9.22.1",
     "firebase-tools": "^12.2.1",
+    "framer-motion": "^10.15.2",
     "lucide-react": "^0.233.0",
     "mui-file-input": "^2.0.0",
     "next": "13.4.4",

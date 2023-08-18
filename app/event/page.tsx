@@ -1,14 +1,16 @@
 "use client";
-import List from "@/components/event/list/Mine/List";
 import RegisterForm from "@/components/event/register/RegisterForm";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
 import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
 import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+<<<<<<< HEAD
+=======
 import { useEvent } from "../context/EventContext";
+>>>>>>> main
 import SwitchTab from "@/components/event/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import HeadingTwo from "@/components/utils/HeadingTwo";
 
 const EventPage = () => {
   const [user] = useAuthState(auth);
@@ -31,8 +33,8 @@ const EventPage = () => {
           />
         ))}
 
-      <div className="relative mt-12">
-        <h2 className="mb-2 mt-4 text-center text-3xl font-bold">Events</h2>
+      <div className="relative mt-10">
+        <HeadingTwo text="Events" />
         <SwitchTab />
       </div>
     </div>

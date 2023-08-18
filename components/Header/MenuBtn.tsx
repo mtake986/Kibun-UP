@@ -1,7 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import { LucideLogOut, MenuIcon, User2 } from "lucide-react";
+import {
+  Contact,
+  LucideLogOut,
+  MenuIcon,
+  MessageCircle,
+  User2,
+} from "lucide-react";
 // import { hamburgerMenus } from "@/public/CONSTANTS";
 import Link from "next/link";
 
@@ -12,30 +18,56 @@ import {
   BsFlag,
   BsFlagFill,
   BsHouse,
+  BsPerson,
+  BsQuote,
 } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
+import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
-
-const hamburgerMenus = [
-  {
-    name: "Quote",
-    link: "/quote",
-    icon: <BsChatQuoteFill />,
-  },
-  {
-    name: "Event",
-    link: "/event",
-    icon: <BsFlagFill />,
-  },
-  { name: "Login", link: "/login", icon: <LogInIcon /> },
-];
+import { Button } from "../ui/button";
+import { BiSolidContact } from "react-icons/bi";
+import { MdContacts } from "react-icons/md";
+import { AiOutlineContacts } from "react-icons/ai";
 
 type Anchor = "right";
 
 export default function MenuBtn() {
   const [user] = useAuthState(auth);
+
+  const headerListItems = [
+    {
+      href: "/",
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: HomeListItem,
+    },
+    {
+      href: "/quote",
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: QuoteListItem,
+    },
+    {
+      href: "/event",
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: EventListItem,
+    },
+    {
+      href: `/user/profile/${user?.uid}`,
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: ProfileListItem,
+    },
+    {
+      href: `/contact`,
+      className: "flex items-center gap-5",
+      target: "_self",
+      clickOn: ContactListItem,
+    },
+  ];
 
   const [state, setState] = React.useState({
     right: false,
@@ -57,52 +89,27 @@ export default function MenuBtn() {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 150 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="flex flex-col justify-between gap-3 p-5">
-        <div className="flex flex-col gap-3">
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsHouse />
-              <span className="text-lg ">Home</span>
-            </Link>
-          </div>
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/quote"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsChatQuote />
-              <span className="text-lg ">Quote</span>
-            </Link>
-          </div>
-          <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-            <Link
-              href="/event"
-              className="flex cursor-pointer items-center gap-5 p-1"
-            >
-              <BsFlag />
-              <span className="text-lg ">Event</span>
-            </Link>
-          </div>
-          {user ? (
-            <div className="cursor-pointer px-5 py-1 duration-300 hover:bg-violet-50">
-              <Link
-                className="flex cursor-pointer items-center gap-5 p-1"
-                href={`/user/profile/${user?.uid}/`}
-              >
-                <User2 size={16} />
-                Profile
-              </Link>
-            </div>
-          ) : null}
-        </div>
+      <div className="flex flex-col justify-between gap-2 p-5">
+        {/* <div className="flex flex-col gap-3"> */}
+        {headerListItems.map((item, i) => (
+          <Button
+            key={i}
+            className="flex items-center justify-start bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50"
+          >
+            <UrlLink
+              href={item.href}
+              className={item.className}
+              target={item.target}
+              clickOn={item.clickOn}
+            />
+          </Button>
+        ))}
+        {/* </div> */}
         {user ? <LogOutBtn /> : <GoogleLoginBtn />}
       </div>
     </Box>
@@ -124,3 +131,38 @@ export default function MenuBtn() {
     </div>
   );
 }
+
+const HomeListItem = (
+  <>
+    <BsHouse />
+    <span className="text-sm ">Home</span>
+  </>
+);
+
+const QuoteListItem = (
+  <>
+    <BsChatQuote />
+    <span className="text-sm">Quote</span>
+  </>
+);
+
+const EventListItem = (
+  <>
+    <BsFlag />
+    <span className="text-sm">Event</span>
+  </>
+);
+
+const ProfileListItem = (
+  <>
+    <BsPerson />
+    <span className="text-sm">Profile</span>
+  </>
+);
+
+const ContactListItem = (
+  <>
+    <AiOutlineContacts />
+    <span className="text-sm">Contact</span>
+  </>
+);

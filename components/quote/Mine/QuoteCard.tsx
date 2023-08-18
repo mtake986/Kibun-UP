@@ -39,18 +39,11 @@ const QuoteCard = ({ q, i }: Props) => {
     lockedQuote,
     handleDelete,
     removeLockThisQuote,
-    getLockedQuote,
     favQuotes,
   } = useQuote();
 
   const [user, setUser] = useState(auth.currentUser);
 
-  useEffect(() => {
-    // setLoading(true);
-    // getPrimaryQuote();
-    getLockedQuote(user?.uid);
-    // setLoading(false);
-  }, [user]);
 
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (
