@@ -58,3 +58,16 @@ export interface ISortFilterBy {
   sortByElement: string;
   searchTag: string;
 }
+
+export interface IBookmark {
+  uid: string;
+  qids: string[];
+  id?: string;
+  quotes: IQuote[];
+}
+
+export interface INumOfBookmarks {
+  qid: string;
+  uids: string[];
+  id?: string;
+}

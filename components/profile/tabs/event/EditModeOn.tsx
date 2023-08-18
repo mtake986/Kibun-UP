@@ -30,7 +30,7 @@ import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import { DocumentData } from "firebase/firestore";
-import { useEvent } from "@/context/EventContext";
+import { useEvent } from "@/app/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
 
 type Props = {
@@ -39,11 +39,7 @@ type Props = {
   setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({
-  event,
-  setIsUpdateMode,
-  setIsLoading,
-}: Props) {
+export default function EditModeOn({ event, setIsUpdateMode, setIsLoading }: Props) {
   const [user] = useAuthState(auth);
   const { handleUpdate, handleDelete } = useEvent();
 

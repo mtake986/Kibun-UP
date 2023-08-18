@@ -11,7 +11,7 @@ import HeadingTwo from "@/components/utils/HeadingTwo";
 const QuoteHomePage = () => {
   const [user] = useAuthState(auth);
   const [registerOpen, setRegisterOpen] = useState(false);
-  
+
   if (!user) return <GoogleLoginBtn />;
 
   return (
@@ -28,9 +28,8 @@ const QuoteHomePage = () => {
             setRegisterOpen={setRegisterOpen}
           />
         ))}
-
       <div className="relative mt-10">
-        <HeadingTwo text='Quotes' />
+        <HeadingTwo text="Quotes" />
         <SelectTab />
       </div>
     </div>

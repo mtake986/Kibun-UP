@@ -7,7 +7,7 @@ import { IEvent } from "@/types/type";
 import { useState } from "react";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import HeadingTwo from "@/components/utils/HeadingTwo";
+import HeadingThree from "@/components/utils/HeadingThree";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {

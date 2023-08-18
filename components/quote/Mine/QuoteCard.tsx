@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useEffect, useState } from "react";
 
 import {
@@ -22,7 +22,7 @@ import { auth } from "@/app/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
-import { useQuote } from "@/context/QuoteContext";
+import { useQuote } from "@/app/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/utils/functions";
 
@@ -39,18 +39,11 @@ const QuoteCard = ({ q, i }: Props) => {
     lockedQuote,
     handleDelete,
     removeLockThisQuote,
-    getLockedQuote,
     favQuotes,
   } = useQuote();
 
   const [user, setUser] = useState(auth.currentUser);
 
-  useEffect(() => {
-    // setLoading(true);
-    // getPrimaryQuote();
-    getLockedQuote(user?.uid);
-    // setLoading(false);
-  }, [user]);
 
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (

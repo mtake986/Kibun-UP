@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import HeadingTwo from "@/components/utils/HeadingTwo";
+import HeadingThree from "@/components/utils/HeadingThree";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 type Props = {
@@ -20,7 +20,7 @@ const List = ({ eventsNotMine }: Props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {nPages, currentRecords} = pagination(currentPage, eventsNotMine);
+  const { nPages, currentRecords } = pagination(currentPage, eventsNotMine);
 
   return (
     <div>

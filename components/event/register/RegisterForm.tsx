@@ -34,8 +34,12 @@ import { eventSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
+<<<<<<< HEAD
 import { useEvent } from "@/context/EventContext";
-import HeadingTwo from "@/components/utils/HeadingTwo";
+import HeadingThree from "@/components/utils/HeadingThree";
+=======
+import { useEvent } from "@/app/context/EventContext";
+>>>>>>> main
 
 type Props = {
   registerOpen: boolean;
@@ -78,7 +82,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   }
   return (
     <Form {...form}>
-      <HeadingTwo text="Register Form" />
+      <HeadingThree text="Register Form" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField

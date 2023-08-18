@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
@@ -23,7 +23,7 @@ type Props = {
   quotes: IQuote[];
 };
 
-const List = ({ quotes }: Props) => {
+const ListOfBookmarks = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
   const { filteredLoginUserQuotes } = useQuote();
@@ -60,4 +60,4 @@ const List = ({ quotes }: Props) => {
   );
 };
 
-export default List;
+export default ListOfBookmarks;
