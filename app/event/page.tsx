@@ -1,12 +1,9 @@
 "use client";
-import List from "@/components/event/list/Mine/List";
 import RegisterForm from "@/components/event/register/RegisterForm";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
 import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
 import { auth } from "../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEvent } from "../../context/EventContext";
 import SwitchTab from "@/components/event/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import HeadingTwo from "@/components/utils/HeadingTwo";

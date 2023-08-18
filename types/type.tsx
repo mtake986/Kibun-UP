@@ -63,6 +63,7 @@ export interface IBookmark {
   uid: string;
   qids: string[];
   id?: string;
+  quotes: IQuote[];
 }
 
 export interface INumOfBookmarks {

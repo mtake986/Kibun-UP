@@ -8,6 +8,8 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
 import Loading from "../utils/Loading";
+import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
+import NoFetchedData from "../utils/NoFetchedData";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -22,6 +24,8 @@ const SwitchTab = () => {
     fetchFavQuotes,
     fetchMyBookmarks,
     fetchNumOfBookmarks,
+    myBookmarks,
+    getLockedQuote,
   } = useQuote();
 
   useEffect(() => {
@@ -29,6 +33,7 @@ const SwitchTab = () => {
     getLoginUserQuotes();
     getQuotesNotMine();
     fetchFavQuotes();
+    getLockedQuote(user?.uid);
     fetchMyBookmarks();
     fetchNumOfBookmarks();
     setLoading(false);
@@ -43,12 +48,22 @@ const SwitchTab = () => {
         <TabsTrigger value="yours" className="w-full text-center">
           Mine
         </TabsTrigger>
+        <TabsTrigger value="Bookmarks" className="w-full text-center">
+          Bookmarks
+        </TabsTrigger>
         <TabsTrigger value="All" className="w-full text-center">
           All
         </TabsTrigger>
       </TabsList>
       <TabsContent value="yours">
         {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
+      </TabsContent>
+      <TabsContent value="Bookmarks">
+        {myBookmarks?.quotes ? (
+          <ListOfBookmarks quotes={myBookmarks.quotes} />
+        ) : (
+          <NoFetchedData text='No Bookmarks' />
+        )}
       </TabsContent>
       <TabsContent value="All">
         <ListNotMine quotes={quotesNotMine} />

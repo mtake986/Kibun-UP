@@ -7,6 +7,8 @@ import { useQuote } from "@/context/QuoteContext";
 import QuoteList from "./quote/QuoteList";
 import EventList from "./event/EventList";
 import Loading from "@/components/utils/Loading";
+import NoFetchedData from "@/components/utils/NoFetchedData";
+import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
 
 const ContentSwitchTabs = () => {
   const [user] = useAuthState(auth);
@@ -19,6 +21,9 @@ const ContentSwitchTabs = () => {
     getAllQuotes,
     getLoginUserQuotes,
     loginUserQuotes,
+    fetchMyBookmarks,
+    fetchNumOfBookmarks,
+    myBookmarks,
   } = useQuote();
 
   useEffect(() => {
@@ -27,6 +32,8 @@ const ContentSwitchTabs = () => {
     getLoginUserQuotes();
     getLockedQuote(user?.uid);
     fetchFavQuotes();
+    fetchMyBookmarks();
+    fetchNumOfBookmarks();
     setLoading(false);
   }, [user]);
 
@@ -40,12 +47,22 @@ const ContentSwitchTabs = () => {
         <TabsTrigger value="quotes" className="w-full text-center">
           Quotes
         </TabsTrigger>
+        <TabsTrigger value="Bookmarks" className="w-full text-center">
+          Bookmarks
+        </TabsTrigger>
         <TabsTrigger value="Events" className="w-full text-center">
           Events
         </TabsTrigger>
       </TabsList>
       <TabsContent value="quotes">
         <QuoteList quotes={loginUserQuotes} />
+      </TabsContent>
+      <TabsContent value="Bookmarks">
+        {myBookmarks?.quotes ? (
+          <ListOfBookmarks quotes={myBookmarks.quotes} />
+        ) : (
+          <NoFetchedData text="No Bookmarks" />
+        )}
       </TabsContent>
       <TabsContent value="Events">
         <EventList />

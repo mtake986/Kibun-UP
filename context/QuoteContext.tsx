@@ -85,10 +85,10 @@ type QuoteContext = {
   filteredNotLoginUserQuotes: IQuote[];
   setFilteredNotLoginUserQuotes: (quotes: IQuote[]) => void;
 
-  storeQuoteInBookmarks: (uid: string, qid: string) => void;
-  removeQuoteFromBookmarks: (uid: string, qid: string) => void;
+  storeQuoteInBookmarks: (uid: string, q: IQuote) => void;
+  removeQuoteFromBookmarks: (uid: string, q: IQuote) => void;
   fetchMyBookmarks: () => void;
-  myBookmarks: IBookmark | undefined;
+  myBookmarks: IBookmark;
 
   fetchNumOfBookmarks: () => void;
   numOfBookmarks: INumOfBookmarks[] | undefined;
@@ -103,7 +103,11 @@ export function useQuote() {
 export function QuoteProvider({ children }: QuoteProviderProps) {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
-  const [myBookmarks, setMyBookmarks] = useState<IBookmark>();
+  const [myBookmarks, setMyBookmarks] = useState<IBookmark>({
+    uid: "",
+    qids: [],
+    quotes: [],
+  });
   const [numOfBookmarks, setNumOfBookmarks] = useState<INumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
@@ -113,10 +117,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const quotesCollectionRef = collection(db, "quotes");
   const favQuotesCollectionRef = collection(db, "favQuotes");
-  const whoBookmarkedWhichQuoteCollectionRef = collection(
-    db,
-    "whoBookmarkedWhichQuote"
-  );
+  const myBookmarksCollectionRef = collection(db, "myBookmarks");
   const numOfBookmarksCollectionRef = collection(db, "numOfBookmarks");
 
   const [user] = useAuthState(auth);
@@ -562,23 +563,25 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const storeQuoteInBookmarks = async (uid: string, qid: string) => {
-    const docRef = doc(db, "whoBookmarkedWhichQuote", uid);
+  const storeQuoteInBookmarks = async (uid: string, q: IQuote) => {
+    const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
     console.log(data);
     if (data) {
       await updateDoc(docRef, {
-        qids: arrayUnion(qid),
+        qids: arrayUnion(q.id),
+        quotes: arrayUnion(q),
       });
     } else {
-      await setDoc(doc(db, "whoBookmarkedWhichQuote", uid), {
+      await setDoc(doc(db, "myBookmarks", uid), {
         uid,
-        qids: [qid],
+        qids: [q.id],
+        quotes: [q],
       });
     }
 
-    const numOfBookmarksRef = doc(db, "numOfBookmarks", qid);
+    const numOfBookmarksRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
     const nobData = numOfBookmarksDocSnap.data();
     console.log(nobData);
@@ -587,29 +590,30 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         uids: arrayUnion(uid),
       });
     } else {
-      await setDoc(doc(db, "numOfBookmarks", qid), { qid, uids: [uid] });
+      await setDoc(doc(db, "numOfBookmarks", q.id), { qid: q.id, uids: [uid] });
     }
   };
 
-  const removeQuoteFromBookmarks = async (uid: string, qid: string) => {
-    const docRef = doc(db, "whoBookmarkedWhichQuote", uid);
+  const removeQuoteFromBookmarks = async (uid: string, q: IQuote) => {
+    const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log('data: ' + data)
-    if (data?.qids.includes(qid) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "whoBookmarkedWhichQuote", uid));
+    console.log("data: " + data);
+    if (data?.qids.includes(q.id) && data?.qids.length === 1) {
+      await deleteDoc(doc(db, "myBookmarks", uid));
     } else {
       await updateDoc(docRef, {
-        qids: arrayRemove(qid),
+        qids: arrayRemove(q.id),
+        quotes: arrayRemove(q)
       });
     }
 
-    const numOfBookmarksDocRef = doc(db, "numOfBookmarks", qid);
+    const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
     const nobData = numOfBookmarksDocSnap.data();
-    console.log('nobData', nobData);
+    console.log("nobData", nobData);
     if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
-      await deleteDoc(doc(db, "numOfBookmarks", qid));
+      await deleteDoc(doc(db, "numOfBookmarks", q.id));
     } else {
       await updateDoc(numOfBookmarksDocRef, {
         uids: arrayRemove(uid),
@@ -618,10 +622,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchMyBookmarks = async () => {
-    let q = query(
-      whoBookmarkedWhichQuoteCollectionRef,
-      where("uid", "==", user?.uid)
-    );
+    let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
 
     onSnapshot(q, (snapshot) => {
       setMyBookmarks(snapshot.docs.map((doc) => doc.data() as IBookmark)[0]);
@@ -629,7 +630,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchNumOfBookmarks = async () => {
-    onSnapshot(numOfBookmarksCollectionRef, (snapshot) => {
+    onSnapshot(myBookmarksCollectionRef, (snapshot) => {
       setNumOfBookmarks(
         snapshot.docs.map((doc) => doc.data() as INumOfBookmarks)
       );

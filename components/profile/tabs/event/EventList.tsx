@@ -6,7 +6,7 @@ import EventCard from "./EventCard";
 import { useEvent } from "@/context/EventContext";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import HeadingTwo from "@/components/utils/HeadingTwo";
+import HeadingThree from "@/components/utils/HeadingThree";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
 const EventList = () => {

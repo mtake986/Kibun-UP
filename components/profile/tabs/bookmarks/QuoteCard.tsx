@@ -38,7 +38,7 @@ type Props = {
   q: IQuote;
   i: number;
 };
-const CardNotMine = ({ q, i }: Props) => {
+const QuoteCard = ({ q, i }: Props) => {
   const {
     storeFavQuote,
     removeFavQuote,
@@ -181,7 +181,7 @@ const CardNotMine = ({ q, i }: Props) => {
   );
 };
 
-export default CardNotMine;
+export default QuoteCard;
 
 // 1: add a check if user is logged in
 // 2: このQuoteがfavQuotesにあるかどうかを判断する
