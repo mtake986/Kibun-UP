@@ -630,7 +630,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchNumOfBookmarks = async () => {
-    onSnapshot(myBookmarksCollectionRef, (snapshot) => {
+    onSnapshot(numOfBookmarksCollectionRef, (snapshot) => {
       setNumOfBookmarks(
         snapshot.docs.map((doc) => doc.data() as INumOfBookmarks)
       );

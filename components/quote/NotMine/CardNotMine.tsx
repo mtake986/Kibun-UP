@@ -84,8 +84,8 @@ const CardNotMine = ({ q, i }: Props) => {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between gap-5">
-        <div className="flex gap-5">
-          <div
+        <div className="flex gap-1">
+          <Button
             onClick={() => {
               if (user) {
                 favQuotes.some(
@@ -96,7 +96,7 @@ const CardNotMine = ({ q, i }: Props) => {
                   : storeFavQuote(user.uid, q.id);
               }
             }}
-            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50 sm:w-auto`}
+            className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-red-50`}
           >
             {user &&
             favQuotes.some(
@@ -112,24 +112,24 @@ const CardNotMine = ({ q, i }: Props) => {
                   ) ? (
                     <Heart size={14} fill="red" className="text-red-500" />
                   ) : (
-                    <Heart size={14} />
+                    <Heart size={14} className="text-red-500" />
                   ))}
 
                 {favQuotes.map((favQuote, i) =>
                   favQuote.qid === q.id ? (
-                    <span key={i} className="text-xs">
+                    <span key={i} className="text-xs text-black">
                       {favQuote.uids.length}
                     </span>
                   ) : null
                 )}
               </>
             ) : (
-              <div className="flex cursor-pointer items-center gap-1.5 duration-300 hover:opacity-50 sm:w-auto">
-                <Heart size={14} />
-                <span className="text-xs">0</span>
+              <div className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50">
+                <Heart size={14} className="text-red-500" />
+                <span className="text-xs text-black">0</span>
               </div>
             )}
-          </div>
+          </Button>
           <Button
             onClick={() => {
               try {
@@ -144,14 +144,14 @@ const CardNotMine = ({ q, i }: Props) => {
                 console.log(e);
               }
             }}
-            className={`bg-white duration-300 hover:bg-green-50`}
+            className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-green-50`}
           >
             {myBookmarks && myBookmarks.qids.includes(q.id) ? (
               <BsBookmarkFill size={12} className="text-green-500" />
             ) : (
               <BsBookmark size={12} className="text-green-500" />
             )}
-            <span className="ml-1 text-xs text-black">
+            <span className="text-xs text-black">
               {numOfBookmarks?.map((bookmark, i) =>
                 bookmark.qid === q.id ? bookmark.uids.length : null
               )}
