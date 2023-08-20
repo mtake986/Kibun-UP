@@ -1,6 +1,7 @@
 "use client";
 import { auth } from "@/app/config/Firebase";
 import Profile from "@/components/profile/Profile";
+import Settings from "@/components/profile/settings/Settings";
 import ContentSwitchTabs from "@/components/profile/tabs/ContentSwitchTabs";
 import Loading from "@/components/utils/Loading";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -13,9 +14,10 @@ export default function ProfilePage() {
   if (!user) return <Loading />;
   
   return (
-    <div>
+    <div className="mb-32">
       <Profile />
       <ContentSwitchTabs />
+      <Settings />
     </div>
   );
 }

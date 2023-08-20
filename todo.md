@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 ## Updates and Bug Fixes
 
-=======
-## Updates and Bug Fix 
->>>>>>> 85ad6c1 (replace h2 with HeadingTwo)
 Start on Aug. 2
 Aug. 2, 2023
 
@@ -69,28 +65,24 @@ Aug. 16
 - [x] Replace h2 with HeadingTwo component
 - [x] Bookmark quote by clicking on the card not mine
 
-<<<<<<< HEAD
 - [x] Replace h2 with HeadingThree component
 - [x] Bookmark quote by clicking on the card not mine
 
-- [] add bookmark tab on QuotePage
-- [] add bookmark tab on Profile
-=======
-- [] add bookmark tab on QuotePage  
-- [] add bookmark tab on Profile  
->>>>>>> 237e0a3 (add bookmark todos)
+Aug. 17
+- [x] add bookmark tab on QuotePage
+- [x] add bookmark tab on Profile
+
+Aug. 19
+
+
 - [] Event Cheer
+- [] Customize what to display 
+- [] Display bookmarks, mine, or both
+- [] Need to re-think about the model of the bookmarks
 - [] create users in firestore
 - [] tag.tagColor => tag.color, tag.tag => tag.name
-<<<<<<< HEAD
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　
 bookmarks: ログインユーザーがどの Quote をブックマークしてるかをみたいから
 numOfBookmarks: to display the number of bookmarks
-=======
-// ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
-
-favQuote ：　何人にFavされてるかをみたいから　
-Bookmarks: ログインユーザーがどのQuoteをブックマークしてるかをみたいから
->>>>>>> 237e0a3 (add bookmark todos)

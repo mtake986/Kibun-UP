@@ -604,7 +604,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     } else {
       await updateDoc(docRef, {
         qids: arrayRemove(q.id),
-        quotes: arrayRemove(q)
+        quotes: arrayRemove(q),
       });
     }
 
@@ -689,6 +689,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchNumOfBookmarks,
         numOfBookmarks,
+
       }}
     >
       {children}

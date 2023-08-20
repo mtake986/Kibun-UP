@@ -9,7 +9,6 @@ import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
 import Loading from "../utils/Loading";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
-import NoFetchedData from "../utils/NoFetchedData";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -59,10 +58,8 @@ const SwitchTab = () => {
         {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="Bookmarks">
-        {myBookmarks?.quotes ? (
+        {myBookmarks?.quotes && (
           <ListOfBookmarks quotes={myBookmarks.quotes} />
-        ) : (
-          <NoFetchedData text='No Bookmarks' />
         )}
       </TabsContent>
       <TabsContent value="All">
