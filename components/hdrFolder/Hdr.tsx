@@ -1,18 +1,19 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { auth } from "../../app/config/Firebase";
-import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
-import { ContactIcon } from "lucide-react";
 import UrlLink from "../utils/UrlLink";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Hdr() {
-  // const { signInWithGoogle } = useAuth();
+
+  const {
+    signInWithGoogle,
+  } = useAuth();
   const [user] = useAuthState(auth);
-  const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
 
   return (
     <header className="bg-violet-500 px-2 py-4 sm:p-4">

@@ -2,10 +2,17 @@
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { auth, provider } from "../app/config/Firebase";
+import { auth, db, provider } from "../app/config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -36,8 +43,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
+  const usersCollectionRef = collection(db, "users");
+
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(() => {
+      createUserInFirestore(auth.currentUser);
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -45,6 +55,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push("/");
     });
   }
+
+  const createUserInFirestore = async (user: any) => {
+    const { uid, email, displayName, photoURL } = user;
+
+    user && (await setDoc(doc(db, "users", uid), {
+      uid,
+      email,
+      displayName,
+      photoURL,
+      createdAt: serverTimestamp(),
+    }));
+  };
+  
   const handleLogout = async () => {
     const success = await signOut();
     if (success) {
