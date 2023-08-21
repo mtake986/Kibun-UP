@@ -73,14 +73,18 @@ Aug. 17
 - [x] add bookmark tab on Profile
 
 Aug. 19
+- [x] create users in firestore
+- [x] UI of choosing which quotes to display
+- [x] Need to re-think about the model of the bookmarks (as a result, delete sort and filter on bookmarks)
+
+Aug. 20 
+- [x] update user info in Firestore
 
 
+- [] Store in user model: bookmarks, mine, or both
+- [] Function: Display bookmarks, mine, or both
 - [] Event Cheer
-- [] Customize what to display 
-- [] Display bookmarks, mine, or both
-- [] Need to re-think about the model of the bookmarks
-- [] create users in firestore
-- [] tag.tagColor => tag.color, tag.tag => tag.name
+- [] responsive
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　

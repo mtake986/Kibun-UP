@@ -1,8 +1,14 @@
 "use client";
 
-import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import {
+  User,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { auth, db, provider } from "../app/config/Firebase";
+import { auth, db, provider, storage } from "../app/config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -10,9 +16,14 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
+  onSnapshot,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { ILoginUser } from "@/types/type";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -24,15 +35,23 @@ type loginUserInfoType = {
   photoUrl: string;
 };
 
-type AuthContext = {
+type AuthContextType = {
   loginUserInfo: loginUserInfoType | {};
   setLoginUserInfo: (loginUserInfo: any) => void;
   signInWithGoogle: () => void;
   handleLogout: () => void;
-  updateCurrentUser: () => void;
+  uploadImage: (
+    file: File | null,
+    newUsername: string,
+    currentUser: User,
+    setLoading: (boo: boolean) => void,
+    setIsEditMode: (boo: boolean) => void
+  ) => void;
+  loginUser: ILoginUser | undefined;
+  updateDisplayWhichQuoteType: (text: string) => void;
 };
 
-const AuthContext = createContext({} as AuthContext);
+const AuthContext = createContext({} as AuthContextType);
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -43,11 +62,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
+  const [loginUser, setLoginUser] = useState<ILoginUser>();
+
   const usersCollectionRef = collection(db, "users");
 
   function signInWithGoogle() {
-    signInWithPopup(auth, provider).then(() => {
+    signInWithPopup(auth, provider).then(async () => {
       createUserInFirestore(auth.currentUser);
+fetchLoginUser();
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -56,18 +78,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
   }
 
+  const fetchLoginUser = () => {
+      onSnapshot(usersCollectionRef, (snapshot) => {
+        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
+      });
+  }
   const createUserInFirestore = async (user: any) => {
     const { uid, email, displayName, photoURL } = user;
 
-    user && (await setDoc(doc(db, "users", uid), {
-      uid,
-      email,
-      displayName,
-      photoURL,
-      createdAt: serverTimestamp(),
-    }));
+    user &&
+      (await setDoc(doc(db, "users", uid), {
+        uid,
+        email,
+        displayName,
+        photoURL,
+        createdAt: serverTimestamp(),
+        displayWhichQuoteType: "mine",
+      }));
   };
-  
+
   const handleLogout = async () => {
     const success = await signOut();
     if (success) {
@@ -78,15 +107,55 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push("/");
     }
   };
-  const updateCurrentUser = async () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+
+  const uploadImage = async (
+    file: File | null,
+    newUsername: string,
+    currentUser: User,
+    setLoading: (boo: boolean) => void,
+    setIsEditMode: (boo: boolean) => void
+  ) => {
+    setLoading(true);
+
+    interface IPayload {
+      photoURL?: string;
+      displayName?: string;
+    }
+
+    let payload: IPayload = {};
+    if (file) {
+      const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
+      const snapshot = await uploadBytes(fileRef, file);
+      const photoURL = await getDownloadURL(fileRef);
+      payload.photoURL = photoURL;
+    }
+    if (newUsername) {
+      payload.displayName = newUsername;
+    }
+
+    updateProfile(currentUser, payload)
+      .then(() => {
+        // Profile updated!
         // ...
-      } else {
-        // User is signed out
-        // ...
-      }
-    });
+        alert("Successfully Updated");
+        setLoading(false);
+        setIsEditMode(false);
+      })
+      .catch((error) => {
+        alert("Something went wrong! Please try later.");
+      });
+
+    // const fileRef = ref(storage, `${currentUser.uid}.png`);
+  };
+
+  const updateDisplayWhichQuoteType = async (text: string) => {
+    if (auth.currentUser) {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(docRef, {
+        displayWhichQuoteType: text,
+      });
+    }
+
   };
 
   return (
@@ -96,7 +165,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setLoginUserInfo,
         signInWithGoogle,
         handleLogout,
-        updateCurrentUser,
+        uploadImage,
+        loginUser,
+        updateDisplayWhichQuoteType,
       }}
     >
       {children}

@@ -16,8 +16,8 @@ export default function Hdr() {
   const [user] = useAuthState(auth);
 
   return (
-    <header className="bg-violet-500 px-2 py-4 sm:p-4">
-      <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
+    <header className="bg-violet-500 py-4 px-5">
+      <nav className="max-w-xl mx-auto flex flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <UrlLink
             clickOn="Kibun UP"

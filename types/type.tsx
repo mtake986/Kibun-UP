@@ -77,3 +77,12 @@ export interface INumOfBookmarks {
   uids: string[];
   id?: string;
 }
+
+export interface ILoginUser {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  createdAt: Date;
+  displayWhichQuoteType: string;
+}
