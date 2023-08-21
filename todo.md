@@ -79,10 +79,10 @@ Aug. 19
 
 Aug. 20 
 - [x] update user info in Firestore
+- [x] Store in user model: bookmarks, mine, or both
 
-
-- [] Store in user model: bookmarks, mine, or both
-- [] Function: Display bookmarks, mine, or both
+Aug. 21
+- [] Filter Function: Display bookmarks, mine, or both
 - [] Event Cheer
 - [] responsive
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ

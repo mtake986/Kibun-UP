@@ -31,14 +31,13 @@ import {
   ITag,
   IBookmark,
   INumOfBookmarks,
+  ILoginUser,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
 
 type QuoteContext = {
-  allQuotes: IQuote[] | [];
-  getAllQuotes: () => void;
   loginUserQuotes: IQuote[] | [];
   getLoginUserQuotes: () => void;
   handleCancelUpdate: () => void;
@@ -92,7 +91,10 @@ type QuoteContext = {
 
   fetchNumOfBookmarks: () => void;
   numOfBookmarks: INumOfBookmarks[] | undefined;
-};
+
+  fetchQuotesForHomePage: (user: ILoginUser) => void;
+  quotesForHomePage: IQuote[]
+}
 
 const QuoteContext = createContext({} as QuoteContext);
 
@@ -101,7 +103,6 @@ export function useQuote() {
 }
 
 export function QuoteProvider({ children }: QuoteProviderProps) {
-  const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
   const [favQuotes, setFavQuotes] = useState<IFavQuote[]>([]);
   const [myBookmarks, setMyBookmarks] = useState<IBookmark>({
     uid: "",
@@ -139,6 +140,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     IQuote[]
   >([]);
 
+  const [quotesForHomePage, setQuotesForHomePage] = useState<
+    IQuote[]
+  >([]);
+
   const registerQuote = async (
     values: IQuoteInputValues,
     userInfo: IUserInfo
@@ -159,12 +164,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         //   `,
       });
     });
-  };
-
-  const getAllQuotes = async () => {
-    const snapshot = await getDocs(quotesCollectionRef);
-    const results = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    setAllQuotes(results as IQuote[]);
   };
 
   const getQuotesNotMine = async () => {
@@ -413,7 +412,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               );
             }
           });
-          console.log(qs);
           setLoginUserQuotes(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -425,7 +423,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               return true;
             }
           });
-          console.log(qs);
           setLoginUserQuotes(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -440,7 +437,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       // where("userInfo.uid", "!=", user?.uid),
       orderBy("createdAt", "desc")
     );
-    console.log(123);
 
     let qs;
 
@@ -504,7 +500,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               }
             }
           });
-          console.log(qs);
           setQuotesNotMine(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -516,7 +511,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               return true;
             }
           });
-          console.log(qs);
           setQuotesNotMine(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -567,7 +561,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log(data);
     if (data) {
       await updateDoc(docRef, {
         qids: arrayUnion(q.id),
@@ -584,7 +577,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
     const nobData = numOfBookmarksDocSnap.data();
-    console.log(nobData);
     if (nobData) {
       await updateDoc(numOfBookmarksRef, {
         uids: arrayUnion(uid),
@@ -598,7 +590,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log("data: " + data);
     if (data?.qids.includes(q.id) && data?.qids.length === 1) {
       await deleteDoc(doc(db, "myBookmarks", uid));
     } else {
@@ -611,7 +602,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
     const nobData = numOfBookmarksDocSnap.data();
-    console.log("nobData", nobData);
     if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
       await deleteDoc(doc(db, "numOfBookmarks", q.id));
     } else {
@@ -637,11 +627,19 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
+  const fetchQuotesForHomePage = (user: ILoginUser) => {
+    if (user.displayWhichQuoteType === "mine") {
+      setQuotesForHomePage(loginUserQuotes);
+    } else if (user.displayWhichQuoteType === "bookmarks") {
+      setQuotesForHomePage(myBookmarks.quotes)
+    } else {
+      setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
+    }
+  };
+
   return (
     <QuoteContext.Provider
       value={{
-        allQuotes,
-        getAllQuotes,
         loginUserQuotes,
         getLoginUserQuotes,
         handleCancelUpdate,
@@ -690,6 +688,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         fetchNumOfBookmarks,
         numOfBookmarks,
 
+        fetchQuotesForHomePage,
+        quotesForHomePage,
       }}
     >
       {children}

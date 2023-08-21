@@ -18,7 +18,6 @@ const ContentSwitchTabs = () => {
   const {
     getLockedQuote,
     fetchFavQuotes,
-    getAllQuotes,
     getLoginUserQuotes,
     loginUserQuotes,
     fetchMyBookmarks,
@@ -28,7 +27,6 @@ const ContentSwitchTabs = () => {
 
   useEffect(() => {
     setLoading(true);
-    getAllQuotes();
     getLoginUserQuotes();
     getLockedQuote(user?.uid);
     fetchFavQuotes();

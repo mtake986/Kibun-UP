@@ -49,6 +49,7 @@ type AuthContextType = {
   ) => void;
   loginUser: ILoginUser | undefined;
   updateDisplayWhichQuoteType: (text: string) => void;
+  fetchLoginUser: () => void;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -69,7 +70,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       createUserInFirestore(auth.currentUser);
-fetchLoginUser();
+      fetchLoginUser();
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -79,10 +80,11 @@ fetchLoginUser();
   }
 
   const fetchLoginUser = () => {
-      onSnapshot(usersCollectionRef, (snapshot) => {
-        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
-      });
-  }
+    onSnapshot(usersCollectionRef, (snapshot) => {
+      setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
+    });
+
+  };
   const createUserInFirestore = async (user: any) => {
     const { uid, email, displayName, photoURL } = user;
 
@@ -155,7 +157,6 @@ fetchLoginUser();
         displayWhichQuoteType: text,
       });
     }
-
   };
 
   return (
@@ -168,6 +169,7 @@ fetchLoginUser();
         uploadImage,
         loginUser,
         updateDisplayWhichQuoteType,
+        fetchLoginUser,
       }}
     >
       {children}

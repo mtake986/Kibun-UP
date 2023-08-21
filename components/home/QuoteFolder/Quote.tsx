@@ -9,31 +9,45 @@ import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
+import { useAuth } from "@/context/AuthContext";
+import { getRandomNum } from "@/utils/functions";
+import { IQuote } from "@/types/type";
 
 const Quote = () => {
   const {
-    randomQuote,
+    // randomQuote,
     getRandomQuote,
     lockThisQuote,
     lockedQuote,
     removeLockThisQuote,
     getLockedQuote,
-    setRandomQuote,
+    // setRandomQuote,
     setLockedQuote,
+    fetchQuotesForHomePage,
+    quotesForHomePage,
   } = useQuote();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [user] = useAuthState(auth);
+  const [randomQuote, setRandomQuote] = useState<IQuote>();
+
+  const { loginUser } = useAuth();
 
   useEffect(() => {
     setLoading(true);
-    setRandomQuote(undefined);
-    setLockedQuote(undefined);
-    getLockedQuote(user?.uid);
+    // setRandomQuote(undefined);
+    // setLockedQuote(undefined);
+    getLockedQuote(loginUser?.uid);
     getRandomQuote(setLoading);
+    loginUser && fetchQuotesForHomePage(loginUser);
+    chooseRandomQuote();
     setLoading(false);
-  }, [user]);
+  }, [loginUser]);
 
+  const chooseRandomQuote = () => {
+    const randomNum = getRandomNum(quotesForHomePage.length);
+    setRandomQuote(quotesForHomePage[randomNum]);
+    console.log("randomQuote", randomQuote);
+  };
   if (loading === true) {
     return (
       <div className="mt-10 flex-col items-center">
@@ -41,30 +55,14 @@ const Quote = () => {
       </div>
     );
   }
-  if (user) {
-    if (!randomQuote) {
-      return (
-        <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
-          <p className="text-xl">You have no quotes yet.</p>
-          <UrlLink
-            href="/quote"
-            className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
-            clickOn="Click here to create an quote"
-            target='_self'
-          />
-        </div>
-      );
-    } else if (lockedQuote || randomQuote) {
+  if (loginUser) {
+    if (lockedQuote) {
       return (
         <div className="mt-6 rounded-lg p-12 py-16 shadow">
-          <strong className="text-xl">
-            {lockedQuote ? lockedQuote.quote : randomQuote.quote}
-          </strong>
+          <strong className="text-xl">{lockedQuote.quote}</strong>
           <div className="flex flex-col items-end">
             <div className="mt-4 text-right">
-              <span>
-                - {lockedQuote ? lockedQuote.person : randomQuote.person}
-              </span>
+              <span>- {lockedQuote.person}</span>
             </div>
             <div className="mt-4 flex items-center gap-2">
               {lockedQuote ? (
@@ -93,10 +91,20 @@ const Quote = () => {
                 </Button>
               )}
 
-              {lockedQuote ? (
+              <Button
+                onClick={() => {
+                  removeLockThisQuote(loginUser.uid);
+                }}
+                className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <BiLock size={20} />
+              </Button>
+
+              {/* {lockedQuote ? (
                 <Button
                   onClick={() => {
-                    removeLockThisQuote(user.uid);
+                    removeLockThisQuote(loginUser.uid);
                   }}
                   className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
@@ -106,14 +114,14 @@ const Quote = () => {
               ) : (
                 <Button
                   onClick={() => {
-                    lockThisQuote(user.uid, randomQuote);
+                    lockThisQuote(loginUser.uid, randomQuote);
                   }}
                   className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
                 >
                   <BiLockOpen size={20} />
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

@@ -43,7 +43,7 @@ type Props = {
 
 export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   const [user] = useAuthState(auth);
-  const { getAllQuotes, registerQuote } = useQuote();
+  const { registerQuote } = useQuote();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>([]);
   const [tagColor, setTagColor] = useState<string>("");
@@ -105,7 +105,6 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
     });
     form.reset();
     setTags([]);
-    getAllQuotes();
   }
   return (
     <Form {...form}>
