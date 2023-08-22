@@ -14,11 +14,7 @@ export default function ProfilePage() {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
 
-  useEffect(() => {
-    fetchLoginUser();
-  }, []);
-
-  if (!user) return <Loading />;
+  if (!loginUser) return <Loading />;
   
   return (
     <div className="mb-32">

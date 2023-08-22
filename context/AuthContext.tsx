@@ -18,9 +18,11 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  query,
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ILoginUser } from "@/types/type";
@@ -49,7 +51,7 @@ type AuthContextType = {
   ) => void;
   loginUser: ILoginUser | undefined;
   updateDisplayWhichQuoteType: (text: string) => void;
-  fetchLoginUser: () => void;
+  fetchLoginUser: (user: any) => void;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -70,7 +72,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       createUserInFirestore(auth.currentUser);
-      fetchLoginUser();
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -79,12 +80,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
   }
 
-  const fetchLoginUser = () => {
-    onSnapshot(usersCollectionRef, (snapshot) => {
-      setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
-    });
-
+  const fetchLoginUser = (user: any) => {
+    if (user) {
+      console.log("if, ", user);
+      const q = query(usersCollectionRef, where("uid", "==", user.uid));
+      onSnapshot(q, (snapshot) => {
+        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
+      });
+    } else {
+      console.log("else, ", user);
+    }
   };
+
   const createUserInFirestore = async (user: any) => {
     const { uid, email, displayName, photoURL } = user;
 

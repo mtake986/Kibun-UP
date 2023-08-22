@@ -612,11 +612,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchMyBookmarks = async () => {
-    let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
+    if (user) {
 
-    onSnapshot(q, (snapshot) => {
-      setMyBookmarks(snapshot.docs.map((doc) => doc.data() as IBookmark)[0]);
-    });
+      let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
+      
+      onSnapshot(q, (snapshot) => {
+        setMyBookmarks(snapshot.docs.map((doc) => doc.data() as IBookmark)[0]);
+      });
+    }
   };
 
   const fetchNumOfBookmarks = async () => {
@@ -628,6 +631,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchQuotesForHomePage = (user: ILoginUser) => {
+    console.log("fetchQuotesForHomePage", user);
     if (user.displayWhichQuoteType === "mine") {
       setQuotesForHomePage(loginUserQuotes);
     } else if (user.displayWhichQuoteType === "bookmarks") {

@@ -11,9 +11,16 @@ import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { getRandomNum } from "@/utils/functions";
-import { IQuote } from "@/types/type";
+import { ILoginUser, IQuote } from "@/types/type";
 
-const Quote = () => {
+type Props = {
+  quote?: IQuote;
+  type: string;
+  loginUser?: ILoginUser;
+};
+
+const Quote = ({ quote, type, loginUser }: Props) => {
+  const [loading, setLoading] = useState<boolean>(true);
   const {
     // randomQuote,
     getRandomQuote,
@@ -25,117 +32,68 @@ const Quote = () => {
     setLockedQuote,
     fetchQuotesForHomePage,
     quotesForHomePage,
+    getLoginUserQuotes,
+    fetchMyBookmarks,
   } = useQuote();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [randomQuote, setRandomQuote] = useState<IQuote>();
+  // if (loading === true) {
+  //   return (
+  //     <div className="mt-10 flex-col items-center">
+  //       <Skeleton className="h-48 w-full" />
+  //     </div>
+  //   );
+  // }
 
-  const { loginUser } = useAuth();
-
-  useEffect(() => {
-    setLoading(true);
-    // setRandomQuote(undefined);
-    // setLockedQuote(undefined);
-    getLockedQuote(loginUser?.uid);
-    getRandomQuote(setLoading);
-    loginUser && fetchQuotesForHomePage(loginUser);
-    chooseRandomQuote();
-    setLoading(false);
-  }, [loginUser]);
-
-  const chooseRandomQuote = () => {
-    const randomNum = getRandomNum(quotesForHomePage.length);
-    setRandomQuote(quotesForHomePage[randomNum]);
-    console.log("randomQuote", randomQuote);
-  };
-  if (loading === true) {
-    return (
-      <div className="mt-10 flex-col items-center">
-        <Skeleton className="h-48 w-full" />
+  return (
+    <div className="mt-6 rounded-lg p-12 py-16 shadow">
+      <div className="bg-gray-200 p-5">
+        {loginUser?.displayName}, {type}, {quote?.quote}
       </div>
-    );
-  }
-  if (loginUser) {
-    if (lockedQuote) {
-      return (
-        <div className="mt-6 rounded-lg p-12 py-16 shadow">
-          <strong className="text-xl">{lockedQuote.quote}</strong>
-          <div className="flex flex-col items-end">
-            <div className="mt-4 text-right">
-              <span>- {lockedQuote.person}</span>
-            </div>
-            <div className="mt-4 flex items-center gap-2">
-              {lockedQuote ? (
-                <Button
-                  onClick={() => {
-                    alert("To refresh, unlock this quote first.");
-                  }}
-                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => {
-                      getRandomQuote(setLoading);
-                      setLoading(false);
-                    }, 1000);
-                  }}
-                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-              )}
-
-              <Button
-                onClick={() => {
-                  removeLockThisQuote(loginUser.uid);
-                }}
-                className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                variant="ghost"
-              >
-                <BiLock size={20} />
-              </Button>
-
-              {/* {lockedQuote ? (
-                <Button
-                  onClick={() => {
-                    removeLockThisQuote(loginUser.uid);
-                  }}
-                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiLock size={20} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    lockThisQuote(loginUser.uid, randomQuote);
-                  }}
-                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiLockOpen size={20} />
-                </Button>
-              )} */}
-            </div>
-          </div>
+      <strong className="text-xl">{quote?.quote}</strong>
+      <div className="flex flex-col items-end">
+        <div className="mt-4 text-right">
+          <span>- {quote?.person}</span>
         </div>
-      );
-    }
-  } else {
-    return (
-      <div className="mt-6 flex flex-col items-center rounded-lg p-12 py-16 shadow">
-        <p>Login to create quotes</p>
-        <GoogleLoginBtn />
+        <div className="mt-4 flex items-center gap-2">
+          <Button
+            onClick={() => {
+              if (type === "random") {
+                getRandomQuote(setLoading);
+              } else if (type === "random") {
+                alert("To refresh, unlock this quote first.");
+              }
+            }}
+            className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+            variant="ghost"
+            disabled={type === "lock" ? true : false}
+          >
+            <BiRefresh size={20} />
+          </Button>
+
+          <Button
+            onClick={() => {
+              if (type === "lock") {
+                loginUser && removeLockThisQuote(loginUser.uid);
+              } else {
+                if (quote && loginUser) {
+                  lockThisQuote(loginUser.uid, quote);
+                } else {
+                  console.log(quote);
+                  console.log(loginUser);
+                }
+              }
+            }}
+            className={`${
+              type === "lock" && "text-red-500 "
+            }  duration-300 hover:bg-red-50 hover:text-red-500 `}
+            variant="ghost"
+          >
+            <BiLock size={20} />
+          </Button>
+        </div>
       </div>
-    );
-  }
-  return <div>Going wrong here</div>;
+    </div>
+  );
 };
 
 export default Quote;
