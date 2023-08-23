@@ -129,7 +129,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       >
         Prev
       </Button>
-      {pageNumbers.length <= 5
+      {pageNumbers.length <= 3
         ? pageNumbers.map((pageNumber) => (
             <Button
               key={pageNumber}

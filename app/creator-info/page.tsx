@@ -3,7 +3,7 @@ import React from "react";
 
 const CreatorInfoPage = () => {
   return (
-    <div>
+    <div className="mb-32">
       <CreatorInfo />
     </div>
   );

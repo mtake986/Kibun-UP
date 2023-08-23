@@ -124,7 +124,7 @@ const QuoteCard = ({ q, i }: Props) => {
               </>
             ) : (
               <div className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50">
-                <Heart size={14} />
+                <Heart size={14} className="text-red-500" />
                 <span className="text-xs text-black">0</span>
               </div>
             )}

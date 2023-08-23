@@ -1,14 +1,16 @@
+
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
 // import Header from "../components/Header/Header";
 // import Footer from "@/components/Footer/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import { AuthProvider, useAuth } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
 import FtrFolder from "@/components/footerFolder/FtrFolder";
 import Hdr from "@/components/hdrFolder/Hdr";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <AuthProvider>

@@ -4,10 +4,11 @@
 
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { useAuth, auth, uploadImage } from "@/app/config/Firebase";
+import { auth } from "@/app/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { useAuth } from "@/context/AuthContext";
 
 type Props = {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +17,7 @@ type Props = {
 const EditMode = ({ setIsEditMode }: Props) => {
   const [user] = useAuthState(auth);
 
-  const currentUser = useAuth();
+  const { uploadImage } = useAuth();
 
   const [loading, setLoading] = React.useState(false);
   const [photo, setPhoto] = React.useState<File | null>(null);
@@ -31,21 +32,21 @@ const EditMode = ({ setIsEditMode }: Props) => {
   };
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!user) return;
     if (photo) {
       setPhotoURL(URL.createObjectURL(photo));
     }
   }, [photo]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (!currentUser) return;
+    if (!user) return;
     if (!photo && !newUsername) {
       alert("At least one field is required.");
       e.preventDefault();
       return;
     } else {
       e.preventDefault();
-      uploadImage(photo, newUsername, currentUser, setLoading, setIsEditMode);
+      uploadImage(photo, newUsername, user, setLoading, setIsEditMode);
     }
   };
 

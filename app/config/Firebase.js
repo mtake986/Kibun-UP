@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -8,12 +7,9 @@ import { getAnalytics } from "firebase/analytics";
 import {
   GoogleAuthProvider,
   getAuth,
-  onAuthStateChanged,
-  updateProfile,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { useEffect, useState } from "react";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -35,51 +31,6 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-function useAuth() {
-  const [currentUser, setCurrentUser] = useState();
-
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
-    return unsub;
-  }, []);
-
-  return currentUser;
-}
-
 const storage = getStorage(app);
 
-const uploadImage = async (
-  file,
-  newUsername,
-  currentUser,
-  setLoading,
-  setIsEditMode
-) => {
-  setLoading(true);
-
-  let payload = {};
-  if (file) {
-    const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
-    const snapshot = await uploadBytes(fileRef, file);
-    const photoURL = await getDownloadURL(fileRef);
-    payload.photoURL = photoURL;
-  }
-  if (newUsername) {
-    payload['displayName'] = newUsername;
-  }
-
-  updateProfile(currentUser, payload)
-    .then(() => {
-      // Profile updated!
-      // ...
-      alert("Successfully Updated");
-      setLoading(false);
-      setIsEditMode(false);
-    })
-    .catch((error) => {
-      alert("Something went wrong! Please try later.");
-    });
-
-  // const fileRef = ref(storage, `${currentUser.uid}.png`);
-};
-export { app, auth, provider, db, uploadImage, useAuth };
+export { app, auth, provider, db, storage };

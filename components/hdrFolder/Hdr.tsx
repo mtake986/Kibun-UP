@@ -1,22 +1,26 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
 import { auth } from "../../app/config/Firebase";
-import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
-import { ContactIcon } from "lucide-react";
 import UrlLink from "../utils/UrlLink";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 export default function Hdr() {
-  // const { signInWithGoogle } = useAuth();
-  const [user] = useAuthState(auth);
-  const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
+  const { loginUser, fetchLoginUser, signInWithGoogle } = useAuth();
+
+  useEffect(() => {
+    fetchLoginUser(auth.currentUser);
+  }, []);
 
   return (
-    <header className="bg-violet-500 px-2 py-4 sm:p-4">
-      <nav className="container mx-auto flex max-w-2xl flex-wrap items-center justify-between ">
+    <header className="bg-violet-500 px-5 py-4">
+      <button onClick={() => fetchLoginUser(auth.currentUser)}>
+        loginUser
+      </button>
+      <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <UrlLink
             clickOn="Kibun UP"
@@ -46,7 +50,7 @@ export default function Hdr() {
           />
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {user ? (
+          {auth.currentUser ? (
             <ProfilePic />
           ) : (
             <div
