@@ -20,7 +20,7 @@ import EditModeOn from "./EditModeOn";
 import { useEvent } from "@/context/EventContext";
 import { Target } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 
 type Props = {
   event: IEvent;

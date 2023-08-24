@@ -8,7 +8,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { auth, db, provider, storage } from "../app/config/Firebase";
+import { auth, db, provider, storage } from "../config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       createUserInFirestore(auth.currentUser);
-      fetchLoginUser(auth.currentUser)
+      fetchLoginUser(auth.currentUser);
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",

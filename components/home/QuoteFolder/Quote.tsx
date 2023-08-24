@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/app/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
@@ -11,6 +11,8 @@ import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 
 const Quote = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [user] = useAuthState(auth);
   const {
     randomQuote,
     getRandomQuote,
@@ -22,44 +24,22 @@ const Quote = () => {
     setLockedQuote,
   } = useQuote();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [user] = useAuthState(auth);
+  const { loginUser } = useAuth();
 
-  const { loginUser, fetchLoginUser } = useAuth();
-
-  // useEffect(() => {
-  //   // setLoading(true);
-  //   try {
-  //     setLoading(true);
-  //     if (loading) {
-  //       setRandomQuote(undefined);
-  //       setLockedQuote(undefined);
-  //       fetchLoginUser(user);
-  //       getLockedQuote(user?.uid);
-  //       getRandomQuote();
-  //     }
-  //   } catch (error) {
-  //     console.log("Quote Component, ", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [lockedQuote, loginUser, loading]);
-
-  useEffect(() => {
-    setLoading(true);
-    // setRandomQuote(undefined);
-    // setLockedQuote(undefined);
-
+  const fetchDocuments = async () => {
     try {
-      fetchLoginUser(user);
+      setLoading(true);
       getLockedQuote(user?.uid);
       getRandomQuote();
-      console.log("useffetct");
     } catch (error) {
-    } finally {
-      setLoading(false);
-
+      console.log("fetchDocuments, ", error);
     }
+    setLoading(false);
+
+  };
+  useEffect(() => {
+    console.log("components mounted");
+    fetchDocuments();
   }, [user]);
 
   if (loading) {
@@ -70,21 +50,19 @@ const Quote = () => {
     );
   }
 
+  // return (
+  //   <div>
+  //     {loading ? <span>loading...</span> : "done"}
+  //     {lockedQuote ? (
+  //       <span>lock: {lockedQuote.quote}</span>
+  //     ) : randomQuote ? (
+  //       <span>random: {randomQuote.quote}</span>
+  //     ) : null}
+  //   </div>
+  // );
   if (!loading) {
     if (user) {
-      if (!lockedQuote && !randomQuote) {
-        return (
-          <div className="mb-20 mt-10 rounded-lg bg-violet-50 p-12 text-center">
-            <p className="text-lg">You have no quotes yet.</p>
-            <UrlLink
-              href="/quote"
-              className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
-              clickOn="Click here to create an quote"
-              target="_self"
-            />
-          </div>
-        );
-      } else if (lockedQuote) {
+      if (lockedQuote) {
         return (
           <div className="mb-20 mt-6 rounded-lg p-12 py-16 shadow">
             {loginUser?.displayName}
@@ -106,7 +84,7 @@ const Quote = () => {
                 <Button
                   onClick={() => {
                     removeLockThisQuote(user.uid);
-                    getRandomQuote();
+                    // getRandomQuote();
                   }}
                   className={`text-red-500 duration-300 hover:bg-red-50 hover:text-red-500`}
                   variant="ghost"
@@ -152,6 +130,18 @@ const Quote = () => {
                 </Button>
               </div>
             </div>
+          </div>
+        );
+      } else if (!lockedQuote && !randomQuote) {
+        return (
+          <div className="mb-20 mt-10 rounded-lg bg-violet-50 p-12 text-center">
+            <p className="text-lg">You have no quotes yet.</p>
+            <UrlLink
+              href="/quote"
+              className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
+              clickOn="Click here to create an quote"
+              target="_self"
+            />
           </div>
         );
       }

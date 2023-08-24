@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { app, auth, db } from "@/app/config/Firebase";
+import { app, auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { useEvent } from "@/context/EventContext";

@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IQuote } from "@/types/type";
 import CardNotMine from "./CardNotMine";

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { auth } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "@/context/EventContext";
@@ -14,6 +13,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import UrlLink from "@/components/utils/UrlLink";
+import { auth } from "@/config/Firebase";
 
 const Event = () => {
   const [user] = useAuthState(auth);

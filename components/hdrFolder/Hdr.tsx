@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "../../app/config/Firebase";
+import { auth } from "../../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";

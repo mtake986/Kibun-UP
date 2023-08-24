@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { db, auth } from "../app/config/Firebase";
+import { db, auth } from "../config/Firebase";
 import {
   collection,
   query,
@@ -219,16 +219,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         console.log("getRandomQuote, ", error);
       } finally {
         // alert("getRandomQuote, finally");
-          const q = query(
-            quotesCollectionRef,
-            where("userInfo.uid", "==", user?.uid),
-            where("isDraft", "==", false)
-          );
-          onSnapshot(q, (snapshot) => {
-            const randomNum = getRandomNum(snapshot.docs.length);
-            const doc = snapshot.docs[randomNum];
-            if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
-          });
+        const q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          where("isDraft", "==", false)
+        );
+        onSnapshot(q, (snapshot) => {
+          const randomNum = getRandomNum(snapshot.docs.length);
+          const doc = snapshot.docs[randomNum];
+          if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
+        });
       }
     }
     // });
