@@ -1,12 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { builtInEvents } from "@/public/CONSTANTS";
-import { AiOutlineInfoCircle, AiFillCloseCircle } from "react-icons/ai";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { auth, db } from "@/app/config/Firebase";
-import { IEvent } from "@/types/type";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import { auth } from "@/app/config/Firebase";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "@/context/EventContext";
 import { Button } from "@/components/ui/button";
@@ -207,7 +203,7 @@ const Event = () => {
                     setLoading(false);
                   }, 1000);
                 }}
-                className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                className={` duration-300  hover:opacity-50 sm:w-auto`}
                 variant="ghost"
               >
                 <BiRefresh size={20} />

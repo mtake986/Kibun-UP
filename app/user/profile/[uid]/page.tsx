@@ -5,11 +5,9 @@ import Settings from "@/components/profile/settings/Settings";
 import ContentSwitchTabs from "@/components/profile/tabs/ContentSwitchTabs";
 import Loading from "@/components/utils/Loading";
 import { useAuth } from "@/context/AuthContext";
-import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ProfilePage() {
-
 
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();

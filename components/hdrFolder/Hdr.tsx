@@ -17,9 +17,6 @@ export default function Hdr() {
 
   return (
     <header className="bg-violet-500 px-5 py-4">
-      <button onClick={() => fetchLoginUser(auth.currentUser)}>
-        loginUser
-      </button>
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <UrlLink
