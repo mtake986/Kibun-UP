@@ -178,6 +178,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         where("userInfo.uid", "!=", user.uid)
         // orderBy("createdAt", "desc")
       );
+
       onSnapshot(q, (snapshot) => {
         setQuotesNotMine(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
@@ -214,11 +215,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     // auth.onAuthStateChanged((user) => {
     if (user) {
       try {
-        fetchLoginUser(user);
-      } catch (error) {
-        console.log("getRandomQuote, ", error);
-      } finally {
-        // alert("getRandomQuote, finally");
+        // if (loginUser?.displayWhichQuoteType === "mine") {
         const q = query(
           quotesCollectionRef,
           where("userInfo.uid", "==", user?.uid),
@@ -229,6 +226,22 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           const doc = snapshot.docs[randomNum];
           if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
         });
+        // } else if (loginUser?.displayWhichQuoteType === "bookmarks") {
+        //   const q = query(
+        //     myBookmarksCollectionRef,
+        //     where("uid", "==", user?.uid)
+        //   );
+        //   onSnapshot(q, (snapshot) => {
+        //     const randomNum = getRandomNum(
+        //       snapshot.docs[0].data().quotes.length
+        //     );
+        //     // console.log(randomNum, snapshot.docs[0].data().quotes.length);
+        //     const doc = snapshot.docs[0].data().quotes[randomNum];
+        //     if (doc) setRandomQuote(doc as IQuote);
+        //   });
+        // }
+      } catch (error) {
+        console.log("getRandomQuote, ", error);
       }
     }
     // });

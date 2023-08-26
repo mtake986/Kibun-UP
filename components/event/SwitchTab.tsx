@@ -30,7 +30,7 @@ const SwitchTab = () => {
 
   return (
     <>
-      <Tabs defaultValue="yours" className="w-full">
+      {/* <Tabs defaultValue="yours" className="w-full">
         <TabsList className="flex items-stretch">
           <TabsTrigger value="yours" className="w-full text-center">
             Yours
@@ -39,13 +39,13 @@ const SwitchTab = () => {
             All
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="yours">
-          {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
-        </TabsContent>
+        <TabsContent value="yours"> */}
+      {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
+      {/* </TabsContent>
         <TabsContent value="All">
           <ListNotMine eventsNotMine={eventsNotMine} />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
     </>
   );
 };

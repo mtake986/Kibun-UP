@@ -24,21 +24,20 @@ const Quote = () => {
     setLockedQuote,
   } = useQuote();
 
-  const { loginUser } = useAuth();
-
+  const { loginUser, fetchLoginUser } = useAuth();
   const fetchDocuments = async () => {
     try {
       setLoading(true);
       getLockedQuote(user?.uid);
       getRandomQuote();
+      fetchLoginUser(user);
     } catch (error) {
       console.log("fetchDocuments, ", error);
     }
     setLoading(false);
-
   };
   useEffect(() => {
-    console.log("components mounted");
+    // console.log("components mounted");
     fetchDocuments();
   }, [user]);
 
@@ -65,7 +64,6 @@ const Quote = () => {
       if (lockedQuote) {
         return (
           <div className="mb-20 mt-6 rounded-lg p-12 py-16 shadow">
-            {loginUser?.displayName}
             <strong className="text-xl">{lockedQuote.quote}</strong>
             <div className="flex flex-col items-end">
               <div className="mt-4 text-right">
@@ -98,7 +96,6 @@ const Quote = () => {
       } else if (randomQuote) {
         return (
           <div className="mb-20 mt-6 rounded-lg p-12 py-16 shadow">
-            {loginUser?.displayName}
             <strong className="text-xl">{randomQuote.quote}</strong>
             <div className="flex flex-col items-end">
               <div className="mt-4 text-right">
