@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { db, auth } from "../app/config/Firebase";
+import { db, auth } from "../config/Firebase";
 import {
   collection,
   query,

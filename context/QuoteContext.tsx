@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { db, auth } from "../app/config/Firebase";
+import { db, auth } from "../config/Firebase";
 import {
   collection,
   query,
@@ -36,6 +36,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
+import { useAuth } from "./AuthContext";
 
 type QuoteContext = {
   loginUserQuotes: IQuote[] | [];
@@ -43,7 +44,7 @@ type QuoteContext = {
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
-  getRandomQuote: (setLoading: (boo: boolean) => void) => void;
+  getRandomQuote: () => void;
   randomQuote: IQuote | undefined;
 
   lockThisQuote: (uid: string, data: IQuote) => void;
@@ -93,8 +94,8 @@ type QuoteContext = {
   numOfBookmarks: INumOfBookmarks[] | undefined;
 
   fetchQuotesForHomePage: (user: ILoginUser) => void;
-  quotesForHomePage: IQuote[]
-}
+  quotesForHomePage: IQuote[];
+};
 
 const QuoteContext = createContext({} as QuoteContext);
 
@@ -140,9 +141,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     IQuote[]
   >([]);
 
-  const [quotesForHomePage, setQuotesForHomePage] = useState<
-    IQuote[]
-  >([]);
+  const [quotesForHomePage, setQuotesForHomePage] = useState<IQuote[]>([]);
 
   const registerQuote = async (
     values: IQuoteInputValues,
@@ -179,6 +178,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         where("userInfo.uid", "!=", user.uid)
         // orderBy("createdAt", "desc")
       );
+
       onSnapshot(q, (snapshot) => {
         setQuotesNotMine(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
@@ -208,23 +208,43 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const getRandomQuote = async (setLoading: (boo: boolean) => void) => {
-    setLoading(true);
+  const { fetchLoginUser, loginUser } = useAuth();
+
+  // todo
+  const getRandomQuote = async () => {
     // auth.onAuthStateChanged((user) => {
     if (user) {
-      const q = query(
-        quotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid),
-        where("isDraft", "==", false)
-      );
-      onSnapshot(q, (snapshot) => {
-        const randomNum = getRandomNum(snapshot.docs.length);
-        const doc = snapshot.docs[randomNum];
-        if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
-      });
+      try {
+        // if (loginUser?.displayWhichQuoteType === "mine") {
+        const q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid),
+          where("isDraft", "==", false)
+        );
+        onSnapshot(q, (snapshot) => {
+          const randomNum = getRandomNum(snapshot.docs.length);
+          const doc = snapshot.docs[randomNum];
+          if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
+        });
+        // } else if (loginUser?.displayWhichQuoteType === "bookmarks") {
+        //   const q = query(
+        //     myBookmarksCollectionRef,
+        //     where("uid", "==", user?.uid)
+        //   );
+        //   onSnapshot(q, (snapshot) => {
+        //     const randomNum = getRandomNum(
+        //       snapshot.docs[0].data().quotes.length
+        //     );
+        //     // console.log(randomNum, snapshot.docs[0].data().quotes.length);
+        //     const doc = snapshot.docs[0].data().quotes[randomNum];
+        //     if (doc) setRandomQuote(doc as IQuote);
+        //   });
+        // }
+      } catch (error) {
+        console.log("getRandomQuote, ", error);
+      }
     }
     // });
-    setLoading(false);
   };
 
   const handleCancelUpdate = () => {
@@ -613,9 +633,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const fetchMyBookmarks = async () => {
     if (user) {
-
       let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
-      
+
       onSnapshot(q, (snapshot) => {
         setMyBookmarks(snapshot.docs.map((doc) => doc.data() as IBookmark)[0]);
       });
@@ -635,7 +654,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user.displayWhichQuoteType === "mine") {
       setQuotesForHomePage(loginUserQuotes);
     } else if (user.displayWhichQuoteType === "bookmarks") {
-      setQuotesForHomePage(myBookmarks.quotes)
+      setQuotesForHomePage(myBookmarks.quotes);
     } else {
       setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
     }

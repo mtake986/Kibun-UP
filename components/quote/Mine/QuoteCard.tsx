@@ -16,15 +16,20 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { Edit, Heart, Trash } from "lucide-react";
+import { CalendarPlus, Edit, Heart, Trash } from "lucide-react";
 
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/utils/functions";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type Props = {
   q: IQuote;
@@ -43,7 +48,6 @@ const QuoteCard = ({ q, i }: Props) => {
   } = useQuote();
 
   const [user, setUser] = useState(auth.currentUser);
-
 
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
   return (

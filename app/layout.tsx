@@ -10,7 +10,6 @@ import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
 import FtrFolder from "@/components/footerFolder/FtrFolder";
 import Hdr from "@/components/hdrFolder/Hdr";
-import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,22 +31,22 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <AuthProvider>
-        <QuoteProvider>
-          <EventProvider>
-            <body className={poppins.className}>
-              <main className="relative min-h-screen">
-                <Hdr />
-                <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
-                  {children}
-                </div>
-                <FtrFolder />
-              </main>
-              <Toaster />
-            </body>
-          </EventProvider>
-        </QuoteProvider>
-      </AuthProvider>
+        <AuthProvider>
+          <QuoteProvider>
+            <EventProvider>
+              <body className={poppins.className}>
+                <main className="relative min-h-screen">
+                  <Hdr />
+                  <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
+                    {children}
+                  </div>
+                  <FtrFolder />
+                </main>
+                <Toaster />
+              </body>
+            </EventProvider>
+          </QuoteProvider>
+        </AuthProvider>
     </html>
   );
 }

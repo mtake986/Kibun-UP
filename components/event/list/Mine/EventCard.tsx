@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Edit, Target, Trash } from "lucide-react";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { Button } from "@/components/ui/button";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";

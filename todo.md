@@ -85,6 +85,9 @@ Aug. 21
 - [] Filter Function: Display bookmarks, mine, or both
 - [] Event Cheer
 - [] responsive
+- [] createdAt, updatedAt on QuoteCard
+- [] able to lock a bookmark
+- [] built-in quotes 
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　

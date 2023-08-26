@@ -1,4 +1,4 @@
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ const ContentSwitchTabs = () => {
   }, [user]);
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (

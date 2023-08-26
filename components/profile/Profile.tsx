@@ -5,7 +5,7 @@ import EditBtn from "./EditBtn";
 
 const Profile = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
+  
   return (
     <div className="relative my-10 flex flex-col items-center gap-5 px-5">
       {isEditMode ? (

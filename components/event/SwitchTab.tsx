@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEvent } from "@/context/EventContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 import List from "./list/Mine/List";
@@ -30,7 +30,7 @@ const SwitchTab = () => {
 
   return (
     <>
-      <Tabs defaultValue="yours" className="w-full">
+      {/* <Tabs defaultValue="yours" className="w-full">
         <TabsList className="flex items-stretch">
           <TabsTrigger value="yours" className="w-full text-center">
             Yours
@@ -39,13 +39,13 @@ const SwitchTab = () => {
             All
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="yours">
-          {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
-        </TabsContent>
+        <TabsContent value="yours"> */}
+      {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
+      {/* </TabsContent>
         <TabsContent value="All">
           <ListNotMine eventsNotMine={eventsNotMine} />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
     </>
   );
 };

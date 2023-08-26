@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
 import { useQuote } from "@/context/QuoteContext";

@@ -28,7 +28,7 @@ import { CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
-import { auth, db } from "@/app/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";

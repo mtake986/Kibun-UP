@@ -1,4 +1,4 @@
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
@@ -58,9 +58,7 @@ const SwitchTab = () => {
         {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
       </TabsContent>
       <TabsContent value="Bookmarks">
-        {myBookmarks?.quotes && (
-          <ListOfBookmarks quotes={myBookmarks.quotes} />
-        )}
+        {myBookmarks?.quotes && <ListOfBookmarks quotes={myBookmarks.quotes} />}
       </TabsContent>
       <TabsContent value="All">
         <ListNotMine quotes={quotesNotMine} />

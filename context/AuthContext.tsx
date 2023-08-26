@@ -8,7 +8,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { auth, db, provider, storage } from "../app/config/Firebase";
+import { auth, db, provider, storage } from "../config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -72,6 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       createUserInFirestore(auth.currentUser);
+      fetchLoginUser(auth.currentUser);
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -79,18 +80,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push("/");
     });
   }
-
-  const fetchLoginUser = (user: any) => {
-    if (user) {
-      console.log("if, ", user);
-      const q = query(usersCollectionRef, where("uid", "==", user.uid));
-      onSnapshot(q, (snapshot) => {
-        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
-      });
-    } else {
-      console.log("else, ", user);
-    }
-  };
 
   const createUserInFirestore = async (user: any) => {
     const { uid, email, displayName, photoURL } = user;
@@ -104,6 +93,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
         createdAt: serverTimestamp(),
         displayWhichQuoteType: "mine",
       }));
+  };
+
+  const fetchLoginUser = (user: User | null) => {
+    if (user) {
+      const q = query(usersCollectionRef, where("uid", "==", user.uid));
+      onSnapshot(q, (snapshot) => {
+        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
+      });
+    } else {
+      console.log("else, ", user);
+    }
   };
 
   const handleLogout = async () => {

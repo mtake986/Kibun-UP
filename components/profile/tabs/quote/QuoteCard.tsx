@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { IQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";

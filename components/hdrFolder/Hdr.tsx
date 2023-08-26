@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "../../app/config/Firebase";
+import { auth } from "../../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
@@ -17,9 +17,6 @@ export default function Hdr() {
 
   return (
     <header className="bg-violet-500 px-5 py-4">
-      <button onClick={() => fetchLoginUser(auth.currentUser)}>
-        loginUser
-      </button>
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center text-white">
           <UrlLink
@@ -50,7 +47,7 @@ export default function Hdr() {
           />
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {auth.currentUser ? (
+          {loginUser ? (
             <ProfilePic />
           ) : (
             <div

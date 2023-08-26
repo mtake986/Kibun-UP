@@ -1,10 +1,8 @@
-
-
 "use client";
 
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
