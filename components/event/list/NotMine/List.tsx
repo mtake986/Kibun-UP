@@ -22,7 +22,7 @@ const List = ({ eventsNotMine }: Props) => {
   const { nPages, currentRecords } = pagination(currentPage, eventsNotMine);
 
   return (
-    <div>
+    <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

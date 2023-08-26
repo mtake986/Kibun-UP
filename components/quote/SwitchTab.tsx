@@ -44,13 +44,13 @@ const SwitchTab = () => {
   return (
     <Tabs defaultValue="yours" className="w-full">
       <TabsList className="flex items-stretch">
-        <TabsTrigger value="yours" className="w-full text-center">
+        <TabsTrigger value="yours" className="w-full text-center text-xs">
           Mine
         </TabsTrigger>
-        <TabsTrigger value="Bookmarks" className="w-full text-center">
+        <TabsTrigger value="Bookmarks" className="w-full text-center text-xs">
           Bookmarks
         </TabsTrigger>
-        <TabsTrigger value="All" className="w-full text-center">
+        <TabsTrigger value="All" className="w-full text-center text-xs">
           All
         </TabsTrigger>
       </TabsList>

@@ -42,13 +42,13 @@ const ContentSwitchTabs = () => {
   return (
     <Tabs defaultValue="quotes" className="w-full">
       <TabsList className="flex items-stretch">
-        <TabsTrigger value="quotes" className="w-full text-center">
+        <TabsTrigger value="quotes" className="w-full text-center text-xs">
           Quotes
         </TabsTrigger>
-        <TabsTrigger value="Bookmarks" className="w-full text-center">
+        <TabsTrigger value="Bookmarks" className="w-full text-center text-xs">
           Bookmarks
         </TabsTrigger>
-        <TabsTrigger value="Events" className="w-full text-center">
+        <TabsTrigger value="Events" className="w-full text-center text-xs">
           Events
         </TabsTrigger>
       </TabsList>

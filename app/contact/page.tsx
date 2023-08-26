@@ -11,7 +11,7 @@ const ContactPage = () => {
     fetchLoginUser(auth.currentUser);
   }, []);
   return (
-    <div className="mb-32">
+    <div className="sm:mb-32 p-5 sm:p-0">
       <ContactForm />
     </div>
   );

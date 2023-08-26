@@ -33,11 +33,14 @@ const ListOfBookmarks = ({ quotes }: Props) => {
   const { nPages, currentRecords } = pagination(currentPage, quotes);
 
   return (
-    <div>
-      <div className="my-2 flex items-center gap-2">
+    <div className="mb-20">
+      <div className="my-2 flex flex-col items-center gap-2 sm:flex-row">
         {/* <SortBtn /> */}
-        <OrderSelect />
-        <ElementSelect />
+        <div className="flex w-full flex-row gap-3">
+          <OrderSelect />
+          <ElementSelect />
+        </div>
+
         <SearchBar />
       </div>
       {currentRecords && currentRecords.length >= 1 ? (

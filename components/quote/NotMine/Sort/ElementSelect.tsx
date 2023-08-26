@@ -20,7 +20,7 @@ const ElementSelect = () => {
       value={sortFilterByForNotMine.sortByElement}
       defaultValue={sortFilterByForNotMine.sortByElement}
     >
-      <SelectTrigger className="w-[180px] text-xs">
+      <SelectTrigger className="sm:w-[180px] w-full text-xs">
         <SelectValue placeholder="By" />
       </SelectTrigger>
       <SelectContent>
