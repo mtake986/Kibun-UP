@@ -10,7 +10,7 @@ interface ISnsInfo {
 }
 const SnsIcons = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex mt-5 justify-center gap-5">
       {mySnsInfo.map((snsInfo: ISnsInfo) => (
         <SnsIcon key={snsInfo.name} snsInfo={snsInfo} />
       ))}

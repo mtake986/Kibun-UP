@@ -14,7 +14,7 @@ interface Props {
 
 const SnsIcon = ({ snsInfo }: Props) => {
   const image = (
-    <Image src={snsInfo.icon} alt={snsInfo.name} className="mr-2 w-5 sm:w-6" />
+    <Image src={snsInfo.icon} alt={snsInfo.name} className="w-5" />
   );
   return (
     <div>
