@@ -20,7 +20,7 @@ const EventPage = () => {
   if (!user) return <GoogleLoginBtn />;
 
   return (
-    <div className="sm:mb-32 p-5 sm:p-0">
+    <div className="p-10 sm:mb-32 sm:p-0">
       {user &&
         (registerOpen ? (
           <RegisterForm

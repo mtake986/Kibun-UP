@@ -6,9 +6,11 @@ type Props = {
 
 const HeadingThree = (props: Props) => {
   return (
-    <h2 className={`my-4 text-center text-2xl font-bold ${props.className}`}>
+    <h3
+      className={`mb-3 text-center text-xl font-bold sm:text-2xl ${props.className}`}
+    >
       {props.text}
-    </h2>
+    </h3>
   );
 };
 
