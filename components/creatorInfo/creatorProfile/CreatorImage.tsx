@@ -9,7 +9,7 @@ const CreatorImage = () => {
       alt="Creator Profile Picture"
       width={400}
       height={400}
-      className="m-auto h-32 w-32 rounded-full object-cover  object-center sm:h-48 sm:w-48"
+      className="m-auto h-40 w-40 rounded-full object-cover  object-center sm:h-60 sm:w-60"
     />
   );
 }
