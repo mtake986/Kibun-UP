@@ -24,10 +24,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Event />
       <Quote />
-    </div>
+    </>
   );
 };
 

@@ -21,7 +21,7 @@ const EventList = () => {
   const { nPages, currentRecords } = pagination(currentPage, loginUserEvents);
 
   return (
-    <div>
+    <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc) => (

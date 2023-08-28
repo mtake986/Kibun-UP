@@ -14,11 +14,11 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
-  }, []);
+  }, [user]);
   if (!loginUser) return <Loading />;
 
   return (
-    <div className="mb-32">
+    <div className="mb-32 p-5 sm:p-0">
       <Profile />
       <ContentSwitchTabs />
       {/* <Settings /> */}

@@ -2,9 +2,9 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-import creatorPicture from "../../../public/assets/images/creatorPicture.jpg";
 import ProfileText from "./ProfileText";
 import { Button } from "../../ui/button";
+import CreatorImage from "./CreatorImage";
 
 const CreatorProfile = () => {
   const [type, setType] = useState<"private" | "tech">("private");
@@ -16,13 +16,7 @@ const CreatorProfile = () => {
 
   return (
     <div className="flex flex-col items-center justify-between gap-3">
-      <Image
-        src={creatorPicture}
-        alt="Creator Profile Picture"
-        className="m-auto h-40 w-40 rounded-full object-cover object-center sm:h-60 sm:w-60"
-        width={400}
-        height={400}
-      />
+      <CreatorImage />
       <h4 className="text-center text-lg font-semibold">Masahiro Takechi</h4>
       <p>
         Nationality: <span className="font-[600]">Japan</span>

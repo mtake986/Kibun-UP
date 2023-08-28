@@ -86,13 +86,13 @@ export default function ContactForm() {
   }
 
   return (
-    <div>
+    <div className="mb-20">
       <HeadingTwo text="Contact Form" />
       {loading ? (
         <Loading />
       ) : (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="sender_name"
@@ -164,7 +164,7 @@ export default function ContactForm() {
           </form>
         </Form>
       )}
-      <p className="mt-5 text-center">
+      <p className="mt-5 sm:text-md text-xs text-center">
         Or, you can{" "}
         <UrlLink
           className="text-sky-500 hover:underline"

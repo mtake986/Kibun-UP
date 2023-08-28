@@ -59,14 +59,15 @@ const Quote = () => {
   //     ) : null}
   //   </div>
   // );
+
   if (!loading) {
     if (user) {
       if (lockedQuote) {
         return (
-          <div className="mb-20 mt-6 rounded-lg p-12 py-16 shadow">
+          <div className="mb-20 px-5 py-10 sm:mt-6 sm:rounded-lg sm:p-12 sm:py-16 sm:shadow">
             <strong className="text-xl">{lockedQuote.quote}</strong>
             <div className="flex flex-col items-end">
-              <div className="mt-4 text-right">
+              <div className="mt-4 text-right text-xs">
                 <span>- {lockedQuote.person}</span>
               </div>
               <div className="mt-4 flex items-center gap-2">
@@ -95,10 +96,10 @@ const Quote = () => {
         );
       } else if (randomQuote) {
         return (
-          <div className="mb-20 mt-6 rounded-lg p-12 py-16 shadow">
+          <div className="mb-20 px-5 py-10 sm:mt-6 sm:rounded-lg sm:p-12 sm:py-16 sm:shadow">
             <strong className="text-xl">{randomQuote.quote}</strong>
             <div className="flex flex-col items-end">
-              <div className="mt-4 text-right">
+              <div className="text-xs text-right  mt-4">
                 <span>- {randomQuote.person}</span>
               </div>
               <div className="mt-4 flex items-center gap-2">
@@ -131,7 +132,7 @@ const Quote = () => {
         );
       } else if (!lockedQuote && !randomQuote) {
         return (
-          <div className="mb-20 mt-10 rounded-lg bg-violet-50 p-12 text-center">
+          <div className="mb-20 mt-10 rounded-lg p-12 text-center">
             <p className="text-lg">You have no quotes yet.</p>
             <UrlLink
               href="/quote"
@@ -144,7 +145,7 @@ const Quote = () => {
       }
     } else {
       return (
-        <div className="mt-6 flex flex-col items-center rounded-lg p-12 py-16 shadow">
+        <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
           <p>Login to create quotes</p>
           <GoogleLoginBtn />
         </div>

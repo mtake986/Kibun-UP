@@ -37,7 +37,7 @@ export default function RootLayout({
               <body className={poppins.className}>
                 <main className="relative min-h-screen">
                   <Hdr />
-                  <div className="container relative mx-auto max-w-2xl p-5 text-slate-800 sm:p-12">
+                  <div className="relative mx-auto max-w-2xl text-slate-800 sm:p-12">
                     {children}
                   </div>
                   <FtrFolder />

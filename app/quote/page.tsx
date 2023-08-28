@@ -20,7 +20,7 @@ const QuoteHomePage = () => {
   if (!user) return <GoogleLoginBtn />;
 
   return (
-    <div className="mb-32">
+    <div className="sm:mb-32 p-5 sm:p-0">
       {user &&
         (registerOpen ? (
           <RegisterForm

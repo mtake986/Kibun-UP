@@ -54,14 +54,16 @@ const Event = () => {
   }, [user]);
 
   if (loading) {
-    return <Skeleton className="relative mt-10 h-64 w-full rounded-lg p-12" />;
+    return (
+      <Skeleton className="relative h-64 w-full rounded-lg p-12 sm:mt-10" />
+    );
   }
 
   if (!loading) {
     if (user) {
       if (!lockedEvent && !randomEvent) {
         return (
-          <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
+          <div className="flex h-64 flex-col items-center justify-center rounded-lg bg-violet-50 p-12 text-center sm:mt-10">
             <p>You have no events yet.</p>
             <UrlLink
               href="/event"
@@ -73,7 +75,7 @@ const Event = () => {
         );
       } else if (lockedEvent) {
         return (
-          <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
+          <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
             <strong className="block text-center text-2xl">
               {lockedEvent.eventTitle}
             </strong>
@@ -113,7 +115,7 @@ const Event = () => {
             </div>
 
             {/* </Suspense> */}
-            <div className="mt-4 text-right">
+            <div className="mt-4 text-right text-xs">
               <span>
                 {lockedEvent.eventDate.toDate().getMonth() + 1}/
                 {lockedEvent.eventDate.toDate().getDate()},{" "}
@@ -146,7 +148,7 @@ const Event = () => {
         );
       } else if (randomEvent) {
         return (
-          <div className="relative mt-10 rounded-lg bg-violet-50 p-12">
+          <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
             <strong className="block text-center text-2xl">
               {randomEvent.eventTitle}
             </strong>
@@ -187,7 +189,7 @@ const Event = () => {
               )}
             </div>
             {/* </Suspense> */}
-            <div className="mt-4 text-right">
+            <div className="mt-4 text-right text-xs">
               <span>
                 {randomEvent.eventDate.toDate().getMonth() + 1}/
                 {randomEvent.eventDate.toDate().getDate()},{" "}
@@ -223,7 +225,7 @@ const Event = () => {
       }
     } else {
       return (
-        <div className="mt-10 rounded-lg bg-violet-50 p-12 text-center">
+        <div className="flex h-64 flex-col items-center justify-center bg-violet-50 p-12 text-center sm:mt-10 sm:rounded-lg">
           {/* <Link
         href="/event"
         className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
