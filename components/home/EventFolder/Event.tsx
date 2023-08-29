@@ -57,7 +57,7 @@ const Event = () => {
 
   if (loading) {
     return (
-      <Skeleton className="relative h-64 w-full rounded-lg p-12 sm:mt-10" />
+      <Skeleton className="relative h-64 w-full rounded-lg p-12" />
     );
   }
 
@@ -65,19 +65,18 @@ const Event = () => {
     if (user) {
       if (!lockedEvent && !randomEvent) {
         return (
-          <div className="flex h-64 flex-col items-center justify-center rounded-lg bg-violet-50 p-12 text-center sm:mt-10">
-            <p>You have no events yet.</p>
+          <div className="flex h-64 flex-col items-center justify-center rounded-lg bg-violet-50 p-12 text-center">
             <UrlLink
               href="/event"
               className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
               target="_self"
-              clickOn="Click here to set an event"
+              clickOn="You have no events yet."
             />
           </div>
         );
       } else if (lockedEvent) {
         return (
-          <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
+          <div className="relative bg-violet-50 px-5 py-10 sm:rounded-lg sm:p-12">
             {lockedEvent.description ? (
               <HoverCard>
                 <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
@@ -87,32 +86,34 @@ const Event = () => {
               </HoverCard>
             ) : null}
 
-            <div className="text-center italic">
+            <div className="text-center">
               {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
                 <span className="text-center text-xl">
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
               ) : (
-                <div className="flex items-end justify-center gap-2">
-                  <strong
-                    className={`block text-5xl ${
-                      calculateLeftDays(lockedEvent.eventDate.toDate()) <= 3
-                        ? "text-red-500"
-                        : null
-                    }`}
-                  >
-                    {calculateLeftDays(lockedEvent.eventDate.toDate())}
-                  </strong>
-                  <span className="mb-1 text-sm">
-                    {calculateLeftDays(lockedEvent.eventDate.toDate()) >= 2
-                      ? "days"
-                      : "day"}
-                  </span>
+                <div className="flex flex-col">
+                  <div className="flex items-end justify-center gap-2 italic">
+                    <strong
+                      className={`block text-5xl ${
+                        calculateLeftDays(lockedEvent.eventDate.toDate()) <= 3
+                          ? "text-red-500"
+                          : null
+                      }`}
+                    >
+                      {calculateLeftDays(lockedEvent.eventDate.toDate())}
+                    </strong>
+                    <span className="mb-1 text-sm">
+                      {calculateLeftDays(lockedEvent.eventDate.toDate()) >= 2
+                        ? "days"
+                        : "day"}
+                    </span>
+                  </div>
+                  <div className="my-1 text-center text-xs">until</div>
                 </div>
               )}
             </div>
 
-            <div className="text-center text-sm">until</div>
             <HeadingFour text={lockedEvent.eventTitle} />
 
             {/* </Suspense> */}
@@ -130,21 +131,21 @@ const Event = () => {
                   alert("To refresh, unlock this event first.");
                 }}
                 className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500`}
-                size={24}
+                size={20}
               />
               <Target
                 onClick={() => {
                   unlockThisEvent();
                 }}
                 className={`text-red-500 duration-200 hover:text-red-500 hover:opacity-70`}
-                size={20}
+                size={16}
               />
             </div>
           </div>
         );
       } else if (randomEvent) {
         return (
-          <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
+          <div className="relative bg-violet-50 px-5 py-10 sm:rounded-lg sm:p-12">
             {randomEvent.description ? (
               <HoverCard>
                 <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
@@ -160,26 +161,28 @@ const Event = () => {
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
               ) : (
-                <div className="flex items-end">
-                  <strong
-                    className={`block text-5xl italic ${
-                      calculateLeftDays(randomEvent.eventDate.toDate()) <= 3
-                        ? "text-red-500"
-                        : null
-                    }`}
-                  >
-                    {calculateLeftDays(randomEvent.eventDate.toDate())}
-                  </strong>
-                  <span className="mb-3 text-sm">
-                    {" "}
-                    {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
-                      ? "days"
-                      : "day"}{" "}
-                  </span>
+                <div className="flex flex-col">
+                  <div className="flex items-end justify-center gap-2 italic">
+                    <strong
+                      className={`block text-5xl ${
+                        calculateLeftDays(randomEvent.eventDate.toDate()) <= 3
+                          ? "text-red-500"
+                          : null
+                      }`}
+                    >
+                      {calculateLeftDays(randomEvent.eventDate.toDate())}
+                    </strong>
+                    <span className="mb-1 text-sm">
+                      {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
+                        ? "days"
+                        : "day"}
+                    </span>
+                  </div>
+                  <div className="text-center text-xs my-1">until</div>
                 </div>
               )}
             </div>
-            <div className="text-center">until</div>
+
             <HeadingFour text={randomEvent.eventTitle} />
 
             {/* </Suspense> */}
@@ -200,7 +203,7 @@ const Event = () => {
                   }, 1000);
                 }}
                 className={`cursor-pointer duration-300 hover:opacity-50`}
-                size={24}
+                size={20}
               />
 
               <Target
@@ -208,7 +211,7 @@ const Event = () => {
                   lockThisEvent(randomEvent);
                 }}
                 className={`cursor-pointer duration-300 hover:opacity-50`}
-                size={20}
+                size={16}
               />
             </div>
           </div>
@@ -216,7 +219,7 @@ const Event = () => {
       }
     } else {
       return (
-        <div className="flex h-64 flex-col items-center justify-center bg-violet-50 p-12 text-center sm:mt-10 sm:rounded-lg">
+        <div className="flex h-64 flex-col items-center justify-center bg-violet-50 p-12 text-center sm:rounded-lg">
           {/* <Link
         href="/event"
         className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
