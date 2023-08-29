@@ -20,13 +20,20 @@ import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
 import { toast } from "../ui/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../utils/Loading";
 import HeadingTwo from "../utils/HeadingTwo";
 import UrlLink from "../utils/UrlLink";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
+
+  const { fetchLoginUser } = useAuth();
+
+  useEffect(() => {
+    fetchLoginUser(auth.currentUser);
+  }, []);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof contactEmailSchema>>({
@@ -86,7 +93,7 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="mb-20">
+    <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
       <HeadingTwo text="Contact Form" />
       {loading ? (
         <Loading />
@@ -164,7 +171,7 @@ export default function ContactForm() {
           </form>
         </Form>
       )}
-      <p className="mt-5 sm:text-md text-xs text-center">
+      <p className="sm:text-md mt-5 text-center text-xs">
         Or, you can{" "}
         <UrlLink
           className="text-sky-500 hover:underline"

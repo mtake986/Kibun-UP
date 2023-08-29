@@ -68,28 +68,24 @@ const Quote = () => {
             <strong className="text-xl">{lockedQuote.quote}</strong>
             <div className="flex flex-col items-end">
               <div className="mt-4 text-right text-xs">
-                <span>- {lockedQuote.person}</span>
+                <span>by {lockedQuote.person}</span>
               </div>
-              <div className="mt-4 flex items-center gap-2">
-                <Button
+              <div className="mt-4 flex items-center gap-5">
+                <BiRefresh
+                  size={24}
                   onClick={() => {
                     alert("To refresh, unlock this quote first.");
                   }}
-                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
-                <Button
+                  className={`cursor-not-allowed opacity-30 duration-300`}
+                />
+                <BiLock
+                  size={20}
                   onClick={() => {
                     removeLockThisQuote(user.uid);
                     // getRandomQuote();
                   }}
-                  className={`text-red-500 duration-300 hover:bg-red-50 hover:text-red-500`}
-                  variant="ghost"
-                >
-                  <BiLock size={20} />
-                </Button>
+                  className={`text-red-500 duration-300 hover:opacity-50`}
+                />
               </div>
             </div>
           </div>
@@ -99,11 +95,12 @@ const Quote = () => {
           <div className="mb-20 px-5 py-10 sm:mt-6 sm:rounded-lg sm:p-12 sm:py-16 sm:shadow">
             <strong className="text-xl">{randomQuote.quote}</strong>
             <div className="flex flex-col items-end">
-              <div className="text-xs text-right  mt-4">
-                <span>- {randomQuote.person}</span>
+              <div className="mt-4 text-right  text-xs">
+                <span>by {randomQuote.person}</span>
               </div>
-              <div className="mt-4 flex items-center gap-2">
-                <Button
+              <div className="mt-4 flex items-center gap-5">
+                <BiRefresh
+                  size={24}
                   onClick={() => {
                     setLoading(true);
                     setTimeout(() => {
@@ -111,21 +108,16 @@ const Quote = () => {
                       setLoading(false);
                     }, 1000);
                   }}
-                  className={` duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiRefresh size={20} />
-                </Button>
+                  className={`cursor-pointer duration-300 hover:opacity-50`}
+                />
 
-                <Button
+                <BiLockOpen
+                  size={20}
                   onClick={() => {
                     lockThisQuote(user.uid, randomQuote);
                   }}
-                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiLockOpen size={20} />
-                </Button>
+                  className={`cursor-pointer duration-300 hover:opacity-50`}
+                />
               </div>
             </div>
           </div>

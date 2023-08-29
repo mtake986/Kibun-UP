@@ -9,9 +9,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { useAuth } from "@/context/AuthContext";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 
-
 const Home = () => {
-
   const [loading, setLoading] = useState<boolean>(true);
 
   const { loginUser, fetchLoginUser } = useAuth();

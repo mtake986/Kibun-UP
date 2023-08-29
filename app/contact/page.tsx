@@ -1,19 +1,15 @@
-"use client";
+
 import ContactForm from "@/components/contact/ContactForm";
-import { auth } from "@/config/Firebase";
-import { useAuth } from "@/context/AuthContext";
-import React, { useEffect } from "react";
+
+
+export const metadata = {
+  title: "Contact",
+};
 
 const ContactPage = () => {
-  const { fetchLoginUser } = useAuth();
 
-  useEffect(() => {
-    fetchLoginUser(auth.currentUser);
-  }, []);
   return (
-    <div className="p-10 sm:mb-32 sm:p-0">
       <ContactForm />
-    </div>
   );
 };
 

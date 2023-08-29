@@ -123,26 +123,21 @@ const Event = () => {
               </span>
             </div>
 
-            <div className="mt-4 flex items-center justify-end gap-2">
-              <Button
+            <div className="mt-4 flex items-center justify-end gap-5">
+              <BiRefresh
                 onClick={() => {
-                  alert("To refresh, unlock this quote first.");
+                  alert("To refresh, unlock this event first.");
                 }}
-                className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-                variant="ghost"
-              >
-                <BiRefresh size={20} />
-              </Button>
-
-              <Button
+                className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500`}
+                size={24}
+              />
+              <Target
                 onClick={() => {
                   unlockThisEvent();
                 }}
-                className={`text-red-500 duration-200 hover:text-red-500 hover:opacity-70 sm:w-auto`}
-                variant="ghost"
-              >
-                <Target size={20} />
-              </Button>
+                className={`text-red-500 duration-200 hover:text-red-500 hover:opacity-70`}
+                size={20}
+              />
             </div>
           </div>
         );
@@ -196,8 +191,8 @@ const Event = () => {
                 {randomEvent.eventDate.toDate().getFullYear()}
               </span>
             </div>
-            <div className="mt-4 flex items-center justify-end gap-2">
-              <Button
+            <div className="mt-4 flex items-center justify-end gap-5">
+              <BiRefresh
                 onClick={() => {
                   setLoading(true);
                   setTimeout(() => {
@@ -205,20 +200,17 @@ const Event = () => {
                     setLoading(false);
                   }, 1000);
                 }}
-                className={` duration-300  hover:opacity-50 sm:w-auto`}
-                variant="ghost"
-              >
-                <BiRefresh size={20} />
-              </Button>
-              <Button
+                className={`duration-300 hover:opacity-50 cursor-pointer`}
+                size={24}
+              />
+
+              <Target
                 onClick={() => {
                   lockThisEvent(randomEvent);
                 }}
-                className={`duration-300 hover:opacity-50 sm:w-auto`}
-                variant="ghost"
-              >
-                <Target size={20} />
-              </Button>
+                className={`duration-300 hover:opacity-50 cursor-pointer`}
+                size={20}
+              />
             </div>
           </div>
         );

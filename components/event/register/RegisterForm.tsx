@@ -79,7 +79,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   return (
     <Form {...form}>
       <HeadingTwo text="Register Form" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField
             control={form.control}

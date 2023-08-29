@@ -1,45 +1,12 @@
-"use client";
-import RegisterForm from "@/components/event/register/RegisterForm";
-import React, { useEffect, useState } from "react";
-import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
-import { auth } from "../../config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import SwitchTab from "@/components/event/SwitchTab";
-import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import HeadingTwo from "@/components/utils/HeadingTwo";
-import { useAuth } from "@/context/AuthContext";
 
-const EventPage = () => {
-  const [user] = useAuthState(auth);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const { fetchLoginUser } = useAuth();
+import Event from "@/components/event/Event";
 
-  useEffect(() => {
-    fetchLoginUser(auth.currentUser);
-  }, []);
-  if (!user) return <GoogleLoginBtn />;
-
-  return (
-    <div className="p-10 sm:mb-32 sm:p-0">
-      {user &&
-        (registerOpen ? (
-          <RegisterForm
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ) : (
-          <RegisterFormToggleBtn
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ))}
-
-      <div className="relative mt-10">
-        <HeadingTwo text="Events" />
-        <SwitchTab />
-      </div>
-    </div>
-  );
+export const metadata = {
+  title: "Event",
 };
 
-export default EventPage;
+const EventHomePage = () => {
+  return <Event />;
+};
+
+export default EventHomePage;

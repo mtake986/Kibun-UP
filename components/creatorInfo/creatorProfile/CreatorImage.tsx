@@ -1,8 +1,17 @@
-import Image from 'next/image';
-import React from 'react'
+'use client';
+import Image from "next/image";
+import React, { useEffect } from "react";
 import creatorPicture from "../../../public/assets/images/creatorPicture.jpg";
+import { useAuth } from "@/context/AuthContext";
+import { auth } from "@/config/Firebase";
 
 const CreatorImage = () => {
+  const { fetchLoginUser } = useAuth();
+
+  useEffect(() => {
+    fetchLoginUser(auth.currentUser);
+  }, []);
+
   return (
     <Image
       src={creatorPicture}
@@ -12,6 +21,6 @@ const CreatorImage = () => {
       className="m-auto h-40 w-40 rounded-full object-cover  object-center sm:h-60 sm:w-60"
     />
   );
-}
+};
 
-export default CreatorImage
+export default CreatorImage;

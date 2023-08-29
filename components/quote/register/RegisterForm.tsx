@@ -109,7 +109,7 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
   return (
     <Form {...form}>
       <HeadingThree text="Register Form" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="quote"
