@@ -14,10 +14,12 @@ import {
 } from "@/components/ui/hover-card";
 import UrlLink from "@/components/utils/UrlLink";
 import { auth } from "@/config/Firebase";
+import HeadingThree from "@/components/utils/HeadingThree";
+import HeadingFive from "@/components/utils/HeadingFive";
+import HeadingFour from "@/components/utils/HeadingFour";
 
 const Event = () => {
   const [user] = useAuthState(auth);
-  const [showInfo, setShowInfo] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   function calculateLeftDays(date: Date): number {
@@ -76,9 +78,6 @@ const Event = () => {
       } else if (lockedEvent) {
         return (
           <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
-            <strong className="block text-center text-2xl">
-              {lockedEvent.eventTitle}
-            </strong>
             {lockedEvent.description ? (
               <HoverCard>
                 <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
@@ -88,15 +87,15 @@ const Event = () => {
               </HoverCard>
             ) : null}
 
-            <div className="mt-4 text-center">
+            <div className="text-center italic">
               {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
                 <span className="text-center text-xl">
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
               ) : (
-                <div>
+                <div className="flex items-end justify-center gap-2">
                   <strong
-                    className={`block text-5xl italic ${
+                    className={`block text-5xl ${
                       calculateLeftDays(lockedEvent.eventDate.toDate()) <= 3
                         ? "text-red-500"
                         : null
@@ -104,15 +103,17 @@ const Event = () => {
                   >
                     {calculateLeftDays(lockedEvent.eventDate.toDate())}
                   </strong>
-                  <span className="text-sm">
+                  <span className="mb-1 text-sm">
                     {calculateLeftDays(lockedEvent.eventDate.toDate()) >= 2
                       ? "days"
-                      : "day"}{" "}
-                    left
+                      : "day"}
                   </span>
                 </div>
               )}
             </div>
+
+            <div className="text-center text-sm">until</div>
+            <HeadingFour text={lockedEvent.eventTitle} />
 
             {/* </Suspense> */}
             <div className="mt-4 text-right text-xs">
@@ -144,10 +145,6 @@ const Event = () => {
       } else if (randomEvent) {
         return (
           <div className="relative bg-violet-50 px-5 py-10 sm:mt-10 sm:rounded-lg sm:p-12">
-            <strong className="block text-center text-2xl">
-              {randomEvent.eventTitle}
-            </strong>
-
             {randomEvent.description ? (
               <HoverCard>
                 <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
@@ -157,13 +154,13 @@ const Event = () => {
               </HoverCard>
             ) : null}
 
-            <div className="mt-4 text-center">
+            <div className="text-center">
               {calculateLeftDays(randomEvent.eventDate.toDate()) <= 0 ? (
                 <span className="text-center text-xl">
                   You Can Do It <span className="text-2xl">🎉</span>
                 </span>
               ) : (
-                <div>
+                <div className="flex items-end">
                   <strong
                     className={`block text-5xl italic ${
                       calculateLeftDays(randomEvent.eventDate.toDate()) <= 3
@@ -173,16 +170,18 @@ const Event = () => {
                   >
                     {calculateLeftDays(randomEvent.eventDate.toDate())}
                   </strong>
-                  <span className="text-sm">
+                  <span className="mb-3 text-sm">
                     {" "}
                     {calculateLeftDays(randomEvent.eventDate.toDate()) >= 2
                       ? "days"
                       : "day"}{" "}
-                    left
                   </span>
                 </div>
               )}
             </div>
+            <div className="text-center">until</div>
+            <HeadingFour text={randomEvent.eventTitle} />
+
             {/* </Suspense> */}
             <div className="mt-4 text-right text-xs">
               <span>
@@ -200,7 +199,7 @@ const Event = () => {
                     setLoading(false);
                   }, 1000);
                 }}
-                className={`duration-300 hover:opacity-50 cursor-pointer`}
+                className={`cursor-pointer duration-300 hover:opacity-50`}
                 size={24}
               />
 
@@ -208,7 +207,7 @@ const Event = () => {
                 onClick={() => {
                   lockThisEvent(randomEvent);
                 }}
-                className={`duration-300 hover:opacity-50 cursor-pointer`}
+                className={`cursor-pointer duration-300 hover:opacity-50`}
                 size={20}
               />
             </div>
