@@ -1,7 +1,7 @@
-'use client';
+"use client";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import creatorPicture from "../../../public/assets/images/creatorPicture.jpg";
+import creatorPicture from "../../../public/creatorPicture.jpg";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 

@@ -34,6 +34,7 @@ const List = ({ quotes }: Props) => {
 
   return (
     <div className="mb-20">
+      {/* todo: move to dialog */}
       <div className="my-2 flex flex-col items-center gap-2 sm:flex-row">
         {/* <SortBtn /> */}
         <div className="flex w-full flex-row gap-3">

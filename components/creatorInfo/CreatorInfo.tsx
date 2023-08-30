@@ -7,14 +7,12 @@ import Files from "@/components/creatorInfo/files/Files";
 import SnsIcons from "@/components/creatorInfo/sns/SnsIcons";
 import HeadingFour from "@/components/utils/HeadingFour";
 import HeadingTwo from "@/components/utils/HeadingTwo";
-import { auth } from "@/config/Firebase";
-import { useAuth } from "@/context/AuthContext";
 import React, { useEffect } from "react";
 
 const CreatorInfo = () => {
   return (
     <div className="p-10 sm:mb-32 sm:p-0">
-      <HeadingTwo text="Creator Info" />
+      <HeadingTwo text="Creator Info" className="sm:mb-8" />
       <div className="flex flex-col items-center justify-between gap-5 sm:flex-row">
         <div>
           <CreatorImage />
