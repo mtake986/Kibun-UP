@@ -19,9 +19,7 @@ import {
   orderBy,
   DocumentData,
 } from "firebase/firestore";
-type QuoteProviderProps = {
-  children: ReactNode;
-};
+
 import {
   IQuote,
   IQuoteInputValues,
@@ -37,6 +35,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
 import { useAuth } from "./AuthContext";
+
+type QuoteProviderProps = {
+  children: ReactNode;
+};
 
 type QuoteContext = {
   loginUserQuotes: IQuote[] | [];
@@ -65,7 +67,6 @@ type QuoteContext = {
   removeFavQuote: (uid: string, qid: string) => void;
   fetchFavQuotes: () => void;
   favQuotes: IFavQuote[];
-  isFav: (uid: string, qid: string) => void;
   setRandomQuote: (quote: IQuote | undefined) => void;
   setLockedQuote: (quote: IQuote | undefined) => void;
 
@@ -96,13 +97,19 @@ type QuoteContext = {
   fetchQuotesForHomePage: (user: ILoginUser) => void;
   quotesForHomePage: IQuote[];
 
-  whichList: "yours" | "bookmarks" | "all";
-  handleWhichList: (value: "yours" | "bookmarks" | "all") => void;
-
+  whichList: "yours" | "all";
+  handleWhichList: (value: "yours" | "all") => void;
   sortFilterAreaForMineShown: boolean;
   handleSortFilterAreaForMineShown: () => void;
   sortFilterAreaForNotMineShown: boolean;
   handleSortFilterAreaForNotMineShown: () => void;
+
+  profileWhichTab: "quotes" | "bookmarks" | "likes" | "events";
+  handleProfileWhichTab: (
+    value: "quotes" | "bookmarks" | "likes" | "events"
+  ) => void;
+  isSortFilterAreaForProfileQuotesShown: boolean;
+  toggleSortFilterAreaForProfileQuotes: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -369,15 +376,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IFavQuote))
       );
     });
-  };
-
-  const isFav = async (uid: string, qid: string) => {
-    const docRef = doc(db, "favQuotes", qid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data() as IFavQuote;
-      return data.uids.includes(uid);
-    }
   };
 
   const fetchFilteredMyQuotes = async () => {
@@ -674,10 +672,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const [whichList, setWhichList] = useState<"yours" | "bookmarks" | "all">(
+  const [whichList, setWhichList] = useState<"yours" | "all">(
     "yours"
   );
-  const handleWhichList = (value: "yours" | "bookmarks" | "all") => {
+  const handleWhichList = (value: "yours" | "all") => {
     setWhichList(value);
   };
 
@@ -691,6 +689,23 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     useState(false);
   const handleSortFilterAreaForNotMineShown = () => {
     setSortFilterAreaForNotMineShown((prev) => !prev);
+  };
+
+  const [profileWhichTab, setProfileWhichTab] = useState<
+    "quotes" | "bookmarks" | "likes" | "events"
+  >("quotes");
+  const handleProfileWhichTab = (
+    value: "quotes" | "bookmarks" | "likes" | "events"
+  ) => {
+    setProfileWhichTab(value);
+  };
+
+  const [
+    isSortFilterAreaForProfileQuotesShown,
+    setIsSortFilterAreaForProfileQuotesShown,
+  ] = useState(false);
+  const toggleSortFilterAreaForProfileQuotes = () => {
+    setIsSortFilterAreaForProfileQuotesShown((prev) => !prev);
   };
 
   return (
@@ -716,7 +731,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         removeFavQuote,
         fetchFavQuotes,
         favQuotes,
-        isFav,
         setRandomQuote,
         setLockedQuote,
 
@@ -749,12 +763,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         whichList,
         handleWhichList,
-
         sortFilterAreaForMineShown,
         handleSortFilterAreaForMineShown,
-
         sortFilterAreaForNotMineShown,
         handleSortFilterAreaForNotMineShown,
+
+        profileWhichTab,
+        handleProfileWhichTab,
+        isSortFilterAreaForProfileQuotesShown,
+        toggleSortFilterAreaForProfileQuotes,
       }}
     >
       {children}

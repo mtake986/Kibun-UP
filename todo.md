@@ -82,13 +82,22 @@ Aug. 20
 - [x] Store in user model: bookmarks, mine, or both
 
 Aug. 21
-- [] Filter Function: Display bookmarks, mine, or both
+- [x] Filter Function: Display bookmarks, mine, or both
+
+Aug.22
+- [x] responsive
+
+Aug. 31
+- [x] remove bookmarks from the tabs on Quote
+- [] profile tab
+
 - [] Event Cheer
-- [] responsive
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
 - [] only sort
+- [] register btn position
+- [] event card
   // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　

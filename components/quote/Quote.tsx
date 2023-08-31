@@ -8,19 +8,11 @@ import SelectTab from "@/components/quote/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import { useAuth } from "@/context/AuthContext";
-import { Filter } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { useQuote } from "@/context/QuoteContext";
-import SortFilterMine from "./Mine/Sort/SortFilterMine";
-import SortFilterNotMine from "./NotMine/Sort/SortFilterNotMine";
-import ModalOpenBtn from "./ModalOpenBtn";
+
+import MobileSortFilterForMineOpenBtn from "../profile/tabs/quote/MobileSortFilterForQuotesOpenBtn";
+import MobileSortFilterForNotMineOpenBtn from "./NotMine/MobileSortFilterForNotMineOpenBtn";
 
 const Quote = () => {
   const [user] = useAuthState(auth);
@@ -54,7 +46,11 @@ const Quote = () => {
           {user?.displayName}
         </span> */}
 
-        {whichList === "yours" || whichList === "all" ? <ModalOpenBtn /> : null}
+        {whichList === "yours" ? (
+          <MobileSortFilterForMineOpenBtn />
+        ) : whichList === "all" ? (
+          <MobileSortFilterForNotMineOpenBtn />
+        ) : null}
 
         <SelectTab />
       </div>

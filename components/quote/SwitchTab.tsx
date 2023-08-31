@@ -46,22 +46,24 @@ const SwitchTab = () => {
   }
 
   return (
-    <div defaultValue="yours" className="w-full">
-      <div className="flex items-stretch">
+    <div>
+      <div className="mb-1 flex items-stretch">
         <span
-          className="w-full text-center text-xs"
+          className={`w-full py-1 text-center text-[10px] ${
+            whichList === "yours"
+              ? "rounded-2xl bg-violet-50 text-violet-500"
+              : ""
+          }`}
           onClick={() => handleWhichList("yours")}
         >
           Mine
         </span>
         <span
-          className="w-full text-center text-xs"
-          onClick={() => handleWhichList("bookmarks")}
-        >
-          Bookmarks
-        </span>
-        <span
-          className="w-full text-center text-xs"
+          className={`w-full py-1 text-center text-[10px] ${
+            whichList === "all"
+              ? "rounded-2xl bg-violet-50 text-violet-500"
+              : ""
+          }`}
           onClick={() => handleWhichList("all")}
         >
           All
@@ -74,8 +76,6 @@ const SwitchTab = () => {
         ) : (
           <GoogleLoginBtn />
         )
-      ) : whichList === "bookmarks" ? (
-        myBookmarks?.quotes && <ListOfBookmarks quotes={myBookmarks.quotes} />
       ) : (
         <ListNotMine quotes={quotesNotMine} />
       )}
