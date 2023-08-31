@@ -95,6 +95,14 @@ type QuoteContext = {
 
   fetchQuotesForHomePage: (user: ILoginUser) => void;
   quotesForHomePage: IQuote[];
+
+  whichList: "yours" | "bookmarks" | "all";
+  handleWhichList: (value: "yours" | "bookmarks" | "all") => void;
+
+  sortFilterAreaForMineShown: boolean;
+  handleSortFilterAreaForMineShown: () => void;
+  sortFilterAreaForNotMineShown: boolean;
+  handleSortFilterAreaForNotMineShown: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -175,13 +183,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user) {
       const q = query(
         quotesCollectionRef,
-        where("userInfo.uid", "!=", user.uid)
-        // orderBy("createdAt", "desc")
+        // where("userInfo.uid", "!=", user.uid),
+        orderBy("createdAt", "desc")
       );
 
       onSnapshot(q, (snapshot) => {
+        let qs = snapshot.docs.filter((doc) => {
+          if (doc.data().userInfo.uid !== user.uid) {
+            return true;
+          }
+        });
         setQuotesNotMine(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+          qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
     }
@@ -207,8 +220,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     }
   };
-
-  const { fetchLoginUser, loginUser } = useAuth();
 
   // todo
   const getRandomQuote = async () => {
@@ -527,10 +538,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       } else {
         onSnapshot(q, (snapshot) => {
           qs = snapshot.docs.filter((doc) => {
-            if (doc.data().tags?.length === 0 || !doc.data().tags) {
-              return true;
+            if (doc.data().userInfo.uid !== user?.uid) {
+              if (doc.data().tags?.length === 0 || !doc.data().tags) {
+                return true;
+              }
             }
           });
+
           setQuotesNotMine(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -660,6 +674,25 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const [whichList, setWhichList] = useState<"yours" | "bookmarks" | "all">(
+    "yours"
+  );
+  const handleWhichList = (value: "yours" | "bookmarks" | "all") => {
+    setWhichList(value);
+  };
+
+  const [sortFilterAreaForMineShown, setSortFilterAreaForMineShown] =
+    useState(false);
+  const handleSortFilterAreaForMineShown = () => {
+    setSortFilterAreaForMineShown((prev) => !prev);
+  };
+
+  const [sortFilterAreaForNotMineShown, setSortFilterAreaForNotMineShown] =
+    useState(false);
+  const handleSortFilterAreaForNotMineShown = () => {
+    setSortFilterAreaForNotMineShown((prev) => !prev);
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -713,6 +746,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchQuotesForHomePage,
         quotesForHomePage,
+
+        whichList,
+        handleWhichList,
+
+        sortFilterAreaForMineShown,
+        handleSortFilterAreaForMineShown,
+
+        sortFilterAreaForNotMineShown,
+        handleSortFilterAreaForNotMineShown,
       }}
     >
       {children}

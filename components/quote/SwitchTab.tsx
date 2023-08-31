@@ -25,6 +25,9 @@ const SwitchTab = () => {
     fetchNumOfBookmarks,
     myBookmarks,
     getLockedQuote,
+
+    whichList,
+    handleWhichList,
   } = useQuote();
 
   useEffect(() => {
@@ -41,29 +44,42 @@ const SwitchTab = () => {
   if (loading) {
     return <Loading />;
   }
+
   return (
-    <Tabs defaultValue="yours" className="w-full">
-      <TabsList className="flex items-stretch">
-        <TabsTrigger value="yours" className="w-full text-center text-xs">
+    <div defaultValue="yours" className="w-full">
+      <div className="flex items-stretch">
+        <span
+          className="w-full text-center text-xs"
+          onClick={() => handleWhichList("yours")}
+        >
           Mine
-        </TabsTrigger>
-        <TabsTrigger value="Bookmarks" className="w-full text-center text-xs">
+        </span>
+        <span
+          className="w-full text-center text-xs"
+          onClick={() => handleWhichList("bookmarks")}
+        >
           Bookmarks
-        </TabsTrigger>
-        <TabsTrigger value="All" className="w-full text-center text-xs">
+        </span>
+        <span
+          className="w-full text-center text-xs"
+          onClick={() => handleWhichList("all")}
+        >
           All
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="yours">
-        {user ? <List quotes={loginUserQuotes} /> : <GoogleLoginBtn />}
-      </TabsContent>
-      <TabsContent value="Bookmarks">
-        {myBookmarks?.quotes && <ListOfBookmarks quotes={myBookmarks.quotes} />}
-      </TabsContent>
-      <TabsContent value="All">
+        </span>
+      </div>
+
+      {whichList === "yours" ? (
+        user ? (
+          <List quotes={loginUserQuotes} />
+        ) : (
+          <GoogleLoginBtn />
+        )
+      ) : whichList === "bookmarks" ? (
+        myBookmarks?.quotes && <ListOfBookmarks quotes={myBookmarks.quotes} />
+      ) : (
         <ListNotMine quotes={quotesNotMine} />
-      </TabsContent>
-    </Tabs>
+      )}
+    </div>
   );
 };
 
