@@ -31,18 +31,13 @@ import { toast } from "@/components/ui/use-toast";
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
-import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
 import { useEvent } from "@/context/EventContext";
 import HeadingTwo from "@/components/utils/HeadingTwo";
+import UrlLink from "@/components/utils/UrlLink";
 
-type Props = {
-  registerOpen: boolean;
-  setRegisterOpen: (prev: boolean) => void;
-};
-
-export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
+export default function RegisterForm() {
   const [user] = useAuthState(auth);
   const { getLoginUserEvents, registerEvent } = useEvent();
 
@@ -182,12 +177,23 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
           >
             Submit
           </Button>
-          <RegisterFormToggleBtn
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
+          <UrlLink clickOn={<CloseBtn />} href="/event" target="_self" />
         </div>
       </form>
     </Form>
   );
 }
+
+
+const CloseBtn = () => {
+  const { toggleRegisterFormOpen } = useEvent();
+
+  return (
+    <Button
+      onClick={toggleRegisterFormOpen}
+      className="w-full bg-red-100 text-red-500 duration-200 hover:bg-red-200"
+    >
+      Close
+    </Button>
+  );
+};

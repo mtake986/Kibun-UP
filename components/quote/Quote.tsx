@@ -27,19 +27,12 @@ const Quote = () => {
   if (!user) return <GoogleLoginBtn />;
 
   return (
-    <div className="px-5 py-10 sm:mb-32 sm:p-0">
-      <div className="relative">
+    <div className="px-5 py-10 sm:mb-32 sm:p-0 relative">
         <HeadingTwo text="Quotes" />
         {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
           {user?.displayName}
         </span> */}
-        {user &&
-          (!registerOpen ? (
-            <RegisterFormToggleBtn
-              registerOpen={registerOpen}
-              setRegisterOpen={setRegisterOpen}
-            />
-          ) : null)}
+        {user && (!registerOpen ? <RegisterFormToggleBtn /> : null)}
         {whichList === "yours" ? (
           <MobileSortFilterForMineOpenBtn />
         ) : whichList === "all" ? (
@@ -47,7 +40,6 @@ const Quote = () => {
         ) : null}
 
         <SelectTab />
-      </div>
     </div>
   );
 };

@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
-import { useQuote } from "@/context/QuoteContext";
+import { useEvent } from "@/context/EventContext";
 import { Plus } from "lucide-react";
 import React from "react";
-
-
 
 const RegisterFormToggleBtn = () => {
   return (
@@ -12,7 +10,7 @@ const RegisterFormToggleBtn = () => {
       clickOn={
         <Btn />
       }
-      href="/quote/register"
+      href="/event/register"
       target="_self"
     />
   );
@@ -20,13 +18,12 @@ const RegisterFormToggleBtn = () => {
 
 export default RegisterFormToggleBtn;
 
-
-
 const Btn = () => {
-  const {isRegisterFormOpen, toggleRegisterFormOpen} = useQuote();
+  const { toggleRegisterFormOpen } = useEvent();
+
   return (
     <div
-      className={`absolute right-10 sm:right-5`}
+      className={`absolute right-10 sm:right-5 `}
       onClick={toggleRegisterFormOpen}
     >
       <Plus
@@ -35,4 +32,4 @@ const Btn = () => {
       />
     </div>
   );
-}; 
+};

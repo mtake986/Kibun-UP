@@ -1,5 +1,5 @@
 
-import Event from "@/components/event/Event";
+import Event from "@/components/event/index/Event";
 
 export const metadata = {
   title: "Event",
