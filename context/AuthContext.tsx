@@ -92,6 +92,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         photoURL,
         createdAt: serverTimestamp(),
         displayWhichQuoteType: "mine",
+
       }));
   };
 

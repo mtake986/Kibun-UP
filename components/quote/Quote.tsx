@@ -27,7 +27,8 @@ const Quote = () => {
   if (!user) return <GoogleLoginBtn />;
 
   return (
-    <div className="px-5 py-10 sm:mb-32 sm:p-0 relative">
+    <div className="px-5 py-10 sm:mb-32 sm:p-0">
+      <div className="relative">
         <HeadingTwo text="Quotes" />
         {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
           {user?.displayName}
@@ -40,6 +41,7 @@ const Quote = () => {
         ) : null}
 
         <SelectTab />
+      </div>
     </div>
   );
 };

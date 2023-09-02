@@ -105,7 +105,7 @@ export default function RegisterForm() {
     setTags([]);
   }
   return (
-    <div className="relative px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+    <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

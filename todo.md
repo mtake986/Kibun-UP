@@ -95,7 +95,7 @@ Sep. 1
 - [x] quote register btn position and new register url
 
 Sep. 2
-- [] event register btn position and new register url
+- [x] event register btn position and new register url
 - [] pagination 3 to 10 (or add num in users table to be customizable)
 
 
@@ -106,6 +106,7 @@ Sep. 2
 - [] built-in quotes 
 - [] only sort
 - [] event card
+- [] long title -> show more
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 

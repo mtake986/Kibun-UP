@@ -21,11 +21,13 @@ const Event = () => {
   if (!user) return <GoogleLoginBtn />;
 
   return (
-    <div className="px-5 py-10 sm:mb-32 sm:p-0 relative">
+    <div className="px-5 py-10 sm:mb-32 sm:p-0">
+      <div className="relative">
         <HeadingTwo text="Events" />
         {user && (!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null)}
 
         <SwitchTab />
+      </div>
     </div>
   );
 };
