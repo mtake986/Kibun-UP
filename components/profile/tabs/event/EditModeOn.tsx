@@ -26,26 +26,26 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IEvent, IEventInputValues } from "@/types/type";
 import { eventSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { DocumentData } from "firebase/firestore";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
 import { MdOutlineCancel } from "react-icons/md";
-
-// todo: add more fields like place, time, etc.
 
 type Props = {
   event: DocumentData;
-  handleSave: (id: string, values: IEventInputValues) => void;
-  handleCancelEdit: () => void;
-  handleDelete: (id: string) => void;
+  setIsUpdateMode: (boo: boolean) => void;
+  setIsLoading: (boo: boolean) => void;
 };
 
-export default function EditModeOn({ event, handleSave, handleCancelEdit, handleDelete }: Props) {
+export default function EditModeOn({
+  event,
+  setIsUpdateMode,
+  setIsLoading,
+}: Props) {
   const [user] = useAuthState(auth);
+  const { handleUpdate, handleDelete } = useEvent();
 
   const { reset } = useForm();
   // 1. Define your form.
@@ -64,7 +64,8 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleSave(event.id, values);
+    handleUpdate(values, event.id, setIsLoading);
+    setIsUpdateMode(false);
     reset({
       eventTitle: values.eventTitle,
       place: values.place,
@@ -75,7 +76,7 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col gap-8 sm:flex-row">
           <FormField
             control={form.control}
@@ -168,21 +169,20 @@ export default function EditModeOn({ event, handleSave, handleCancelEdit, handle
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => handleCancelEdit()}
+              onClick={() => setIsUpdateMode(false)}
               className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
               variant="ghost"
             >
               <MdOutlineCancel size={14} />
-              <span>Cancel</span>
+              {/* <span>Cancel</span> */}
             </Button>
             <Button
               type="submit"
-              // onClick={() => handleSave({ eventInput, id: event.id })}
               className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
               variant="ghost"
             >
               <Plane size={14} />
-              <span>Save</span>
+              {/* <span>Save</span> */}
             </Button>
           </div>
           <Button

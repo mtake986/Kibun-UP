@@ -1,51 +1,12 @@
-"use client";
-import List from "@/components/event/list/List";
-import RegisterForm from "@/components/event/register/RegisterForm";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import RegisterFormToggleBtn from "@/components/event/register/RegisterFormToggleBtn";
-import { auth } from "../config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useEvent } from "../context/EventContext";
 
-const EventPage = () => {
-  const [user] = useAuthState(auth);
-  const [registerOpen, setRegisterOpen] = useState(false);
+import Event from "@/components/event/index/Event";
 
-  return (
-    <div>
-      {user &&
-        (registerOpen ? (
-          <RegisterForm
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ) : (
-          <RegisterFormToggleBtn
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ))}
-
-      <List />
-    </div>
-  );
-  // return (
-  //   <div>
-  //     {registerOpen ? (
-  //       <RegisterForm
-  //         registerOpen={registerOpen}
-  //         setRegisterOpen={setRegisterOpen}
-  //       />
-  //     ) : (
-  //       <RegisterFormToggleBtn
-  //         registerOpen={registerOpen}
-  //         setRegisterOpen={setRegisterOpen}
-  //       />
-  //     )}
-  //     <List />
-  //   </div>
-  // );
+export const metadata = {
+  title: "Event",
 };
 
-export default EventPage;
+const EventHomePage = () => {
+  return <Event />;
+};
+
+export default EventHomePage;

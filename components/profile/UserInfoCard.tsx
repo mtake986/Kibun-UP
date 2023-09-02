@@ -1,8 +1,9 @@
 import React from "react";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
 import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import defaultIcon from "@/public/defaultUserImage.png";
+import LogOutBtn from "./LogOutBtn";
 
 const UserInfoCard = () => {
   const [user] = useAuthState(auth);
@@ -14,9 +15,10 @@ const UserInfoCard = () => {
         alt="user photo / default user photo"
         width={250}
         height={250}
-        className="h-48 w-48 rounded-full object-cover object-center"
+        className="sm:h-48 sm:w-48 w-32 h-32 rounded-full object-cover object-center"
       />
       {user ? <p>{user.displayName}</p> : null}
+      {user && <LogOutBtn />}
     </div>
   );
 };

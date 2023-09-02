@@ -10,9 +10,22 @@ export const eventSchema = z.object({
   }),
 });
 
-
 export const quoteSchema = z.object({
   person: z.string().min(2).max(100),
   quote: z.string().min(2).max(1000),
   isDraft: z.boolean(),
+  // tags: z.tuple([z.string()]),
+  tags: z.array(
+    z.object({
+      tag: z.string(),
+      tagColor: z.string(),
+    })
+  ),
+});
+
+export const contactEmailSchema = z.object({
+  sender_name: z.string().min(2).max(20),
+  sender_email: z.string().email(),
+  title: z.string().min(2).max(30),
+  message: z.string().min(2).max(1000),
 });

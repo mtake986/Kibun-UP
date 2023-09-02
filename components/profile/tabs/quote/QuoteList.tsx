@@ -2,35 +2,63 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
-import { useQuote } from "@/app/context/QuoteContext";
+import { useQuote } from "@/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/config/Firebase";
+import { auth } from "@/config/Firebase";
+import { pagination } from "@/utils/functions";
+import PaginationBtns from "@/components/utils/PaginationBtns";
+import NoFetchedData from "@/components/utils/NoFetchedData";
+import OrderSelect from "./Sort/OrderSelect";
+import ElementSelect from "./Sort/ElementSelect";
+import { SearchBar } from "./Sort/SearchBar";
+import { IQuote } from "@/types/type";
+import Btns from "./Sort/Btns";
+import SortFilterQuotes from "./Sort/SortFilterQuotes";
 
-const QuoteList = () => {
+type Props = {
+  quotes: IQuote[];
+};
+
+const QuoteList = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
+  const { filteredLoginUserQuotes, sortFilterAreaForMineShown } = useQuote();
 
-  const { loginUsersQuotes, getLoginUsersQuotes } = useQuote();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    setLoading(true);
-    getLoginUsersQuotes();
-    setLoading(false);
-  }, []);
+  const { nPages, currentRecords } = pagination(currentPage, quotes);
 
-  if (loading) return <div>loading</div>
+  if (loading) return <div>loading</div>;
 
-  if (!loading && loginUsersQuotes.length === 0) return <div>No Quotes</div>
-  
+  // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
-    <div>
-      {" "}
-      {loginUsersQuotes && (
-        <div>
-          {loginUsersQuotes.map((q) => (
-            <QuoteCard key={q.id} q={q} />
-          ))}
+    <div className="mb-20">
+      {sortFilterAreaForMineShown ? <SortFilterQuotes /> : null}
+      <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
+        {/* <SortBtn /> */}
+        <div className="flex w-full flex-row gap-3">
+          <OrderSelect />
+          <ElementSelect />
         </div>
+
+        <SearchBar />
+        <Btns />
+      </div>
+      {currentRecords && currentRecords.length >= 1 ? (
+        <>
+          {currentRecords.map((doc) => (
+            <QuoteCard key={doc.id} q={doc} />
+          ))}
+          {nPages >= 2 && (
+            <PaginationBtns
+              nPages={nPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </>
+      ) : (
+        <NoFetchedData text="No quotes found" />
       )}
     </div>
   );

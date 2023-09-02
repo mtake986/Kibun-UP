@@ -1,12 +1,9 @@
-import React from 'react'
-import { useAuth } from '@/app/context/AuthContext';
-import Image from 'next/image';
-import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { auth } from '@/app/config/Firebase';
+import React from "react";
+import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
 
 const GoogleLoginBtn = () => {
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-
+  const { signInWithGoogle } = useAuth();
   return (
     <div className="rounded-lg pt-12 text-center">
       <button
@@ -27,6 +24,6 @@ const GoogleLoginBtn = () => {
       </button>
     </div>
   );
-}
+};
 
-export default GoogleLoginBtn
+export default GoogleLoginBtn;

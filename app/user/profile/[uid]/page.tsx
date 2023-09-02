@@ -1,17 +1,12 @@
-"use client";
+import LoginUserProfile from "@/components/profile/LoginUserProfile";
+import Quote from "@/components/quote/Quote";
+import React from "react";
 
-import { auth } from "@/app/config/Firebase";
-import Profile from "@/components/profile/Profile";
-import ContentSwitchTabs from "@/components/profile/tabs/ContentSwitchTabs";
-import { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+export const metadata = {
+  title: "Quote",
+};
+const LoginUserProfilePage = () => {
+  return <LoginUserProfile />;
+};
 
-export default function ProfilePage() {
-
-  return (
-    <div>
-      <Profile />
-      <ContentSwitchTabs />
-    </div>
-  );
-}
+export default LoginUserProfilePage;

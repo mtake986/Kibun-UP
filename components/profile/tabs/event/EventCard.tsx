@@ -8,29 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import {
-  Edit,
-  InfoIcon,
-  Plane,
-  Timer,
-  TimerIcon,
-  ToggleLeft,
-  ToggleRight,
-  ToggleRightIcon,
-  Trash,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  doc,
-  serverTimestamp,
-  setDoc,
-  deleteDoc,
-  updateDoc,
-  Timestamp,
-} from "firebase/firestore";
-import { db } from "@/app/config/Firebase";
-import { toast } from "@/components/ui/use-toast";
+
+import { Edit, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
@@ -38,71 +17,43 @@ import { BiInfoCircle, BiTime } from "react-icons/bi";
 import { IEvent, IEventInputValues } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import EditModeOn from "./EditModeOn";
-import { useEvent } from "@/app/context/EventContext";
+import { useEvent } from "@/context/EventContext";
+import { Target } from "lucide-react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/config/Firebase";
 
 type Props = {
-  event: DocumentData;
+  event: IEvent;
 };
 const QuoteCard = ({ event }: Props) => {
-
   const [detailsOpen, setDetailsOpen] = useState(false);
   const showDetails = () => {
     setDetailsOpen(!detailsOpen);
   };
 
-    const handleEditMode = () => {
-      setEditModeOn(true);
-    };
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [editModeOn, setEditModeOn] = useState<boolean>(false);
-    const [eventInput, setEventInput] = useState<IEvent>();
-    const [date, setDate] = useState<Date>();
+  const { handleDelete, lockThisEvent, lockedEvent, unlockThisEvent } =
+    useEvent();
 
-    const handleSave = async (id: string, values: IEventInputValues) => {
-      const docRef = doc(db, "events", id);
-      await updateDoc(docRef, {
-        ...values,
-        updatedAt: serverTimestamp(),
-      }).then(() => {
-        toast({
-          className: "border-none bg-green-500 text-white",
-          title: "Successfully Updated",
-          description: `
-            Event Title: ${values.eventTitle}, 
-            Place: ${values.place}, 
-            Event Date: ${values.eventDate.toDateString()},
-            Description: ${values.description},
-          `,
-        });
-        setEditModeOn(false);
-      });
-    };
-
-    const handleCancelEdit = () => {
-      setEditModeOn(false);
-    };
-
-    const handleDelete = async (id: string) => {
-      await deleteDoc(doc(db, "events", id));
-    };
-
+  const [user] = useAuthState(auth);
   return (
     <Card
       className={`mb-3 ${
-        editModeOn && "border border-violet-500 bg-violet-50/10"
+        isUpdateMode && "border border-violet-500 bg-violet-50/10"
       }`}
     >
       <CardHeader>
         {/* <CardTitle>Card Title</CardTitle> */}
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
-      {editModeOn ? (
+      {isUpdateMode ? (
         <CardContent>
           <EditModeOn
             event={event}
-            handleSave={handleSave}
-            handleCancelEdit={handleCancelEdit}
-            handleDelete={handleDelete}
+            setIsUpdateMode={setIsUpdateMode}
+            setIsLoading={setIsLoading}
           />
         </CardContent>
       ) : (
@@ -135,33 +86,47 @@ const QuoteCard = ({ event }: Props) => {
                     <BiInfoCircle size={24} />
                     <p>{event.description}</p>
                   </div>
-                  <div className="flex items-center gap-5">
-                    {event.target ? (
-                      <>
-                        <BsToggle2Off size={24} />
-                        <p>Target On</p>
-                      </>
-                    ) : (
-                      <>
-                        <BsToggle2On size={24} />
-                        <p>Target Off</p>
-                      </>
-                    )}
-                  </div>
                 </div>
               ) : null}
             </div>
           </CardContent>
-          <CardFooter className="flex items-center justify-end gap-5">
+          <CardFooter className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between gap-2">
+              <Button
+                onClick={() => setIsUpdateMode(true)}
+                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
+                variant="ghost"
+              >
+                <Edit size={14} />
+              </Button>
+              {lockedEvent?.id === event.id ? (
+                <Button
+                  onClick={() => {
+                    unlockThisEvent();
+                  }}
+                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <Target size={14} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    lockThisEvent(event);
+                    // alert("Set as a target");
+                  }}
+                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+                  variant="ghost"
+                >
+                  <Target size={14} />
+                </Button>
+              )}
+            </div>
             <Button
-              onClick={() => handleEditMode()}
-              className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <Edit size={14} />
-            </Button>
-            <Button
-              onClick={() => handleDelete(event.id)}
+              onClick={() => {
+                handleDelete(event.id);
+                if (user && lockedEvent?.id === event.id) unlockThisEvent();
+              }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >
