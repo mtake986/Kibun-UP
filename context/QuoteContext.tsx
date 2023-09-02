@@ -110,6 +110,9 @@ type QuoteContext = {
   ) => void;
   isSortFilterAreaForProfileQuotesShown: boolean;
   toggleSortFilterAreaForProfileQuotes: () => void;
+
+  isRegisterFormOpen: boolean;
+  toggleRegisterFormOpen: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -708,6 +711,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortFilterAreaForProfileQuotesShown((prev) => !prev);
   };
 
+  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
+  const toggleRegisterFormOpen = () => {
+    setIsRegisterFormOpen((prev) => !prev);
+  }
+
   return (
     <QuoteContext.Provider
       value={{
@@ -772,6 +780,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         handleProfileWhichTab,
         isSortFilterAreaForProfileQuotesShown,
         toggleSortFilterAreaForProfileQuotes,
+
+        isRegisterFormOpen,
+        toggleRegisterFormOpen,
       }}
     >
       {children}

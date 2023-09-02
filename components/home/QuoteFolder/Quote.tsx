@@ -66,9 +66,9 @@ const Quote = () => {
       if (lockedQuote) {
         return (
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
-            <div className="mb-2 text-center text-xs sm:text-sm">
+            {/* <div className="mb-2 text-center text-xs sm:text-sm">
               {"< Today's Phrase >"}
-            </div>
+            </div> */}
             <div className="">
               <strong className="text-lg sm:text-xl">
                 {lockedQuote.quote}
@@ -102,9 +102,9 @@ const Quote = () => {
       } else if (randomQuote) {
         return (
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pt-6 sm:pb-12 sm:shadow">
-            <div className="mb-2 text-center text-xs sm:text-sm">
+            {/* <div className="mb-2 text-center text-xs sm:text-sm">
               {"< Today's Phrase >"}
-            </div>
+            </div> */}
             <div className="">
               <strong className="text-lg sm:text-xl">
                 {randomQuote.quote}

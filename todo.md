@@ -89,16 +89,25 @@ Aug.22
 
 Aug. 31
 - [x] remove bookmarks from the tabs on Quote
-- [] profile tab
+- [x] profile tab
 
+Sep. 1
+- [x] quote register btn position and new register url
+
+Sep. 2
+- [] event register btn position and new register url
+- [] pagination 3 to 10 (or add num in users table to be customizable)
+
+
+- [] quote card udpate card udpate
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
 - [] only sort
-- [] register btn position
 - [] event card
-  // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
+
+when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　
 bookmarks: ログインユーザーがどの Quote をブックマークしてるかをみたいから

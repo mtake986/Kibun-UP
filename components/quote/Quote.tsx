@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import RegisterForm from "./register/RegisterForm";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../config/Firebase";
-import RegisterFormToggleBtn from "./register/RegisterFormToggleBtn";
+import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
 import SelectTab from "@/components/quote/SwitchTab";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import HeadingTwo from "@/components/utils/HeadingTwo";
@@ -28,24 +28,18 @@ const Quote = () => {
 
   return (
     <div className="px-5 py-10 sm:mb-32 sm:p-0">
-      {user &&
-        (registerOpen ? (
-          <RegisterForm
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ) : (
-          <RegisterFormToggleBtn
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
-          />
-        ))}
-      <div className="relative mt-10">
+      <div className="relative">
         <HeadingTwo text="Quotes" />
         {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
           {user?.displayName}
         </span> */}
-
+        {user &&
+          (!registerOpen ? (
+            <RegisterFormToggleBtn
+              registerOpen={registerOpen}
+              setRegisterOpen={setRegisterOpen}
+            />
+          ) : null)}
         {whichList === "yours" ? (
           <MobileSortFilterForMineOpenBtn />
         ) : whichList === "all" ? (
