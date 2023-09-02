@@ -50,6 +50,9 @@ type EventContextType = {
   setLockedEvent: (event: IEvent | undefined) => void;
 
   registerEvent: (values: IEventInputValues, userInfo: IUserInfo) => void;
+
+  isRegisterFormOpen: boolean;
+  toggleRegisterFormOpen: () => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -196,6 +199,13 @@ export function EventProvider({ children }: EventProviderProps) {
     });
   };
 
+
+  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
+  const toggleRegisterFormOpen = () => {
+    setIsRegisterFormOpen((prev) => !prev);
+  };
+
+
   return (
     <EventContext.Provider
       value={{
@@ -214,6 +224,9 @@ export function EventProvider({ children }: EventProviderProps) {
         setRandomEvent,
         setLockedEvent,
         registerEvent,
+
+        isRegisterFormOpen,
+        toggleRegisterFormOpen,
       }}
     >
       {children}

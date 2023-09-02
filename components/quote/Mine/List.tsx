@@ -14,10 +14,12 @@ import { useQuote } from "@/context/QuoteContext";
 import { IQuote } from "@/types/type";
 import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "./Sort/SearchBar";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import OrderSelect from "./Sort/OrderSelect";
 import ElementSelect from "./Sort/ElementSelect";
+import Btns from "./Sort/Btns";
+import SortFilterMine from "./Sort/SortFilterMine";
 
 type Props = {
   quotes: IQuote[];
@@ -26,7 +28,7 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { filteredLoginUserQuotes } = useQuote();
+  const { filteredLoginUserQuotes, sortFilterAreaForMineShown } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,7 +36,9 @@ const List = ({ quotes }: Props) => {
 
   return (
     <div className="mb-20">
-      <div className="my-2 flex flex-col items-center gap-2 sm:flex-row">
+      {/* todo: move to dialog */}
+      {sortFilterAreaForMineShown ? <SortFilterMine /> : null}
+      <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
         {/* <SortBtn /> */}
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
@@ -42,7 +46,9 @@ const List = ({ quotes }: Props) => {
         </div>
 
         <SearchBar />
+        <Btns />
       </div>
+      
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

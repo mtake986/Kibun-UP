@@ -127,7 +127,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         onClick={prevPage}
         disabled={currentPage === 1 && true}
       >
-        Prev
+        {"<"}
       </Button>
       {pageNumbers.length <= 3
         ? pageNumbers.map((pageNumber) => (
@@ -149,7 +149,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         onClick={nextPage}
         disabled={currentPage === nPages && true}
       >
-        Next
+        {">"}
       </Button>
     </nav>
   );

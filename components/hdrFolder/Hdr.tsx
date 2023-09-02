@@ -47,7 +47,7 @@ export default function Hdr() {
           />
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {loginUser ? (
+          {auth.currentUser ? (
             <ProfilePic />
           ) : (
             <div

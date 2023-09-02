@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -17,10 +17,11 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   const { uploadImage } = useAuth();
 
-  const [loading, setLoading] = React.useState(false);
-  const [photo, setPhoto] = React.useState<File | null>(null);
-  const [photoURL, setPhotoURL] = React.useState<string | null>();
-  const [newUsername, setNewUsername] = React.useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoURL, setPhotoURL] = useState<string | null>();
+  const [newUsername, setNewUsername] = useState<string>("");
+  const [newPaginationNum, setNewPaginationNum] = useState<number | null>(null);
 
   const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -38,13 +39,19 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!user) return;
-    if (!photo && !newUsername) {
+    if (!photo && !newUsername && !newPaginationNum) {
       alert("At least one field is required.");
       e.preventDefault();
-      return;
     } else {
       e.preventDefault();
-      uploadImage(photo, newUsername, user, setLoading, setIsEditMode);
+      uploadImage(
+        photo,
+        newUsername,
+        newPaginationNum,
+        user,
+        setLoading,
+        setIsEditMode
+      );
     }
   };
 
@@ -72,6 +79,16 @@ const EditMode = ({ setIsEditMode }: Props) => {
             setNewUsername(e.target.value);
           }}
           id="username"
+        />
+      </div>
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="username">Pagination #</Label>
+        <Input
+          onChange={(e) => {
+            setNewPaginationNum(Number(e.target.value));
+          }}
+          id="paginationNum"
+          type="number"
         />
       </div>
 

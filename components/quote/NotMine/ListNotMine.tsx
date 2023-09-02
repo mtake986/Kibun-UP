@@ -9,7 +9,10 @@ import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import OrderSelect from "./Sort/OrderSelect";
 import ElementSelect from "./Sort/ElementSelect";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "./Sort/SearchBar";
+import Btns from "./Sort/Btns";
+import SortFilterNotMine from "./Sort/SortFilterNotMine";
+import { useQuote } from "@/context/QuoteContext";
 
 type Props = {
   quotes: IQuote[];
@@ -20,15 +23,19 @@ const ListNotMine = ({ quotes }: Props) => {
 
   const { nPages, currentRecords } = pagination(currentPage, quotes);
 
+  const { sortFilterAreaForNotMineShown } = useQuote();
   return (
     <div className="mb-20">
-      <div className="my-2 flex flex-col items-center gap-2 sm:flex-row">
+      {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
+      <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
         {/* <SortBtn /> */}
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
         </div>
+
         <SearchBar />
+        <Btns />
       </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <>

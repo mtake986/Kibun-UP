@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
-import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
+import RegisterFormToggleBtn from "../RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
 import { IUserInfo } from "@/types/type";
@@ -35,15 +35,13 @@ import { tagColors } from "@/public/CONSTANTS";
 import { ITag } from "@/types/type";
 import { changeTagColor } from "@/utils/functions";
 import HeadingThree from "@/components/utils/HeadingThree";
+import HeadingTwo from "@/components/utils/HeadingTwo";
+import UrlLink from "@/components/utils/UrlLink";
 
-type Props = {
-  registerOpen: boolean;
-  setRegisterOpen: (prev: boolean) => void;
-};
-
-export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
+export default function RegisterForm() {
   const [user] = useAuthState(auth);
-  const { registerQuote } = useQuote();
+  const { registerQuote, isRegisterFormOpen, toggleRegisterFormOpen } =
+    useQuote();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>([]);
   const [tagColor, setTagColor] = useState<string>("");
@@ -107,151 +105,164 @@ export default function RegisterForm({ registerOpen, setRegisterOpen }: Props) {
     setTags([]);
   }
   return (
-    <Form {...form}>
-      <HeadingThree text="Register Form" />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="quote"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Quote</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Just Do It"
-                  {...field}
-                  // defaultValue={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="person"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Person</FormLabel>
-              <FormControl>
-                <Input placeholder="NIKE" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="isDraft"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Draft</FormLabel>
-                <FormDescription>
-                  Check if you do not want to display this on the home page
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <div>
-          <FormLabel>Tags</FormLabel>
-
-          <div className="mt-2 flex items-center gap-5">
-            <Input
-              maxLength={20}
-              placeholder="Motivation"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-            />
-            <Select
-              onValueChange={(color) => {
-                setTagColor(color);
-              }}
-              value={tagColor}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Color" />
-              </SelectTrigger>
-              <SelectContent>
-                {tagColors.map((color) => (
-                  <SelectItem
-                    key={color}
-                    className={`${
-                      color === "red"
-                        ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
-                        : color === "orange"
-                        ? "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500"
-                        : color === "green"
-                        ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
-                        : color === "blue"
-                        ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
-                        : color === "purple"
-                        ? "bg-purple-50 text-purple-500 hover:bg-purple-50 hover:text-purple-500"
-                        : "bg-white text-black hover:bg-white hover:text-black"
-                    }`}
-                    value={color}
-                  >
-                    {tagInput}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <MdAdd
-              onClick={() => {
-                addTag(tagInput);
-              }}
-              size={36}
-              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
-            />
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            {tags.map((tag, i) => (
-              <Badge
-                key={i}
-                onClick={() => removeTag(tag.tag)}
-                className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
-                  tag.tagColor
-                )}`}
-              >
-                #{tag.tag}
-                <MdClose className="ml-1 cursor-pointer rounded-full" />
-              </Badge>
-            ))}
-            {tagInput && (
-              <Badge
-                className={` border-none font-light hover:opacity-70 ${changeTagColor(
-                  tagColor
-                )}`}
-              >
-                #{tagInput}
-              </Badge>
+    <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+      <Form {...form}>
+        <HeadingTwo text="Register Form" />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="quote"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Quote</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Just Do It"
+                    {...field}
+                    // defaultValue={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Button
-            className="w-full bg-violet-100 text-violet-500 hover:bg-violet-100 hover:opacity-70"
-            type="submit"
-          >
-            Submit
-          </Button>
-          <RegisterFormToggleBtn
-            registerOpen={registerOpen}
-            setRegisterOpen={setRegisterOpen}
           />
-        </div>
-      </form>
-    </Form>
+
+          <FormField
+            control={form.control}
+            name="person"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Person</FormLabel>
+                <FormControl>
+                  <Input placeholder="NIKE" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isDraft"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">Draft</FormLabel>
+                  <FormDescription>
+                    Check if you do not want to display this on the home page
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <div>
+            <FormLabel>Tags</FormLabel>
+
+            <div className="mt-2 flex items-center gap-5">
+              <Input
+                maxLength={20}
+                placeholder="Motivation"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+              />
+              <Select
+                onValueChange={(color) => {
+                  setTagColor(color);
+                }}
+                value={tagColor}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Color" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tagColors.map((color) => (
+                    <SelectItem
+                      key={color}
+                      className={`${
+                        color === "red"
+                          ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
+                          : color === "orange"
+                          ? "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500"
+                          : color === "green"
+                          ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
+                          : color === "blue"
+                          ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
+                          : color === "purple"
+                          ? "bg-purple-50 text-purple-500 hover:bg-purple-50 hover:text-purple-500"
+                          : "bg-white text-black hover:bg-white hover:text-black"
+                      }`}
+                      value={color}
+                    >
+                      {tagInput}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <MdAdd
+                onClick={() => {
+                  addTag(tagInput);
+                }}
+                size={36}
+                className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {tags.map((tag, i) => (
+                <Badge
+                  key={i}
+                  onClick={() => removeTag(tag.tag)}
+                  className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
+                    tag.tagColor
+                  )}`}
+                >
+                  #{tag.tag}
+                  <MdClose className="ml-1 cursor-pointer rounded-full" />
+                </Badge>
+              ))}
+              {tagInput && (
+                <Badge
+                  className={` border-none font-light hover:opacity-70 ${changeTagColor(
+                    tagColor
+                  )}`}
+                >
+                  #{tagInput}
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button
+              className="w-full bg-violet-100 text-violet-500 duration-200 hover:bg-violet-200"
+              type="submit"
+            >
+              Submit
+            </Button>
+            <UrlLink clickOn={<CloseBtn />} href="/quote" target="_self" />
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }
+
+const CloseBtn = () => {
+    const { toggleRegisterFormOpen } =
+      useQuote();
+
+  return (
+    <Button
+      onClick={toggleRegisterFormOpen}
+      className="w-full duration-200 bg-red-100 text-red-500 hover:bg-red-200"
+    >
+      Close
+    </Button>
+  );
+};

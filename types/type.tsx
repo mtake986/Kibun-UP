@@ -85,4 +85,5 @@ export interface ILoginUser {
   photoURL: string;
   createdAt: Date;
   displayWhichQuoteType: string;
+  paginationNum: number;
 }

@@ -7,10 +7,10 @@ import {
   BsHouse,
   BsPerson,
 } from "react-icons/bs";
-import YouTubeIcon from "./assets/icons/youtube.svg";
-import InstagramIcon from "./assets/icons/instagram.svg";
-import TwitterIcon from "./assets/icons/twitter.svg";
-import GitHubIcon from "./assets/icons/github.svg";
+import YouTubeIcon from "./icons/youtube.svg";
+import InstagramIcon from "./icons/instagram.svg";
+import TwitterIcon from "./icons/twitter.svg";
+import GitHubIcon from "./icons/github.svg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 

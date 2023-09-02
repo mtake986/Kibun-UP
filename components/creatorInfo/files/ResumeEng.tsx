@@ -5,7 +5,7 @@ import React from "react";
 const ResumeEng = () => {
   return (
     <UrlLink
-      href="/assets/files/masahiro-takechi-resume-eng.pdf"
+      href="/files/masahiro-takechi-resume-eng.pdf"
       target="_blank"
       clickOn="Resume"
       className="text-sky-500 hover:underline sm:text-sm text-xs"

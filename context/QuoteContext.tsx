@@ -19,9 +19,7 @@ import {
   orderBy,
   DocumentData,
 } from "firebase/firestore";
-type QuoteProviderProps = {
-  children: ReactNode;
-};
+
 import {
   IQuote,
   IQuoteInputValues,
@@ -37,6 +35,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
 import { useAuth } from "./AuthContext";
+
+type QuoteProviderProps = {
+  children: ReactNode;
+};
 
 type QuoteContext = {
   loginUserQuotes: IQuote[] | [];
@@ -65,7 +67,6 @@ type QuoteContext = {
   removeFavQuote: (uid: string, qid: string) => void;
   fetchFavQuotes: () => void;
   favQuotes: IFavQuote[];
-  isFav: (uid: string, qid: string) => void;
   setRandomQuote: (quote: IQuote | undefined) => void;
   setLockedQuote: (quote: IQuote | undefined) => void;
 
@@ -95,6 +96,23 @@ type QuoteContext = {
 
   fetchQuotesForHomePage: (user: ILoginUser) => void;
   quotesForHomePage: IQuote[];
+
+  whichList: "yours" | "all";
+  handleWhichList: (value: "yours" | "all") => void;
+  sortFilterAreaForMineShown: boolean;
+  handleSortFilterAreaForMineShown: () => void;
+  sortFilterAreaForNotMineShown: boolean;
+  handleSortFilterAreaForNotMineShown: () => void;
+
+  profileWhichTab: "quotes" | "bookmarks" | "likes" | "events";
+  handleProfileWhichTab: (
+    value: "quotes" | "bookmarks" | "likes" | "events"
+  ) => void;
+  isSortFilterAreaForProfileQuotesShown: boolean;
+  toggleSortFilterAreaForProfileQuotes: () => void;
+
+  isRegisterFormOpen: boolean;
+  toggleRegisterFormOpen: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -175,13 +193,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user) {
       const q = query(
         quotesCollectionRef,
-        where("userInfo.uid", "!=", user.uid)
-        // orderBy("createdAt", "desc")
+        // where("userInfo.uid", "!=", user.uid),
+        orderBy("createdAt", "desc")
       );
 
       onSnapshot(q, (snapshot) => {
+        let qs = snapshot.docs.filter((doc) => {
+          if (doc.data().userInfo.uid !== user.uid) {
+            return true;
+          }
+        });
         setQuotesNotMine(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+          qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
         );
       });
     }
@@ -207,8 +230,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     }
   };
-
-  const { fetchLoginUser, loginUser } = useAuth();
 
   // todo
   const getRandomQuote = async () => {
@@ -358,15 +379,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IFavQuote))
       );
     });
-  };
-
-  const isFav = async (uid: string, qid: string) => {
-    const docRef = doc(db, "favQuotes", qid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data() as IFavQuote;
-      return data.uids.includes(uid);
-    }
   };
 
   const fetchFilteredMyQuotes = async () => {
@@ -527,10 +539,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       } else {
         onSnapshot(q, (snapshot) => {
           qs = snapshot.docs.filter((doc) => {
-            if (doc.data().tags?.length === 0 || !doc.data().tags) {
-              return true;
+            if (doc.data().userInfo.uid !== user?.uid) {
+              if (doc.data().tags?.length === 0 || !doc.data().tags) {
+                return true;
+              }
             }
           });
+
           setQuotesNotMine(
             qs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
           );
@@ -660,6 +675,47 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const [whichList, setWhichList] = useState<"yours" | "all">(
+    "yours"
+  );
+  const handleWhichList = (value: "yours" | "all") => {
+    setWhichList(value);
+  };
+
+  const [sortFilterAreaForMineShown, setSortFilterAreaForMineShown] =
+    useState(false);
+  const handleSortFilterAreaForMineShown = () => {
+    setSortFilterAreaForMineShown((prev) => !prev);
+  };
+
+  const [sortFilterAreaForNotMineShown, setSortFilterAreaForNotMineShown] =
+    useState(false);
+  const handleSortFilterAreaForNotMineShown = () => {
+    setSortFilterAreaForNotMineShown((prev) => !prev);
+  };
+
+  const [profileWhichTab, setProfileWhichTab] = useState<
+    "quotes" | "bookmarks" | "likes" | "events"
+  >("quotes");
+  const handleProfileWhichTab = (
+    value: "quotes" | "bookmarks" | "likes" | "events"
+  ) => {
+    setProfileWhichTab(value);
+  };
+
+  const [
+    isSortFilterAreaForProfileQuotesShown,
+    setIsSortFilterAreaForProfileQuotesShown,
+  ] = useState(false);
+  const toggleSortFilterAreaForProfileQuotes = () => {
+    setIsSortFilterAreaForProfileQuotesShown((prev) => !prev);
+  };
+
+  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
+  const toggleRegisterFormOpen = () => {
+    setIsRegisterFormOpen((prev) => !prev);
+  }
+
   return (
     <QuoteContext.Provider
       value={{
@@ -683,7 +739,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         removeFavQuote,
         fetchFavQuotes,
         favQuotes,
-        isFav,
         setRandomQuote,
         setLockedQuote,
 
@@ -713,6 +768,21 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchQuotesForHomePage,
         quotesForHomePage,
+
+        whichList,
+        handleWhichList,
+        sortFilterAreaForMineShown,
+        handleSortFilterAreaForMineShown,
+        sortFilterAreaForNotMineShown,
+        handleSortFilterAreaForNotMineShown,
+
+        profileWhichTab,
+        handleProfileWhichTab,
+        isSortFilterAreaForProfileQuotesShown,
+        toggleSortFilterAreaForProfileQuotes,
+
+        isRegisterFormOpen,
+        toggleRegisterFormOpen,
       }}
     >
       {children}

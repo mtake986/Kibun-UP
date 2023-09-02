@@ -82,13 +82,34 @@ Aug. 20
 - [x] Store in user model: bookmarks, mine, or both
 
 Aug. 21
-- [] Filter Function: Display bookmarks, mine, or both
+- [x] Filter Function: Display bookmarks, mine, or both
+
+Aug.22
+- [x] responsive
+
+Aug. 31
+- [x] remove bookmarks from the tabs on Quote
+- [x] profile tab
+
+Sep. 1
+- [x] quote register btn position and new register url
+
+Sep. 2
+- [x] event register btn position and new register url
+- [x] pagination 3 to 10 (or add num in users table to be customizable)
+- [x] Cont. doesn't update in FS (pagination 3 to 10 (or add num in users table to be customizable))
+
+Sep. 3
+- [] quote card udpate card udpate
 - [] Event Cheer
-- [] responsive
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
-  // ! when date is ambiguous, countdown will be like 日めくりゴロゴｃ
+- [] only sort
+- [] event card
+- [] long title -> show more
+
+when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
 favQuote ：　何人に Fav されてるかをみたいから　
 bookmarks: ログインユーザーがどの Quote をブックマークしてるかをみたいから
