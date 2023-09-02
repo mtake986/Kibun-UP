@@ -31,20 +31,13 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-type loginUserInfoType = {
-  email: string;
-  name: string;
-  photoUrl: string;
-};
-
 type AuthContextType = {
-  loginUserInfo: loginUserInfoType | {};
-  setLoginUserInfo: (loginUserInfo: any) => void;
   signInWithGoogle: () => void;
   handleLogout: () => void;
   uploadImage: (
     file: File | null,
     newUsername: string,
+    newPaginationNum: number | null,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
@@ -61,7 +54,6 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [loginUserInfo, setLoginUserInfo] = useState({});
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
@@ -92,7 +84,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         photoURL,
         createdAt: serverTimestamp(),
         displayWhichQuoteType: "mine",
-
+        paginationNum: 10,
       }));
   };
 
@@ -121,6 +113,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const uploadImage = async (
     file: File | null,
     newUsername: string,
+    newPaginationNum: number | null,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
@@ -128,11 +121,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(true);
 
     interface IPayload {
-      photoURL?: string;
-      displayName?: string;
+      photoURL?: string | null;
+      displayName?: string | null;
+      paginationNum?: number;
     }
 
-    let payload: IPayload = {};
+    let payload: IPayload = {
+      photoURL: loginUser?.photoURL,
+      displayName: loginUser?.displayName,
+      paginationNum: loginUser?.paginationNum,
+    };
+
     if (file) {
       const fileRef = ref(storage, `images/${currentUser.uid}/${file.name}`);
       const snapshot = await uploadBytes(fileRef, file);
@@ -142,7 +141,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (newUsername) {
       payload.displayName = newUsername;
     }
+    if (newPaginationNum) payload.paginationNum = newPaginationNum;
 
+    if (auth.currentUser) {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(docRef, {
+        photoURL: payload.photoURL,
+        displayName: payload.displayName,
+        paginationNum: payload.paginationNum,
+      });
+    } else {
+      console.log("No user is signed in");
+    }
+    console.log(payload, currentUser);
     updateProfile(currentUser, payload)
       .then(() => {
         // Profile updated!
@@ -170,8 +181,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return (
     <AuthContext.Provider
       value={{
-        loginUserInfo,
-        setLoginUserInfo,
         signInWithGoogle,
         handleLogout,
         uploadImage,

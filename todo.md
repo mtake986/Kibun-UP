@@ -96,9 +96,10 @@ Sep. 1
 
 Sep. 2
 - [x] event register btn position and new register url
-- [] pagination 3 to 10 (or add num in users table to be customizable)
+- [x] pagination 3 to 10 (or add num in users table to be customizable)
 
-
+Sep. 3
+- [] Cont. doesn't update in FS (pagination 3 to 10 (or add num in users table to be customizable))
 - [] quote card udpate card udpate
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard

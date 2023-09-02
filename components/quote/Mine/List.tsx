@@ -48,6 +48,7 @@ const List = ({ quotes }: Props) => {
         <SearchBar />
         <Btns />
       </div>
+      
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

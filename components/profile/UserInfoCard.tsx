@@ -4,21 +4,27 @@ import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import defaultIcon from "@/public/defaultUserImage.png";
 import LogOutBtn from "./LogOutBtn";
+import { useAuth } from "@/context/AuthContext";
 
 const UserInfoCard = () => {
-  const [user] = useAuthState(auth);
+  const {loginUser} = useAuth();
 
   return (
     <div className="flex flex-col items-center gap-5 ">
-      <Image
-        src={user?.photoURL! || defaultIcon}
-        alt="user photo / default user photo"
-        width={250}
-        height={250}
-        className="sm:h-48 sm:w-48 w-32 h-32 rounded-full object-cover object-center"
-      />
-      {user ? <p>{user.displayName}</p> : null}
-      {user && <LogOutBtn />}
+      {loginUser ? (
+        <>
+          <Image
+            src={loginUser.photoURL!}
+            alt="loginUser photo / default loginUser photo"
+            width={250}
+            height={250}
+            className="h-32 w-32 rounded-full object-cover object-center sm:h-48 sm:w-48"
+          />
+          <p>{loginUser.displayName}</p>
+          <p>{loginUser.paginationNum}</p>
+          <LogOutBtn />
+        </>
+      ) : null}
     </div>
   );
 };
