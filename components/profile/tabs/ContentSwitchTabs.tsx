@@ -59,7 +59,7 @@ const ContentSwitchTabs = () => {
 
       <div className="mb-1 flex items-stretch">
         <span
-          className={`w-full py-1 text-center text-[10px] sm:text-sm ${
+          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === "quotes"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""
@@ -69,7 +69,7 @@ const ContentSwitchTabs = () => {
           Quotes
         </span>
         <span
-          className={`w-full py-1 text-center text-[10px] sm:text-sm ${
+          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === "bookmarks"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""
@@ -79,7 +79,7 @@ const ContentSwitchTabs = () => {
           Bookmarks
         </span>
         <span
-          className={`w-full py-1 text-center text-[10px] sm:text-sm ${
+          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === "likes"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""
@@ -89,7 +89,7 @@ const ContentSwitchTabs = () => {
           Likes
         </span>
         <span
-          className={`w-full py-1 text-center text-[10px] sm:text-sm ${
+          className={`cursor-pointer w-full py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === "events"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""

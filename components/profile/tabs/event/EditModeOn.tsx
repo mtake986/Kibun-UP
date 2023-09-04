@@ -167,22 +167,20 @@ export default function EditModeOn({
         />
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <Button
               onClick={() => setIsUpdateMode(false)}
-              className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
+              className={` flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"
             >
-              <MdOutlineCancel size={14} />
-              {/* <span>Cancel</span> */}
+              <span>Cancel</span>
             </Button>
             <Button
               type="submit"
               className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
               variant="ghost"
             >
-              <Plane size={14} />
-              {/* <span>Save</span> */}
+              <span>Save</span>
             </Button>
           </div>
           <Button
