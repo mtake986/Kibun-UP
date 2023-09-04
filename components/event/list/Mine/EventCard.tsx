@@ -23,6 +23,7 @@ import { IEventInputValues, IEvent } from "@/types/type";
 import { useEvent } from "@/context/EventContext";
 import EditModeOn from "./EditModeOn";
 import Loading from "@/components/utils/Loading";
+import HeadingThree from "@/components/utils/HeadingThree";
 
 const EventCard = ({ event, i }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
@@ -79,26 +80,33 @@ const EventCard = ({ event, i }: Props) => {
         <>
           <CardContent>
             <div className="flex flex-col gap-3">
-              <div className="">
-                {/* <BsCalendarEvent size={24} /> */}
-                <h3 className="text-center text-2xl font-semibold">
-                  {event.eventTitle}
-                </h3>
-              </div>
+              {/* <BsCalendarEvent size={24} /> */}
+              <HeadingThree
+                text={event.eventTitle}
+                className="truncate text-center text-2xl font-semibold"
+              />
               {event.place && (
-                <div className="flex items-center gap-5">
-                  <MdPlace size={24} />
-                  <p>{event.place}</p>
+                <div className="flex items-center">
+                  <div className="flex w-10">
+                    <MdPlace size={20} className="mr-5" />
+                  </div>
+                  <p className="">{event.place}</p>
                 </div>
               )}
-              <div className="flex items-center gap-5">
-                <BiTime size={24} />
-                <p>{event.eventDate.toDate().toDateString()}</p>
-              </div>
+              {event.eventDate && (
+                <div className="flex items-center">
+                  <div className="flex w-10">
+                    <BiTime size={24} className="mr-5" />
+                  </div>
+                  <p>{event.eventDate.toDate().toDateString()}</p>
+                </div>
+              )}
               {event.description && (
-                <div className="flex items-center gap-5">
-                  <BiInfoCircle size={24} />
-                  <p>{event.description}</p>
+                <div className="flex items-center">
+                  <div className="flex w-10">
+                    <BiInfoCircle size={24} className="mr-5" />
+                  </div>
+                  <p className="">{event.description}</p>
                 </div>
               )}
             </div>

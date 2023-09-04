@@ -68,23 +68,31 @@ const QuoteCard = ({ q, i }: Props) => {
         <>
           <CardContent>
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-5">
-                <BsChatLeftText size={24} />
-                <p>{q.quote}</p>
+              <div className="flex items-center">
+                <div className="flex w-10">
+                  <BsChatLeftText size={20} className="mr-5" />
+                </div>
+                <p className="">{q.quote}</p>
               </div>
-              <div className="flex items-center gap-5">
-                <BsFillPersonFill size={24} />
-                <p>{q.person}</p>
+              <div className="flex items-center">
+                <div className="flex w-10">
+                  <BsFillPersonFill size={20} className="mr-5" />
+                </div>
+                <p className="">{q.person}</p>
               </div>
-              <div className="flex items-center gap-5">
+              <div className="flex items-center">
                 {q.isDraft ? (
                   <>
-                    <BsToggle2Off size={24} />
+                    <div className="flex w-10">
+                      <BsToggle2Off size={20} className="mr-5" />
+                    </div>
                     <p>Draft</p>
                   </>
                 ) : (
                   <>
-                    <BsToggle2On size={24} />
+                    <div className="flex w-10">
+                      <BsToggle2On size={20} className="mr-5" />
+                    </div>
                     <p>Public</p>
                   </>
                 )}

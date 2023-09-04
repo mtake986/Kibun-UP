@@ -58,13 +58,17 @@ const QuoteCard = ({ q, i }: Props) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-5">
-            <BsChatLeftText size={24} />
-            <p>{q.quote}</p>
+          <div className="flex items-center">
+            <div className="flex w-10">
+              <BsChatLeftText size={20} className="mr-5" />
+            </div>
+            <p className="">{q.quote}</p>
           </div>
-          <div className="flex items-center gap-5">
-            <BsFillPersonFill size={24} />
-            <p>{q.person}</p>
+          <div className="flex items-center">
+            <div className="flex w-10">
+              <BsFillPersonFill size={20} className="mr-5" />
+            </div>
+            <p className="">{q.person}</p>
           </div>
           {q.tags && q.tags?.length >= 1 && (
             <div className="flex flex-wrap items-center gap-2">

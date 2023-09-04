@@ -49,7 +49,7 @@ const SwitchTab = () => {
     <div>
       <div className="mb-1 flex items-stretch">
         <span
-          className={`w-full py-1 text-center text-[10px] ${
+          className={`cursor-pointer w-full py-1 text-center text-xs sm:text-sm ${
             whichList === "yours"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""
@@ -59,7 +59,7 @@ const SwitchTab = () => {
           Mine
         </span>
         <span
-          className={`w-full py-1 text-center text-[10px] ${
+          className={`cursor-pointer w-full py-1 text-center text-xs sm:text-sm ${
             whichList === "all"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""
