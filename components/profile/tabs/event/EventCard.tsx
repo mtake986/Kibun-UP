@@ -22,6 +22,7 @@ import { Target } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import HeadingThree from "@/components/utils/HeadingThree";
+import HeadingFour from "@/components/utils/HeadingFour";
 
 type Props = {
   event: IEvent;
@@ -62,7 +63,7 @@ const QuoteCard = ({ event }: Props) => {
           <CardContent>
             <div className="flex flex-col gap-3">
               {/* <BsCalendarEvent size={24} /> */}
-              <HeadingThree
+              <HeadingFour
                 text={event.eventTitle}
                 className="truncate text-center text-2xl font-semibold"
               />
