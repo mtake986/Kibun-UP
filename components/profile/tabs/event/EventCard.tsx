@@ -63,7 +63,7 @@ const QuoteCard = ({ event }: Props) => {
           <CardContent>
             <div className="flex flex-col gap-3">
               {/* <BsCalendarEvent size={24} /> */}
-              <HeadingFour
+              <HeadingThree
                 text={event.eventTitle}
                 className="truncate text-center text-2xl font-semibold"
               />
