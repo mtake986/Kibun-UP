@@ -85,12 +85,6 @@ export function EventProvider({ children }: EventProviderProps) {
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Successfully Created",
-        description: `
-            Event Title: ${values.eventTitle}, 
-            Place: ${values.place}, 
-            Description: ${values.description},
-            Event Date: ${values.eventDate.toLocaleDateString("en-US")},
-          `,
       });
     });
   };
@@ -108,7 +102,7 @@ export function EventProvider({ children }: EventProviderProps) {
     });
 
     if (lockedEvent?.id === eid) {
-      alert(lockedEvent?.id + "," + eid);
+      // alert(lockedEvent?.id + "," + eid);
       const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
       if (lockedEventDocRef) {
         await updateDoc(lockedEventDocRef, {
@@ -117,6 +111,10 @@ export function EventProvider({ children }: EventProviderProps) {
         });
       }
     }
+    toast({
+      className: "border-none bg-green-500 text-white",
+      title: "Successfully Updated",
+    });
     setIsLoading(false);
   };
 
