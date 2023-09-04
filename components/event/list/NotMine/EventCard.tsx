@@ -15,6 +15,7 @@ import { IEvent } from "@/types/type";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
 import HeadingThree from "@/components/utils/HeadingThree";
+import HeadingFour from "@/components/utils/HeadingFour";
 
 type Props = {
   event: IEvent;
@@ -31,10 +32,10 @@ const EventCard = ({ event, i }: Props) => {
       <CardContent>
         <div className="flex flex-col gap-3">
           {/* <BsCalendarEvent size={24} /> */}
-          <HeadingThree
+          <HeadingFour
             text={event.eventTitle}
             className="truncate text-center text-2xl font-semibold"
-        />
+          />
           {event.place && (
             <div className="flex items-center">
               <div className="flex w-10">
