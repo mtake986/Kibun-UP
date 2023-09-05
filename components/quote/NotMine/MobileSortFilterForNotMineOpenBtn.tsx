@@ -9,7 +9,7 @@ export default function MobileSortFilterForNotMineOpenBtn() {
     <div className="cursor-pointer absolute right-0 top-0">
       {/* <span className="left-[50%] -translate-x-1/2 -top-2.5 text-[8px] absolute">All</span> */}
       <Filter
-        className={` text-gray-400 sm:hidden`}
+        className={` text-gray-400`}
         size={20}
         onClick={handleSortFilterAreaForNotMineShown}
       />

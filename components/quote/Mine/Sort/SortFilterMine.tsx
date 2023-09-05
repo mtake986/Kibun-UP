@@ -7,18 +7,31 @@ import OnlySortBtn from "./OnlySortBtn";
 
 const SortFilterMine = () => {
   return (
-    <div className="my-2 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
-      {/* <SortBtn /> */}
-      <div className="flex w-full flex-row gap-3">
-        <OrderSelect />
-        <ElementSelect />
-        <OnlySortBtn />
+    <>
+      <div className="my-2 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
+        {/* <SortBtn /> */}
+        <div className="flex w-full flex-row gap-3">
+          <OrderSelect />
+          <ElementSelect />
+          <OnlySortBtn />
+        </div>
+        <div className="flex w-full flex-grow justify-between gap-2">
+          <SearchBar />
+          <Btns />
+        </div>
       </div>
-      <div className=" flex w-full flex-grow justify-between gap-2">
+      <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
+        {/* <SortBtn /> */}
+        <div className="flex w-full flex-row gap-3">
+          <OrderSelect />
+          <ElementSelect />
+          <OnlySortBtn />
+        </div>
+
         <SearchBar />
         <Btns />
       </div>
-    </div>
+    </>
   );
 };
 

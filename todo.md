@@ -96,14 +96,19 @@ Sep. 3
 - [x] long title -> show more
 
 Sep. 4
-- [] only sort
+- [x] only sort
+- [] always show the filter icon
 
+Sep. 5
+- [] toggle red circle point on the filter icon after sorting, filtering, reseting
+- [] placehoder when editing user info on Profile
+
+### coming...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
 - [] likes list on profile 
-- [] toggle red circle point on the filter icon after sorting, filtering, reseting
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 

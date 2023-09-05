@@ -11,8 +11,8 @@ import { useAuth } from "@/context/AuthContext";
 
 import { useQuote } from "@/context/QuoteContext";
 
-import MobileSortFilterForMineOpenBtn from "../profile/tabs/quote/MobileSortFilterForQuotesOpenBtn";
 import MobileSortFilterForNotMineOpenBtn from "./NotMine/MobileSortFilterForNotMineOpenBtn";
+import MobileSortFilterForMineOpenBtn from "./Mine/MobileSortFilterForMineOpenBtn";
 
 const Quote = () => {
   const [user] = useAuthState(auth);

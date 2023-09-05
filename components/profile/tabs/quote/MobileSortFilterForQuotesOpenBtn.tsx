@@ -10,7 +10,7 @@ export default function MobileSortFilterForQuotesOpenBtn() {
         Mine
       </span> */}
       <Filter
-        className={` text-gray-400 sm:hidden`}
+        className={` text-gray-400`}
         size={20}
         onClick={handleSortFilterAreaForMineShown}
       />
