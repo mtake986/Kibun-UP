@@ -26,8 +26,6 @@ type Props = {
 const ListOfBookmarks = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { filteredLoginUserQuotes } = useQuote();
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = pagination(currentPage, quotes);

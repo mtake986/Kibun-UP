@@ -3,8 +3,7 @@ import OrderSelect from "./OrderSelect";
 import ElementSelect from "./ElementSelect";
 import { SearchBar } from "./SearchBar";
 import Btns from "./Btns";
-import { Button } from "@/components/ui/button";
-import { BiSort } from "react-icons/bi";
+import OnlySortBtn from "./OnlySortBtn";
 
 const SortFilterNotMine = () => {
   return (
@@ -13,17 +12,9 @@ const SortFilterNotMine = () => {
       <div className="flex w-full flex-row gap-3">
         <OrderSelect />
         <ElementSelect />
-
-        <Button
-          className={`cursor-pointer bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500 hover:opacity-70`}
-          onClick={() => {
-            // fetchFilteredMyQuotes();
-          }}
-        >
-          <BiSort size={20} />
-        </Button>
+        <OnlySortBtn />
       </div>
-      <div className=" flex w-full flex-grow justify-between gap-2">
+      <div className="flex w-full flex-grow justify-between gap-2">
         <SearchBar />
         <Btns />
       </div>

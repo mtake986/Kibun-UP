@@ -8,7 +8,7 @@ export default function MobileSortFilterForMineOpenBtn() {
   } = useQuote();
 
   return (
-    <div className="absolute right-0 top-0">
+    <div className="cursor-pointer absolute right-0 top-0">
       {/* <span className="absolute -top-2.5 left-[50%] -translate-x-1/2 text-[8px]">
         Mine
       </span> */}
