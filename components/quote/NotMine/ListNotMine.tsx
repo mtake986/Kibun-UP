@@ -13,6 +13,7 @@ import { SearchBar } from "./Sort/SearchBar";
 import Btns from "./Sort/Btns";
 import SortFilterNotMine from "./Sort/SortFilterNotMine";
 import { useQuote } from "@/context/QuoteContext";
+import OnlySortBtn from "./Sort/OnlySortBtn";
 
 type Props = {
   quotes: IQuote[];
@@ -32,6 +33,7 @@ const ListNotMine = ({ quotes }: Props) => {
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
+          <OnlySortBtn />
         </div>
 
         <SearchBar />

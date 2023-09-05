@@ -14,6 +14,7 @@ import { SearchBar } from "./Sort/SearchBar";
 import { IQuote } from "@/types/type";
 import Btns from "./Sort/Btns";
 import SortFilterQuotes from "./Sort/SortFilterQuotes";
+import OnlySortBtn from "./Sort/OnlySortBtn";
 
 type Props = {
   quotes: IQuote[];
@@ -39,6 +40,7 @@ const QuoteList = ({ quotes }: Props) => {
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
+          <OnlySortBtn />
         </div>
 
         <SearchBar />

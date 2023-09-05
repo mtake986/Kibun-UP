@@ -20,6 +20,7 @@ import OrderSelect from "./Sort/OrderSelect";
 import ElementSelect from "./Sort/ElementSelect";
 import Btns from "./Sort/Btns";
 import SortFilterMine from "./Sort/SortFilterMine";
+import OnlySortBtn from "./Sort/OnlySortBtn";
 
 type Props = {
   quotes: IQuote[];
@@ -43,6 +44,7 @@ const List = ({ quotes }: Props) => {
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
+          <OnlySortBtn />
         </div>
 
         <SearchBar />

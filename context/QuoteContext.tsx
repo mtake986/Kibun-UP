@@ -113,6 +113,9 @@ type QuoteContext = {
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
+
+  onlySortMyQuotes: () => void;
+  onlySortNotMyQuotes: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -675,9 +678,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const [whichList, setWhichList] = useState<"yours" | "all">(
-    "yours"
-  );
+  const [whichList, setWhichList] = useState<"yours" | "all">("yours");
   const handleWhichList = (value: "yours" | "all") => {
     setWhichList(value);
   };
@@ -714,7 +715,121 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const toggleRegisterFormOpen = () => {
     setIsRegisterFormOpen((prev) => !prev);
-  }
+  };
+
+  const onlySortMyQuotes = () => {
+    let q = query(
+      quotesCollectionRef,
+      where("userInfo.uid", "==", user?.uid),
+      orderBy("createdAt", "desc")
+    );
+
+    if (user?.uid) {
+      if (sortFilterByForMine.sortByElement === "quote") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("quote", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "person") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("person", "desc")
+          );
+      } else if (sortFilterByForMine.sortByElement === "createdAt") {
+        if (sortFilterByForMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "asc")
+          );
+        else if (sortFilterByForMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            where("userInfo.uid", "==", user?.uid),
+            orderBy("createdAt", "desc")
+          );
+      }
+
+      onSnapshot(q, (snapshot) => {
+        setLoginUserQuotes(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+        );
+      });
+    }
+  };
+  const onlySortNotMyQuotes = () => {
+    let q = query(
+      quotesCollectionRef,
+      // where("userInfo.uid", "!=", user?.uid),
+      orderBy("createdAt", "desc")
+    );
+
+    if (user?.uid) {
+      if (sortFilterByForNotMine.sortByElement === "quote") {
+        if (sortFilterByForNotMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'person' instead.
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("quote", "asc")
+          );
+        else if (sortFilterByForNotMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("quote", "desc")
+          );
+      } else if (sortFilterByForNotMine.sortByElement === "person") {
+        if (sortFilterByForNotMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("person", "asc")
+          );
+        else if (sortFilterByForNotMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("person", "desc")
+          );
+      } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
+        if (sortFilterByForNotMine.order === "asc")
+          q = query(
+            quotesCollectionRef,
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("createdAt", "asc")
+          );
+        else if (sortFilterByForNotMine.order === "desc")
+          q = query(
+            quotesCollectionRef,
+            // where("userInfo.uid", "!=", user?.uid),
+            orderBy("createdAt", "desc")
+          );
+      }
+
+      onSnapshot(q, (snapshot) => {
+        setQuotesNotMine(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IQuote))
+        );
+      });
+    }
+  };
 
   return (
     <QuoteContext.Provider
@@ -783,6 +898,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         isRegisterFormOpen,
         toggleRegisterFormOpen,
+
+        onlySortMyQuotes,
+        onlySortNotMyQuotes,
       }}
     >
       {children}

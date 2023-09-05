@@ -102,6 +102,8 @@ Sep. 4
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
+- [] likes list on profile 
+- [] toggle red circle point on the filter icon after sorting, filtering, reseting
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
