@@ -29,7 +29,7 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { filteredLoginUserQuotes, sortFilterAreaForMineShown } = useQuote();
+  const { sortFilterAreaForMineShown } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 

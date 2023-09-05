@@ -7,14 +7,10 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
+} from "@/components/ui/hover-card";
 
 const Btns = () => {
-  const {
-    fetchFilteredNotMyQuotes,
-    setFilteredNotLoginUserQuotes,
-    getQuotesNotMine,
-  } = useQuote();
+  const { sortAndFilterNotMyQuotes, getQuotesNotMine } = useQuote();
 
   return (
     <>
@@ -23,7 +19,7 @@ const Btns = () => {
           <Button
             className={`cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-500`}
             onClick={() => {
-              fetchFilteredNotMyQuotes();
+              sortAndFilterNotMyQuotes();
             }}
           >
             <SearchIcon size={20} />
@@ -37,7 +33,6 @@ const Btns = () => {
       <Button
         className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
         onClick={() => {
-          setFilteredNotLoginUserQuotes([]);
           getQuotesNotMine();
         }}
       >

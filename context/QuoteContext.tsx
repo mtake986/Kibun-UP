@@ -70,21 +70,15 @@ type QuoteContext = {
   setRandomQuote: (quote: IQuote | undefined) => void;
   setLockedQuote: (quote: IQuote | undefined) => void;
 
-  fetchFilteredMyQuotes: () => void;
+  sortAndFilterMyQuotes: () => void;
 
   updateSortFilterByForMine: (which: string, ele: string) => void;
   sortFilterByForMine: ISortFilterBy;
 
-  filteredLoginUserQuotes: IQuote[];
-  setFilteredLoginUserQuotes: (quotes: IQuote[]) => void;
-
-  fetchFilteredNotMyQuotes: () => void;
+  sortAndFilterNotMyQuotes: () => void;
 
   updateSortFilterByForNotMine: (which: string, ele: string) => void;
   sortFilterByForNotMine: ISortFilterBy;
-
-  filteredNotLoginUserQuotes: IQuote[];
-  setFilteredNotLoginUserQuotes: (quotes: IQuote[]) => void;
 
   storeQuoteInBookmarks: (uid: string, q: IQuote) => void;
   removeQuoteFromBookmarks: (uid: string, q: IQuote) => void;
@@ -148,9 +142,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [sortFilterByForMine, setSortFilterByForMine] = useState<ISortFilterBy>(
     { order: "desc", sortByElement: "createdAt", searchTag: "" }
   );
-  const [filteredLoginUserQuotes, setFilteredLoginUserQuotes] = useState<
-    IQuote[]
-  >([]);
 
   const [sortFilterByForNotMine, setSortFilterByForNotMine] =
     useState<ISortFilterBy>({
@@ -158,9 +149,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       sortByElement: "createdAt",
       searchTag: "",
     });
-  const [filteredNotLoginUserQuotes, setFilteredNotLoginUserQuotes] = useState<
-    IQuote[]
-  >([]);
 
   const [quotesForHomePage, setQuotesForHomePage] = useState<IQuote[]>([]);
 
@@ -384,7 +372,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const fetchFilteredMyQuotes = async () => {
+  const sortAndFilterMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
       where("userInfo.uid", "==", user?.uid),
@@ -466,7 +454,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const fetchFilteredNotMyQuotes = async () => {
+  const sortAndFilterNotMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
       // where("userInfo.uid", "!=", user?.uid),
@@ -857,21 +845,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         setRandomQuote,
         setLockedQuote,
 
-        fetchFilteredMyQuotes,
+        sortAndFilterMyQuotes,
 
         updateSortFilterByForMine,
         sortFilterByForMine,
 
-        filteredLoginUserQuotes,
-        setFilteredLoginUserQuotes,
-
-        fetchFilteredNotMyQuotes,
+        sortAndFilterNotMyQuotes,
 
         updateSortFilterByForNotMine,
         sortFilterByForNotMine,
-
-        filteredNotLoginUserQuotes,
-        setFilteredNotLoginUserQuotes,
 
         storeQuoteInBookmarks,
         removeQuoteFromBookmarks,

@@ -9,13 +9,8 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-
 const Btns = () => {
-  const {
-    getLoginUserQuotes,
-    fetchFilteredMyQuotes,
-    setFilteredLoginUserQuotes,
-  } = useQuote();
+  const { getLoginUserQuotes, sortAndFilterMyQuotes } = useQuote();
 
   return (
     <>
@@ -24,7 +19,7 @@ const Btns = () => {
           <Button
             className={`cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-500`}
             onClick={() => {
-              fetchFilteredMyQuotes();
+              sortAndFilterMyQuotes();
             }}
           >
             <SearchIcon size={20} />
@@ -37,7 +32,6 @@ const Btns = () => {
       <Button
         className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
         onClick={() => {
-          setFilteredLoginUserQuotes([]);
           getLoginUserQuotes();
         }}
       >

@@ -7,10 +7,7 @@ import { SearchIcon } from "lucide-react";
 export function SearchBar() {
   const {
     updateSortFilterByForNotMine,
-    getQuotesNotMine,
     sortFilterByForNotMine,
-    fetchFilteredNotMyQuotes,
-    setFilteredNotLoginUserQuotes,
   } = useQuote();
 
   return (
