@@ -1,4 +1,4 @@
-## Updates and Bug Fixes
+## Timeline of Updates
 
 Start on Aug. 2
 Aug. 2, 2023
@@ -96,14 +96,17 @@ Sep. 3
 - [x] long title -> show more
 
 Sep. 4
-- [x] only sort
-- [] always show the filter icon
+- [x] only sort btn UI
 
 Sep. 5
-- [] toggle red circle point on the filter icon after sorting, filtering, reseting
+- [x] only sort UX
+- [x] always show the filter icon
+
+Sep. 6
+- [] toggle red circle point on the filter icon AFTER sorting, filtering, reseting
 - [] placehoder when editing user info on Profile
 
-### coming...
+### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark

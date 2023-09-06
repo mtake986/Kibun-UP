@@ -169,6 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // const fileRef = ref(storage, `${currentUser.uid}.png`);
   };
 
+
   const updateDisplayWhichQuoteType = async (text: string) => {
     if (auth.currentUser) {
       const docRef = doc(db, "users", auth.currentUser.uid);
