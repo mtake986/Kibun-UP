@@ -103,8 +103,8 @@ Sep. 5
 - [x] always show the filter icon
 
 Sep. 6
+- [x] placehoder when editing user info on Profile
 - [] toggle red circle point on the filter icon AFTER sorting, filtering, reseting
-- [] placehoder when editing user info on Profile
 
 ### Coming Updates...
 - [] Event Cheer

@@ -8,8 +8,8 @@ import OnlySortBtn from "./OnlySortBtn";
 const SortFilterMine = () => {
   return (
     <>
+    {/* mobile */}
       <div className="my-2 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
-        {/* <SortBtn /> */}
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
@@ -20,8 +20,8 @@ const SortFilterMine = () => {
           <Btns />
         </div>
       </div>
+      {/* Tablet */}
       <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
-        {/* <SortBtn /> */}
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />

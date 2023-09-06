@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/hover-card";
 
 const Btns = () => {
-  const { getLoginUserQuotes, sortAndFilterMyQuotes } = useQuote();
+  const {
+    getLoginUserQuotes,
+    sortAndFilterMyQuotes,
+    resetSortFilterByForMineInputs,
+  } = useQuote();
 
   return (
     <>
@@ -33,6 +37,7 @@ const Btns = () => {
         className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
         onClick={() => {
           getLoginUserQuotes();
+          resetSortFilterByForMineInputs()
         }}
       >
         Reset

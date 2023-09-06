@@ -15,7 +15,7 @@ type Props = {
 const EditMode = ({ setIsEditMode }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { uploadImage } = useAuth();
+  const { loginUser, uploadImage } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
@@ -79,6 +79,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
             setNewUsername(e.target.value);
           }}
           id="username"
+          defaultValue={loginUser?.displayName}
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -89,6 +90,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
           }}
           id="paginationNum"
           type="number"
+          defaultValue={String(loginUser?.paginationNum)}
         />
       </div>
 

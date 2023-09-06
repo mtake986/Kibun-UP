@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/hover-card";
 
 const Btns = () => {
-  const { sortAndFilterNotMyQuotes, getQuotesNotMine } = useQuote();
+  const {
+    sortAndFilterNotMyQuotes,
+    getQuotesNotMine,
+    resetSortFilterByForNotMineInputs,
+  } = useQuote();
 
   return (
     <>
@@ -34,6 +38,7 @@ const Btns = () => {
         className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
         onClick={() => {
           getQuotesNotMine();
+          resetSortFilterByForNotMineInputs();
         }}
       >
         Reset

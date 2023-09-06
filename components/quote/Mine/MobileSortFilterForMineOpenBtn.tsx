@@ -3,12 +3,12 @@ import { useQuote } from "@/context/QuoteContext";
 
 export default function MobileSortFilterForMineOpenBtn() {
   const {
-    sortFilterByForMine,
     handleSortFilterAreaForMineShown,
+    isSortFilterByForMineDefaultValue,
   } = useQuote();
 
   return (
-    <div className="cursor-pointer absolute right-0 top-0">
+    <div className="absolute right-0 top-0 cursor-pointer">
       {/* <span className="absolute -top-2.5 left-[50%] -translate-x-1/2 text-[8px]">
         Mine
       </span> */}
@@ -17,9 +17,7 @@ export default function MobileSortFilterForMineOpenBtn() {
         size={20}
         onClick={handleSortFilterAreaForMineShown}
       />
-      {sortFilterByForMine.order !== "desc" ||
-      sortFilterByForMine.sortByElement !== "createdAt" ||
-      sortFilterByForMine.searchTag !== "" ? (
+      {!isSortFilterByForMineDefaultValue ? (
         <div className="absolute right-0 top-0 h-1.5 w-1.5 rounded-full bg-red-500"></div>
       ) : null}
     </div>

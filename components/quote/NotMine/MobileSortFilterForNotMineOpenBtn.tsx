@@ -2,8 +2,10 @@ import { Filter } from "lucide-react";
 import { useQuote } from "@/context/QuoteContext";
 
 export default function MobileSortFilterForNotMineOpenBtn() {
-  const { sortFilterByForNotMine, handleSortFilterAreaForNotMineShown } =
-    useQuote();
+  const {
+    isSortFilterByForNotMineDefaultValue,
+    handleSortFilterAreaForNotMineShown,
+  } = useQuote();
 
   return (
     <div className="absolute right-0 top-0 cursor-pointer">
@@ -13,9 +15,7 @@ export default function MobileSortFilterForNotMineOpenBtn() {
         size={20}
         onClick={handleSortFilterAreaForNotMineShown}
       />
-      {sortFilterByForNotMine.order !== "desc" ||
-      sortFilterByForNotMine.sortByElement !== "createdAt" ||
-      sortFilterByForNotMine.searchTag !== "" ? (
+      {!isSortFilterByForNotMineDefaultValue ? (
         <div className="absolute right-0 top-0 h-1.5 w-1.5 rounded-full bg-red-500"></div>
       ) : null}
     </div>
