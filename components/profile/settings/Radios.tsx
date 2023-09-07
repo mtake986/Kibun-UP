@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -7,7 +7,13 @@ import { useQuote } from "@/context/QuoteContext";
 
 const Radios = () => {
   const { updateDisplayWhichQuoteType, loginUser } = useAuth();
-  const { fetchQuotesForHomePage } = useQuote();
+  const {
+    fetchQuotesForHomePage,
+    updateRandomQuote,
+    randomQuote,
+    quotesForHomePage,
+  } = useQuote();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   if (loginUser?.displayWhichQuoteType) {
     return (
@@ -15,7 +21,6 @@ const Radios = () => {
         defaultValue={loginUser?.displayWhichQuoteType}
         className="grid grid-cols-1 gap-3 sm:gap-5 sm:py-2"
       >
-        <span onClick={() => fetchQuotesForHomePage(loginUser)}>fetchQuotesForHomePage</span>
         <div className="flex flex-col sm:flex-row sm:items-center">
           <div className="flex items-center space-x-2">
             <RadioGroupItem
@@ -40,7 +45,7 @@ const Radios = () => {
             <p className="ml-3 text-xs text-gray-500">Only from bookmarks</p>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center">
+        {/* <div className="flex flex-col sm:flex-row sm:items-center">
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="both"
@@ -50,7 +55,7 @@ const Radios = () => {
             />
             <Label htmlFor="r3">Both</Label>
           </div>
-        </div>
+        </div> */}
       </RadioGroup>
     );
   } else return null;

@@ -42,7 +42,7 @@ type EventContextType = {
   lockedEvent: IEvent | undefined;
 
   randomEvent: IEvent | undefined;
-  getRandomEvent: (uid: string) => void;
+  getRandomEvent: () => void;
 
   eventsNotMine: IEvent[] | [];
   getEventsNotMine: () => void;
@@ -177,7 +177,7 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const getRandomEvent = async (uid: string) => {
+  const getRandomEvent = async () => {
     const q = query(eventCollectionRef, where("userInfo.uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       const randomNum = getRandomNum(snapshot.docs.length);

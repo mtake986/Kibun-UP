@@ -104,7 +104,11 @@ Sep. 5
 
 Sep. 6
 - [x] placehoder when editing user info on Profile
-- [] toggle red circle point on the filter icon AFTER sorting, filtering, reseting
+- [x] toggle red circle point on the filter icon AFTER sorting, filtering, reseting
+
+Sep. 7
+- [x] remove sort filter area from bookmarks on Profile
+- [x] getting a random quote on Home in once (it used to fetch a random quote after routing to a different page and coming back to Home)
 
 ### Coming Updates...
 - [] Event Cheer
@@ -112,6 +116,9 @@ Sep. 6
 - [] able to lock a bookmark
 - [] built-in quotes 
 - [] likes list on profile 
+- [] randomQuote when no bookmarks and my qutoes
+- [] footer placing when short height of the screen
+
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 
