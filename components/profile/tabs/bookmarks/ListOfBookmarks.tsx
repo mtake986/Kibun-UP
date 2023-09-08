@@ -32,15 +32,7 @@ const ListOfBookmarks = ({ quotes }: Props) => {
 
   return (
     <div className="mb-20">
-      <div className="my-2 flex flex-col items-center gap-2 sm:flex-row">
-        {/* <SortBtn /> */}
-        <div className="flex w-full flex-row gap-3">
-          <OrderSelect />
-          <ElementSelect />
-        </div>
-
-        <SearchBar />
-      </div>
+      {/* {sortFilterAreaForMineShown ? <SortFilterQuotes /> : null} */}
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

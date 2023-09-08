@@ -51,7 +51,7 @@ const Event = () => {
     setRandomEvent(undefined);
     setLockedEvent(undefined);
     getLockedEvent();
-    if (user) getRandomEvent(user.uid);
+  getRandomEvent();
     setLoading(false);
   }, [user]);
 
@@ -198,7 +198,7 @@ const Event = () => {
                 onClick={() => {
                   setLoading(true);
                   setTimeout(() => {
-                    getRandomEvent(user?.uid);
+                    getRandomEvent();
                     setLoading(false);
                   }, 1000);
                 }}

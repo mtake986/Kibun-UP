@@ -63,7 +63,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
-      createUserInFirestore(auth.currentUser);
+      if (auth.currentUser) {
+        const user = auth.currentUser;
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document CREATE USER");
+          createUserInFirestore(auth.currentUser);
+        }
+      }
       fetchLoginUser(auth.currentUser);
       toast({
         className: "border-none bg-green-500 text-white",
@@ -88,14 +98,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }));
   };
 
-  const fetchLoginUser = (user: User | null) => {
+  const fetchLoginUser = async (user: User | null) => {
     if (user) {
-      const q = query(usersCollectionRef, where("uid", "==", user.uid));
-      onSnapshot(q, (snapshot) => {
-        setLoginUser(snapshot.docs.map((doc) => doc.data() as ILoginUser)[0]);
-      });
-    } else {
-      console.log("else, ", user);
+      const docRef = doc(db, "users", user?.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setLoginUser(docSnap.data() as ILoginUser);
+      }
     }
   };
 

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import EditMode from "@/components/profile/EditMode";
 import UserInfoCard from "@/components/profile/UserInfoCard";
 import EditBtn from "@/components/profile/EditBtn";
+import Settings from "./settings/Settings";
 
 export const metadata = {
   title: "Login User Profile",
@@ -36,7 +37,7 @@ const LoginUserProfile = () => {
         )}
       </div>
       <ContentSwitchTabs />
-      {/* <Settings /> */}
+      <Settings />
     </div>
   );
 };

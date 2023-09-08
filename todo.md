@@ -1,4 +1,4 @@
-## Updates and Bug Fixes
+## Timeline of Updates
 
 Start on Aug. 2
 Aug. 2, 2023
@@ -96,14 +96,29 @@ Sep. 3
 - [x] long title -> show more
 
 Sep. 4
-- [] only sort
+- [x] only sort btn UI
 
+Sep. 5
+- [x] only sort UX
+- [x] always show the filter icon
+
+Sep. 6
+- [x] placehoder when editing user info on Profile
+- [x] toggle red circle point on the filter icon AFTER sorting, filtering, reseting
+
+Sep. 7
+- [x] remove sort filter area from bookmarks on Profile
+- [x] getting a random quote on Home in once (it used to fetch a random quote after routing to a different page and coming back to Home)
+
+### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
 - [] likes list on profile 
-- [] toggle red circle point on the filter icon after sorting, filtering, reseting
+- [] randomQuote when no bookmarks and my qutoes
+- [] footer placing when short height of the screen
+
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
 

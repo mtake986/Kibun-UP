@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import HeadingFive from "@/components/utils/HeadingFive";
+import { ILoginUser } from "@/types/type";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 const Quote = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const {
     randomQuote,
@@ -23,21 +25,24 @@ const Quote = () => {
     getLockedQuote,
     setRandomQuote,
     setLockedQuote,
+    updateRandomQuote,
+    whichList,
+    fetchQuotesForHomePage,
   } = useQuote();
 
   const { loginUser, fetchLoginUser } = useAuth();
-  const fetchDocuments = async () => {
-    try {
-      setLoading(true);
-      getLockedQuote(user?.uid);
-      getRandomQuote();
-      fetchLoginUser(user);
-    } catch (error) {
-      console.log("fetchDocuments, ", error);
-    }
-    setLoading(false);
-  };
   useEffect(() => {
+    const fetchDocuments = async () => {
+      setLoading(true);
+      try {
+        fetchLoginUser(user);
+        getLockedQuote();
+        updateRandomQuote(user);
+      } catch (error) {
+        console.log("fetchDocuments, ", error);
+      }
+      setLoading(false);
+    };
     // console.log("components mounted");
     fetchDocuments();
   }, [user]);
@@ -49,17 +54,6 @@ const Quote = () => {
       </div>
     );
   }
-
-  // return (
-  //   <div>
-  //     {loading ? <span>loading...</span> : "done"}
-  //     {lockedQuote ? (
-  //       <span>lock: {lockedQuote.quote}</span>
-  //     ) : randomQuote ? (
-  //       <span>random: {randomQuote.quote}</span>
-  //     ) : null}
-  //   </div>
-  // );
 
   if (!loading) {
     if (user) {
@@ -101,7 +95,7 @@ const Quote = () => {
         );
       } else if (randomQuote) {
         return (
-          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pt-6 sm:pb-12 sm:shadow">
+          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
             {/* <div className="mb-2 text-center text-xs sm:text-sm">
               {"< Today's Phrase >"}
             </div> */}
@@ -119,7 +113,7 @@ const Quote = () => {
                     onClick={() => {
                       setLoading(true);
                       setTimeout(() => {
-                        getRandomQuote();
+                        updateRandomQuote(user);
                         setLoading(false);
                       }, 1000);
                     }}
