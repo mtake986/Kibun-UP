@@ -35,7 +35,7 @@ const SwitchTab = () => {
     getLoginUserQuotes();
     getQuotesNotMine();
     fetchFavQuotes();
-    getLockedQuote(user?.uid);
+    getLockedQuote();
     fetchMyBookmarks();
     fetchNumOfBookmarks();
     setLoading(false);
