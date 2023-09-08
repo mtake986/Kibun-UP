@@ -198,7 +198,7 @@ const Event = () => {
                 onClick={() => {
                   setLoading(true);
                   setTimeout(() => {
-                    getRandomEvent(user?.uid);
+                    getRandomEvent();
                     setLoading(false);
                   }, 1000);
                 }}
