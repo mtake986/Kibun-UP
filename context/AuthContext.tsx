@@ -168,6 +168,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Profile updated!
         // ...
         alert("Successfully Updated");
+        fetchLoginUser(auth.currentUser);
         setLoading(false);
         setIsEditMode(false);
       })

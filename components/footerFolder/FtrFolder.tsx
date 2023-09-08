@@ -6,7 +6,7 @@ import UrlLink from "../utils/UrlLink";
 const FtrFolder = () => {
   const [today, setToday] = useState<number>(new Date().getFullYear());
   return (
-    <footer className="z-10 absolute bottom-0 m-auto w-full mt-10 text-center text-xs sm:text-sm text-slate-400">
+    <footer className="z-10 fixed bottom-0 bg-gray-50 py-1 m-auto w-full mt-10 text-center text-xs sm:text-sm text-slate-400">
       &copy; Copyright <span>{today}</span>{" "}
       <UrlLink
         href="/creator-info"

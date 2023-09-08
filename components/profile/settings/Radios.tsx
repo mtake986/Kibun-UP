@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,8 +12,19 @@ const Radios = () => {
     updateRandomQuote,
     randomQuote,
     quotesForHomePage,
+    fetchMyBookmarks,
+    myBookmarks,
+    getLoginUserQuotes,
+    loginUserQuotes,
   } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!myBookmarks) {
+      fetchMyBookmarks();
+    }
+    if (!loginUserQuotes) getLoginUserQuotes();
+  }, []);
 
   if (loginUser?.displayWhichQuoteType) {
     return (
@@ -28,6 +39,7 @@ const Radios = () => {
               id="r1"
               className="border-gray-300 text-violet-600"
               onClick={(e) => updateDisplayWhichQuoteType("mine")}
+              disabled={!loginUserQuotes}
             />
             <Label htmlFor="r1">Mine</Label>
             <p className="ml-3 text-xs text-gray-500">Only from your quotes</p>
@@ -40,6 +52,7 @@ const Radios = () => {
               id="r2"
               className="border-gray-300 text-violet-600"
               onClick={(e) => updateDisplayWhichQuoteType("bookmarks")}
+              disabled={!myBookmarks}
             />
             <Label htmlFor="r2">Bookmarks</Label>
             <p className="ml-3 text-xs text-gray-500">Only from bookmarks</p>

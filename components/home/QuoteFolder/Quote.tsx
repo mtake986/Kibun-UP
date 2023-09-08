@@ -29,10 +29,10 @@ const Quote = () => {
         fetchLoginUser(user);
         getLockedQuote();
         updateRandomQuote(user);
+        setLoading(false);
       } catch (error) {
         console.log("fetchDocuments, ", error);
       }
-      setLoading(false);
     };
     // console.log("components mounted");
     fetchDocuments();
@@ -46,6 +46,14 @@ const Quote = () => {
     );
   }
 
+  if (!loading && !user) {
+    return (
+      <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
+        <p>Login to create quotes</p>
+        <GoogleLoginBtn />
+      </div>
+    );
+  }
   if (!loading) {
     if (user) {
       if (lockedQuote) {
@@ -135,13 +143,6 @@ const Quote = () => {
           </div>
         );
       }
-    } else {
-      return (
-        <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
-          <p>Login to create quotes</p>
-          <GoogleLoginBtn />
-        </div>
-      );
     }
   }
   return <div>Going wrong here</div>;
