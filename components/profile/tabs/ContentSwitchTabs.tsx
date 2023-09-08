@@ -1,6 +1,4 @@
 import { auth } from "@/config/Firebase";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuote } from "@/context/QuoteContext";
@@ -25,17 +23,14 @@ const ContentSwitchTabs = () => {
     fetchMyBookmarks,
     fetchNumOfBookmarks,
     myBookmarks,
-
     profileWhichTab,
     handleProfileWhichTab,
-    isSortFilterAreaForProfileQuotesShown,
-    toggleSortFilterAreaForProfileQuotes,
   } = useQuote();
 
   useEffect(() => {
     setLoading(true);
     getLoginUserQuotes();
-    getLockedQuote(user?.uid);
+    getLockedQuote();
     fetchFavQuotes();
     fetchMyBookmarks();
     fetchNumOfBookmarks();
@@ -114,32 +109,6 @@ const ContentSwitchTabs = () => {
         <EventList />
       )}
     </div>
-    // <Tabs defaultValue="quotes" className="w-full">
-    //   <TabsList className="flex items-stretch">
-    //     <TabsTrigger value="quotes" className="w-full text-center text-xs">
-    //       Quotes
-    //     </TabsTrigger>
-    //     <TabsTrigger value="Bookmarks" className="w-full text-center text-xs">
-    //       Bookmarks
-    //     </TabsTrigger>
-    //     <TabsTrigger value="Events" className="w-full text-center text-xs">
-    //       Events
-    //     </TabsTrigger>
-    //   </TabsList>
-    //   <TabsContent value="quotes">
-    //     <QuoteList quotes={loginUserQuotes} />
-    //   </TabsContent>
-    //   <TabsContent value="Bookmarks">
-    //     {myBookmarks?.quotes ? (
-    //       <ListOfBookmarks quotes={myBookmarks.quotes} />
-    //     ) : (
-    //       <NoFetchedData text="No Bookmarks" />
-    //     )}
-    //   </TabsContent>
-    //   <TabsContent value="Events">
-    //     <EventList />
-    //   </TabsContent>
-    // </Tabs>
   );
 };
 

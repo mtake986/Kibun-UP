@@ -6,31 +6,22 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
-import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
-import HeadingFive from "@/components/utils/HeadingFive";
-import { ILoginUser } from "@/types/type";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 const Quote = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const {
     randomQuote,
-    getRandomQuote,
     lockThisQuote,
     lockedQuote,
     removeLockThisQuote,
     getLockedQuote,
-    setRandomQuote,
-    setLockedQuote,
     updateRandomQuote,
-    whichList,
-    fetchQuotesForHomePage,
   } = useQuote();
 
-  const { loginUser, fetchLoginUser } = useAuth();
+  const { fetchLoginUser } = useAuth();
   useEffect(() => {
     const fetchDocuments = async () => {
       setLoading(true);
