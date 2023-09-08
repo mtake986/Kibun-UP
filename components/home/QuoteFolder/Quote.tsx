@@ -31,18 +31,18 @@ const Quote = () => {
   } = useQuote();
 
   const { loginUser, fetchLoginUser } = useAuth();
-  const fetchDocuments = async () => {
-    setLoading(true);
-    try {
-      fetchLoginUser(user);
-      getLockedQuote();
-      updateRandomQuote(user);
-    } catch (error) {
-      console.log("fetchDocuments, ", error);
-    }
-    setLoading(false);
-  };
   useEffect(() => {
+    const fetchDocuments = async () => {
+      setLoading(true);
+      try {
+        fetchLoginUser(user);
+        getLockedQuote();
+        updateRandomQuote(user);
+      } catch (error) {
+        console.log("fetchDocuments, ", error);
+      }
+      setLoading(false);
+    };
     // console.log("components mounted");
     fetchDocuments();
   }, [user]);

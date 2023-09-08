@@ -51,7 +51,7 @@ const Event = () => {
     setRandomEvent(undefined);
     setLockedEvent(undefined);
     getLockedEvent();
-    if (user) getRandomEvent(user.uid);
+  getRandomEvent();
     setLoading(false);
   }, [user]);
 

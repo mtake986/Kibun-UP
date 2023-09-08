@@ -23,6 +23,7 @@ import { IEvent, IEventInputValues, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "@/utils/functions";
+import { useAuth } from "./AuthContext";
 
 type EventContextType = {
   handleUpdate: (
@@ -178,31 +179,38 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const getRandomEvent = async () => {
-    const q = query(eventCollectionRef, where("userInfo.uid", "==", user?.uid));
-    onSnapshot(q, (snapshot) => {
+    if (user) {
+
+      const q = query(
+        eventCollectionRef,
+        where("userInfo.uid", "==", user.uid)
+        );
+        onSnapshot(q, (snapshot) => {
       const randomNum = getRandomNum(snapshot.docs.length);
       const doc = snapshot.docs[randomNum];
       if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
     });
+  }
   };
 
   const getEventsNotMine = async () => {
-    const q = user?.uid
-      ? query(eventCollectionRef, where("userInfo.uid", "!=", user?.uid))
-      : eventCollectionRef;
-    onSnapshot(q, (snapshot) => {
-      setEventsNotMine(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+    if (user) {
+      const q = query(
+        eventCollectionRef,
+        where("userInfo.uid", "!=", user?.uid)
       );
-    });
+      onSnapshot(q, (snapshot) => {
+        setEventsNotMine(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+        );
+      });
+    }
   };
-
 
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const toggleRegisterFormOpen = () => {
     setIsRegisterFormOpen((prev) => !prev);
   };
-
 
   return (
     <EventContext.Provider
