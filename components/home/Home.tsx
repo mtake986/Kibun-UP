@@ -91,6 +91,7 @@ const Home = () => {
       </>
     );
   }
+  return <div>Sometning wrong here.</div>
 };
 
 export default Home;
