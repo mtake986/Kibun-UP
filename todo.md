@@ -114,12 +114,14 @@ Sep. 8
 - [x] footer placing when short height of the screen
 - [x] randomQuote when no bookmarks and my qutoes
 
+Sep. 9
+- [] Create myLikes and numOfLikes models
+
 ### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
-- [] likes list on profile 
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ

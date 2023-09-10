@@ -110,7 +110,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const handleLogout = async () => {
     const success = await signOut();
+
     if (success) {
+      setLoginUser(undefined);
       toast({
         className: "border-none bg-blue-500 text-white",
         title: "Success: Log Out",
@@ -168,9 +170,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Profile updated!
         // ...
         alert("Successfully Updated");
-        fetchLoginUser(auth.currentUser);
-        setLoading(false);
-        setIsEditMode(false);
+        fetchLoginUser(auth.currentUser).then(() => {
+          setLoading(false);
+          setIsEditMode(false);
+        });
       })
       .catch((error) => {
         alert("Something went wrong! Please try later.");

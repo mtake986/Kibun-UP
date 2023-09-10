@@ -7,145 +7,63 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import UrlLink from "@/components/utils/UrlLink";
-import { useAuth } from "@/context/AuthContext";
+import { IQuote } from "@/types/type";
 
-const Quote = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+type Props = {
+  q: IQuote;
+};
+const Quote = ({ q }: Props) => {
   const [user] = useAuthState(auth);
   const {
-    randomQuote,
-    lockThisQuote,
-    lockedQuote,
     removeLockThisQuote,
-    getLockedQuote,
-    updateRandomQuote,
   } = useQuote();
 
-  const { fetchLoginUser } = useAuth();
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      setLoading(true);
-      try {
-        fetchLoginUser(user);
-        getLockedQuote();
-        updateRandomQuote(user);
-        setLoading(false);
-      } catch (error) {
-        console.log("fetchDocuments, ", error);
-      }
-    };
-    // console.log("components mounted");
-    fetchDocuments();
-  }, [user]);
-
-  if (loading) {
+  if (q) {
     return (
-      <div className="mb-20 mt-10 flex-col items-center">
-        <Skeleton className="h-48 w-full" />
+      <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
+        {/* <div className="mb-2 text-center text-xs sm:text-sm">
+              {"< Today's Phrase >"}
+            </div> */}
+        <div className="">
+          <strong className="text-lg sm:text-xl">{q.quote}</strong>
+
+          <div className="flex flex-col items-end">
+            <div className="mt-4 text-right text-xs">
+              <span>by {q.person}</span>
+            </div>
+            <div className="mt-4 flex items-center gap-5">
+              <BiRefresh
+                size={20}
+                onClick={() => {
+                  alert("To refresh, unlock this quote first.");
+                }}
+                className={`cursor-not-allowed opacity-30 duration-300`}
+              />
+              <BiLock
+                size={16}
+                onClick={() => {
+                  user && removeLockThisQuote(user.uid);
+                  // getRandomQuote();
+                }}
+                className={`cursor-pointer text-red-500 duration-300 hover:opacity-50`}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="mb-20 mt-10 rounded-lg p-12 text-center">
+        <UrlLink
+          href="/quote"
+          className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
+          clickOn="You have no quotes yet."
+          target="_self"
+        />
       </div>
     );
   }
-
-  if (!loading && !user) {
-    return (
-      <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
-        <p>Login to create quotes</p>
-        <GoogleLoginBtn />
-      </div>
-    );
-  }
-  if (!loading) {
-    if (user) {
-      if (lockedQuote) {
-        return (
-          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
-            {/* <div className="mb-2 text-center text-xs sm:text-sm">
-              {"< Today's Phrase >"}
-            </div> */}
-            <div className="">
-              <strong className="text-lg sm:text-xl">
-                {lockedQuote.quote}
-              </strong>
-
-              <div className="flex flex-col items-end">
-                <div className="mt-4 text-right text-xs">
-                  <span>by {lockedQuote.person}</span>
-                </div>
-                <div className="mt-4 flex items-center gap-5">
-                  <BiRefresh
-                    size={20}
-                    onClick={() => {
-                      alert("To refresh, unlock this quote first.");
-                    }}
-                    className={`cursor-not-allowed opacity-30 duration-300`}
-                  />
-                  <BiLock
-                    size={16}
-                    onClick={() => {
-                      removeLockThisQuote(user.uid);
-                      // getRandomQuote();
-                    }}
-                    className={`text-red-500 duration-300 hover:opacity-50`}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      } else if (randomQuote) {
-        return (
-          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
-            {/* <div className="mb-2 text-center text-xs sm:text-sm">
-              {"< Today's Phrase >"}
-            </div> */}
-            <div className="">
-              <strong className="text-lg sm:text-xl">
-                {randomQuote.quote}
-              </strong>
-              <div className="flex flex-col items-end">
-                <div className="mt-4 text-right  text-xs">
-                  <span>by {randomQuote.person}</span>
-                </div>
-                <div className="mt-4 flex items-center gap-5">
-                  <BiRefresh
-                    size={20}
-                    onClick={() => {
-                      setLoading(true);
-                      setTimeout(() => {
-                        updateRandomQuote(user);
-                        setLoading(false);
-                      }, 1000);
-                    }}
-                    className={`cursor-pointer duration-300 hover:opacity-50`}
-                  />
-
-                  <BiLockOpen
-                    size={16}
-                    onClick={() => {
-                      lockThisQuote(user.uid, randomQuote);
-                    }}
-                    className={`cursor-pointer duration-300 hover:opacity-50`}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      } else if (!lockedQuote && !randomQuote) {
-        return (
-          <div className="mb-20 mt-10 rounded-lg p-12 text-center">
-            <UrlLink
-              href="/quote"
-              className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
-              clickOn="You have no quotes yet."
-              target="_self"
-            />
-          </div>
-        );
-      }
-    }
-  }
-  return <div>Going wrong here</div>;
 };
 
 export default Quote;
