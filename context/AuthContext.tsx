@@ -64,7 +64,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
   function signInWithGoogle() {
-    setIsFetchingUser(true)
     signInWithPopup(auth, provider).then(async () => {
       if (auth.currentUser) {
         const user = auth.currentUser;
@@ -77,10 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           createUserInFirestore(auth.currentUser);
         }
       }
-      fetchLoginUser(auth.currentUser).then((user) => {
-        setIsFetchingUser(false);
-        console.log(user)
-      });
+      fetchLoginUser(auth.currentUser);
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",

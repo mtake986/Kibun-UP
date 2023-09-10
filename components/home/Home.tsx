@@ -16,29 +16,21 @@ const Home = () => {
   const { loginUser, fetchLoginUser, isFetchingUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {
-    getLockedQuote,
-    updateRandomQuote,
-    randomQuote,
-    lockedQuote,
-  } = useQuote();
+  const { getLockedQuote, updateRandomQuote, randomQuote, lockedQuote } =
+    useQuote();
 
-  const {
-    getLockedEvent,
-    getRandomEvent,
-    randomEvent,
-    lockedEvent,
-  } = useEvent();
+  const { getLockedEvent, getRandomEvent, randomEvent, lockedEvent } =
+    useEvent();
 
   useEffect(() => {
+    setLoading(true);
+    !loginUser && fetchLoginUser(auth.currentUser);
     const fetchDocuments = async (user: User) => {
-      !loginUser && fetchLoginUser(auth.currentUser);
       getLockedEvent();
       getRandomEvent();
       getLockedQuote();
-      updateRandomQuote(user);
+      updateRandomQuote();
     };
-    setLoading(true);
     auth.onAuthStateChanged((user) => {
       user
         ? fetchDocuments(user).then(() => {
@@ -49,6 +41,8 @@ const Home = () => {
   }, [loginUser, loading]);
 
   if (loading || isFetchingUser) return <Loading />;
+
+  if (!isFetchingUser && !loginUser) return <GoogleLoginBtn />;
 
   if (!loading) {
     return (

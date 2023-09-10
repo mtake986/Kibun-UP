@@ -124,7 +124,7 @@ type QuoteContext = {
   resetSortFilterByForMineInputs: () => void;
   resetSortFilterByForNotMineInputs: () => void;
 
-  updateRandomQuote: (user: any) => void;
+  updateRandomQuote: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -796,9 +796,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsLoading(false);
   };
 
-  const { loginUser, fetchLoginUser } = useAuth();
-
-  const updateRandomQuote = async (user: any) => {
+  const updateRandomQuote = async () => {
     let qs, lu;
     if (user) {
       const userDocRef = doc(db, "users", user?.uid);
@@ -918,7 +916,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
     setIsSortFilterByForMineDefaultValue(true);
   };
-
+  
   return (
     <QuoteContext.Provider
       value={{
