@@ -20,8 +20,9 @@ const LoginUserProfile = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchLoginUser(auth.currentUser);
+    !loginUser ? fetchLoginUser(auth.currentUser) : null;
   }, [user]);
+
   if (!loginUser) return <Loading />;
 
   return (

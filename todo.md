@@ -110,14 +110,18 @@ Sep. 7
 - [x] remove sort filter area from bookmarks on Profile
 - [x] getting a random quote on Home in once (it used to fetch a random quote after routing to a different page and coming back to Home)
 
+Sep. 8
+- [x] footer placing when short height of the screen
+- [x] randomQuote when no bookmarks and my qutoes
+
+Sep. 9
+- [] Create myLikes and numOfLikes models
+
 ### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
-- [] likes list on profile 
-- [] randomQuote when no bookmarks and my qutoes
-- [] footer placing when short height of the screen
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ

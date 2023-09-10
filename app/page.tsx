@@ -1,4 +1,4 @@
-import React from "react";
+
 import Home from "../components/home/Home";
 
 export const metadata = {
@@ -6,11 +6,7 @@ export const metadata = {
 };
 
 const HomePage = () => {
-  return (
-
-      <Home />
-
-  );
+  return <Home />;
 };
 
 export default HomePage;

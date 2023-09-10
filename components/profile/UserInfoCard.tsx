@@ -7,25 +7,33 @@ import LogOutBtn from "./LogOutBtn";
 import { useAuth } from "@/context/AuthContext";
 
 const UserInfoCard = () => {
-  const {loginUser} = useAuth();
+  const { loginUser } = useAuth();
 
   return (
-    <div className="flex flex-col items-center gap-5 ">
+    <>
       {loginUser ? (
-        <>
+        <div className="flex flex-col items-center gap-5">
           <Image
             src={loginUser.photoURL!}
             alt="loginUser photo / default loginUser photo"
             width={250}
             height={250}
-            className="h-32 w-32 rounded-full object-cover object-center sm:h-48 sm:w-48"
+            className="h-40 w-40 rounded-full object-cover object-center sm:h-48 sm:w-48"
           />
-          <p>{loginUser.displayName}</p>
-          <p>{loginUser.paginationNum}</p>
+          <div className="flex flex-col items-center">
+            <p>
+              <span className="text-xs">Name: </span>
+              <span className="font-semibold">{loginUser.displayName}</span>
+            </p>
+            <p>
+              <span className="text-xs">Counts/page: </span>
+              <span className="font-semibold">{loginUser.paginationNum}</span>
+            </p>
+          </div>
           <LogOutBtn />
-        </>
+        </div>
       ) : null}
-    </div>
+    </>
   );
 };
 

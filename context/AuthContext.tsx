@@ -45,6 +45,7 @@ type AuthContextType = {
   loginUser: ILoginUser | undefined;
   updateDisplayWhichQuoteType: (text: string) => void;
   fetchLoginUser: (user: any) => void;
+  isFetchingUser: boolean;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -61,6 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const usersCollectionRef = collection(db, "users");
 
+  const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       if (auth.currentUser) {
@@ -110,7 +112,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const handleLogout = async () => {
     const success = await signOut();
+
     if (success) {
+      setLoginUser(undefined);
       toast({
         className: "border-none bg-blue-500 text-white",
         title: "Success: Log Out",
@@ -168,8 +172,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Profile updated!
         // ...
         alert("Successfully Updated");
-        setLoading(false);
-        setIsEditMode(false);
+        fetchLoginUser(auth.currentUser).then(() => {
+          setLoading(false);
+          setIsEditMode(false);
+        });
       })
       .catch((error) => {
         alert("Something went wrong! Please try later.");
@@ -196,6 +202,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loginUser,
         updateDisplayWhichQuoteType,
         fetchLoginUser,
+        isFetchingUser,
       }}
     >
       {children}
