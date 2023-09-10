@@ -45,6 +45,7 @@ type AuthContextType = {
   loginUser: ILoginUser | undefined;
   updateDisplayWhichQuoteType: (text: string) => void;
   fetchLoginUser: (user: any) => void;
+  isFetchingUser: boolean;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -61,7 +62,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const usersCollectionRef = collection(db, "users");
 
+  const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
   function signInWithGoogle() {
+    setIsFetchingUser(true)
     signInWithPopup(auth, provider).then(async () => {
       if (auth.currentUser) {
         const user = auth.currentUser;
@@ -74,7 +77,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
           createUserInFirestore(auth.currentUser);
         }
       }
-      fetchLoginUser(auth.currentUser);
+      fetchLoginUser(auth.currentUser).then((user) => {
+        setIsFetchingUser(false);
+        console.log(user)
+      });
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Success: Log In",
@@ -200,6 +206,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loginUser,
         updateDisplayWhichQuoteType,
         fetchLoginUser,
+        isFetchingUser,
       }}
     >
       {children}

@@ -13,7 +13,7 @@ import Loading from "../utils/Loading";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 
 const Home = () => {
-  const { loginUser, fetchLoginUser } = useAuth();
+  const { loginUser, fetchLoginUser, isFetchingUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
@@ -48,7 +48,7 @@ const Home = () => {
     });
   }, [loginUser, loading]);
 
-  if (loading) return <Loading />;
+  if (loading || isFetchingUser) return <Loading />;
 
   if (!loading) {
     return (
