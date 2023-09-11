@@ -17,7 +17,7 @@ const ContentSwitchTabs = () => {
 
   const {
     getLockedQuote,
-    fetchFavQuotes,
+    fetchNumOfFavs,
     getLoginUserQuotes,
     loginUserQuotes,
     fetchMyBookmarks,
@@ -31,7 +31,7 @@ const ContentSwitchTabs = () => {
     setLoading(true);
     getLoginUserQuotes();
     getLockedQuote();
-    fetchFavQuotes();
+    fetchNumOfFavs();
     fetchMyBookmarks();
     fetchNumOfBookmarks();
     setLoading(false);
@@ -84,7 +84,7 @@ const ContentSwitchTabs = () => {
           Likes
         </span>
         <span
-          className={`cursor-pointer w-full py-1 text-center text-xs sm:text-sm ${
+          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === "events"
               ? "rounded-2xl bg-violet-50 text-violet-500"
               : ""

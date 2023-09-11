@@ -37,7 +37,7 @@ const QuoteCard = ({ q }: Props) => {
     lockedQuote,
     handleDelete,
     removeLockThisQuote,
-    favQuotes,
+    myFavs,
   } = useQuote();
 
   const [user] = useAuthState(auth);
@@ -143,14 +143,14 @@ const QuoteCard = ({ q }: Props) => {
               )}
 
               {user &&
-              favQuotes.some(
+              numOfFavs(
                 (favQuote) =>
                   // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                   favQuote.qid === q.id
               ) ? (
                 <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
                   {user &&
-                    (favQuotes.some(
+                    (numOfFavs(
                       (favQuote) =>
                         favQuote.qid === q.id &&
                         favQuote.uids.includes(user.uid)
@@ -160,7 +160,7 @@ const QuoteCard = ({ q }: Props) => {
                       <Heart size={14} />
                     ))}
 
-                  {favQuotes.map((favQuote, i) =>
+                  {myFavs.map((favQuote, i) =>
                     favQuote.qid === q.id ? (
                       <span key={i} className="text-xs">
                         {favQuote.uids.length}
