@@ -31,6 +31,7 @@ import {
   TypeNumOfFavs,
   TypeMyBookmarks,
   TypeNumOfBookmarks,
+  TypeLockedQuote,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -51,7 +52,7 @@ type QuoteContext = {
   randomQuote: IQuote | undefined;
 
   lockThisQuote: (uid: string, data: IQuote) => void;
-  lockedQuote: IQuote | undefined;
+  lockedQuote: TypeLockedQuote | undefined;
 
   removeLockThisQuote: (uid: string) => void;
   getLockedQuote: () => void;
@@ -73,7 +74,7 @@ type QuoteContext = {
   fetchNumOfFavs: () => void;
 
   setRandomQuote: (quote: IQuote | undefined) => void;
-  setLockedQuote: (quote: IQuote | undefined) => void;
+  setLockedQuote: (quote: TypeLockedQuote | undefined) => void;
 
   sortAndFilterMyQuotes: () => void;
 
@@ -148,7 +149,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [numOfBookmarks, setNumOfBookmarks] = useState<TypeNumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
-  const [lockedQuote, setLockedQuote] = useState<IQuote>();
+  const [lockedQuote, setLockedQuote] = useState<TypeLockedQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<IQuote[]>([]);
 
@@ -242,8 +243,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const lockThisQuote = async (uid: string, data: IQuote) => {
-    await setDoc(doc(db, "lockedQuotes", uid), data);
-    setLockedQuote(data);
+    const payload = { q: data, uid: uid };
+    await setDoc(doc(db, "lockedQuotes", uid), payload);
+    setLockedQuote(payload);
   };
 
   const removeLockThisQuote = async (uid: string) => {
@@ -259,10 +261,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user?.uid) {
       const q = query(
         lockedQuotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid)
+        where("uid", "==", user?.uid)
       );
       onSnapshot(q, (snapshot) => {
-        setLockedQuote(snapshot.docs[0]?.data() as IQuote);
+        console.log(snapshot.docs[0]?.data())
+        setLockedQuote(snapshot.docs[0]?.data() as TypeLockedQuote);
       });
     }
   };
@@ -277,7 +280,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       ...values,
       updatedAt: serverTimestamp(),
     }).then((res) => {
-      if (lockedQuote?.id === qid && values.isDraft) {
+      if (lockedQuote?.q.id === qid && values.isDraft) {
         if (uid) removeLockThisQuote(uid);
         toast({
           className: "border-none bg-green-500 text-white",

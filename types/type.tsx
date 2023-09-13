@@ -87,3 +87,8 @@ export interface ILoginUser {
   displayWhichQuoteType: string;
   paginationNum: number;
 }
+
+export type TypeLockedQuote = {
+  q: IQuote, 
+  uid: string,
+}

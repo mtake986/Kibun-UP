@@ -20,7 +20,7 @@ import HeadingFour from "@/components/utils/HeadingFour";
 
 const Event = () => {
   const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   function calculateLeftDays(date: Date): number {
     const today = new Date();
@@ -47,13 +47,13 @@ const Event = () => {
   } = useEvent();
 
   useEffect(() => {
-    setLoading(true);
-    setRandomEvent(undefined);
-    setLockedEvent(undefined);
-    getLockedEvent();
-    if (user) getRandomEvent();
-    setLoading(false);
-  }, [user]);
+    // setLoading(true);
+    // setRandomEvent(undefined);
+    // setLockedEvent(undefined);
+    // getLockedEvent();
+    // if (user) getRandomEvent();
+    // setLoading(false);
+  }, []);
 
   if (loading) {
     return <Skeleton className="relative h-64 w-full rounded-lg p-12" />;

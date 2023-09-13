@@ -31,19 +31,6 @@ export const builtInQuotes = [
   },
 ];
 
-export const builtInEvents = [
-  {
-    id: "123",
-    eventTitle: "birthday",
-    place: "utah",
-    description: "description",
-    // eventDate: new Date('2011-05-30'),
-    uid: "uid",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
 export const hamburgerMenus = [
   {
     name: "Quote",

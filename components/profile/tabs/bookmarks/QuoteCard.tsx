@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/utils/functions";
-import { BiDuplicate } from "react-icons/bi";
+import { BiDuplicate, BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
   q: IQuote;
@@ -47,8 +47,12 @@ const QuoteCard = ({ q, i }: Props) => {
     removeQuoteFromBookmarks,
     myBookmarks,
     numOfBookmarks,
+    removeLockThisQuote,
+    lockedQuote,
+    lockThisQuote
   } = useQuote();
   const [user] = useAuthState(auth);
+
 
   return (
     <Card className={`mb-3`}>
@@ -162,6 +166,30 @@ const QuoteCard = ({ q, i }: Props) => {
             </span>
             {/* <span>Edit</span> */}
           </Button>
+          {lockedQuote?.q.id === q.id ? (
+            <Button
+              onClick={() => {
+                if (user) removeLockThisQuote(user?.uid);
+              }}
+              className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+              variant="ghost"
+            >
+              <BiLock size={14} />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                if (q.isDraft) alert("Needs to be Public.");
+                else {
+                  if (user) lockThisQuote(user?.uid, q);
+                }
+              }}
+              className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+              variant="ghost"
+            >
+              <BiLockOpen size={14} />
+            </Button>
+          )}
         </div>
 
         {q.userInfo.photoUrl && (

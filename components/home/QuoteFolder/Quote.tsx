@@ -12,8 +12,9 @@ import { useAuth } from "@/context/AuthContext";
 import HeadingFive from "@/components/utils/HeadingFive";
 
 const Quote = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [user] = useAuthState(auth);
+  const [outsideQuote, setOutsideQuote] = useState<any>(null);
   const {
     randomQuote,
     updateRandomQuote,
@@ -21,26 +22,29 @@ const Quote = () => {
     lockedQuote,
     removeLockThisQuote,
     getLockedQuote,
-    setRandomQuote,
-    setLockedQuote,
   } = useQuote();
 
-  const { loginUser, fetchLoginUser } = useAuth();
-  const fetchDocuments = async () => {
-    try {
-      setLoading(true);
-      getLockedQuote();
-      updateRandomQuote();
-      fetchLoginUser(user);
-    } catch (error) {
-      console.log("fetchDocuments, ", error);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   // setLockedQuote(undefined)
+  //   // setRandomQuote(undefined);
+  //   getLockedQuote();
+  //   updateRandomQuote();
+  //   setLoading(false);
+  // }, [user]);
+
+  async function updateQuote() {
+    // Fetch a random quote from the Quotable API
+    const response = await fetch("https://api.quotable.io/random");
+    const data = await response.json();
+    if (response.ok) {
+      // Update DOM elements
+      setOutsideQuote(data);
+    } else {
+      setOutsideQuote("An error occured");
+      console.log(data);
     }
-    setLoading(false);
-  };
-  useEffect(() => {
-    // console.log("components mounted");
-    fetchDocuments();
-  }, [user]);
+  }
 
   if (loading) {
     return (
@@ -50,33 +54,37 @@ const Quote = () => {
     );
   }
 
-  // return (
-  //   <div>
-  //     {loading ? <span>loading...</span> : "done"}
-  //     {lockedQuote ? (
-  //       <span>lock: {lockedQuote.quote}</span>
-  //     ) : randomQuote ? (
-  //       <span>random: {randomQuote.quote}</span>
-  //     ) : null}
-  //   </div>
-  // );
-
   if (!loading) {
     if (user) {
-      if (lockedQuote) {
+      if (!lockedQuote && !randomQuote) {
+        return (
+          <div className="mb-20 mt-10 rounded-lg p-12 text-center">
+            <UrlLink
+              href="/quote"
+              className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
+              clickOn="You have no quotes yet."
+              target="_self"
+            />
+          </div>
+        );
+      } else if (lockedQuote) {
         return (
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
             {/* <div className="mb-2 text-center text-xs sm:text-sm">
               {"< Today's Phrase >"}
             </div> */}
+            <button onClick={updateQuote}>outside</button>
+            <p>
+              {outsideQuote?.content}, {outsideQuote?.author}
+            </p>
             <div className="">
               <strong className="text-lg sm:text-xl">
-                {lockedQuote.quote}
+                {lockedQuote.q.quote}
               </strong>
 
               <div className="flex flex-col items-end">
                 <div className="mt-4 text-right text-xs">
-                  <span>by {lockedQuote.person}</span>
+                  <span>by {lockedQuote.q.person}</span>
                 </div>
                 <div className="mt-4 flex items-center gap-5">
                   <BiRefresh
@@ -136,17 +144,6 @@ const Quote = () => {
                 </div>
               </div>
             </div>
-          </div>
-        );
-      } else if (!lockedQuote && !randomQuote) {
-        return (
-          <div className="mb-20 mt-10 rounded-lg p-12 text-center">
-            <UrlLink
-              href="/quote"
-              className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
-              clickOn="You have no quotes yet."
-              target="_self"
-            />
           </div>
         );
       }
