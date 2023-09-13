@@ -36,18 +36,6 @@ export interface IQuoteInputValues {
   tags: ITag[];
 }
 
-export interface IFavQuote {
-  qid: string;
-  uids: string[];
-  id?: string;
-}
-
-export interface IBookmark {
-  uid: string;
-  qids: string[];
-  id?: string;
-}
-
 export interface IUserInfo {
   uid: string | undefined;
   displayName: string | null | undefined;
@@ -65,14 +53,26 @@ export interface ISortFilterBy {
   searchTag: string;
 }
 
-export interface IBookmark {
-  uid: string;
+export type TypeMyBookmarks = {
   qids: string[];
-  id?: string;
+  uid: string;
   quotes: IQuote[];
+  id?: string;
 }
 
-export interface INumOfBookmarks {
+export type TypeNumOfBookmarks = {
+  qid: string;
+  uids: string[];
+  id?: string;
+}
+
+export type TypeMyFavs = {
+  qids: string[];
+  uid: string;
+  quotes: IQuote[];
+  id?: string;
+}
+export type TypeNumOfFavs = {
   qid: string;
   uids: string[];
   id?: string;

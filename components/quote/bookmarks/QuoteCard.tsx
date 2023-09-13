@@ -39,13 +39,15 @@ type Props = {
 };
 const QuoteCard = ({ q, i }: Props) => {
   const {
-    storeFavQuote,
-    removeFavQuote,
-    favQuotes,
+    storeFav,
+    removeFav,
+    myFavs,
     storeQuoteInBookmarks,
     removeQuoteFromBookmarks,
     myBookmarks,
     numOfBookmarks,
+    numOfFavs,
+
   } = useQuote();
   const [user] = useAuthState(auth);
 
@@ -93,25 +95,25 @@ const QuoteCard = ({ q, i }: Props) => {
           <Button
             onClick={() => {
               if (user) {
-                favQuotes.some(
+                numOfFavs.some(
                   (favQuote) =>
                     favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                 )
-                  ? removeFavQuote(user.uid, q.id)
-                  : storeFavQuote(user.uid, q.id);
+                  ? removeFav(user.uid, q)
+                  : storeFav(user.uid, q);
               }
             }}
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-red-50`}
           >
             {user &&
-            favQuotes.some(
+            numOfFavs.some(
               (favQuote) =>
                 // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                 favQuote.qid === q.id
             ) ? (
               <>
                 {user &&
-                  (favQuotes.some(
+                  (numOfFavs.map(
                     (favQuote) =>
                       favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                   ) ? (
@@ -120,7 +122,7 @@ const QuoteCard = ({ q, i }: Props) => {
                     <Heart size={14} className="text-red-500" />
                   ))}
 
-                {favQuotes.map((favQuote, i) =>
+                {numOfFavs.map((favQuote, i) =>
                   favQuote.qid === q.id ? (
                     <span key={i} className="text-xs text-black">
                       {favQuote.uids.length}
@@ -190,14 +192,14 @@ export default QuoteCard;
 
 // 1: add a check if user is logged in
 // 2: このQuoteがfavQuotesにあるかどうかを判断する
-// 3: なかったら、storeFavQuoteを実行する
-// 4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
-// 5: なかったら、storeFavQuoteを実行する
-// 6: あったら、removeFavQuoteを実行する
+// 3: なかったら、storeFavを実行する
+// 4: あったら、myFavs.uidsにuser.uidがあるかどうかを判断する
+// 5: なかったら、storeFavを実行する
+// 6: あったら、removeFavを実行する
 
 {
   /* {user &&
-          (favQuotes.some(
+          (numOfFavs(
             (favQuote) =>
               favQuote.qid === q.id && favQuote.uids.includes(user.uid)
           ) ? (

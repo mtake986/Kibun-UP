@@ -40,9 +40,9 @@ type Props = {
 };
 const CardNotMine = ({ q, i }: Props) => {
   const {
-    storeFavQuote,
-    removeFavQuote,
-    favQuotes,
+    storeFav,
+    removeFav,
+    numOfFavs,
     storeQuoteInBookmarks,
     removeQuoteFromBookmarks,
     myBookmarks,
@@ -92,25 +92,25 @@ const CardNotMine = ({ q, i }: Props) => {
           <Button
             onClick={() => {
               if (user) {
-                favQuotes.some(
+                numOfFavs.some(
                   (favQuote) =>
                     favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                 )
-                  ? removeFavQuote(user.uid, q.id)
-                  : storeFavQuote(user.uid, q.id);
+                  ? removeFav(user.uid, q)
+                  : storeFav(user.uid, q);
               }
             }}
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-red-50`}
           >
             {user &&
-            favQuotes.some(
+            numOfFavs.some(
               (favQuote) =>
                 // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                 favQuote.qid === q.id
             ) ? (
               <>
                 {user &&
-                  (favQuotes.some(
+                  (numOfFavs.some(
                     (favQuote) =>
                       favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                   ) ? (
@@ -119,7 +119,7 @@ const CardNotMine = ({ q, i }: Props) => {
                     <Heart size={14} className="text-red-500" />
                   ))}
 
-                {favQuotes.map((favQuote, i) =>
+                {numOfFavs.map((favQuote, i) =>
                   favQuote.qid === q.id ? (
                     <span key={i} className="text-xs text-black">
                       {favQuote.uids.length}
@@ -150,17 +150,37 @@ const CardNotMine = ({ q, i }: Props) => {
             }}
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-green-50`}
           >
-            {myBookmarks && myBookmarks.qids.includes(q.id) ? (
-              <BsBookmarkFill size={12} className="text-green-500" />
+            {user &&
+            numOfBookmarks?.some(
+              (b) =>
+                // b.qid === q.id && b.uids.includes(user.uid)
+                b.qid === q.id
+            ) ? (
+              <>
+                {user &&
+                  (numOfBookmarks.some(
+                    (b) =>
+                      b.qid === q.id && b.uids.includes(user.uid)
+                  ) ? (
+                    <BsBookmarkFill size={12} className="text-green-500" />
+                  ) : (
+                    <BsBookmark size={12} className="text-green-500" />
+                  ))}
+
+                {numOfBookmarks.map((b, i) =>
+                  b.qid === q.id ? (
+                    <span key={i} className="text-xs text-black">
+                      {b.uids.length}
+                    </span>
+                  ) : null
+                )}
+              </>
             ) : (
-              <BsBookmark size={12} className="text-green-500" />
+              <div className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50">
+                <BsBookmark size={12} className="text-green-500" />
+                <span className="text-xs text-black">0</span>
+              </div>
             )}
-            <span className="text-xs text-black">
-              {numOfBookmarks?.map((bookmark, i) =>
-                bookmark.qid === q.id ? bookmark.uids.length : null
-              )}
-            </span>
-            {/* <span>Edit</span> */}
           </Button>
         </div>
 
@@ -175,7 +195,7 @@ const CardNotMine = ({ q, i }: Props) => {
                 className="rounded-full object-cover object-center duration-300"
               />
             </HoverCardTrigger>
-            <HoverCardContent className="text-center text-xs">
+            <HoverCardContent className="truncate text-center text-xs">
               {q.userInfo.displayName}
             </HoverCardContent>
           </HoverCard>
@@ -189,14 +209,14 @@ export default CardNotMine;
 
 // 1: add a check if user is logged in
 // 2: このQuoteがfavQuotesにあるかどうかを判断する
-// 3: なかったら、storeFavQuoteを実行する
-// 4: あったら、favQuotes.uidsにuser.uidがあるかどうかを判断する
-// 5: なかったら、storeFavQuoteを実行する
-// 6: あったら、removeFavQuoteを実行する
+// 3: なかったら、storeFavを実行する
+// 4: あったら、myFavs.uidsにuser.uidがあるかどうかを判断する
+// 5: なかったら、storeFavを実行する
+// 6: あったら、removeFavを実行する
 
 {
   /* {user &&
-          (favQuotes.some(
+          (numOfFavs(
             (favQuote) =>
               favQuote.qid === q.id && favQuote.uids.includes(user.uid)
           ) ? (
