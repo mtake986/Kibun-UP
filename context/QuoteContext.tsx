@@ -48,7 +48,6 @@ type QuoteContext = {
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => void;
 
-  getRandomQuote: () => void;
   randomQuote: IQuote | undefined;
 
   lockThisQuote: (uid: string, data: IQuote) => void;
@@ -232,43 +231,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         );
       });
     }
-  };
-
-  // todo
-  const getRandomQuote = async () => {
-    // auth.onAuthStateChanged((user) => {
-    if (user) {
-      try {
-        // if (loginUser?.displayWhichQuoteType === "mine") {
-        const q = query(
-          quotesCollectionRef,
-          where("userInfo.uid", "==", user?.uid),
-          where("isDraft", "==", false)
-        );
-        onSnapshot(q, (snapshot) => {
-          const randomNum = getRandomNum(snapshot.docs.length);
-          const doc = snapshot.docs[randomNum];
-          if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
-        });
-        // } else if (loginUser?.displayWhichQuoteType === "bookmarks") {
-        //   const q = query(
-        //     myBookmarksCollectionRef,
-        //     where("uid", "==", user?.uid)
-        //   );
-        //   onSnapshot(q, (snapshot) => {
-        //     const randomNum = getRandomNum(
-        //       snapshot.docs[0].data().quotes.length
-        //     );
-        //     // console.log(randomNum, snapshot.docs[0].data().quotes.length);
-        //     const doc = snapshot.docs[0].data().quotes[randomNum];
-        //     if (doc) setRandomQuote(doc as IQuote);
-        //   });
-        // }
-      } catch (error) {
-        console.log("getRandomQuote, ", error);
-      }
-    }
-    // });
   };
 
   const handleCancelUpdate = () => {
@@ -963,7 +925,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getLoginUserQuotes,
         handleCancelUpdate,
         handleDelete,
-        getRandomQuote,
         randomQuote,
         lockThisQuote,
         lockedQuote,

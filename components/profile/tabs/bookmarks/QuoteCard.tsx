@@ -103,14 +103,14 @@ const QuoteCard = ({ q, i }: Props) => {
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-red-50`}
           >
             {user &&
-            numOfFavs.some(
+            numOfFavs?.some(
               (favQuote) =>
                 // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                 favQuote.qid === q.id
             ) ? (
               <>
                 {user &&
-                  (numOfFavs.some(
+                  (numOfFavs?.some(
                     (favQuote) =>
                       favQuote.qid === q.id && favQuote.uids.includes(user.uid)
                   ) ? (
@@ -119,7 +119,7 @@ const QuoteCard = ({ q, i }: Props) => {
                     <Heart size={14} className="text-red-500" />
                   ))}
 
-                {numOfFavs.map((favQuote, i) =>
+                {numOfFavs?.map((favQuote, i) =>
                   favQuote.qid === q.id ? (
                     <span key={i} className="text-xs text-black">
                       {favQuote.uids.length}
@@ -138,7 +138,7 @@ const QuoteCard = ({ q, i }: Props) => {
             onClick={() => {
               try {
                 if (user) {
-                  if (myBookmarks && myBookmarks.qids.includes(q.id)) {
+                  if (myBookmarks && myBookmarks?.qids.includes(q.id)) {
                     removeQuoteFromBookmarks(user.uid, q);
                   } else {
                     storeQuoteInBookmarks(user.uid, q);

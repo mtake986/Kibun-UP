@@ -122,6 +122,7 @@ Sep. 9
 - [] createdAt, updatedAt on QuoteCard
 - [] able to lock a bookmark
 - [] built-in quotes 
+- [] bug: lock an event and quote
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ

@@ -150,18 +150,37 @@ const CardNotMine = ({ q, i }: Props) => {
             }}
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-green-50`}
           >
-            {myBookmarks && myBookmarks.qids.includes(q.id) ? (
+            {user &&
+            numOfBookmarks?.some(
+              (b) =>
+                // b.qid === q.id && b.uids.includes(user.uid)
+                b.qid === q.id
+            ) ? (
               <>
-                <BsBookmarkFill size={12} className="text-green-500" />
-                <span>{myBookmarks.qids.length}</span>
+                {user &&
+                  (numOfBookmarks.some(
+                    (b) =>
+                      b.qid === q.id && b.uids.includes(user.uid)
+                  ) ? (
+                    <BsBookmarkFill size={12} className="text-green-500" />
+                  ) : (
+                    <BsBookmark size={12} className="text-green-500" />
+                  ))}
+
+                {numOfBookmarks.map((b, i) =>
+                  b.qid === q.id ? (
+                    <span key={i} className="text-xs text-black">
+                      {b.uids.length}
+                    </span>
+                  ) : null
+                )}
               </>
             ) : (
-              <>
+              <div className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50">
                 <BsBookmark size={12} className="text-green-500" />
-                <span>{myBookmarks.qids.length}</span>
-              </>
+                <span className="text-xs text-black">0</span>
+              </div>
             )}
-            {/* <span>Edit</span> */}
           </Button>
         </div>
 
@@ -176,7 +195,7 @@ const CardNotMine = ({ q, i }: Props) => {
                 className="rounded-full object-cover object-center duration-300"
               />
             </HoverCardTrigger>
-            <HoverCardContent className="text-center text-xs">
+            <HoverCardContent className="truncate text-center text-xs">
               {q.userInfo.displayName}
             </HoverCardContent>
           </HoverCard>
