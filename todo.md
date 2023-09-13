@@ -115,14 +115,16 @@ Sep. 8
 - [x] randomQuote when no bookmarks and my qutoes
 
 Sep. 9
-- [] Create myLikes and numOfLikes models
+- [x] Create myLikes and numOfLikes models
+
+Sep. 12
+- [x] bug: lock an event and quote
+- [x] able to lock a bookmark
 
 ### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
-- [] able to lock a bookmark
 - [] built-in quotes 
-- [] bug: lock an event and quote
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
