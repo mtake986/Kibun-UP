@@ -15,18 +15,11 @@ const Home = () => {
 
   const { loginUser, fetchLoginUser } = useAuth();
   const [user] = useAuthState(auth);
-  const {
-    updateRandomQuote,
-    getLockedQuote,
-  } = useQuote();
+  const { fetchQuoteForHomePage, getLockedQuote, fetchQuoteFromAPI } =
+    useQuote();
 
-
-  const {
-    getRandomEvent,
-    getLockedEvent,
-    setRandomEvent,
-    setLockedEvent,
-  } = useEvent();
+  const { getRandomEvent, getLockedEvent, setRandomEvent, setLockedEvent } =
+    useEvent();
 
   useEffect(() => {
     setLoading(true);
@@ -36,7 +29,7 @@ const Home = () => {
     if (user) getRandomEvent();
 
     getLockedQuote();
-    updateRandomQuote();
+    fetchQuoteForHomePage();
 
     setLoading(false);
   }, [user]);

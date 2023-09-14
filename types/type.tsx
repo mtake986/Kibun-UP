@@ -92,3 +92,8 @@ export type TypeLockedQuote = {
   q: IQuote, 
   uid: string,
 }
+
+export type TypeQuoteFromAPI = {
+  content: string;
+  author: string;
+}

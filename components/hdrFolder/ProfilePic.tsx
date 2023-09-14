@@ -1,23 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import { LogOut, User2 } from "lucide-react";
-import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import UrlLink from "../utils/UrlLink";
 
 const ProfilePic = () => {

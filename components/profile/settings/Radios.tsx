@@ -8,16 +8,11 @@ import { useQuote } from "@/context/QuoteContext";
 const Radios = () => {
   const { updateDisplayWhichQuoteType, loginUser } = useAuth();
   const {
-    fetchQuotesForHomePage,
-    updateRandomQuote,
-    randomQuote,
-    quotesForHomePage,
     fetchMyBookmarks,
     myBookmarks,
     getLoginUserQuotes,
     loginUserQuotes,
   } = useQuote();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!myBookmarks) {
@@ -58,17 +53,18 @@ const Radios = () => {
             <p className="ml-3 text-xs text-gray-500">Only from bookmarks</p>
           </div>
         </div>
-        {/* <div className="flex flex-col sm:flex-row sm:items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center">
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="both"
+              value="api"
               id="r3"
               className="border-gray-300 text-violet-600"
-              onClick={(e) => updateDisplayWhichQuoteType("both")}
+              onClick={(e) => updateDisplayWhichQuoteType("api")}
             />
-            <Label htmlFor="r3">Both</Label>
+            <Label htmlFor="r3">Random</Label>
+            {/* <p className="ml-3 text-xs text-gray-500">Random</p> */}
           </div>
-        </div> */}
+        </div>
       </RadioGroup>
     );
   } else return null;

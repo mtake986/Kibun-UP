@@ -121,10 +121,15 @@ Sep. 12
 - [x] bug: lock an event and quote
 - [x] able to lock a bookmark
 
+Sep. 13
+- [x] fetch quote from API and display it on Home
+
 ### Coming Updates...
 - [] Event Cheer
 - [] createdAt, updatedAt on QuoteCard
-- [] built-in quotes 
+- [] outside quotes 
+- [] bookmark to duplicate 
+- [] details: quote from API like lock
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
