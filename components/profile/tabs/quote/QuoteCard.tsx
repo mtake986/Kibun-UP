@@ -118,7 +118,7 @@ const QuoteCard = ({ q }: Props) => {
                 <Edit size={14} />
                 {/* <span>Edit</span> */}
               </Button>
-              {lockedQuote?.q.id === q.id ? (
+              {lockedQuote?.id === q.id ? (
                 <Button
                   onClick={() => {
                     if (user) removeLockThisQuote(user?.uid);
@@ -180,7 +180,7 @@ const QuoteCard = ({ q }: Props) => {
             <Button
               onClick={() => {
                 handleDelete(q.id);
-                if (user && lockedQuote?.q.id === q.id)
+                if (user && lockedQuote?.id === q.id)
                   removeLockThisQuote(user?.uid);
               }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}

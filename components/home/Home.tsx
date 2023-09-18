@@ -8,31 +8,18 @@ import { auth } from "@/config/Firebase";
 import { useQuote } from "@/context/QuoteContext";
 import { useAuth } from "@/context/AuthContext";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
-import { useEvent } from "@/context/EventContext";
 
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { loginUser, fetchLoginUser } = useAuth();
   const [user] = useAuthState(auth);
-  const { fetchQuoteForHomePage, getLockedQuote, fetchQuoteFromAPI } =
-    useQuote();
-
-  const { getRandomEvent, getLockedEvent, setRandomEvent, setLockedEvent } =
-    useEvent();
 
   useEffect(() => {
     setLoading(true);
     fetchLoginUser(user);
-
-    getLockedEvent();
-    if (user) getRandomEvent();
-
-    getLockedQuote();
-    fetchQuoteForHomePage();
-
     setLoading(false);
-  }, [user]);
+  }, []);
 
   return (
     <>

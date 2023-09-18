@@ -11,7 +11,6 @@ import { useEffect } from "react";
 export default function Hdr() {
   const { loginUser, fetchLoginUser, signInWithGoogle } = useAuth();
 
-  const [user] = useAuthState(auth);
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
   }, []);
@@ -48,7 +47,7 @@ export default function Hdr() {
           />
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {user ? (
+          {auth.currentUser ? (
             <ProfilePic />
           ) : (
             <div

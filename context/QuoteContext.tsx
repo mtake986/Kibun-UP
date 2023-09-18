@@ -31,8 +31,6 @@ import {
   TypeNumOfFavs,
   TypeMyBookmarks,
   TypeNumOfBookmarks,
-  TypeLockedQuote,
-  TypeQuoteFromAPI,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -53,7 +51,7 @@ type QuoteContext = {
   randomQuote: IQuote | undefined;
 
   lockThisQuote: (uid: string, data: IQuote) => void;
-  lockedQuote: TypeLockedQuote | undefined;
+  lockedQuote: IQuote | undefined;
 
   removeLockThisQuote: (uid: string) => void;
   getLockedQuote: () => void;
@@ -75,7 +73,7 @@ type QuoteContext = {
   fetchNumOfFavs: () => void;
 
   setRandomQuote: (quote: IQuote | undefined) => void;
-  setLockedQuote: (quote: TypeLockedQuote | undefined) => void;
+  setLockedQuote: (quote: IQuote | undefined) => void;
 
   sortAndFilterMyQuotes: () => void;
 
@@ -95,6 +93,10 @@ type QuoteContext = {
   fetchNumOfBookmarks: () => void;
   numOfBookmarks: TypeNumOfBookmarks[] | undefined;
 
+  fetchQuotesForHomePage: (
+    user: ILoginUser,
+    setIsLoading: (boo: boolean) => void
+  ) => void;
   quotesForHomePage: IQuote[];
 
   whichList: "yours" | "all";
@@ -126,10 +128,7 @@ type QuoteContext = {
   resetSortFilterByForMineInputs: () => void;
   resetSortFilterByForNotMineInputs: () => void;
 
-  fetchQuoteForHomePage: () => void;
-
-  quoteFromAPI: TypeQuoteFromAPI | undefined;
-  fetchQuoteFromAPI: () => void;
+  updateRandomQuote: () => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -149,10 +148,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [numOfBookmarks, setNumOfBookmarks] = useState<TypeNumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<IQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<IQuote>();
-  const [lockedQuote, setLockedQuote] = useState<TypeLockedQuote>();
+  const [lockedQuote, setLockedQuote] = useState<IQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<IQuote[]>([]);
-  const [quoteFromAPI, setQuoteFromAPI] = useState<TypeQuoteFromAPI>();
 
   const quotesCollectionRef = collection(db, "quotes");
   const numOfFavsCollectionRef = collection(db, "numOfFavs");
@@ -244,9 +242,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const lockThisQuote = async (uid: string, data: IQuote) => {
-    const payload = { q: data, uid: uid };
-    await setDoc(doc(db, "lockedQuotes", uid), payload);
-    setLockedQuote(payload);
+    await setDoc(doc(db, "lockedQuotes", uid), data);
+    setLockedQuote(data);
   };
 
   const removeLockThisQuote = async (uid: string) => {
@@ -260,10 +257,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getLockedQuote = async () => {
     if (user?.uid) {
-      const q = query(lockedQuotesCollectionRef, where("uid", "==", user?.uid));
+      const q = query(
+        lockedQuotesCollectionRef,
+        where("userInfo.uid", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs[0]?.data());
-        setLockedQuote(snapshot.docs[0]?.data() as TypeLockedQuote);
+        setLockedQuote(snapshot.docs[0]?.data() as IQuote);
       });
     }
   };
@@ -278,7 +277,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       ...values,
       updatedAt: serverTimestamp(),
     }).then((res) => {
-      if (lockedQuote?.q.id === qid && values.isDraft) {
+      if (lockedQuote?.id === qid && values.isDraft) {
         if (uid) removeLockThisQuote(uid);
         toast({
           className: "border-none bg-green-500 text-white",
@@ -770,9 +769,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
 
       onSnapshot(q, (snapshot) => {
-        setMyBookmarks(
-          snapshot.docs.map((doc) => doc.data() as TypeMyBookmarks)[0]
-        );
+        setMyBookmarks(snapshot.docs.map((doc) => doc.data() as TypeMyBookmarks)[0]);
       });
     }
   };
@@ -785,66 +782,60 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     });
   };
 
-  const fetchQuoteForHomePage = async () => {
+  const fetchQuotesForHomePage = (
+    user: ILoginUser,
+    setIsLoading: (boo: boolean) => void
+  ) => {
+    setIsLoading(true);
+    if (user.displayWhichQuoteType === "mine") {
+      setQuotesForHomePage(loginUserQuotes);
+    } else if (user.displayWhichQuoteType === "bookmarks") {
+      setQuotesForHomePage(myBookmarks.quotes);
+    } else {
+      setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
+    }
+    setIsLoading(false);
+  };
+
+  const updateRandomQuote = async () => {
     let qs, lu;
     if (user) {
-      // Fetch login user information
       const userDocRef = doc(db, "users", user?.uid);
       const docSnap = await getDoc(userDocRef);
+
       if (docSnap.exists()) {
         lu = docSnap.data();
       }
-
-      if (lu)
-        if (lu.displayWhichQuoteType === "mine") {
-          qs = loginUserQuotes;
-          const q = query(
-            quotesCollectionRef,
-            where("userInfo.uid", "==", user?.uid)
-          );
-          onSnapshot(q, (snapshot) => {
-            const randomNum = getRandomNum(snapshot.docs.length);
-            const doc = snapshot.docs[randomNum];
-            if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
-          });
-          console.log('mine"');
-        } else if (lu?.displayWhichQuoteType === "bookmarks") {
-          const q = query(
-            myBookmarksCollectionRef,
-            where("uid", "==", user?.uid)
-          );
-          onSnapshot(q, (snapshot) => {
-            const bookmarkedQuotes = snapshot.docs[0].data().quotes;
-            const randomNum = getRandomNum(bookmarkedQuotes.length);
-            const doc = bookmarkedQuotes[randomNum];
-            if (doc) setRandomQuote(doc as IQuote);
-          });
-        } else if (lu?.displayWhichQuoteType === "api") {
-          fetchQuoteFromAPI();
-        } else {
-          qs = loginUserQuotes.concat(myBookmarks.quotes);
-          const q = query(quotesCollectionRef);
-          onSnapshot(q, (snapshot) => {
-            const randomNum = getRandomNum(snapshot.docs.length);
-            const doc = snapshot.docs[randomNum];
-            if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
-          });
-        }
+      console.log(lu);
+      if (lu && lu.displayWhichQuoteType === "mine") {
+        qs = loginUserQuotes;
+        const q = query(
+          quotesCollectionRef,
+          where("userInfo.uid", "==", user?.uid)
+        );
+        onSnapshot(q, (snapshot) => {
+          const randomNum = getRandomNum(snapshot.docs.length);
+          const doc = snapshot.docs[randomNum];
+          if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
+        });
+        console.log('mine"');
+      } else if (lu && lu?.displayWhichQuoteType === "bookmarks") {
+        const q = query(
+          myBookmarksCollectionRef,
+          where("uid", "==", user?.uid)
+        );
+        onSnapshot(q, (snapshot) => {
+          const bookmarkedQuotes = snapshot.docs[0].data().quotes;
+          const randomNum = getRandomNum(bookmarkedQuotes.length);
+          const doc = bookmarkedQuotes[randomNum];
+          if (doc) setRandomQuote(doc as IQuote);
+        });
+      } else {
+        console.log("both");
+        qs = loginUserQuotes.concat(myBookmarks.quotes);
+      }
     }
   };
-
-  async function fetchQuoteFromAPI() {
-    // Fetch a random quote from the Quotable API
-    const response = await fetch("https://api.quotable.io/random");
-    const data = await response.json();
-    if (response.ok) {
-      // Update DOM elements
-      setQuoteFromAPI(data);
-      console.log({ quoteFromAPI });
-    } else {
-      setQuoteFromAPI(undefined);
-    }
-  }
 
   const [whichList, setWhichList] = useState<"yours" | "all">("yours");
   const handleWhichList = (value: "yours" | "all") => {
@@ -974,6 +965,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         fetchNumOfBookmarks,
         numOfBookmarks,
 
+        fetchQuotesForHomePage,
         quotesForHomePage,
 
         whichList,
@@ -1002,10 +994,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         resetSortFilterByForMineInputs,
         resetSortFilterByForNotMineInputs,
 
-        fetchQuoteForHomePage,
-
-        quoteFromAPI,
-        fetchQuoteFromAPI,
+        updateRandomQuote,
       }}
     >
       {children}
