@@ -22,6 +22,11 @@ export interface IQuote {
   tags?: ITag[];
 }
 
+export type TypeBuiltInQuote = {
+  id: string;
+  person: string;
+}
+
 export interface IEventInputValues {
   eventTitle: string;
   place?: string;

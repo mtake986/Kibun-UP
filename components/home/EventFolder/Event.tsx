@@ -14,8 +14,6 @@ import {
 } from "@/components/ui/hover-card";
 import UrlLink from "@/components/utils/UrlLink";
 import { auth } from "@/config/Firebase";
-import HeadingThree from "@/components/utils/HeadingThree";
-import HeadingFive from "@/components/utils/HeadingFive";
 import HeadingFour from "@/components/utils/HeadingFour";
 
 const Event = () => {
@@ -25,7 +23,6 @@ const Event = () => {
   function calculateLeftDays(date: Date): number {
     const today = new Date();
     if (date < today) {
-      // setLeftDays(-1);
       return -1;
     } else {
       const diffTime = Math.abs(date.getTime() - today.getTime());
@@ -86,8 +83,8 @@ const Event = () => {
 
             <div className="text-center">
               {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
-                <span className="text-center text-xl">
-                  You Can Do It <span className="text-2xl">🎉</span>
+                <span className="text-center text-3xl text-red-500 italic mb-5 block">
+                  You Got This!!
                 </span>
               ) : (
                 <div className="flex flex-col">

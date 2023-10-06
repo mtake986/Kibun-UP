@@ -40,8 +40,7 @@ import UrlLink from "@/components/utils/UrlLink";
 
 export default function RegisterForm() {
   const [user] = useAuthState(auth);
-  const { registerQuote, isRegisterFormOpen, toggleRegisterFormOpen } =
-    useQuote();
+  const { registerQuote } = useQuote();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>([]);
   const [tagColor, setTagColor] = useState<string>("");
@@ -205,13 +204,15 @@ export default function RegisterForm() {
                   ))}
                 </SelectContent>
               </Select>
-              <MdAdd
+              <Button
+                type="button"
                 onClick={() => {
                   addTag(tagInput);
                 }}
-                size={36}
-                className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
-              />
+                className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+              >
+                Add
+              </Button>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {tags.map((tag, i) => (
@@ -254,13 +255,12 @@ export default function RegisterForm() {
 }
 
 const CloseBtn = () => {
-    const { toggleRegisterFormOpen } =
-      useQuote();
+  const { toggleRegisterFormOpen } = useQuote();
 
   return (
     <Button
       onClick={toggleRegisterFormOpen}
-      className="w-full duration-200 bg-red-100 text-red-500 hover:bg-red-200"
+      className="w-full bg-red-100 text-red-500 duration-200 hover:bg-red-200"
     >
       Close
     </Button>
