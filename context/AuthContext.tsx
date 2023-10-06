@@ -72,7 +72,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (!docSnap.exists()) {
           // docSnap.data() will be undefined in this case
-          console.log("No such document CREATE USER");
           createUserInFirestore(auth.currentUser);
         }
       }
@@ -166,7 +165,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } else {
       console.log("No user is signed in");
     }
-    console.log(payload, currentUser);
     updateProfile(currentUser, payload)
       .then(() => {
         // Profile updated!

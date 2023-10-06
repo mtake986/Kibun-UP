@@ -37,7 +37,8 @@ import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
 import { useAuth } from "./AuthContext";
 import { User } from "firebase/auth";
-import { builtInQuotes } from "@/public/CONSTANTS";
+import { CategoriesQuoteFromAPI, builtInQuotes } from "@/public/CONSTANTS";
+import useFetchQuoteFromNinjasAPI from "@/components/hooks/useFetchQuoteFromNinjasAPI";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -242,18 +243,23 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-  const lockThisQuote = async (uid: string, data: IQuote) => {
-    await setDoc(doc(db, "lockedQuotes", uid), data);
+  const lockThisQuote = async (
+    uid: string,
+    data: any,
+  ) => {
+    let payload;
+    if (!data.userInfo) {
+      payload = { ...data, userInfo: { uid } };
+    } else {
+      payload = data;
+    }
+    await setDoc(doc(db, "lockedQuotes", uid), payload);
     setLockedQuote(data);
   };
 
   const removeLockThisQuote = async (uid: string) => {
     await deleteDoc(doc(db, "lockedQuotes", uid));
     setLockedQuote(undefined);
-    // toast({
-    //   className: "border-none bg-red-50 text-red-500",
-    //   title: "Quote Unlocked",
-    // });
   };
 
   const getLockedQuote = async () => {
@@ -314,7 +320,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docRef = doc(db, "myFavs", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log(data);
     if (data) {
       await updateDoc(docRef, {
         qids: arrayUnion(q.id),
@@ -801,15 +806,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const updateRandomQuote = async () => {
-    console.log("start");
 
     let qs, lu;
-    // new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     console.log("娘:肉を切り終えた");
-    //     resolve();
-    //   }, 4000);
-    // }).then;
     if (user) {
       const userDocRef = doc(db, "users", user?.uid);
       const docSnap = await getDoc(userDocRef);
@@ -817,9 +815,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       if (docSnap.exists()) {
         lu = docSnap.data();
       }
-      console.log(lu);
       if (lu && lu.displayWhichQuoteType === "mine") {
-        console.log('mine"');
         setRandomQuote({} as IQuote);
         qs = loginUserQuotes;
         const q = query(
@@ -845,13 +841,36 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       } else {
         setRandomQuote({} as IQuote);
-        console.log("builtIn", builtInQuotes.length);
-        const randomNum = getRandomNum(builtInQuotes.length);
-        const doc = builtInQuotes[randomNum];
-        if (doc) setRandomQuote(doc as IQuote);
+
+        const randomNumber = Math.floor(
+          Math.random() * CategoriesQuoteFromAPI.length
+        );
+        const randomCategory = CategoriesQuoteFromAPI[randomNumber];
+        fetch(
+          `https://api.api-ninjas.com/v1/quotes?category=${randomCategory}`,
+          {
+            headers: {
+              "X-API-KEY": process.env.NEXT_PUBLIC_NINJAS_API_KEY || "",
+            },
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw Error(`不具合が発生しました!! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((res) => {
+            setRandomQuote({
+              person: res[0].author,
+              quote: res[0].quote,
+            } as IQuote);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
       }
     }
-    console.log("end");
   };
 
   const [whichList, setWhichList] = useState<"yours" | "all">("yours");

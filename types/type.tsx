@@ -25,7 +25,7 @@ export interface IQuote {
 export type TypeBuiltInQuote = {
   id: string;
   person: string;
-}
+};
 
 export interface IEventInputValues {
   eventTitle: string;
@@ -63,25 +63,25 @@ export type TypeMyBookmarks = {
   uid: string;
   quotes: IQuote[];
   id?: string;
-}
+};
 
 export type TypeNumOfBookmarks = {
   qid: string;
   uids: string[];
   id?: string;
-}
+};
 
 export type TypeMyFavs = {
   qids: string[];
   uid: string;
   quotes: IQuote[];
   id?: string;
-}
+};
 export type TypeNumOfFavs = {
   qid: string;
   uids: string[];
   id?: string;
-}
+};
 
 export interface ILoginUser {
   uid: string;
@@ -92,3 +92,9 @@ export interface ILoginUser {
   displayWhichQuoteType: string;
   paginationNum: number;
 }
+
+export type typeQuoteFromAPI = {
+  quote: string;
+  author: string;
+  category: string;
+};

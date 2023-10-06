@@ -8,6 +8,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
 import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
+import useFetchQuoteFromNinjasAPI from "@/components/hooks/useFetchQuoteFromNinjasAPI";
 
 const Quote = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +35,6 @@ const Quote = () => {
     setLoading(false);
   };
   useEffect(() => {
-    // console.log("components mounted");
     if (user) fetchDocuments();
   }, [user]);
 
@@ -51,9 +51,6 @@ const Quote = () => {
       if (lockedQuote) {
         return (
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
-            {/* <div className="mb-2 text-center text-xs sm:text-sm">
-              {"< Today's Phrase >"}
-            </div> */}
             <div className="">
               <strong className="text-lg sm:text-xl">
                 {lockedQuote.quote}
