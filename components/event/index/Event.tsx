@@ -1,5 +1,4 @@
 'use client';
-import RegisterForm from "@/components/event/register/RegisterForm";
 import React, { useEffect, useState } from "react";
 
 import { useAuthState } from "react-firebase-hooks/auth";

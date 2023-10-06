@@ -6,10 +6,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
-import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
-import HeadingFive from "@/components/utils/HeadingFive";
 
 const Quote = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,8 +19,6 @@ const Quote = () => {
     lockedQuote,
     removeLockThisQuote,
     getLockedQuote,
-    setRandomQuote,
-    setLockedQuote,
   } = useQuote();
 
   const { loginUser, fetchLoginUser } = useAuth();
@@ -39,7 +35,7 @@ const Quote = () => {
   };
   useEffect(() => {
     // console.log("components mounted");
-    fetchDocuments();
+    if (user) fetchDocuments();
   }, [user]);
 
   if (loading) {
@@ -49,17 +45,6 @@ const Quote = () => {
       </div>
     );
   }
-
-  // return (
-  //   <div>
-  //     {loading ? <span>loading...</span> : "done"}
-  //     {lockedQuote ? (
-  //       <span>lock: {lockedQuote.quote}</span>
-  //     ) : randomQuote ? (
-  //       <span>random: {randomQuote.quote}</span>
-  //     ) : null}
-  //   </div>
-  // );
 
   if (!loading) {
     if (user) {
@@ -90,7 +75,6 @@ const Quote = () => {
                     size={16}
                     onClick={() => {
                       removeLockThisQuote(user.uid);
-                      // updateRandomQuote();
                     }}
                     className={`cursor-pointer text-red-500 duration-300 hover:opacity-50`}
                   />
@@ -102,9 +86,6 @@ const Quote = () => {
       } else if (randomQuote) {
         return (
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
-            {/* <div className="mb-2 text-center text-xs sm:text-sm">
-              {"< Today's Phrase >"}
-            </div> */}
             <div className="">
               <strong className="text-lg sm:text-xl">
                 {randomQuote.quote}
@@ -117,11 +98,7 @@ const Quote = () => {
                   <BiRefresh
                     size={20}
                     onClick={() => {
-                      setLoading(true);
-                      setTimeout(() => {
-                        updateRandomQuote();
-                        setLoading(false);
-                      }, 1000);
+                      updateRandomQuote();
                     }}
                     className={`cursor-pointer duration-300 hover:opacity-50`}
                   />
@@ -138,7 +115,7 @@ const Quote = () => {
             </div>
           </div>
         );
-      } else if (!lockedQuote && !randomQuote) {
+      } else {
         return (
           <div className="mb-20 mt-10 rounded-lg p-12 text-center">
             <UrlLink

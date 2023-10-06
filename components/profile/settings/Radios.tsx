@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
+import { builtInQuotes } from "@/public/CONSTANTS";
 
 const Radios = () => {
   const { updateDisplayWhichQuoteType, loginUser } = useAuth();
-  const {
-    fetchQuotesForHomePage,
-    updateRandomQuote,
-    randomQuote,
-    quotesForHomePage,
-    fetchMyBookmarks,
-    myBookmarks,
-    getLoginUserQuotes,
-    loginUserQuotes,
-  } = useQuote();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { fetchMyBookmarks, myBookmarks, getLoginUserQuotes, loginUserQuotes } =
+    useQuote();
 
   useEffect(() => {
     if (!myBookmarks) {
@@ -58,17 +50,21 @@ const Radios = () => {
             <p className="ml-3 text-xs text-gray-500">Only from bookmarks</p>
           </div>
         </div>
-        {/* <div className="flex flex-col sm:flex-row sm:items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center">
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="both"
-              id="r3"
+              value="builtIn"
+              id="r2"
               className="border-gray-300 text-violet-600"
-              onClick={(e) => updateDisplayWhichQuoteType("both")}
+              onClick={(e) => updateDisplayWhichQuoteType("builtIn")}
+              disabled={!builtInQuotes}
             />
-            <Label htmlFor="r3">Both</Label>
+            <Label htmlFor="r2">Built-in</Label>
+            <p className="ml-3 text-xs text-gray-500">
+              Only from built-in quotes
+            </p>
           </div>
-        </div> */}
+        </div>
       </RadioGroup>
     );
   } else return null;

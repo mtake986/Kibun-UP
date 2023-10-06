@@ -26,7 +26,7 @@ const UserInfoCard = () => {
               <span className="font-semibold">{loginUser.displayName}</span>
             </p>
             <p>
-              <span className="text-xs">Counts/page: </span>
+              <span className="text-xs">Quote #/page: </span>
               <span className="font-semibold">{loginUser.paginationNum}</span>
             </p>
           </div>

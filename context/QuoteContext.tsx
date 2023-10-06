@@ -37,6 +37,7 @@ import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
 import { useAuth } from "./AuthContext";
 import { User } from "firebase/auth";
+import { builtInQuotes } from "@/public/CONSTANTS";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -769,7 +770,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
 
       onSnapshot(q, (snapshot) => {
-        setMyBookmarks(snapshot.docs.map((doc) => doc.data() as TypeMyBookmarks)[0]);
+        setMyBookmarks(
+          snapshot.docs.map((doc) => doc.data() as TypeMyBookmarks)[0]
+        );
       });
     }
   };
@@ -798,7 +801,15 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const updateRandomQuote = async () => {
+    console.log("start");
+
     let qs, lu;
+    // new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     console.log("娘:肉を切り終えた");
+    //     resolve();
+    //   }, 4000);
+    // }).then;
     if (user) {
       const userDocRef = doc(db, "users", user?.uid);
       const docSnap = await getDoc(userDocRef);
@@ -808,6 +819,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
       console.log(lu);
       if (lu && lu.displayWhichQuoteType === "mine") {
+        console.log('mine"');
+        setRandomQuote({} as IQuote);
         qs = loginUserQuotes;
         const q = query(
           quotesCollectionRef,
@@ -818,8 +831,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           const doc = snapshot.docs[randomNum];
           if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
         });
-        console.log('mine"');
       } else if (lu && lu?.displayWhichQuoteType === "bookmarks") {
+        setRandomQuote({} as IQuote);
         const q = query(
           myBookmarksCollectionRef,
           where("uid", "==", user?.uid)
@@ -831,10 +844,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote(doc as IQuote);
         });
       } else {
-        console.log("both");
-        qs = loginUserQuotes.concat(myBookmarks.quotes);
+        setRandomQuote({} as IQuote);
+        console.log("builtIn", builtInQuotes.length);
+        const randomNum = getRandomNum(builtInQuotes.length);
+        const doc = builtInQuotes[randomNum];
+        if (doc) setRandomQuote(doc as IQuote);
       }
     }
+    console.log("end");
   };
 
   const [whichList, setWhichList] = useState<"yours" | "all">("yours");
