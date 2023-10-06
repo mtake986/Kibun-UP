@@ -80,7 +80,6 @@ export default function ContactForm() {
           className: "border-none bg-red-500 text-white",
           title: "ERROR: Failed to send it",
         });
-        console.log(error);
         setLoading(false);
       }
     }

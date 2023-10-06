@@ -54,12 +54,12 @@ const Radios = () => {
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="builtIn"
-              id="r2"
+              id="r3"
               className="border-gray-300 text-violet-600"
               onClick={(e) => updateDisplayWhichQuoteType("builtIn")}
               disabled={!builtInQuotes}
             />
-            <Label htmlFor="r2">Built-in</Label>
+            <Label htmlFor="r3">Built-in</Label>
             <p className="ml-3 text-xs text-gray-500">
               Only from built-in quotes
             </p>

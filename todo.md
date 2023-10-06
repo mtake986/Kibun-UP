@@ -121,10 +121,12 @@ Sep. 12
 - [x] bug: lock an event and quote
 - [x] able to lock a bookmark
 
+Oct. 5
+- [x] built-in quotes 
+
 ### Coming Updates...
-- [] Event Cheer
-- [] createdAt, updatedAt on QuoteCard
-- [] built-in quotes 
+- [ ] Event Cheer
+- [ ] createdAt, updatedAt on QuoteCard
 
 
 when date is ambiguous, countdown will be like 日めくりゴロゴｃ
