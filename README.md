@@ -6,22 +6,39 @@
 ## Links
 
 - [Repo](https://github.com/mtake986/Kibun-UP)
-- [Live](<https://github.com/mtake986/Kibun-UP> "Live View")
+- [Live](https://github.com/mtake986/Kibun-UP "Live View")
 - [Bugs](https://github.com/mtake986/Kibun-UP/issues)
 
-## Screenshots
+## Screenshots of the App
 
-#### Home Page
-![Home Page](/public/Screenshots/HomePage.png)
+### Home Page
 
-#### Quote Page
-![Quote Page](/public/Screenshots/QuotePage.png)
+**Feature: Refresh**
+The users can refresh the event/quote by clicking the refresh icon at the bottom-right position in the cards.
+
+**Feature: Locks**
+Both of the target icons placed at right-bottom position in the cards are grayed out first. After users lock the event/quote, the icon for it will be colored in red.
+Before
+![Home Page](/public/AppScreenshots/HomePageBeforeLock.png)
+After
+![Home Page](/public/AppScreenshots/HomePageAfterLock.png)
+
+Once locked, the event/quote won't change until the users unlock them. The users can unlock them by clicking the target icons again.
+
+#### Quotes Page
+
+List of quotes a user have made under the "Mine" tab, and quotes other users have made under "All" tab. 
+![Quotes Page](/public/AppScreenshots/ListOfQuotes.png)
+![Quotes Page](/public/AppScreenshots/QuoteRegisterForm.png)
+![Quotes Page](/public/AppScreenshots/QuoteWhenFilter.png)
 
 #### Event Page
-![Event Page](/public/Screenshots/EventPage.png)
+
+![Event Page](/public/AppScreenshots/EventPage.png)
 
 #### Profile Page
-![Profile Page](/public/Screenshots/ProfilePage.png)
+
+![Profile Page](/public/AppScreenshots/ProfilePage.png)
 
 ## Available Commands
 

@@ -17,13 +17,12 @@ import { Input } from "@/components/ui/input";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
-import RegisterFormToggleBtn from "../RegisterFormToggleBtn";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
 import { IUserInfo } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { MdAdd, MdClose } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import {
   Select,
   SelectContent,
@@ -34,7 +33,6 @@ import {
 import { tagColors } from "@/public/CONSTANTS";
 import { ITag } from "@/types/type";
 import { changeTagColor } from "@/utils/functions";
-import HeadingThree from "@/components/utils/HeadingThree";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 

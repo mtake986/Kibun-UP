@@ -68,7 +68,7 @@ const CardNotMine = ({ q, i }: Props) => {
             <div className="flex w-10">
               <BsFillPersonFill size={20} className="mr-5" />
             </div>
-            <p className="">{q.quote}</p>
+            <p className="">{q.person}</p>
           </div>
           {q.tags && q.tags?.length >= 1 && (
             <div className="flex flex-wrap items-center gap-2">
