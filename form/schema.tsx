@@ -17,7 +17,7 @@ export const quoteSchema = z.object({
   // tags: z.tuple([z.string()]),
   tags: z.array(
     z.object({
-      tag: z.string(),
+      tag: z.string().max(30),
       tagColor: z.string(),
     })
   ),
