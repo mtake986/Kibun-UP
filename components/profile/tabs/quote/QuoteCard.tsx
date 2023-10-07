@@ -36,7 +36,7 @@ const QuoteCard = ({ q }: Props) => {
     lockThisQuote,
     lockedQuote,
     handleDelete,
-    removeLockThisQuote,
+    removeLockFromThisQuote,
     myFavs,
     numOfFavs,
   } = useQuote();
@@ -121,7 +121,7 @@ const QuoteCard = ({ q }: Props) => {
               {lockedQuote?.id === q.id ? (
                 <Button
                   onClick={() => {
-                    if (user) removeLockThisQuote(user?.uid);
+                    if (user) removeLockFromThisQuote(user?.uid);
                   }}
                   className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
                   variant="ghost"
@@ -181,7 +181,7 @@ const QuoteCard = ({ q }: Props) => {
               onClick={() => {
                 handleDelete(q.id);
                 if (user && lockedQuote?.id === q.id)
-                  removeLockThisQuote(user?.uid);
+                  removeLockFromThisQuote(user?.uid);
               }}
               className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
               variant="ghost"

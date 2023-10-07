@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { builtInQuotes } from "@/public/CONSTANTS";
 
 const Radios = () => {
   const { updateDisplayWhichQuoteType, loginUser } = useAuth();
@@ -53,15 +52,14 @@ const Radios = () => {
         <div className="flex flex-col sm:flex-row sm:items-center">
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="builtIn"
+              value="random"
               id="r3"
               className="border-gray-300 text-violet-600"
-              onClick={(e) => updateDisplayWhichQuoteType("builtIn")}
-              disabled={!builtInQuotes}
+              onClick={(e) => updateDisplayWhichQuoteType("random")}
             />
-            <Label htmlFor="r3">Built-in</Label>
+            <Label htmlFor="r3">Random</Label>
             <p className="ml-3 text-xs text-gray-500">
-              Only from built-in quotes
+              Randomly selected quote
             </p>
           </div>
         </div>
