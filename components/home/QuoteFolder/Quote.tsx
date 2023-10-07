@@ -18,10 +18,11 @@ const Quote = () => {
     updateRandomQuote,
     lockThisQuote,
     lockedQuote,
-    removeLockThisQuote,
+    removeLockFromThisQuote,
     getLockedQuote,
   } = useQuote();
 
+  const { data, isPending, error } = useFetchQuoteFromNinjasAPI();
   const { loginUser, fetchLoginUser } = useAuth();
   const fetchDocuments = async () => {
     try {
@@ -38,7 +39,7 @@ const Quote = () => {
     if (user) fetchDocuments();
   }, [user]);
 
-  if (loading) {
+  if (loading || isPending) {
     return (
       <div className="mb-20 mt-10 flex-col items-center">
         <Skeleton className="h-48 w-full" />
@@ -46,7 +47,7 @@ const Quote = () => {
     );
   }
 
-  if (!loading) {
+  if (!loading && !isPending) {
     if (user) {
       if (lockedQuote) {
         return (
@@ -71,7 +72,7 @@ const Quote = () => {
                   <BiLock
                     size={16}
                     onClick={() => {
-                      removeLockThisQuote(user.uid);
+                      removeLockFromThisQuote(user.uid);
                     }}
                     className={`cursor-pointer text-red-500 duration-300 hover:opacity-50`}
                   />
@@ -85,11 +86,13 @@ const Quote = () => {
           <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
             <div className="">
               <strong className="text-lg sm:text-xl">
-                {randomQuote.quote}
+                {randomQuote ? randomQuote.quote : data.quote}
               </strong>
               <div className="flex flex-col items-end">
                 <div className="mt-4 text-right  text-xs">
-                  <span>by {randomQuote.person}</span>
+                  <span>
+                    by {randomQuote ? randomQuote.person : data.person}
+                  </span>
                 </div>
                 <div className="mt-4 flex items-center gap-5">
                   <BiRefresh
@@ -103,7 +106,7 @@ const Quote = () => {
                   <BiLockOpen
                     size={16}
                     onClick={() => {
-                      lockThisQuote(user.uid, randomQuote);
+                      lockThisQuote(user.uid, randomQuote ? randomQuote : data);
                     }}
                     className={`cursor-pointer duration-300 hover:opacity-50`}
                   />
@@ -112,18 +115,19 @@ const Quote = () => {
             </div>
           </div>
         );
-      } else {
-        return (
-          <div className="mb-20 mt-10 rounded-lg p-12 text-center">
-            <UrlLink
-              href="/quote"
-              className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
-              clickOn="You have no quotes yet."
-              target="_self"
-            />
-          </div>
-        );
       }
+      // else {
+      //   return (
+      //     <div className="mb-20 mt-10 rounded-lg p-12 text-center">
+      //       <UrlLink
+      //         href="/quote"
+      //         className="cursor-pointer text-sm text-blue-400 underline duration-300 hover:opacity-70"
+      //         clickOn="You have no quotes yet."
+      //         target="_self"
+      //       />
+      //     </div>
+      //   );
+      // }
     } else {
       return (
         <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
@@ -133,7 +137,7 @@ const Quote = () => {
       );
     }
   }
-  return <div>Going wrong here</div>;
+  return <div>Something wrong here</div>;
 };
 
 export default Quote;

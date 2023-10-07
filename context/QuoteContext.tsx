@@ -35,10 +35,6 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../utils/functions";
-import { useAuth } from "./AuthContext";
-import { User } from "firebase/auth";
-import { CategoriesQuoteFromAPI, builtInQuotes } from "@/public/CONSTANTS";
-import useFetchQuoteFromNinjasAPI from "@/components/hooks/useFetchQuoteFromNinjasAPI";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -55,7 +51,7 @@ type QuoteContext = {
   lockThisQuote: (uid: string, data: IQuote) => void;
   lockedQuote: IQuote | undefined;
 
-  removeLockThisQuote: (uid: string) => void;
+  removeLockFromThisQuote: (uid: string) => void;
   getLockedQuote: () => void;
 
   isUpdateMode: boolean;
@@ -243,10 +239,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-  const lockThisQuote = async (
-    uid: string,
-    data: any,
-  ) => {
+  const lockThisQuote = async (uid: string, data: any) => {
     let payload;
     if (!data.userInfo) {
       payload = { ...data, userInfo: { uid } };
@@ -257,7 +250,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setLockedQuote(data);
   };
 
-  const removeLockThisQuote = async (uid: string) => {
+  const removeLockFromThisQuote = async (uid: string) => {
     await deleteDoc(doc(db, "lockedQuotes", uid));
     setLockedQuote(undefined);
   };
@@ -285,7 +278,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       updatedAt: serverTimestamp(),
     }).then((res) => {
       if (lockedQuote?.id === qid && values.isDraft) {
-        if (uid) removeLockThisQuote(uid);
+        if (uid) removeLockFromThisQuote(uid);
         toast({
           className: "border-none bg-green-500 text-white",
           title: "Successfully Updated",
@@ -806,7 +799,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const updateRandomQuote = async () => {
-
     let qs, lu;
     if (user) {
       const userDocRef = doc(db, "users", user?.uid);
@@ -840,35 +832,22 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote(doc as IQuote);
         });
       } else {
-        setRandomQuote({} as IQuote);
-
-        const randomNumber = Math.floor(
-          Math.random() * CategoriesQuoteFromAPI.length
-        );
-        const randomCategory = CategoriesQuoteFromAPI[randomNumber];
-        fetch(
-          `https://api.api-ninjas.com/v1/quotes?category=${randomCategory}`,
-          {
-            headers: {
-              "X-API-KEY": process.env.NEXT_PUBLIC_NINJAS_API_KEY || "",
-            },
+      fetch(`https://api.quotable.io/random`)
+        .then((response) => {
+          if (!response.ok) {
+            throw Error(`不具合が発生しました!! status: ${response.status}`);
           }
-        )
-          .then((response) => {
-            if (!response.ok) {
-              throw Error(`不具合が発生しました!! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((res) => {
-            setRandomQuote({
-              person: res[0].author,
-              quote: res[0].quote,
-            } as IQuote);
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
+          return response.json();
+        })
+        .then((res) => {
+          setRandomQuote({
+            person: res.author,
+            quote: res.content,
+          } as IQuote);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
       }
     }
   };
@@ -964,7 +943,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         randomQuote,
         lockThisQuote,
         lockedQuote,
-        removeLockThisQuote,
+        removeLockFromThisQuote,
         getLockedQuote,
         isUpdateMode,
         toggleUpdateMode,
