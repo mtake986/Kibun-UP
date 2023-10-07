@@ -184,12 +184,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       toast({
         className: "border-none bg-green-500 text-white",
         title: "Successfully Created",
-        // description: `
-        //     Person: ${values.person},
-        //     Quote: ${values.quote},
-        //     Draft: ${values.isDraft},
-        //     Tags: ${values.tags.map((value, i) => value.tag: )}
-        //   `,
       });
     });
   };
