@@ -8,7 +8,7 @@
 
 <br>
 
-## 🔗 App Links
+## 🔗 App URL
 
 For those who just want to try the app right now
 https://kibun-up.vercel.app
@@ -39,6 +39,7 @@ Users can do these ⭐️ things in this app:
 
 <p style="display: inline">
   <img src="https://img.shields.io/badge/-javascript-20232A?style=for-the-badge&logo=javascript">
+  <img src="https://img.shields.io/badge/-typescript-20232A?style=for-the-badge&logo=typescript">
   <img src="https://img.shields.io/badge/-react-20232A?style=for-the-badge&logo=react">
   <img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge">
   <img src="https://img.shields.io/badge/-tailwindcss-20232A?style=for-the-badge&logo=tailwindcss">
