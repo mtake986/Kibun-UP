@@ -127,10 +127,6 @@ Oct. 5
 ### Coming Updates...
 - [ ] Event Cheer
 - [ ] createdAt, updatedAt on QuoteCard
-
-
-when date is ambiguous, countdown will be like 日めくりゴロゴｃ
-
-favQuote ：　何人に Fav されてるかをみたいから　
-bookmarks: ログインユーザーがどの Quote をブックマークしてるかをみたいから
-numOfBookmarks: to display the number of bookmarks
+- [ ] randomly select from tagas
+- [ ] bookmark mine?? 
+- [ ] total likes on profile

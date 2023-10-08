@@ -826,7 +826,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote(doc as IQuote);
         });
       } else {
-      fetch(`https://api.quotable.io/random`)
+      fetch(`https://api.quotable.io/quotes?tags=famous-quotes`)
         .then((response) => {
           if (!response.ok) {
             throw Error(`不具合が発生しました!! status: ${response.status}`);
