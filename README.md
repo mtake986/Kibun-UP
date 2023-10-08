@@ -1,6 +1,20 @@
-<h1 align="center">Kibun UP</h1>
+![Logo](./public/icons/logo.png)
+
+## 🔗 App Links
+
+[Repository](https://github.com/mtake986/Kibun-UP)
+[Application](https://kibun-up.vercel.app/)
+
+
+
+## 💬 Abstract
+
+This is an app to have users to keep their motivation to a specific target which users can set. I love the greatest quotes in the world and often read them to inspire myself to the target.
+
+By the way, I created the appp name, "Kibun UP". I have been a college student in the U.S. since 2019. "Kibun" is a Japanese word means feeling or mood, and the sound likes 7 UP, a famous soda in the U.S. and "UP" is an English word.
 
 ## 💻 Built With
+
 <p style="display: inline">
   <img src="https://img.shields.io/badge/-javascript-20232A?style=for-the-badge&logo=javascript">
   <img src="https://img.shields.io/badge/-react-20232A?style=for-the-badge&logo=react">
@@ -9,12 +23,6 @@
   <img src="https://img.shields.io/badge/-firebase-20232A?style=for-the-badge&logo=firebase">
   <img src="https://img.shields.io/badge/-vercel-20232A?style=for-the-badge&logo=vercel">
 </p>
-
-## 💬 Abstract
-
-This is an app to have users to keep their motivation to a specific target which users can set. I love the greatest quotes in the world and often read them to inspire myself to the target.
-
-By the way, I created the appp name, "Kibun UP". I have been a college student in the U.S. since 2019. "Kibun" is a Japanese word means feeling or mood, and the sound likes 7 UP, a famous soda in the U.S. and "UP" is an English word.
 
 ## 🖼️ Screenshots of the App
 
@@ -123,10 +131,6 @@ Users can reach out to the creator of the app by filling out the form. The form 
 Displaying the creator's information: Name, from country, tech stacks used in the application, resumes and transcripts, and SNS accounts of the creator.
 <img src="/public/appScreenshots/creatorInfo/CreatorInfo.png" alt="Creator Info. Page" width='300' />
 
-## 🔗 App Links
-
-[Repository](https://github.com/mtake986/Kibun-UP)
-[Application](https://kibun-up.vercel.app/)
 
 ## 😀 Creator
 

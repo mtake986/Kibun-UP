@@ -129,3 +129,4 @@ Oct. 5
 - [ ] createdAt, updatedAt on QuoteCard
 - [ ] randomly select from tagas
 - [ ] bookmark mine?? 
+- [ ] total likes on profile
