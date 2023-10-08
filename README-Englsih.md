@@ -4,6 +4,8 @@
 For those who just want to try the app right now
 https://kibun-up.vercel.app
 
+<br>
+
 ## 💬 Abstract
 I LOVE the greatest quotes in the world and often read them to inspire myself to push myself hard to the goals in my life. Categories of the quotes I love vary from Steve Jobs and Albert Einstein to Japanese anime characters. There are some apps out there currently to display quotes somehow, but none of them satisfies all of my desires. So, I created this app, "Kibun UP".
 
@@ -20,7 +22,9 @@ Users can do these ⭐️ things in this app:
 
 "Kibun" is a Japanese word meaning feeling or mood, and I love 7 UP, a famous soda in the U.S. 
 
-## 💻 Built With
+<br>
+
+## 💻 Tech Stacks
 
 <p style="display: inline">
   <img src="https://img.shields.io/badge/-javascript-20232A?style=for-the-badge&logo=javascript">
@@ -31,24 +35,24 @@ Users can do these ⭐️ things in this app:
   <img src="https://img.shields.io/badge/-vercel-20232A?style=for-the-badge&logo=vercel">
 </p>
 
+<br>
 
 ## 🖼️ Screenshots of the App
 
-## Brief Overview
+### Brief Overview
 | [Home](https://kibun-up.vercel.app/)                        | [After Locked](https://kibun-up.vercel.app/)                       |
 | ----------------------------------------------------------- | ------------------------------------------------------------------ |
 | ![Home](/public/appScreenshots/home/HomePageBeforeLock.png) | ![After Locked](/public/appScreenshots/home/HomePageAfterLock.png) |
 | Home main page, an event and a quote                        | After locked both an event and quote (red target icons)            |
 
-| [List Of Quotes](https://kibun-up.vercel.app/quote)           | [List Of Quotes Not Mine](https://kibun-up.vercel.app/quote)             |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| ![List Of Quotes](/public/appScreenshots/quote/ListMine.png)  | ![List Of Quotes Not Mine](/public/appScreenshots/quote/ListNotMine.png) |
-| List of quotes which current user has created                 | List of Quotes other users have made                                     |
+<div class="table-wrapper" markdown="block">
 
-| [Quote When Filter Is On](https://kibun-up.vercel.app/quote)            | [Quote Register Form](https://kibun-up.vercel.app/quote/register)     |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| ![Quote When Filter Is On](/public/appScreenshots/quote/WhenFilter.png) | ![Quote Register Form](/public/appScreenshots/quote/RegisterForm.png) |
-| List of quotes which current user has created                           | List of Quotes other users have made                                  |
+| [List Of Quotes](https://kibun-up.vercel.app/quote)           | [List Of Quotes Not Mine](https://kibun-up.vercel.app/quote)             | [Quote When Filter Is On](https://kibun-up.vercel.app/quote)            | [Quote Register Form](https://kibun-up.vercel.app/quote/register)     |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![List Of Quotes](/public/appScreenshots/quote/ListMine.png)  | ![List Of Quotes Not Mine](/public/appScreenshots/quote/ListNotMine.png) | ![Quote When Filter Is On](/public/appScreenshots/quote/WhenFilter.png) | ![Quote Register Form](/public/appScreenshots/quote/RegisterForm.png) |
+| List of quotes which current user has created                 | List of Quotes other users have made                                     | List of quotes which current user has created                           | List of Quotes other users have made                                  |
+
+</div>
 
 | [List Of Events ](https://kibun-up.vercel.app/event)      | [Event Regsiter Form](https://kibun-up.vercel.app/event/register)     |
 | --------------------------------------------------------- | --------------------------------------------------------------------- |
@@ -60,17 +64,24 @@ Users can do these ⭐️ things in this app:
 | ![Profile Top](/public/appScreenshots/profile/ProfileTop.png)  | ![Settings](/public/appScreenshots/profile/Settings.png)     |
 | List of quotes which current user has created                  | List of Quotes other users have made                         |
 
-| Login                                           | [Contact to Creator](https://kibun-up.vercel.app/contact)            |
-| ----------------------------------------------- | -------------------------------------------------------------------- |
-| ![Login](/public/appScreenshots/Login.png)      | ![Contact via Email](/public/appScreenshots/contact/ContactForm.png) |
-| Only google accounts allowed (Update coming!!)  | Able for users to shoot me an email directly!!                       |
+| Login                                           |
+| ----------------------------------------------- |
+| ![Login](/public/appScreenshots/Login.png)      |
+| Only google accounts allowed (Update coming!!)  |
 
-| [Stuff about Creator](https://kibun-up.vercel.app/creator-info)                          |
+| [Contact](https://kibun-up.vercel.app/contact)            |
+| -------------------------------------------------------------------- |
+| ![Contact via Email](/public/appScreenshots/contact/ContactForm.png) |
+| Able for users to shoot me an email directly!!                       |
+
+| [Creator Info](https://kibun-up.vercel.app/creator-info)                          |
 | ---------------------------------------------------------------------------------------- |
-| ![About Creator](/public/appScreenshots/creatorInfo/CreatorInfo.png)                     |
+| ![Creator Info](/public/appScreenshots/creatorInfo/CreatorInfo.png)                     |
 | Creator Info, tech stacks of the app, resumes, transcripts, and social media accounts    | 
 
-## Detailed Overview
+<br>
+
+### Detailed Overview
 
 ### 1. Home Page
 
@@ -155,6 +166,9 @@ Users can reach out to the creator of the app by filling out the form. The form 
 | Title        | 2 ~ 30 letters      |     
 | Message      | 2 ~ 1000 letters    |
 
+
+<br>
+
 ## 😀 About Creator
 
 <div style="display: flex; gap: 20px">
@@ -181,6 +195,14 @@ Users can reach out to the creator of the app by filling out the form. The form 
     </div>
   </div>
 </div>
+
+
+<br>
+
+## ✌️ Future Updates
+- [ ] randomly select from tags in Settings
+- [ ] able to bookmark their own quote
+- [ ] total likes on profile
 
 ## 🤝 Support
 

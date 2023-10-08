@@ -5,8 +5,6 @@
 [Repository](https://github.com/mtake986/Kibun-UP)
 [Application](https://kibun-up.vercel.app/)
 
-
-
 ## 💬 Abstract
 
 This is an app to have users to keep their motivation to a specific target which users can set. I love the greatest quotes in the world and often read them to inspire myself to the target.
@@ -131,16 +129,15 @@ Users can reach out to the creator of the app by filling out the form. The form 
 Displaying the creator's information: Name, from country, tech stacks used in the application, resumes and transcripts, and SNS accounts of the creator.
 <img src="/public/appScreenshots/creatorInfo/CreatorInfo.png" alt="Creator Info. Page" width='300' />
 
+## 📊 ERD
+
+![ERD](./public/files/erd.png)
 
 ## 😀 Creator
 
-<div style="display: flex; gap: 20px">
-  <img src="/public/creatorPicture.jpg" alt="Creator Picture" width='100' style="width: 100px; height: 100px; border-radius: 100%; object-position: center; object-fit: cover; "/>
-  <div>
-    <div>
-      <span style="font-weight: 600;" >Masahiro Takechi</span>
-      <p>Kochi, Japan (Japanese)</p>
-    </div>
+<div style="display: flex; gap: 30px">
+  <div style='width: 300px;'>
+    <img src="/public/creatorPicture.jpg" alt="Creator Picture" width='100' style="width: 120px; height: 120px; margin-bottom: 10px; border-radius: 100%; object-position: center; object-fit: cover; "/>
     <div style="display: flex; flex-direction: column;">
       <span style="font-weight: 600;" >Accounts</span>
       <div style="display: flex; gap: 10px">
@@ -155,6 +152,10 @@ Displaying the creator's information: Name, from country, tech stacks used in th
         </a>
       </div>
     </div>
+  </div>
+  <div>
+    <span style="font-weight: 600;" >Masahiro Takechi</span>
+    <p>Born and raised in Kochi, Japan (Japanese). I started attending college in Arkansas from Sep. 2019 to May 2021. Then, I transferred to BYU-Idaho in Sep. 2021. My major is Computer Science and anticipated graduation month is Dec. 2024. I look for an internship as a software engineer or front-end developer. Feel free to reach out to me via social media accounts!!</p>
   </div>
 </div>
 
