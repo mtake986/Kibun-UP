@@ -34,11 +34,11 @@ The users can refresh the event/quote by clicking the refresh icon at the bottom
 
 **Before locked**
 Both of the target icons placed at right-bottom position in the cards are grayed out first. After users lock the event/quote, the icon for it will be colored in red. The users can lock the event/quote by clicking the target icons.
-<img src="/public/AppScreenshots/home/HomePageBeforeLock.png" alt="Before locked" width='300' />
+<img src="/public/AppScreenshots/home/HomePageBeforeLock.png" alt="Before locked" />
 
 **After locked**
 Once locked, the event/quote won't change until the users unlock them. The users can unlock them by clicking the target icons again.
-<img src="/public/AppScreenshots/home/HomePageAfterLock.png" alt="After locked" width='300' />
+<img src="/public/AppScreenshots/home/HomePageAfterLock.png" alt="After locked" />
 
 ### 2. Quotes Page
 
@@ -49,7 +49,7 @@ Edit -> the edit icon at the bottom-left position
 Lock -> the lock icon at the bottom-left position
 Heart -> number of likes to quotes from other users
 Delete -> the trash icon at the bottom-right position
-<img src="/public/appScreenshots/quote/ListOfQuotes.png" alt="My Quotes" width='300' />
+<img src="/public/appScreenshots/quote/ListOfQuotes.png" alt="My Quotes" />
 
 **Regsiter Form of Quote**
 Clicking the plus icon at the bottom-right position will display a regsiter form of a quote. Create a new quote by filling out the form. The form is validated by the following rules.
@@ -60,15 +60,15 @@ Clicking the plus icon at the bottom-right position will display a regsiter form
 | Draft | boolean |
 | Tags | Max 5 tags, ~ 30 tags |
 
-<img src="/public/appScreenshots/quote/QuoteRegisterForm.png" alt="Quote Register Page" width='300' />
+<img src="/public/appScreenshots/quote/QuoteRegisterForm.png" alt="Quote Register Page" />
 
 **List of Quotes not mine**
 Displaying quotes made by other users. The users can like the quotes by clicking the heart icon at the bottom-left position in the cards. The users can also bookmark the quotes by clicking the bookmark icon next to the heart icon. Bookmarks are displayed under the **Bookmarks** tab in the profile page and can be displayed on the homepage if users set on the profile page.
-<img src="/public/appScreenshots/quote/ListOfQuotesNotMine.png" alt="List of Quotes not mine" width='300' />
+<img src="/public/appScreenshots/quote/ListOfQuotesNotMine.png" alt="List of Quotes not mine" />
 
 **List of My Quotes when filtering is on**
 The users can filter the quotes by tags and sort the list by these properties: quote, person, and the time created.
-<img src="/public/appScreenshots/quote/QuoteWhenFilter.png" alt="List of My Quotes when filtering is on" width='300' />
+<img src="/public/appScreenshots/quote/QuoteWhenFilter.png" alt="List of My Quotes when filtering is on" />
 
 ### 3. Event Page
 
@@ -79,7 +79,7 @@ Edit -> the edit icon at the bottom-left position
 Lock -> the lock icon at the bottom-left position
 Delete -> the trash icon at the bottom-right position
 
-<img src="/public/appScreenshots/event/ListOfEvents.png" alt="List of Events" width='300' />
+<img src="/public/appScreenshots/event/ListOfEvents.png" alt="List of Events" />
 
 **Register form of Event**
 
@@ -91,7 +91,7 @@ Users can create a new event by filling out the form. The form is validated by t
 | Description | ~ 500 letters |
 | Event Date | Proper Date Format |
 
-<img src="/public/appScreenshots/event/EventRegisterForm.png" alt="Register form of Event" width='300' />
+<img src="/public/appScreenshots/event/EventRegisterForm.png" alt="Register form of Event" />
 
 ### 4. User Profile
 
@@ -104,13 +104,13 @@ I implemented a pagination for the lists of events and quotes and the default nu
 Users can also edit their quotes and events from here.
 Also, quotes that the login user bookmarked and quotes that the login user liked are displayed under the **Bookmarks** and **Likes** tabs.
 
-<img src="/public/appScreenshots/profile/Profile1.png" alt="Profile Page 1" width='300' />
+<img src="/public/appScreenshots/profile/Profile1.png" alt="Profile Page 1" />
 
 #### Feature: Customize the quote type to display on the homepage
 
 My app allows users to customize the quote type to display on the homepage. The default is **Mine** which is a quote made by the current user displayed on the homepage. Other options are **Bookmarks** and **Inspiration**.
 
-<img src="/public/appScreenshots/profile/Settings.png" alt="Settings" width='300' />
+<img src="/public/appScreenshots/profile/Settings.png" alt="Settings" />
 
 ### 5. Contact Page
 
@@ -122,12 +122,12 @@ Users can reach out to the creator of the app by filling out the form. The form 
 | Title | 2 ~ 30 letters |
 | Message | 2 ~ 1000 letters |
 
-<img src="/public/appScreenshots/contact/ContactForm.png" alt="Contact Page" width='300' />
+<img src="/public/appScreenshots/contact/ContactForm.png" alt="Contact Page" />
 
 ### 6. Creator Info.
 
 Displaying the creator's information: Name, from country, tech stacks used in the application, resumes and transcripts, and SNS accounts of the creator.
-<img src="/public/appScreenshots/creatorInfo/CreatorInfo.png" alt="Creator Info. Page" width='300' />
+<img src="/public/appScreenshots/creatorInfo/CreatorInfo.png" alt="Creator Info. Page" />
 
 ## 📊 ERD
 
