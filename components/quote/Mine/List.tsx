@@ -5,10 +5,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
 import { useQuote } from "@/context/QuoteContext";
 import { IQuote } from "@/types/type";
-import { pagination } from "@/utils/functions";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortFilterMine from "./Sort/SortFilterMine";
+import usePagination from "@/components/hooks/usePagination";
 
 type Props = {
   quotes: IQuote[];
@@ -21,13 +21,13 @@ const List = ({ quotes }: Props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = pagination(currentPage, quotes);
+  const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
   return (
     <div className="mb-20">
       {/* todo: move to dialog */}
       {sortFilterAreaForMineShown ? <SortFilterMine /> : null}
-      
+
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (

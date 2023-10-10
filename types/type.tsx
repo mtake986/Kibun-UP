@@ -22,7 +22,6 @@ export interface IQuote {
   tags?: ITag[];
 }
 
-
 export interface IEventInputValues {
   eventTitle: string;
   place?: string;
@@ -79,18 +78,27 @@ export type TypeNumOfFavs = {
   id?: string;
 };
 
-export interface ILoginUser {
+export interface TypeLoginUser {
   uid: string;
   email: string;
   displayName: string;
   photoURL: string;
   createdAt: Date;
-  displayWhichQuoteType: string;
-  paginationNum: number;
+  settings: {
+    itemsPerPage: number;
+    tagForQuotableApi: string;
+    quoteTypeForHome: "bookmarks" | "mine" | "appChoice";
+  };
 }
 
 export type typeQuoteFromAPI = {
   quote: string;
   author: string;
   category: string;
+};
+
+export type TypeUpdateUserInputs = {
+  photoURL?: string | null;
+  displayName?: string;
+  itemsPerPage?: number;
 };

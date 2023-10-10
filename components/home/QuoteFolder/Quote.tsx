@@ -6,9 +6,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { BiLock, BiLockOpen, BiRefresh } from "react-icons/bi";
-import UrlLink from "@/components/utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
-import useFetchQuoteFromNinjasAPI from "@/components/hooks/useFetchQuoteFromNinjasAPI";
+import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
+import useFetchTags from "@/components/hooks/useFetchTags";
 
 const Quote = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -22,8 +22,8 @@ const Quote = () => {
     getLockedQuote,
   } = useQuote();
 
-  const { data, isPending, error } = useFetchQuoteFromNinjasAPI();
   const { loginUser, fetchLoginUser } = useAuth();
+  const { data, isPending, error, refetch } = useFetchQuoteFromQuotableAPI();
   const fetchDocuments = async () => {
     try {
       setLoading(true);
@@ -37,7 +37,7 @@ const Quote = () => {
   };
   useEffect(() => {
     if (user) fetchDocuments();
-  }, [user]);
+  }, [user, data]);
 
   if (loading || isPending) {
     return (
@@ -51,17 +51,15 @@ const Quote = () => {
     if (user) {
       if (lockedQuote) {
         return (
-          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
+          <div className="mb-20 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
             <div className="">
               <strong className="text-lg sm:text-xl">
                 {lockedQuote.quote}
               </strong>
 
-              <div className="flex flex-col items-end">
-                <div className="mt-4 text-right text-xs">
-                  <span>by {lockedQuote.person}</span>
-                </div>
-                <div className="mt-4 flex items-center gap-5">
+              <div className="flex justify-between items-center mt-4 text-right text-xs">
+                <span>by {lockedQuote.person}</span>
+                <div className="flex items-center gap-5">
                   <BiRefresh
                     size={20}
                     onClick={() => {
@@ -81,18 +79,46 @@ const Quote = () => {
             </div>
           </div>
         );
-      } else if (randomQuote) {
+      } else if (loginUser?.settings.quoteTypeForHome === "appChoice") {
         return (
-          <div className="mb-20 mt-5 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
+          <div className="mb-20 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
+            <div className="">
+              <strong className="text-lg sm:text-xl">{data?.quote}</strong>
+              <div className="flex flex-col items-end">
+                <div className="mt-4 text-right  text-xs">
+                  <span>by {data?.person}</span>
+                </div>
+                <div className="mt-4 flex items-center gap-5">
+                  <BiRefresh
+                    size={20}
+                    onClick={() => {
+                      refetch();
+                    }}
+                    className={`cursor-pointer duration-300 hover:opacity-50`}
+                  />
+
+                  <BiLockOpen
+                    size={16}
+                    onClick={() => {
+                      lockThisQuote(user.uid, data);
+                    }}
+                    className={`cursor-pointer duration-300 hover:opacity-50`}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="mb-20 px-5 py-6 sm:rounded-lg sm:px-12 sm:pb-12 sm:pt-6 sm:shadow">
             <div className="">
               <strong className="text-lg sm:text-xl">
-                {randomQuote ? randomQuote.quote : data.quote}
+                {randomQuote?.quote}
               </strong>
               <div className="flex flex-col items-end">
                 <div className="mt-4 text-right  text-xs">
-                  <span>
-                    by {randomQuote ? randomQuote.person : data.person}
-                  </span>
+                  <span>by {randomQuote?.person}</span>
                 </div>
                 <div className="mt-4 flex items-center gap-5">
                   <BiRefresh
@@ -106,7 +132,7 @@ const Quote = () => {
                   <BiLockOpen
                     size={16}
                     onClick={() => {
-                      lockThisQuote(user.uid, randomQuote ? randomQuote : data);
+                      if (randomQuote) lockThisQuote(user.uid, randomQuote);
                     }}
                     className={`cursor-pointer duration-300 hover:opacity-50`}
                   />

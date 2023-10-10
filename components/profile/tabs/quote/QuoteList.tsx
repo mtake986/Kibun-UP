@@ -4,7 +4,8 @@ import QuoteCard from "@/components/profile/tabs/quote/QuoteCard";
 import { useQuote } from "@/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
-import { pagination } from "@/utils/functions";
+import usePagination from "@/components/hooks/usePagination";
+
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import { IQuote } from "@/types/type";
@@ -21,7 +22,7 @@ const QuoteList = ({ quotes }: Props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = pagination(currentPage, quotes);
+  const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
   if (loading) return <div>loading</div>;
 

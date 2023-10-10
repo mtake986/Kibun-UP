@@ -20,8 +20,10 @@ const EditMode = ({ setIsEditMode }: Props) => {
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoURL, setPhotoURL] = useState<string | null>();
-  const [newUsername, setNewUsername] = useState<string>("");
-  const [newPaginationNum, setNewPaginationNum] = useState<number | null>(null);
+  const [newUsername, setNewUsername] = useState<string>(
+    loginUser?.displayName || ""
+  );
+  const [newItemsPerPage, setNewItemsPerPage] = useState<number | null>(null);
 
   const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -39,15 +41,15 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!user) return;
-    if (!photo && !newUsername && !newPaginationNum) {
-      alert("At least one field is required.");
+    if (!newUsername && !newItemsPerPage) {
+      alert("Username and items per page is required.");
       e.preventDefault();
     } else {
       e.preventDefault();
       uploadImage(
         photo,
         newUsername,
-        newPaginationNum,
+        newItemsPerPage,
         user,
         setLoading,
         setIsEditMode
@@ -73,7 +75,9 @@ const EditMode = ({ setIsEditMode }: Props) => {
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="username">Username</Label>
+        <Label htmlFor="username">
+          Username <span className="text-red-500">*</span>
+        </Label>
         <Input
           onChange={(e) => {
             setNewUsername(e.target.value);
@@ -83,14 +87,16 @@ const EditMode = ({ setIsEditMode }: Props) => {
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="username">Pagination #</Label>
+        <Label htmlFor="username">
+          Items / page <span className="text-red-500">*</span>
+        </Label>
         <Input
           onChange={(e) => {
-            setNewPaginationNum(Number(e.target.value));
+            setNewItemsPerPage(Number(e.target.value));
           }}
-          id="paginationNum"
+          id="itemsPerPage"
           type="number"
-          defaultValue={String(loginUser?.paginationNum)}
+          defaultValue={String(loginUser?.settings.itemsPerPage)}
         />
       </div>
 

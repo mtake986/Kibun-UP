@@ -71,11 +71,11 @@ const Event = () => {
         );
       } else if (lockedEvent) {
         return (
-          <div className="relative bg-violet-50 px-5 py-10 sm:rounded-lg sm:p-12">
+          <div className="relative bg-violet-50 px-5 py-6 sm:rounded-lg sm:p-12">
             {lockedEvent.description ? (
               <HoverCard>
-                <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
-                  <AiOutlineInfoCircle />
+                <HoverCardTrigger className="absolute right-4 top-4 cursor-pointer p-1 duration-300 hover:opacity-50">
+                  <AiOutlineInfoCircle size={16} />
                 </HoverCardTrigger>
                 <HoverCardContent>{lockedEvent.description}</HoverCardContent>
               </HoverCard>
@@ -83,7 +83,7 @@ const Event = () => {
 
             <div className="text-center">
               {calculateLeftDays(lockedEvent.eventDate.toDate()) <= 0 ? (
-                <span className="text-center text-3xl text-red-500 italic mb-5 block">
+                <span className="mb-5 block text-center text-3xl italic text-red-500">
                   You Got This!!
                 </span>
               ) : (
@@ -112,39 +112,38 @@ const Event = () => {
             <HeadingFour text={lockedEvent.eventTitle} />
 
             {/* </Suspense> */}
-            <div className="mt-4 text-right text-xs">
+            <div className="mt-4 flex items-center justify-between text-right text-xs">
               <span>
                 {lockedEvent.eventDate.toDate().getMonth() + 1}/
                 {lockedEvent.eventDate.toDate().getDate()},{" "}
                 {lockedEvent.eventDate.toDate().getFullYear()}
               </span>
-            </div>
-
-            <div className="mt-4 flex items-center justify-end gap-5">
-              <BiRefresh
-                onClick={() => {
-                  alert("To refresh, unlock this event first.");
-                }}
-                className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500`}
-                size={20}
-              />
-              <Target
-                onClick={() => {
-                  unlockThisEvent();
-                }}
-                className={`cursor-pointer text-red-500 duration-200 hover:text-red-500 hover:opacity-70`}
-                size={16}
-              />
+              <div className="flex items-center gap-5">
+                <BiRefresh
+                  onClick={() => {
+                    alert("To refresh, unlock this event first.");
+                  }}
+                  className={`cursor-not-allowed opacity-30 duration-300 hover:bg-slate-50 hover:text-slate-500`}
+                  size={20}
+                />
+                <Target
+                  onClick={() => {
+                    unlockThisEvent();
+                  }}
+                  className={`cursor-pointer text-red-500 duration-200 hover:text-red-500 hover:opacity-70`}
+                  size={16}
+                />
+              </div>
             </div>
           </div>
         );
       } else if (randomEvent) {
         return (
-          <div className="relative bg-violet-50 px-5 py-10 sm:rounded-lg sm:p-12">
+          <div className="relative bg-violet-50 px-5 py-6 sm:rounded-lg sm:p-12">
             {randomEvent.description ? (
               <HoverCard>
-                <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 text-xl duration-300 hover:opacity-50">
-                  <AiOutlineInfoCircle />
+                <HoverCardTrigger className="absolute right-5 top-5 cursor-pointer p-1 duration-300 hover:opacity-50">
+                  <AiOutlineInfoCircle size={16} />
                 </HoverCardTrigger>
                 <HoverCardContent>{randomEvent.description}</HoverCardContent>
               </HoverCard>

@@ -124,9 +124,22 @@ Sep. 12
 Oct. 5
 - [x] built-in quotes 
 
+Oct. 6
+- [x] UI randomly select from tags
+
+Oct. 7
+- [x] radio inside a card
+- [x] random to App choice
+- [x] purple to violet
+
+Oct. 8
+- [x] UX randomly select from tags
+- [ ] memoization tags (currently loading everytime)
+
 ### Coming Updates...
 - [ ] Event Cheer
 - [ ] createdAt, updatedAt on QuoteCard
-- [ ] randomly select from tagas
 - [ ] bookmark mine?? 
 - [ ] total likes on profile
+- [ ] Required filed ```<span className="text-red-500">*</span>```
+- [ ] add new font

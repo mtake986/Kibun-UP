@@ -26,7 +26,7 @@ import {
   IUserInfo,
   ISortFilterBy,
   ITag,
-  ILoginUser,
+  TypeLoginUser,
   TypeMyFavs,
   TypeNumOfFavs,
   TypeMyBookmarks,
@@ -92,7 +92,7 @@ type QuoteContext = {
   numOfBookmarks: TypeNumOfBookmarks[] | undefined;
 
   fetchQuotesForHomePage: (
-    user: ILoginUser,
+    user: TypeLoginUser,
     setIsLoading: (boo: boolean) => void
   ) => void;
   quotesForHomePage: IQuote[];
@@ -778,13 +778,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchQuotesForHomePage = (
-    user: ILoginUser,
+    user: TypeLoginUser,
     setIsLoading: (boo: boolean) => void
   ) => {
     setIsLoading(true);
-    if (user.displayWhichQuoteType === "mine") {
+    if (user.settings.quoteTypeForHome === "mine") {
       setQuotesForHomePage(loginUserQuotes);
-    } else if (user.displayWhichQuoteType === "bookmarks") {
+    } else if (user.settings.quoteTypeForHome === "bookmarks") {
       setQuotesForHomePage(myBookmarks.quotes);
     } else {
       setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
@@ -801,7 +801,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       if (docSnap.exists()) {
         lu = docSnap.data();
       }
-      if (lu && lu.displayWhichQuoteType === "mine") {
+      if (lu && lu.settings.quoteTypeForHome === "mine") {
         setRandomQuote({} as IQuote);
         qs = loginUserQuotes;
         const q = query(
@@ -813,7 +813,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           const doc = snapshot.docs[randomNum];
           if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as IQuote);
         });
-      } else if (lu && lu?.displayWhichQuoteType === "bookmarks") {
+      } else if (lu && lu?.settings.quoteTypeForHome === "bookmarks") {
         setRandomQuote({} as IQuote);
         const q = query(
           myBookmarksCollectionRef,
@@ -826,22 +826,22 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote(doc as IQuote);
         });
       } else {
-      fetch(`https://api.quotable.io/quotes?tags=famous-quotes`)
-        .then((response) => {
-          if (!response.ok) {
-            throw Error(`不具合が発生しました!! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((res) => {
-          setRandomQuote({
-            person: res.author,
-            quote: res.content,
-          } as IQuote);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+        fetch(`https://api.quotable.io/quotes?tags=${lu?.settings.tagForQuotableApi}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw Error(`不具合が発生しました!! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((res) => {
+            setRandomQuote({
+              person: res.author,
+              quote: res.content,
+            } as IQuote);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
       }
     }
   };

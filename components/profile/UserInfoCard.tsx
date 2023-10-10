@@ -27,7 +27,7 @@ const UserInfoCard = () => {
             </p>
             <p>
               <span className="text-xs">Items/page: </span>
-              <span className="font-semibold">{loginUser.paginationNum}</span>
+              <span className="font-semibold">{loginUser.settings.itemsPerPage}</span>
             </p>
           </div>
           <LogOutBtn />
