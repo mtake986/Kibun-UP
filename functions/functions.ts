@@ -5,6 +5,7 @@ export function getRandomNum(max: number) {
   if (max === 0) return 0;
   return Math.floor(Math.random() * max);
 }
+
 const colorMap: { [key: string]: string } = {
   red: "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
   orange:
