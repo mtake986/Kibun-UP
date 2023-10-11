@@ -1,6 +1,7 @@
 import { TypeTagsQuotableAPI } from "@/types/type";
 
 export function getRandomNum(max: number) {
+  if (max === 0) return 0;
   return Math.floor(Math.random() * max);
 }
 const colorMap: { [key: string]: string } = {

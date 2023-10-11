@@ -44,7 +44,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
             RANDOM
           </SelectItem>
           <Separator />
-          {tags.map((tag: TypeTagsQuotableAPI) => (
+          {tags?.map((tag: TypeTagsQuotableAPI) => (
             <SelectItem key={tag.name} value={tag.name}>
               {tag.name}, {tag.quoteCount}
             </SelectItem>
