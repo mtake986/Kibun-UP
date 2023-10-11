@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/select";
 import { tagColors } from "@/public/CONSTANTS";
 import { ITag } from "@/types/type";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 
@@ -111,7 +111,9 @@ export default function RegisterForm() {
             name="quote"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Quote</FormLabel>
+                <FormLabel>
+                  Quote <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Just Do It"
@@ -129,7 +131,9 @@ export default function RegisterForm() {
             name="person"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Person</FormLabel>
+                <FormLabel>
+                  Person <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="NIKE" {...field} />
                 </FormControl>

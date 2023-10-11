@@ -16,3 +16,15 @@ export const changeTagColor = (tagColor: string) => {
     return "bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500";
   else return "bg-white text-black hover:bg-white hover:text-black";
 };
+
+  export function calculateLeftDays(date: Date): number {
+    const today = new Date();
+    if (date < today) {
+      return -1;
+    } else {
+      const diffTime = Math.abs(date.getTime() - today.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+      // setLeftDays(diffDays);
+      return diffDays + 1;
+    }
+  }

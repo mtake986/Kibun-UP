@@ -31,7 +31,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 import { BiDuplicate } from "react-icons/bi";
 
 type Props = {
@@ -159,8 +159,7 @@ const CardNotMine = ({ q, i }: Props) => {
               <>
                 {user &&
                   (numOfBookmarks.some(
-                    (b) =>
-                      b.qid === q.id && b.uids.includes(user.uid)
+                    (b) => b.qid === q.id && b.uids.includes(user.uid)
                   ) ? (
                     <BsBookmarkFill size={12} className="text-green-500" />
                   ) : (

@@ -26,7 +26,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { MdAdd, MdCancel, MdClose, MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 
 import {
   Select,

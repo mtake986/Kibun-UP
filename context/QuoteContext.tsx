@@ -34,7 +34,7 @@ import {
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
-import { getRandomNum } from "../utils/functions";
+import { getRandomNum } from "../functions/functions";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -826,7 +826,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote(doc as IQuote);
         });
       } else {
-        fetch(`https://api.quotable.io/quotes?tags=${lu?.settings.tagForQuotableApi}`)
+        fetch(
+          `https://api.quotable.io/quotes?tags=${lu?.settings.tagForQuotableApi}`
+        )
           .then((response) => {
             if (!response.ok) {
               throw Error(`不具合が発生しました!! status: ${response.status}`);

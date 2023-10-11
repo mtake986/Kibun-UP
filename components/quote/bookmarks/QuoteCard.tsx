@@ -31,7 +31,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 
 type Props = {
   q: IQuote;
@@ -47,7 +47,6 @@ const QuoteCard = ({ q, i }: Props) => {
     myBookmarks,
     numOfBookmarks,
     numOfFavs,
-
   } = useQuote();
   const [user] = useAuthState(auth);
 

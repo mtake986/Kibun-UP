@@ -16,13 +16,12 @@ const useFetchQuoteFromQuotableAPI = () => {
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(async () => {
-    fetchLoginUser(auth.currentUser);
-    console.log(tag);
-    fetch(
-      `https://api.quotable.io/quotes${
-        tag === "random" ? "/random" : `?tags=` + tag
-      }`
-    )
+    if (!loginUser) fetchLoginUser(auth.currentUser);
+    const fullUrl = `https://api.quotable.io/quotes${
+      tag === "random" ? "/random" : `?tags=` + tag
+    }`;
+    console.log(fullUrl);
+    fetch(fullUrl)
       .then((response) => {
         if (!response.ok) {
           throw Error(`不具合が発生しました!! status: ${response.status}`);
@@ -30,7 +29,6 @@ const useFetchQuoteFromQuotableAPI = () => {
         return response.json();
       })
       .then((res) => {
-        console.log(res.results.length, res);
         const len = res.results.length;
         const quote = res.results[randomNumber(len)];
         setData({
@@ -42,7 +40,6 @@ const useFetchQuoteFromQuotableAPI = () => {
         setIsPending(false);
       })
       .catch((err) => {
-        console.log(err.message);
         setError(err.message);
         setIsPending(false);
       });

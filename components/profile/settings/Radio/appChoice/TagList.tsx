@@ -19,7 +19,9 @@ type Props = {
 };
 
 const TagList = ({ updateTagForQuotableApi, loginUser }: Props) => {
-  const { tags, error, isPending } = useFetchTags("https://api.quotable.io/tags");
+  const { tags, error, isPending } = useFetchTags(
+    "https://api.quotable.io/tags"
+  );
 
   if (isPending) return <div>Loading...</div>;
 
@@ -32,7 +34,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser }: Props) => {
       >
         <SelectTrigger
           id="tags"
-          className={`w-[150px] ${
+          className={`w-[150px] focus:outline-none focus:ring-transparent focus-visible:ring-transparent ${
             loginUser.settings.quoteTypeForHome === "appChoice"
               ? styleVariables.input
               : null
@@ -40,13 +42,21 @@ const TagList = ({ updateTagForQuotableApi, loginUser }: Props) => {
         >
           <SelectValue placeholder="Select a Quote Tag" />
         </SelectTrigger>
-        <SelectContent className="h-48">
-          <SelectItem key="random" value="random">
+        <SelectContent className="h-48  ">
+          <SelectItem
+            key="random"
+            value="random"
+            className=""
+          >
             RANDOM
           </SelectItem>
           <Separator />
           {tags.map((tag: string) => (
-            <SelectItem key={tag} value={tag}>
+            <SelectItem
+              key={tag}
+              value={tag}
+              className=""
+            >
               {tag}
             </SelectItem>
           ))}
