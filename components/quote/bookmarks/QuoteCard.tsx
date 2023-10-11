@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Bookmark, BookmarkPlusIcon, Heart } from "lucide-react";
 
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import { useQuote } from "@/context/QuoteContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
@@ -31,10 +31,10 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 
 type Props = {
-  q: IQuote;
+  q: TypeQuote;
   i: number;
 };
 const QuoteCard = ({ q, i }: Props) => {
@@ -47,7 +47,6 @@ const QuoteCard = ({ q, i }: Props) => {
     myBookmarks,
     numOfBookmarks,
     numOfFavs,
-
   } = useQuote();
   const [user] = useAuthState(auth);
 

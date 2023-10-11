@@ -26,12 +26,10 @@ import { format } from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { toast } from "@/components/ui/use-toast";
+import { collection } from "firebase/firestore";
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { IUserInfo } from "@/types/type";
 import { useEvent } from "@/context/EventContext";
 import HeadingTwo from "@/components/utils/HeadingTwo";
@@ -82,7 +80,9 @@ export default function RegisterForm() {
               name="eventTitle"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Event Title</FormLabel>
+                  <FormLabel>
+                    Event Title<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="My Birthday"
@@ -117,7 +117,9 @@ export default function RegisterForm() {
             name="eventTitle"
             render={({ field }) => (
               <FormItem className="w-full sm:hidden">
-                <FormLabel>Event Title</FormLabel>
+                <FormLabel>
+                  Event Title <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="My Birthday"
@@ -151,7 +153,9 @@ export default function RegisterForm() {
             name="eventDate"
             render={({ field }) => (
               <FormItem className=" flex flex-col justify-between">
-                <FormLabel>Event Date</FormLabel>
+                <FormLabel>
+                  Event Date <span className="text-red-500">*</span>
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>

@@ -1,21 +1,22 @@
 "use client";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import CardNotMine from "./CardNotMine";
 import { useState } from "react";
-import { pagination } from "@/utils/functions";
+import usePagination from "@/components/hooks/usePagination";
+
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortFilterNotMine from "./Sort/SortFilterNotMine";
 import { useQuote } from "@/context/QuoteContext";
 
 type Props = {
-  quotes: IQuote[];
+  quotes: TypeQuote[];
 };
 
 const ListNotMine = ({ quotes }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = pagination(currentPage, quotes);
+  const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
   const { sortFilterAreaForNotMineShown } = useQuote();
   return (

@@ -19,12 +19,12 @@ import { Button } from "@/components/ui/button";
 import { CalendarPlus, Edit, Heart, Trash } from "lucide-react";
 
 import { auth } from "@/config/Firebase";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 import {
   HoverCard,
   HoverCardContent,
@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/hover-card";
 
 type Props = {
-  q: IQuote;
+  q: TypeQuote;
   i: number;
 };
 

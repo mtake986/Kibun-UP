@@ -8,8 +8,8 @@ import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 
-export default function Hdr() {
-  const { loginUser, fetchLoginUser, signInWithGoogle } = useAuth();
+export default function Header() {
+  const { fetchLoginUser, signInWithGoogle } = useAuth();
 
   useEffect(() => {
     fetchLoginUser(auth.currentUser);

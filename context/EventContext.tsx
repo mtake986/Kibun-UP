@@ -22,7 +22,7 @@ type EventProviderProps = {
 import { IEvent, IEventInputValues, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
-import { getRandomNum } from "@/utils/functions";
+import { getRandomNum } from "@/functions/functions";
 import { useAuth } from "./AuthContext";
 
 type EventContextType = {
@@ -180,17 +180,17 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getRandomEvent = async () => {
     if (user) {
-
       const q = query(
         eventCollectionRef,
         where("userInfo.uid", "==", user.uid)
-        );
-        onSnapshot(q, (snapshot) => {
-      const randomNum = getRandomNum(snapshot.docs.length);
-      const doc = snapshot.docs[randomNum];
-      if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
-    });
-  }
+      );
+      onSnapshot(q, (snapshot) => {
+        const randomNum = getRandomNum(snapshot.docs.length);
+        const doc = snapshot.docs[randomNum];
+        console.log(randomNum, doc.data())
+        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
+      });
+    }
   };
 
   const getEventsNotMine = async () => {

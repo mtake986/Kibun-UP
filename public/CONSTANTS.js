@@ -1,14 +1,9 @@
 import { LogInIcon } from "lucide-react";
-import {
-  BsChatQuoteFill,
-  BsFlagFill,
-} from "react-icons/bs";
+import { BsChatQuoteFill, BsFlagFill } from "react-icons/bs";
 import YouTubeIcon from "./icons/youtube.svg";
 import InstagramIcon from "./icons/instagram.svg";
 import TwitterIcon from "./icons/twitter.svg";
 import GitHubIcon from "./icons/github.svg";
-
-
 
 export const builtInEvents = [
   {
@@ -37,7 +32,7 @@ export const hamburgerMenus = [
   { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];
 
-export const tagColors = ["white", "red", "orange", "green", "blue", "purple"];
+export const tagColors = ["white", "red", "orange", "green", "blue", "violet"];
 
 export const mySnsInfo = [
   {

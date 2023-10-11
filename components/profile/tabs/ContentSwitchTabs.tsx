@@ -43,7 +43,11 @@ const ContentSwitchTabs = () => {
 
   return (
     <div className="relative mt-10">
-      <HeadingTwo text="Your Data" />
+      <div className="flex items-center justify-center mb-5 gap-5 sm:gap-10">
+        <div className="w-5 border border-b-[1px] border-black sm:w-20"></div>
+        <h3 className="font-serif drop-shadow-lg mb-0 text-3xl">Your Data</h3>
+        <div className="w-5 border border-b-[1px] border-black sm:w-20"></div>
+      </div>
       {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
           {user?.displayName}
         </span> */}

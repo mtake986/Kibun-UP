@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/select";
 import { tagColors } from "@/public/CONSTANTS";
 import { ITag } from "@/types/type";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 
@@ -45,7 +45,7 @@ export default function RegisterForm() {
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {
-      alert("Min 0 character.");
+      alert("Min. 1 character.");
     } else if (tagInput.length > 20) {
       alert("Maximum 20 characters.");
     } else {
@@ -111,7 +111,9 @@ export default function RegisterForm() {
             name="quote"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Quote</FormLabel>
+                <FormLabel>
+                  Quote <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Just Do It"
@@ -129,7 +131,9 @@ export default function RegisterForm() {
             name="person"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Person</FormLabel>
+                <FormLabel>
+                  Person <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="NIKE" {...field} />
                 </FormControl>
@@ -191,8 +195,8 @@ export default function RegisterForm() {
                           ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
                           : color === "blue"
                           ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
-                          : color === "purple"
-                          ? "bg-purple-50 text-purple-500 hover:bg-purple-50 hover:text-purple-500"
+                          : color === "violet"
+                          ? "bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500"
                           : "bg-white text-black hover:bg-white hover:text-black"
                       }`}
                       value={color}

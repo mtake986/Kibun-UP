@@ -25,7 +25,7 @@ import {
   where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { ILoginUser } from "@/types/type";
+import { TypeLoginUser, TypeUpdateUserInputs } from "@/types/type";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -37,15 +37,16 @@ type AuthContextType = {
   uploadImage: (
     file: File | null,
     newUsername: string,
-    newPaginationNum: number | null,
+    newItemsPerPage: number | null,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
   ) => void;
-  loginUser: ILoginUser | undefined;
-  updateDisplayWhichQuoteType: (text: string) => void;
+  loginUser: TypeLoginUser | undefined;
+  updateQuoteTypeForHome: (text: string) => void;
   fetchLoginUser: (user: any) => void;
   isFetchingUser: boolean;
+  updateTagForQuotableApi: (text: string) => void;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -58,7 +59,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
-  const [loginUser, setLoginUser] = useState<ILoginUser>();
+  const [loginUser, setLoginUser] = useState<TypeLoginUser>();
 
   const usersCollectionRef = collection(db, "users");
 
@@ -94,18 +95,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
         displayName,
         photoURL,
         createdAt: serverTimestamp(),
-        displayWhichQuoteType: "mine",
-        paginationNum: 10,
+        settings: {
+          itemsPerPage: 10,
+          quoteTypeForHome: "appChoice",
+          tagForQuotableApi: "random",
+        },
       }));
   };
 
   const fetchLoginUser = async (user: User | null) => {
+    // if (user) {
+    //   const docRef = doc(db, "users", user?.uid);
+    //   const docSnap = await getDoc(docRef);
+    //   if (docSnap.exists()) {
+    //     setLoginUser(docSnap.data() as TypeLoginUser);
+    //   }
+    // }
     if (user) {
-      const docRef = doc(db, "users", user?.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setLoginUser(docSnap.data() as ILoginUser);
-      }
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      onSnapshot(q, (snapshot) => {
+        setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
+      });
     }
   };
 
@@ -125,23 +135,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const uploadImage = async (
     file: File | null,
     newUsername: string,
-    newPaginationNum: number | null,
+    newItemsPerPage: number | null,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
   ) => {
     setLoading(true);
 
-    interface IPayload {
-      photoURL?: string | null;
-      displayName?: string | null;
-      paginationNum?: number;
-    }
-
-    let payload: IPayload = {
+    let payload: TypeUpdateUserInputs = {
       photoURL: loginUser?.photoURL,
-      displayName: loginUser?.displayName,
-      paginationNum: loginUser?.paginationNum,
+      displayName: "",
+      itemsPerPage: 10,
     };
 
     if (file) {
@@ -151,16 +155,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       payload.photoURL = photoURL;
     }
     if (newUsername) {
-      payload.displayName = newUsername;
+      payload.displayName = newUsername || loginUser?.displayName;
     }
-    if (newPaginationNum) payload.paginationNum = newPaginationNum;
+
+    if (newItemsPerPage) {
+      payload.itemsPerPage =
+        newItemsPerPage || loginUser?.settings.itemsPerPage;
+    }
 
     if (auth.currentUser) {
       const docRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(docRef, {
         photoURL: payload.photoURL,
         displayName: payload.displayName,
-        paginationNum: payload.paginationNum,
+        "settings.itemsPerPage": payload.itemsPerPage,
       });
     } else {
       console.log("No user is signed in");
@@ -182,11 +190,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // const fileRef = ref(storage, `${currentUser.uid}.png`);
   };
 
-  const updateDisplayWhichQuoteType = async (text: string) => {
+  const updateQuoteTypeForHome = async (text: string) => {
     if (auth.currentUser) {
       const docRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(docRef, {
-        displayWhichQuoteType: text,
+        "settings.quoteTypeForHome": text,
+      });
+    }
+  };
+
+  const updateTagForQuotableApi = async (text: string) => {
+    if (auth.currentUser) {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(docRef, {
+        "settings.tagForQuotableApi": text,
       });
     }
   };
@@ -198,9 +215,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         handleLogout,
         uploadImage,
         loginUser,
-        updateDisplayWhichQuoteType,
+        updateQuoteTypeForHome,
         fetchLoginUser,
         isFetchingUser,
+        updateTagForQuotableApi,
       }}
     >
       {children}

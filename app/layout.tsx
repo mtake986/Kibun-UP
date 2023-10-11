@@ -1,22 +1,16 @@
 
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Poppins } from "next/font/google";
-// import Header from "../components/Header/Header";
-// import Footer from "@/components/Footer/Footer";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
-import FtrFolder from "@/components/footerFolder/FtrFolder";
-import Hdr from "@/components/hdrFolder/Hdr";
+import FtrFolder from "@/components/footer/Footer";
+import Hdr from "@/components/header/Header";
+import { fontRaleway, fontRoboto } from "@/components/utils/fonts";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
-const poppins = Poppins({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Create Next App",
@@ -31,22 +25,22 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-        <AuthProvider>
-          <QuoteProvider>
-            <EventProvider>
-              <body className={poppins.className}>
-                <main className="relative min-h-screen">
-                  <Hdr />
-                  <div className="relative mx-auto max-w-2xl text-slate-800 sm:p-12">
-                    {children}
-                  </div>
-                  <FtrFolder />
-                </main>
-                <Toaster />
-              </body>
-            </EventProvider>
-          </QuoteProvider>
-        </AuthProvider>
+      <AuthProvider>
+        <QuoteProvider>
+          <EventProvider>
+            <body className={fontRaleway.className}>
+              <main className="relative min-h-screen">
+                <Hdr />
+                <div className="relative mx-auto max-w-2xl text-slate-800 sm:p-12">
+                  {children}
+                </div>
+                <FtrFolder />
+              </main>
+              <Toaster />
+            </body>
+          </EventProvider>
+        </QuoteProvider>
+      </AuthProvider>
     </html>
   );
 }
