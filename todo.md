@@ -172,9 +172,12 @@ Oct. 9
 
 Oct. 10
 - [x] add new font
-- [ ] Required filed `<span className="text-red-500">*</span>`
+- [x] Required filed `<span className="text-red-500">*</span>`
 
-- [ ] memoization tags (currently loading everytime)
+Oct. 11
+- [x] memoization tags (currently loading everytime)
+
+
 - [ ] bookmark mine and api quote
 - [ ]  when no api quote is available remove a tag?, or show len of quotes in Select
 - [ ]  get random api quote by taking advantage of totalPage 
@@ -184,6 +187,7 @@ Oct. 10
 
 - [ ] Event Cheer
 - [ ] createdAt, updatedAt on QuoteCard
-- [ ] total likes on profile
+- [ ] total num of likes on profile
+- [ ] total numm of bookmarks on profile
 - [ ] likes tab on profile
 - [ ] dark theme

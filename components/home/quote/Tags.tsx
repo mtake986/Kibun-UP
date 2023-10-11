@@ -15,7 +15,7 @@ const Tags = ({ quote }: Props) => {
           ? quote.tags.map((tag, i) => (
               <Badge
                 key={i}
-                className={` bg-white hover:bg-white text-neutral-900 hover:opacity-70} border-none font-light`}
+                className={` bg-white hover:bg-white text-neutral-900 hover:opacity-70} font-light`}
               >
                 #{tag}
               </Badge>
@@ -24,7 +24,7 @@ const Tags = ({ quote }: Props) => {
           ? quote.tags.map((tag, i) => (
               <Badge
                 key={i}
-                className={`border-none font-light hover:opacity-70 ${changeTagColor(
+                className={`font-light hover:opacity-70 ${changeTagColor(
                   tag.tagColor
                 )}`}
               >
