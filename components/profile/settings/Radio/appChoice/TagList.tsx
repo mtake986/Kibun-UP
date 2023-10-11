@@ -37,15 +37,15 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
           <SelectValue placeholder="Select a Quote Tag" />
         </SelectTrigger>
         <SelectContent className="h-48  ">
-          <SelectItem disabled={true} key="top" value="top" className="">
+          <SelectItem disabled={true} key="top" value="top">
             Tag, # of quotes
           </SelectItem>
-          <SelectItem key="random" value="random" className="">
+          <SelectItem key="random" value="random">
             RANDOM
           </SelectItem>
           <Separator />
           {tags.map((tag: TypeTagsQuotableAPI) => (
-            <SelectItem key={tag.name} value={tag.name} className="">
+            <SelectItem key={tag.name} value={tag.name}>
               {tag.name}, {tag.quoteCount}
             </SelectItem>
           ))}
