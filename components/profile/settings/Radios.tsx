@@ -7,12 +7,17 @@ import { useQuote } from "@/context/QuoteContext";
 import AppChoice from "./Radio/appChoice/AppChoice";
 import BookmarkRadioButton from "./Radio/bookmarks/BookmarkRadioButton";
 import MineRadioBtn from "./Radio/mine/MineRadioBtn";
+import useFetchTags from "@/components/hooks/useFetchTags";
 
 const Radios = () => {
   const { updateQuoteTypeForHome, loginUser, updateTagForQuotableApi } =
     useAuth();
   const { fetchMyBookmarks, myBookmarks, getLoginUserQuotes, loginUserQuotes } =
     useQuote();
+
+  const { tags, error, isPending } = useFetchTags(
+    "https://api.quotable.io/tags"
+  );
 
   useEffect(() => {
     // if (!myBookmarks) {
@@ -21,11 +26,14 @@ const Radios = () => {
     if (!loginUserQuotes) getLoginUserQuotes();
   }, []);
 
-  // todo
-  if (loginUser?.settings.quoteTypeForHome) {
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (loginUser) {
     return (
       <RadioGroup
-        defaultValue={loginUser?.settings.quoteTypeForHome}
+        defaultValue={loginUser.settings.quoteTypeForHome}
         className="grid grid-cols-1 gap-3 sm:gap-5 sm:py-2"
       >
         <MineRadioBtn
@@ -42,6 +50,7 @@ const Radios = () => {
           updateQuoteTypeForHome={updateQuoteTypeForHome}
           loginUser={loginUser}
           updateTagForQuotableApi={updateTagForQuotableApi}
+          tags={tags}
         />
       </RadioGroup>
     );

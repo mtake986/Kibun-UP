@@ -16,14 +16,10 @@ import useFetchTags from "@/components/hooks/useFetchTags";
 type Props = {
   updateTagForQuotableApi: (text: string) => void;
   loginUser: TypeLoginUser;
+  tags: string[];
 };
 
-const TagList = ({ updateTagForQuotableApi, loginUser }: Props) => {
-  const { tags, error, isPending } = useFetchTags(
-    "https://api.quotable.io/tags"
-  );
-
-  if (isPending) return <div>Loading...</div>;
+const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
 
   return (
     <div className="mt-2 flex w-full items-center justify-between">

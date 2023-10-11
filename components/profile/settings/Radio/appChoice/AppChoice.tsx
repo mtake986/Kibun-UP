@@ -9,11 +9,13 @@ type Props = {
   updateQuoteTypeForHome: (text: string) => void;
   loginUser: TypeLoginUser;
   updateTagForQuotableApi: (text: string) => void;
+  tags: string[];
 };
 const AppChoice = ({
   updateQuoteTypeForHome,
   loginUser,
   updateTagForQuotableApi,
+  tags,
 }: Props) => {
   return (
     <div
@@ -38,6 +40,7 @@ const AppChoice = ({
         <TagList
           updateTagForQuotableApi={updateTagForQuotableApi}
           loginUser={loginUser}
+          tags={tags}
         />
       ) : null}
     </div>

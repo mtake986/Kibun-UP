@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const useFetchTags = (url: string) => {
   const [tags, setTags] = useState<string[]>([]);
   const [error, setError] = useState<string>();
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  useEffect(() => {
+  const fetchTags = useCallback(() => {
     setIsPending(true);
     fetch(url)
       .then((response) => {
@@ -34,9 +34,13 @@ const useFetchTags = (url: string) => {
         setError(err.message);
         setIsPending(false);
       });
-  }, []);
+  }, [url]);
 
-  return { tags, error, isPending};
+  useEffect(() => {
+    fetchTags();
+  }, [url]);
+
+  return { tags, error, isPending };
 };
 
 export default useFetchTags;

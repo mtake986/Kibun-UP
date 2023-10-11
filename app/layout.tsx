@@ -5,8 +5,8 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
-import FtrFolder from "@/components/footerFolder/FtrFolder";
-import Hdr from "@/components/hdrFolder/Hdr";
+import FtrFolder from "@/components/footer/Footer";
+import Hdr from "@/components/header/Header";
 import { fontRaleway, fontRoboto } from "@/components/utils/fonts";
 
 // const inter = Inter({ subsets: ["latin"] });
