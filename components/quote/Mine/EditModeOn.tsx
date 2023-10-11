@@ -191,13 +191,15 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <MdAdd
+            <Button
+              type="button"
               onClick={() => {
                 addTag(tagInput);
               }}
-              size={36}
-              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
-            />
+              className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+            >
+              Add
+            </Button>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {tags.map((tag, i) => (

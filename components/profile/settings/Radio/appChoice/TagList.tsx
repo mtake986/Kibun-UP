@@ -45,8 +45,8 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
           </SelectItem>
           <Separator />
           {tags.map((tag: TypeTagsQuotableAPI) => (
-            <SelectItem key={tag[0]} value={tag[0]} className="">
-              {tag[0]}, {tag[1]}
+            <SelectItem key={tag.name} value={tag.name} className="">
+              {tag.name}, {tag.quoteCount}
             </SelectItem>
           ))}
         </SelectContent>

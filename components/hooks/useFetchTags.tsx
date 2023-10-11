@@ -19,12 +19,9 @@ const useFetchTags = (url: string) => {
         return response.json();
       })
       .then((res) => {
-        const tagsWithDuplicates: TypeTagsQuotableAPI[] = res.map((tag: any) => [
-          tag.name,
-          tag.quoteCount,
-        ]);
-
-        console.log(tagsWithDuplicates);
+        const tagsWithDuplicates: TypeTagsQuotableAPI[] = res.map(
+          (tag: any) => [{ name: tag.name, quoteCount: tag.quoteCount }]
+        );
         setTags(removeDuplicates(tagsWithDuplicates));
         setIsPending(false);
       })
@@ -36,7 +33,7 @@ const useFetchTags = (url: string) => {
 
   useEffect(() => {
     fetchTags();
-  }, [url]);
+  }, [url, fetchTags]);
 
   return { tags, error, isPending };
 };
