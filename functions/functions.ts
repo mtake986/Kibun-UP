@@ -1,3 +1,5 @@
+import { TypeTagsQuotableAPI } from "@/types/type";
+
 export function getRandomNum(max: number) {
   return Math.floor(Math.random() * max);
 }
@@ -28,12 +30,14 @@ export function calculateLeftDays(date: Date): number {
   }
 }
 
-export function removeDuplicates(tags: string[]) {
-  let unique: string[] = [];
-  tags.forEach((tag: string) => {
-    if (!unique.includes(tag)) {
-      unique.push(tag);
+export function removeDuplicates(tags: TypeTagsQuotableAPI[]) {
+  let tagsWithoutDuplicates: TypeTagsQuotableAPI[] = [];
+  let tagNames: string[] = [];
+  tags.forEach((tag: TypeTagsQuotableAPI) => {
+    if (!tagNames.includes(tag[0])) {
+      tagsWithoutDuplicates.push(tag);
+      tagNames.push(tag[0]);
     }
   });
-  return unique;
+  return tagsWithoutDuplicates;
 }

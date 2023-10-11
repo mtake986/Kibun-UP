@@ -103,7 +103,7 @@ export type TypeUpdateUserInputs = {
   itemsPerPage?: number;
 };
 
-export type TypeQuotableAPITags = [string, number];
+export type TypeTagsQuotableAPI = [string, number];
 
 export type TypeQuoteQuotetableAPI = {
   id: string;

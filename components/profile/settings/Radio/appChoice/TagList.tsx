@@ -10,16 +10,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { styleVariables } from "../../styles";
-import { TypeLoginUser, TypeQuotableAPITags } from "@/types/type";
+import { TypeLoginUser, TypeTagsQuotableAPI } from "@/types/type";
 
 type Props = {
   updateTagForQuotableApi: (text: string) => void;
   loginUser: TypeLoginUser;
-  tags: TypeQuotableAPITags[];
+  tags: TypeTagsQuotableAPI[];
 };
 
 const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
-
   return (
     <div className="mt-2 flex w-full items-center justify-between">
       <Label className="text-xs">Select a tag</Label>
@@ -45,7 +44,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
             RANDOM
           </SelectItem>
           <Separator />
-          {tags.map((tag: TypeQuotableAPITags) => (
+          {tags.map((tag: TypeTagsQuotableAPI) => (
             <SelectItem key={tag[0]} value={tag[0]} className="">
               {tag[0]}, {tag[1]}
             </SelectItem>

@@ -2,14 +2,14 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import TagList from "./TagList";
-import { TypeLoginUser, TypeQuotableAPITags } from "@/types/type";
+import { TypeLoginUser, TypeTagsQuotableAPI } from "@/types/type";
 import { styleVariables } from "../../styles";
 
 type Props = {
   updateQuoteTypeForHome: (text: string) => void;
   loginUser: TypeLoginUser;
   updateTagForQuotableApi: (text: string) => void;
-  tags: TypeQuotableAPITags[];
+  tags: TypeTagsQuotableAPI[];
 };
 const AppChoice = ({
   updateQuoteTypeForHome,

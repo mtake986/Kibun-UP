@@ -1,8 +1,9 @@
 import { removeDuplicates } from "@/functions/functions";
+import { TypeTagsQuotableAPI } from "@/types/type";
 import React, { useState, useEffect, useCallback } from "react";
 
 const useFetchTags = (url: string) => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<TypeTagsQuotableAPI[]>([]);
   const [error, setError] = useState<string>();
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -18,8 +19,12 @@ const useFetchTags = (url: string) => {
         return response.json();
       })
       .then((res) => {
-        const tagsWithDuplicates = res.map((tag: any) => [tag.name, tag.quoteCount]);
-        console.log(tagsWithDuplicates)
+        const tagsWithDuplicates: TypeTagsQuotableAPI[] = res.map((tag: any) => [
+          tag.name,
+          tag.quoteCount,
+        ]);
+
+        console.log(tagsWithDuplicates);
         setTags(removeDuplicates(tagsWithDuplicates));
         setIsPending(false);
       })
