@@ -15,7 +15,7 @@ import {
 } from "@/components/utils/fonts";
 import QuoteContent from "./QuoteContent";
 import QuoteCard from "./QuoteCard";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 
 const Quote = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,10 +54,10 @@ const Quote = () => {
     if (user) {
       if (lockedQuote) {
         return <QuoteCard quote={lockedQuote} type="locked" />;
-      } else if (loginUser?.settings.quoteTypeForHome === "appChoice") {
+      } else if (data && loginUser?.settings.quoteTypeForHome === "appChoice") {
         return <QuoteCard quote={data} type="appChoice" />;
       } else if (randomQuote) {
-        return <QuoteCard quote={randomQuote as IQuote} type="notAppChoice" />;
+        return <QuoteCard quote={randomQuote as TypeQuote} type="notAppChoice" />;
       }
       // else {
       //   return (

@@ -1,3 +1,4 @@
+import { removeDuplicates } from "@/functions/functions";
 import React, { useState, useEffect, useCallback } from "react";
 
 const useFetchTags = (url: string) => {
@@ -16,17 +17,9 @@ const useFetchTags = (url: string) => {
         }
         return response.json();
       })
-      .then((data) => {
-        function removeDuplicates(tags: string[]) {
-          let unique: string[] = [];
-          tags.forEach((tag: string) => {
-            if (!unique.includes(tag)) {
-              unique.push(tag);
-            }
-          });
-          return unique;
-        }
-        const tagsWithDuplicates = data.map((tag: any) => tag.name);
+      .then((res) => {
+        const tagsWithDuplicates = res.map((tag: any) => [tag.name, tag.quoteCount]);
+        console.log(tagsWithDuplicates)
         setTags(removeDuplicates(tagsWithDuplicates));
         setIsPending(false);
       })

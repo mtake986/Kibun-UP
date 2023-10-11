@@ -178,7 +178,7 @@ Oct. 10
 - [ ] bookmark mine and api quote
 - [ ]  when no api quote is available remove a tag?, or show len of quotes in Select
 - [ ]  get random api quote by taking advantage of totalPage 
-- [ ]  display tag in dropdown when search
+- [ ]  display tag in dropdown when search, quote count
 
 ### Coming Updates...
 

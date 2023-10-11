@@ -1,5 +1,5 @@
 "use client";
-import { IQuote } from "@/types/type";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
@@ -11,7 +11,7 @@ const useFetchQuoteFromQuotableAPI = () => {
 
   const randomNumber = (len: number) => Math.floor(Math.random() * len);
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<TypeQuoteQuotetableAPI>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
@@ -33,10 +33,10 @@ const useFetchQuoteFromQuotableAPI = () => {
         const quote = res.results[randomNumber(len)];
         setData({
           id: quote._id,
-          person: quote.author,
-          quote: quote.content,
+          author: quote.author,
+          content: quote.content,
           tags: quote.tags,
-        } as IQuote);
+        } as TypeQuoteQuotetableAPI);
         setIsPending(false);
       })
       .catch((err) => {

@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Plane, Trash } from "lucide-react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IQuote, ITag } from "@/types/type";
+import { TypeQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
@@ -38,7 +38,7 @@ import {
 import { tagColors } from "@/public/CONSTANTS";
 
 type Props = {
-  q: IQuote;
+  q: TypeQuote;
   setIsUpdateMode: (boo: boolean) => void;
 };
 
@@ -51,7 +51,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {
-      alert("Min 0 character.");
+      alert("Min.1 character.");
     } else if (tagInput.length > 20) {
       alert("Maximum 20 characters.");
     } else {

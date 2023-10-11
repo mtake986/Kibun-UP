@@ -1,13 +1,12 @@
 import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
-import { auth } from "@/config/Firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { IQuote } from "@/types/type";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { BiLockOpen, BiRefresh } from "react-icons/bi";
+
 type Props = {
-  quote: IQuote;
+  quote: TypeQuoteQuotetableAPI | TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
 };
 const Icons = ({ quote, type }: Props) => {
@@ -42,7 +41,7 @@ const Icons = ({ quote, type }: Props) => {
             if (type === "locked") {
               removeLockFromThisQuote(loginUser.uid);
             } else {
-              lockThisQuote(loginUser.uid, quote);
+              lockThisQuote(loginUser.uid, quote as any);
             }
           }
         }}

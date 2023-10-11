@@ -10,13 +10,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { styleVariables } from "../../styles";
-import { TypeLoginUser } from "@/types/type";
-import useFetchTags from "@/components/hooks/useFetchTags";
+import { TypeLoginUser, TypeQuotableAPITags } from "@/types/type";
 
 type Props = {
   updateTagForQuotableApi: (text: string) => void;
   loginUser: TypeLoginUser;
-  tags: string[];
+  tags: TypeQuotableAPITags[];
 };
 
 const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
@@ -39,21 +38,16 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
           <SelectValue placeholder="Select a Quote Tag" />
         </SelectTrigger>
         <SelectContent className="h-48  ">
-          <SelectItem
-            key="random"
-            value="random"
-            className=""
-          >
+          <SelectItem disabled={true} key="top" value="top" className="">
+            Tag, # of quotes
+          </SelectItem>
+          <SelectItem key="random" value="random" className="">
             RANDOM
           </SelectItem>
           <Separator />
-          {tags.map((tag: string) => (
-            <SelectItem
-              key={tag}
-              value={tag}
-              className=""
-            >
-              {tag}
+          {tags.map((tag: TypeQuotableAPITags) => (
+            <SelectItem key={tag[0]} value={tag[0]} className="">
+              {tag[0]}, {tag[1]}
             </SelectItem>
           ))}
         </SelectContent>

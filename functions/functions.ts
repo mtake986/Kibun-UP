@@ -1,4 +1,3 @@
-
 export function getRandomNum(max: number) {
   return Math.floor(Math.random() * max);
 }
@@ -17,14 +16,24 @@ export const changeTagColor = (tagColor: string) => {
   else return "bg-white text-black hover:bg-white hover:text-black";
 };
 
-  export function calculateLeftDays(date: Date): number {
-    const today = new Date();
-    if (date < today) {
-      return -1;
-    } else {
-      const diffTime = Math.abs(date.getTime() - today.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
-      // setLeftDays(diffDays);
-      return diffDays + 1;
-    }
+export function calculateLeftDays(date: Date): number {
+  const today = new Date();
+  if (date < today) {
+    return -1;
+  } else {
+    const diffTime = Math.abs(date.getTime() - today.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+    // setLeftDays(diffDays);
+    return diffDays + 1;
   }
+}
+
+export function removeDuplicates(tags: string[]) {
+  let unique: string[] = [];
+  tags.forEach((tag: string) => {
+    if (!unique.includes(tag)) {
+      unique.push(tag);
+    }
+  });
+  return unique;
+}

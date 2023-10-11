@@ -26,9 +26,9 @@ const Radios = () => {
     if (!loginUserQuotes) getLoginUserQuotes();
   }, []);
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  // if (isPending) {
+  //   return <div>{tags.length} Loading...</div>;
+  // }
 
   if (loginUser) {
     return (

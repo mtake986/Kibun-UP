@@ -1,5 +1,5 @@
 "use client";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import CardNotMine from "./CardNotMine";
 import { useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
@@ -10,7 +10,7 @@ import SortFilterNotMine from "./Sort/SortFilterNotMine";
 import { useQuote } from "@/context/QuoteContext";
 
 type Props = {
-  quotes: IQuote[];
+  quotes: TypeQuote[];
 };
 
 const ListNotMine = ({ quotes }: Props) => {

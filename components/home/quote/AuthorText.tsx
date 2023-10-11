@@ -1,11 +1,24 @@
-import { IQuote } from "@/types/type";
-import React from 'react'
+import {
+  fontDancingScript,
+  fontMerriweather,
+  fontRaleway,
+  fontRoboto,
+} from "@/components/utils/fonts";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import React from "react";
 
 type Props = {
-  quote: IQuote;
-}
-const AuthorText = ({quote} : Props) => {
-  return <span>by {quote?.person}</span>;
-}
+  quote: TypeQuoteQuotetableAPI | TypeQuote;
+};
+const AuthorText = ({ quote }: Props) => {
+  return (
+    <div>
+      <span className="text-xs">by </span>
+      <span className={`text-sm ${fontMerriweather.className}`}>
+        {quote ? ("person" in quote ? quote.person : quote.author) : null}
+      </span>
+    </div>
+  );
+};
 
-export default AuthorText
+export default AuthorText;

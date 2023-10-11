@@ -11,7 +11,7 @@ export interface IEvent {
   updatedAt?: Date;
 }
 
-export interface IQuote {
+export type TypeQuote = {
   id: string;
   person: string;
   quote: string;
@@ -19,8 +19,8 @@ export interface IQuote {
   createdAt: Date;
   userInfo: IUserInfo;
   updatedAt?: Date;
-  tags?: ITag[];
-}
+  tags: ITag[];
+};
 
 export interface IEventInputValues {
   eventTitle: string;
@@ -29,7 +29,7 @@ export interface IEventInputValues {
   eventDate: Date;
 }
 
-export interface IQuoteInputValues {
+export interface TypeQuoteInputValues {
   person: string;
   quote: string;
   isDraft: boolean;
@@ -56,7 +56,7 @@ export interface ISortFilterBy {
 export type TypeMyBookmarks = {
   qids: string[];
   uid: string;
-  quotes: IQuote[];
+  quotes: TypeQuote[];
   id?: string;
 };
 
@@ -69,7 +69,7 @@ export type TypeNumOfBookmarks = {
 export type TypeMyFavs = {
   qids: string[];
   uid: string;
-  quotes: IQuote[];
+  quotes: TypeQuote[];
   id?: string;
 };
 export type TypeNumOfFavs = {
@@ -101,4 +101,13 @@ export type TypeUpdateUserInputs = {
   photoURL?: string | null;
   displayName?: string;
   itemsPerPage?: number;
+};
+
+export type TypeQuotableAPITags = [string, number];
+
+export type TypeQuoteQuotetableAPI = {
+  id: string;
+  content: string;
+  author: string;
+  tags: string[];
 };

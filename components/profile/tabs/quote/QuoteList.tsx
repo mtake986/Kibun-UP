@@ -8,11 +8,11 @@ import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import SortFilterQuotes from "./Sort/SortFilterQuotes";
 
 type Props = {
-  quotes: IQuote[];
+  quotes: TypeQuote[];
 };
 
 const QuoteList = ({ quotes }: Props) => {

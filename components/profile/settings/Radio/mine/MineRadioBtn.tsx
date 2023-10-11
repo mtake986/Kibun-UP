@@ -1,13 +1,13 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { IQuote, TypeLoginUser } from "@/types/type";
+import { TypeQuote, TypeLoginUser } from "@/types/type";
 import React from "react";
 import { styleVariables } from "../../styles";
 
 type Props = {
   updateQuoteTypeForHome: (text: string) => void;
   loginUser: TypeLoginUser;
-  loginUserQuotes: IQuote[];
+  loginUserQuotes: TypeQuote[];
 };
 const MineRadioBtn = ({
   updateQuoteTypeForHome,

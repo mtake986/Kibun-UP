@@ -4,14 +4,14 @@ import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
 import { useQuote } from "@/context/QuoteContext";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortFilterMine from "./Sort/SortFilterMine";
 import usePagination from "@/components/hooks/usePagination";
 
 type Props = {
-  quotes: IQuote[];
+  quotes: TypeQuote[];
 };
 
 const List = ({ quotes }: Props) => {

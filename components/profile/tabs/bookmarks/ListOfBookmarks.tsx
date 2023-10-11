@@ -11,7 +11,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import QuoteCard from "./QuoteCard";
 import { useQuote } from "@/context/QuoteContext";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
@@ -21,7 +21,7 @@ import OrderSelect from "./Sort/OrderSelect";
 import ElementSelect from "./Sort/ElementSelect";
 
 type Props = {
-  quotes: IQuote[];
+  quotes: TypeQuote[];
 };
 
 const ListOfBookmarks = ({ quotes }: Props) => {

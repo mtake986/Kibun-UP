@@ -45,7 +45,7 @@ export default function RegisterForm() {
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {
-      alert("Min 0 character.");
+      alert("Min. 1 character.");
     } else if (tagInput.length > 20) {
       alert("Maximum 20 characters.");
     } else {
