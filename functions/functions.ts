@@ -1,6 +1,7 @@
 import { TypeTagsQuotableAPI } from "@/types/type";
 
 export function getRandomNum(max: number) {
+  if (max < 0) throw new Error("Max must be non-negative");
   if (max === 0) return 0;
   return Math.floor(Math.random() * max);
 }
@@ -21,6 +22,8 @@ export const changeTagColor = (tagColor: string) => {
 
 export function calculateLeftDays(date: Date): number {
   const today = new Date();
+  if (date.getTime() < today.getTime())
+    throw new Error("Date must be in the future");
   const diffTime = date.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;

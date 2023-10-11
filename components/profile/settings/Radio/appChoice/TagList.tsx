@@ -36,7 +36,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
         >
           <SelectValue placeholder="Select a Quote Tag" />
         </SelectTrigger>
-        <SelectContent className="h-48  ">
+        <SelectContent className="h-48">
           <SelectItem disabled={true} key="top" value="top">
             Tag, # of quotes
           </SelectItem>
