@@ -32,8 +32,6 @@ const Event = () => {
   if (loading) {
     return <Skeleton className="relative h-64 w-full rounded-lg p-12" />;
   }
-  console.log("card render");
-
 
   if (!loading) {
     if (user) {

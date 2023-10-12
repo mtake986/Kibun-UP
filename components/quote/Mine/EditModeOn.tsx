@@ -35,7 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/public/CONSTANTS";
+import { tagColors } from "@/data/CONSTANTS";
 
 type Props = {
   q: TypeQuote;

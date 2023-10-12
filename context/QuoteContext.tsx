@@ -31,6 +31,7 @@ import {
   TypeNumOfFavs,
   TypeMyBookmarks,
   TypeNumOfBookmarks,
+  TypeQuoteQuotetableAPI,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "@/components/ui/use-toast";
@@ -87,8 +88,14 @@ type QuoteContext = {
   updateSortFilterByForNotMine: (which: string, ele: string) => void;
   sortFilterByForNotMine: ISortFilterBy;
 
-  storeQuoteInBookmarks: (uid: string, q: TypeQuote) => void;
-  removeQuoteFromBookmarks: (uid: string, q: TypeQuote) => void;
+  storeQuoteInBookmarks: (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => void;
+  removeQuoteFromBookmarks: (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => void;
   fetchMyBookmarks: () => void;
   myBookmarks: TypeMyBookmarks;
 
@@ -713,10 +720,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const storeQuoteInBookmarks = async (uid: string, q: TypeQuote) => {
+  const storeQuoteInBookmarks = async (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
+    console.log(data)
     if (data) {
       await updateDoc(docRef, {
         qids: arrayUnion(q.id),
@@ -734,6 +742,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
     const nobData = numOfBookmarksDocSnap.data();
     if (nobData) {
+      console.log(nobData)
       await updateDoc(numOfBookmarksRef, {
         uids: arrayUnion(uid),
       });
@@ -742,10 +751,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const removeQuoteFromBookmarks = async (uid: string, q: TypeQuote) => {
+  const removeQuoteFromBookmarks = async (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
+    console.log(data)
     if (data?.qids.includes(q.id) && data?.qids.length === 1) {
       await deleteDoc(doc(db, "myBookmarks", uid));
     } else {
@@ -758,6 +771,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
     const nobData = numOfBookmarksDocSnap.data();
+    console.log(nobData)
     if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
       await deleteDoc(doc(db, "numOfBookmarks", q.id));
     } else {

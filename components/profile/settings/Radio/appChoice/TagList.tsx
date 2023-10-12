@@ -19,6 +19,9 @@ type Props = {
 };
 
 const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
+
+  console.log(tags)
+  
   return (
     <div className="mt-2 flex w-full items-center justify-between">
       <Label className="text-xs">Select a tag</Label>
@@ -44,8 +47,8 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
             RANDOM
           </SelectItem>
           <Separator />
-          {tags?.map((tag: TypeTagsQuotableAPI) => (
-            <SelectItem key={tag.name} value={tag.name}>
+          {tags?.map((tag: TypeTagsQuotableAPI, i: number) => (
+            <SelectItem key={i} value={tag.name}>
               {tag.name}, {tag.quoteCount}
             </SelectItem>
           ))}

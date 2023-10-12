@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import SnsIcon from "./SnsIcon";
-import { mySnsInfo } from "@/public/CONSTANTS";
+import { mySnsInfo } from "@/data/CONSTANTS";
 import HeadingFive from "@/components/utils/HeadingFive";
 
 interface ISnsInfo {
@@ -12,7 +12,7 @@ interface ISnsInfo {
 const SnsIcons = () => {
   return (
     <div>
-      <HeadingFive text="SNSs" className="text-violet-500 mb-1" />
+      <HeadingFive text="SNSs" className="mb-1 text-violet-500" />
       <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
         {mySnsInfo.map((snsInfo: ISnsInfo) => (
           <SnsIcon key={snsInfo.name} snsInfo={snsInfo} />

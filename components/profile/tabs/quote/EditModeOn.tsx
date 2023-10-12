@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/public/CONSTANTS";
+import { tagColors } from "@/data/CONSTANTS";
 import { changeTagColor } from "@/functions/functions";
 
 type Props = {

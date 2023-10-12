@@ -14,7 +14,7 @@ type Props = {
 
 const EventCard = ({ event, type }: Props) => {
   return (
-    <div className="relative bg-violet-50 px-5 py-6 sm:rounded-lg sm:p-12">
+    <div className="relative bg-violet-50 p-6 sm:rounded-lg sm:p-12">
       <DescriptionToggleBtn event={event} />
       <LeftDays event={event} />
 

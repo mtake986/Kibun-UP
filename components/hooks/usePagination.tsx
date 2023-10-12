@@ -10,7 +10,6 @@ export const usePagination = (currentPage: number, lis: Array<any>) => {
   
   const { loginUser } = useAuth();
     let RECORDS_PER_PAGE = 10;
-    console.log(RECORDS_PER_PAGE);
     if (loginUser) {
       RECORDS_PER_PAGE = loginUser.settings.itemsPerPage;
     }

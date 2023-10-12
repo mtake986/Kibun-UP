@@ -171,7 +171,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         "settings.itemsPerPage": payload.itemsPerPage,
       });
     } else {
-      console.log("No user is signed in");
+      console.warn("No user is signed in");
     }
     updateProfile(currentUser, payload)
       .then(() => {

@@ -4,10 +4,8 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   BsFillPersonFill,
@@ -16,7 +14,7 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { CalendarPlus, Edit, Heart, Trash } from "lucide-react";
+import { Edit, Heart, Trash } from "lucide-react";
 
 import { auth } from "@/config/Firebase";
 import { TypeQuote } from "@/types/type";
@@ -25,11 +23,6 @@ import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 
 type Props = {
   q: TypeQuote;

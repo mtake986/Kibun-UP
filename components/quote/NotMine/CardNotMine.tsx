@@ -145,7 +145,7 @@ const CardNotMine = ({ q, i }: Props) => {
                   }
                 }
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             }}
             className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-green-50`}

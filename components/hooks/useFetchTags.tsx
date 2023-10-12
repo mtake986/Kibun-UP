@@ -20,7 +20,9 @@ const useFetchTags = (url: string) => {
       })
       .then((res) => {
         const tagsWithDuplicates: TypeTagsQuotableAPI[] = res.map(
-          (tag: any) => [{ name: tag.name, quoteCount: tag.quoteCount }]
+          (tag: any) => {
+            return { name: tag.name, quoteCount: tag.quoteCount };
+          }
         );
         setTags(removeDuplicates(tagsWithDuplicates));
         setIsPending(false);

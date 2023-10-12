@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/public/CONSTANTS";
+import { tagColors } from "@/data/CONSTANTS";
 import { ITag } from "@/types/type";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";

@@ -7,24 +7,25 @@ export function getRandomNum(max: number) {
 }
 
 const colorMap: { [key: string]: string } = {
-  red: "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
+  red: "text-[10px] bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
   orange:
-    "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",
-  green: "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
-  blue: "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500",
+    "text-[10px] bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",
+  green: "text-[10px] bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
+  blue: "text-[10px] bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500",
   violet:
-    "bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
+    "text-[10px] bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
+  gray: "text-[10px] bg-gray-50 text-gray-500 hover:bg-gray-50 hover:text-gray-500",
 };
 export const changeTagColor = (tagColor: string) => {
   return (
-    colorMap[tagColor] || "bg-white text-black hover:bg-white hover:text-black"
+    colorMap[tagColor] || "text-[10px] bg-white text-black hover:bg-white hover:text-black"
   );
 };
 
 export function calculateLeftDays(date: Date): number {
   const today = new Date();
-  if (date.getTime() < today.getTime())
-    throw new Error("Date must be in the future");
+  // if (date.getTime() < today.getTime())
+  //   throw new Error("Date must be in the future");
   const diffTime = date.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;

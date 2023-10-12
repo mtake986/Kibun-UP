@@ -1,9 +1,9 @@
 import { LogInIcon } from "lucide-react";
 import { BsChatQuoteFill, BsFlagFill } from "react-icons/bs";
-import YouTubeIcon from "./icons/youtube.svg";
-import InstagramIcon from "./icons/instagram.svg";
-import TwitterIcon from "./icons/twitter.svg";
-import GitHubIcon from "./icons/github.svg";
+import YouTubeIcon from "../public/icons/youtube.svg";
+import InstagramIcon from "../public/icons/instagram.svg";
+import TwitterIcon from "../public/icons/twitter.svg";
+import GitHubIcon from "../public/icons/github.svg";
 
 export const builtInEvents = [
   {

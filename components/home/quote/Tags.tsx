@@ -9,13 +9,15 @@ type Props = {
 
 const Tags = ({ quote }: Props) => {
   return (
-    <ul className="flex gap-2 items-center">
+    <ul className="flex flex-wrap items-center gap-1 text-[10px]">
       {quote
         ? "content" in quote
           ? quote.tags.map((tag, i) => (
               <Badge
                 key={i}
-                className={` bg-white hover:bg-white text-neutral-900 hover:opacity-70} font-light`}
+                className={`whitespace-nowrap font-light hover:opacity-70 ${changeTagColor(
+                  "gray"
+                )}`}
               >
                 #{tag}
               </Badge>

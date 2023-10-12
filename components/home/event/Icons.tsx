@@ -17,7 +17,7 @@ const Icons = ({ event, type }: Props) => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="flex items-center justify-end gap-5">
+    <div className="flex items-center justify-end gap-3">
       <BiRefresh
         onClick={() => {
           if (type === "locked") alert("To refresh, unlock this event first.");
