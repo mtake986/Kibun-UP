@@ -4,7 +4,8 @@ import { app, auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { useEvent } from "@/context/EventContext";
-import { pagination } from "@/utils/functions";
+import usePagination from "@/components/hooks/usePagination";
+
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 
@@ -18,7 +19,7 @@ const EventList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = pagination(currentPage, loginUserEvents);
+  const { nPages, currentRecords } = usePagination(currentPage, loginUserEvents);
 
   return (
     <div className="mb-20">

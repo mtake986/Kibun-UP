@@ -28,7 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/home/QuoteFolder",
+    "components/home/quote",
     "config/firebase-config.js",
     "config/Firebase.js",
     "app/user/profile/[uid]"

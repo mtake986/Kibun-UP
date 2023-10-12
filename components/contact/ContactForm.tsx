@@ -104,7 +104,9 @@ export default function ContactForm() {
               name="sender_name"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>
+                    Name <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="John Doe"
@@ -122,7 +124,9 @@ export default function ContactForm() {
               name="sender_email"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>
+                    Email <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="john.doe@gmail.com" {...field} />
                   </FormControl>
@@ -136,7 +140,9 @@ export default function ContactForm() {
               name="title"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>
+                    Title <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="This is Awesome!!" {...field} />
                   </FormControl>
@@ -150,7 +156,9 @@ export default function ContactForm() {
               name="message"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel className="text-base">Message</FormLabel>
+                  <FormLabel className="text-base">
+                    Message <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea placeholder="This is Awesome!!" {...field} />
                   </FormControl>

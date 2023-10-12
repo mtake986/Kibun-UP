@@ -2,24 +2,14 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import {
-  Contact,
-  LucideLogOut,
   MenuIcon,
-  MessageCircle,
-  User2,
 } from "lucide-react";
-// import { hamburgerMenus } from "@/public/CONSTANTS";
-import Link from "next/link";
-
-import { LogInIcon } from "lucide-react";
+// import { hamburgerMenus } from "@/data/CONSTANTS";
 import {
   BsChatQuote,
-  BsChatQuoteFill,
   BsFlag,
-  BsFlagFill,
   BsHouse,
   BsPerson,
-  BsQuote,
 } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
@@ -27,8 +17,6 @@ import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
 import { Button } from "../ui/button";
-import { BiSolidContact } from "react-icons/bi";
-import { MdContacts } from "react-icons/md";
 import { AiOutlineContacts } from "react-icons/ai";
 
 type Anchor = "right";

@@ -19,14 +19,14 @@ import { Input } from "@/components/ui/input";
 import { Plane, Trash } from "lucide-react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IQuote, ITag } from "@/types/type";
+import { TypeQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
 import { MdAdd, MdCancel, MdClose, MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
+import { changeTagColor } from "@/functions/functions";
 
 import {
   Select,
@@ -35,10 +35,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/public/CONSTANTS";
+import { tagColors } from "@/data/CONSTANTS";
 
 type Props = {
-  q: IQuote;
+  q: TypeQuote;
   setIsUpdateMode: (boo: boolean) => void;
 };
 
@@ -51,7 +51,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {
-      alert("Min 0 character.");
+      alert("Min.1 character.");
     } else if (tagInput.length > 20) {
       alert("Maximum 20 characters.");
     } else {
@@ -191,13 +191,15 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <MdAdd
+            <Button
+              type="button"
               onClick={() => {
                 addTag(tagInput);
               }}
-              size={36}
-              className="flex cursor-pointer items-center gap-1 text-black duration-300 hover:opacity-70"
-            />
+              className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+            >
+              Add
+            </Button>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {tags.map((tag, i) => (

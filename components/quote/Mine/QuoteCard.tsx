@@ -4,10 +4,8 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   BsFillPersonFill,
@@ -16,23 +14,19 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { CalendarPlus, Edit, Heart, Trash } from "lucide-react";
+import { Edit, Heart, Trash } from "lucide-react";
 
 import { auth } from "@/config/Firebase";
-import { IQuote } from "@/types/type";
+import { TypeQuote } from "@/types/type";
 import EditModeOn from "./EditModeOn";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/utils/functions";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { changeTagColor } from "@/functions/functions";
+import Icons from "./Icons";
 
 type Props = {
-  q: IQuote;
+  q: TypeQuote;
   i: number;
 };
 
@@ -115,86 +109,7 @@ const QuoteCard = ({ q, i }: Props) => {
           </CardContent>
 
           <CardFooter className="flex items-center justify-between gap-5">
-            <div className="flex items-center justify-between gap-1">
-              <Button
-                onClick={() => setIsUpdateMode(true)}
-                className={`duration-300  hover:bg-blue-50 hover:text-blue-500 sm:w-auto`}
-                variant="ghost"
-              >
-                <Edit size={14} />
-                {/* <span>Edit</span> */}
-              </Button>
-              {lockedQuote?.id === q.id ? (
-                <Button
-                  onClick={() => {
-                    if (user) removeLockFromThisQuote(user?.uid);
-                  }}
-                  className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiLock size={14} />
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    if (q.isDraft) alert("Needs to be Public.");
-                    else {
-                      if (user) lockThisQuote(user?.uid, q);
-                    }
-                  }}
-                  className={`duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-                  variant="ghost"
-                >
-                  <BiLockOpen size={14} />
-                </Button>
-              )}
-
-              {user &&
-              numOfFavs.some(
-                (favQuote) =>
-                  // favQuote.qid === q.id && favQuote.uids.includes(user.uid)
-                  favQuote.qid === q.id
-              ) ? (
-                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
-                  {user &&
-                    (numOfFavs.some(
-                      (favQuote) =>
-                        favQuote.qid === q.id &&
-                        favQuote.uids.includes(user.uid)
-                    ) ? (
-                      <Heart size={14} fill="red" className="text-red-500" />
-                    ) : (
-                      <Heart size={14} />
-                    ))}
-
-                  {numOfFavs.map((favQuote, i) =>
-                    favQuote.qid === q.id ? (
-                      <span key={i} className="text-xs">
-                        {favQuote.uids.length}
-                      </span>
-                    ) : null
-                  )}
-                </Button>
-              ) : (
-                <Button className="flex cursor-default items-center gap-1.5 bg-white text-black hover:bg-white">
-                  <Heart size={14} />
-                  <span className="text-xs">0</span>
-                </Button>
-              )}
-            </div>
-
-            <Button
-              onClick={() => {
-                handleDelete(q.id);
-                if (user && lockedQuote?.id === q.id)
-                  removeLockFromThisQuote(user?.uid);
-              }}
-              className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <Trash size={14} />
-              {/* <span>Delete</span> */}
-            </Button>
+            <Icons q={q} setIsUpdateMode={setIsUpdateMode} isUpdateMode = {isUpdateMode} />
           </CardFooter>
         </>
       )}
