@@ -16,15 +16,11 @@ type Props = {
 };
 
 const QuoteList = ({ quotes }: Props) => {
-  const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
   const { sortFilterAreaForMineShown } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
-
-  if (loading) return <div>loading</div>;
 
   // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (

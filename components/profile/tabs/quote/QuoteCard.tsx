@@ -12,6 +12,8 @@ import {
   BsChatLeftText,
   BsToggle2Off,
   BsToggle2On,
+  BsBookmarkFill,
+  BsBookmark,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
@@ -39,6 +41,11 @@ const QuoteCard = ({ q }: Props) => {
     removeLockFromThisQuote,
     myFavs,
     numOfFavs,
+    myBookmarks,
+    numOfBookmarks,
+    storeQuoteInBookmarks,
+    removeQuoteFromBookmarks,
+
   } = useQuote();
 
   const [user] = useAuthState(auth);
@@ -175,6 +182,53 @@ const QuoteCard = ({ q }: Props) => {
                   <span className="text-xs">0</span>
                 </Button>
               )}
+              <Button
+                onClick={() => {
+                  try {
+                    if (user) {
+                      if (myBookmarks && myBookmarks.qids.includes(q.id)) {
+                        removeQuoteFromBookmarks(user.uid, q);
+                      } else {
+                        storeQuoteInBookmarks(user.uid, q);
+                      }
+                    }
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                className={`flex items-center justify-between gap-1 bg-white duration-300 hover:bg-green-50`}
+              >
+                {user &&
+                numOfBookmarks?.some(
+                  (b) =>
+                    // b.qid === q.id && b.uids.includes(user.uid)
+                    b.qid === q.id
+                ) ? (
+                  <>
+                    {user &&
+                      (numOfBookmarks.some(
+                        (b) => b.qid === q.id && b.uids.includes(user.uid)
+                      ) ? (
+                        <BsBookmarkFill size={12} className="text-green-500" />
+                      ) : (
+                        <BsBookmark size={12} className="text-green-500" />
+                      ))}
+
+                    {numOfBookmarks.map((b, i) =>
+                      b.qid === q.id ? (
+                        <span key={i} className="text-xs text-black">
+                          {b.uids.length}
+                        </span>
+                      ) : null
+                    )}
+                  </>
+                ) : (
+                  <div className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50">
+                    <BsBookmark size={12} className="text-green-500" />
+                    <span className="text-xs text-black">0</span>
+                  </div>
+                )}
+              </Button>
             </div>
 
             <Button

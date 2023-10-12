@@ -10,7 +10,8 @@ const colorMap: { [key: string]: string } = {
   red: "text-[10px] bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
   orange:
     "text-[10px] bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",
-  green: "text-[10px] bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
+  green:
+    "text-[10px] bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
   blue: "text-[10px] bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500",
   violet:
     "text-[10px] bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
@@ -18,7 +19,8 @@ const colorMap: { [key: string]: string } = {
 };
 export const changeTagColor = (tagColor: string) => {
   return (
-    colorMap[tagColor] || "text-[10px] bg-white text-black hover:bg-white hover:text-black"
+    colorMap[tagColor] ||
+    "text-[10px] bg-white text-black hover:bg-white hover:text-black"
   );
 };
 
@@ -31,7 +33,9 @@ export function calculateLeftDays(date: Date): number {
   return diffDays;
 }
 
-export function removeDuplicates(tags: TypeTagsQuotableAPI[]): TypeTagsQuotableAPI[] {
+export function removeDuplicates(
+  tags: TypeTagsQuotableAPI[]
+): TypeTagsQuotableAPI[] {
   let tagNames: Set<string> = new Set();
   return tags.filter((tag: TypeTagsQuotableAPI) => {
     if (!tagNames.has(tag.name)) {
