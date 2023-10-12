@@ -9,7 +9,7 @@ import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
   q: TypeQuote;
-  setIsUpdateMode: (boo: boolean) => boolean;
+  setIsUpdateMode: (boo: boolean) => void;
   isUpdateMode: boolean;
 };
 
