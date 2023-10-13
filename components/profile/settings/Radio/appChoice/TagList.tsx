@@ -23,7 +23,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
   console.log(tags)
   
   return (
-    <div className="mt-2 flex w-full items-center justify-between">
+    <div className="mt-2 flex gap-5 justify-start w-full items-center">
       <Label className="text-xs">Select a tag</Label>
       <Select
         defaultValue={loginUser.settings.tagForQuotableApi}
@@ -31,7 +31,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
       >
         <SelectTrigger
           id="tags"
-          className={`w-[150px] focus:outline-none focus:ring-transparent focus-visible:ring-transparent ${
+          className={`w-full max-w-[200px] focus:outline-none focus:ring-transparent focus-visible:ring-transparent ${
             loginUser.settings.quoteTypeForHome === "appChoice"
               ? styleVariables.input
               : null

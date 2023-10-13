@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,14 +21,13 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
-import { CalendarIcon, Plane, Trash } from "lucide-react";
+import { CalendarIcon, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
 import { DocumentData } from "firebase/firestore";
 import { useEvent } from "@/context/EventContext";
-import { MdOutlineCancel } from "react-icons/md";
 
 type Props = {
   event: DocumentData;
@@ -83,7 +79,9 @@ export default function EditModeOn({
             name="eventTitle"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Event Title</FormLabel>
+                <FormLabel>
+                  Event Title <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="My Birthday" {...field} />
                 </FormControl>
@@ -114,7 +112,9 @@ export default function EditModeOn({
           name="eventDate"
           render={({ field }) => (
             <FormItem className=" flex flex-col justify-between">
-              <FormLabel>Event Date</FormLabel>
+              <FormLabel>
+                Event Date <span className="text-red-500">*</span>
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>

@@ -10,7 +10,7 @@ const LeftDays = ({event}: Props) => {
   return (
     <div className={`text-center ${fontDancingScript.className}`}>
       {calculateLeftDays(event.eventDate.toDate()) <= 0 ? (
-        <span className="text-center text-xl">
+        <span className="text-center text-3xl">
           You Can Do It <span className="text-2xl">🎉</span>
         </span>
       ) : (
