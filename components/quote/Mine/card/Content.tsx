@@ -1,16 +1,18 @@
-import React from 'react'
 
-import { BiLock, BiLockOpen } from "react-icons/bi";
-import { useQuote } from "@/context/QuoteContext";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
-import { BsChatLeftText, BsFillPersonFill, BsToggle2Off, BsToggle2On } from "react-icons/bs";
-import { TypeQuote } from '@/types/type';
+import {
+  BsChatLeftText,
+  BsFillPersonFill,
+  BsToggle2Off,
+  BsToggle2On,
+} from "react-icons/bs";
+import { TypeQuote } from "@/types/type";
 
 type Props = {
   q: TypeQuote;
 };
-const Content = ({q}: Props) => {
+const Content = ({ q }: Props ) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center">
@@ -58,6 +60,6 @@ const Content = ({q}: Props) => {
       )}
     </div>
   );
-}
+};
 
-export default Content
+export default Content;

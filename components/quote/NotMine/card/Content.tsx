@@ -1,16 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
 import { TypeQuote } from "@/types/type";
-import React from 'react'
-import {
-  BsFillPersonFill,
-  BsChatLeftText,
-} from "react-icons/bs";
+
+import { BsFillPersonFill, BsChatLeftText } from "react-icons/bs";
 
 type Props = {
   q: TypeQuote;
-}
-const Content = ({q}: Props) => {
+};
+const Content = ({ q }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center">
@@ -25,11 +22,11 @@ const Content = ({q}: Props) => {
         </div>
         <p>{q.person}</p>
       </div>
-      {q.tags && q.tags?.length >= 1 && (
+      {q?.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">
           {q.tags.map((tag, i) => (
             <Badge
-              key={i}
+              key={i + "-" + tag.tag}
               className={`border-none font-light ${changeTagColor(
                 tag.tagColor
               )}`}
@@ -41,6 +38,6 @@ const Content = ({q}: Props) => {
       )}
     </div>
   );
-}
+};
 
-export default Content
+export default Content;

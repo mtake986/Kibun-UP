@@ -1,4 +1,3 @@
-
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
@@ -14,7 +13,6 @@ const Icons = ({ q }: Props) => {
   const {
     lockThisQuote,
     lockedQuote,
-    handleDelete,
     removeLockFromThisQuote,
     numOfFavs,
     myBookmarks,
@@ -63,12 +61,7 @@ const Icons = ({ q }: Props) => {
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
       >
-        {loginUser &&
-        numOfFavs.some(
-          (favQuote) =>
-            // favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
-            favQuote.qid === q.id
-        ) ? (
+        {loginUser && numOfFavs.some((favQuote) => favQuote.qid === q.id) ? (
           <>
             {loginUser &&
               (numOfFavs.some(
@@ -107,17 +100,12 @@ const Icons = ({ q }: Props) => {
               }
             }
           } catch (e) {
-            console.error(e);
+            alert(e);
           }
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
       >
-        {loginUser &&
-        numOfBookmarks?.some(
-          (b) =>
-            // b.qid === q.id && b.uids.includes(loginUser.uid)
-            b.qid === q.id
-        ) ? (
+        {loginUser && numOfBookmarks?.some((b) => b.qid === q.id) ? (
           <>
             {loginUser &&
               (numOfBookmarks.some(
@@ -143,7 +131,6 @@ const Icons = ({ q }: Props) => {
           </>
         )}
       </span>
-
     </div>
   );
 };

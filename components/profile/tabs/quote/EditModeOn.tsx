@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,15 +6,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { Trash } from "lucide-react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeQuote, ITag } from "@/types/type";
@@ -45,10 +40,10 @@ type Props = {
 
 export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
-  const { reset } = useForm();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>(q.tags || []);
   const [tagColor, setTagColor] = useState<string>("");
+  const { reset } = useForm();
 
   const addTag = (tagInput: string) => {
     if (tagInput.length === 0) {

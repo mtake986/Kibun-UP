@@ -53,9 +53,13 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
           <BiLockOpen
             size={16}
             onClick={() => {
-              if (q.isDraft) alert("Needs to be Public.");
-              else {
-                if (loginUser) lockThisQuote(loginUser?.uid, q);
+              try {
+                if (q.isDraft) alert("Needs to be Public.");
+                else {
+                  if (loginUser) lockThisQuote(loginUser.uid, q);
+                }
+              } catch (error) {
+                console.error(error);
               }
             }}
             className="cursor-pointer hover:opacity-50"
@@ -64,13 +68,18 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
 
         <span
           onClick={() => {
-            if (loginUser) {
-              numOfFavs.some(
-                (favQuote) =>
-                  favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
-              )
-                ? removeFav(loginUser.uid, q)
-                : storeFav(loginUser.uid, q);
+            try {
+              if (loginUser) {
+                numOfFavs.some(
+                  (favQuote) =>
+                    favQuote.qid === q.id &&
+                    favQuote.uids.includes(loginUser.uid)
+                )
+                  ? removeFav(loginUser.uid, q)
+                  : storeFav(loginUser.uid, q);
+              }
+            } catch (error) {
+              alert(error);
             }
           }}
           className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
@@ -161,9 +170,13 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
       <Trash
         size={14}
         onClick={() => {
-          handleDelete(q.id);
-          if (loginUser && lockedQuote?.id === q.id)
-            removeLockFromThisQuote(loginUser?.uid);
+          try {
+            handleDelete(q.id);
+            if (loginUser && lockedQuote?.id === q.id)
+              removeLockFromThisQuote(loginUser.uid);
+          } catch (error) {
+            console.error(error);
+          }
         }}
         className="cursor-pointer duration-300 hover:opacity-50"
       />

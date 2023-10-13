@@ -33,7 +33,7 @@ const Icons = ({ q }: Props) => {
         <BiLock
           size={16}
           onClick={() => {
-            if (loginUser) removeLockFromThisQuote(loginUser?.uid);
+            if (loginUser) removeLockFromThisQuote(loginUser.uid);
           }}
           className="cursor-pointer text-red-500 duration-300 hover:opacity-50"
         />
@@ -43,7 +43,7 @@ const Icons = ({ q }: Props) => {
           onClick={() => {
             if (q.isDraft) alert("Needs to be Public.");
             else {
-              if (loginUser) lockThisQuote(loginUser?.uid, q);
+              if (loginUser) lockThisQuote(loginUser.uid, q);
             }
           }}
           className="cursor-pointer hover:opacity-50"

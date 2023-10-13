@@ -1,16 +1,21 @@
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
 import { changeTagColor } from "@/functions/functions";
 import { TypeQuote } from "@/types/type";
-import React from 'react'
 import {
   BsFillPersonFill,
   BsChatLeftText,
+  BsToggle2Off,
+  BsToggle2On,
 } from "react-icons/bs";
 
 type Props = {
   q: TypeQuote;
 }
 const Content = ({q}: Props) => {
+
+  const {loginUser} = useAuth();
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center">
@@ -25,7 +30,8 @@ const Content = ({q}: Props) => {
         </div>
         <p className="">{q.person}</p>
       </div>
-      {/* <div className="flex items-center">
+      {q.userInfo?.uid === loginUser?.uid ? (
+      <div className="flex items-center">
         {q.isDraft ? (
           <>
             <div className="flex w-10">
@@ -41,7 +47,8 @@ const Content = ({q}: Props) => {
             <p>Public</p>
           </>
         )}
-      </div> */}
+      </div>
+      ) : null}
       {q.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">
           {q.tags.map((tag, i) => (

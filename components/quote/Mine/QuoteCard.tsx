@@ -18,7 +18,7 @@ import { Edit, Heart, Trash } from "lucide-react";
 
 import { auth } from "@/config/Firebase";
 import { TypeQuote } from "@/types/type";
-import EditModeOn from "./EditModeOn";
+import EditModeOn from "./card/EditModeOn";
 import Icons from "./card/Icons";
 import Content from "./card/Content";
 

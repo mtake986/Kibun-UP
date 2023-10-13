@@ -1,5 +1,4 @@
 import UrlLink from "@/components/utils/UrlLink";
-import React from 'react'
 
 const NoEventAvailable = () => {
   return (
@@ -12,6 +11,6 @@ const NoEventAvailable = () => {
       />
     </div>
   );
-}
+};
 
-export default NoEventAvailable
+export default NoEventAvailable;
