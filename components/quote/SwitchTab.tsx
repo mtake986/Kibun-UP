@@ -8,7 +8,7 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./NotMine/ListNotMine";
 import Loading from "../utils/Loading";
-import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
+import ListOfBookmarks from "../profile/tabs/bookmarks/ListOfBookmarks";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);

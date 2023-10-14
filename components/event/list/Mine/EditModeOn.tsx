@@ -86,7 +86,9 @@ export default function EditModeOn({
             name="eventTitle"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Event Title</FormLabel>
+                <FormLabel>
+                  Event Title <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="My Birthday" {...field} />
                 </FormControl>
@@ -117,7 +119,9 @@ export default function EditModeOn({
           name="eventDate"
           render={({ field }) => (
             <FormItem className=" flex flex-col justify-between">
-              <FormLabel>Event Date</FormLabel>
+              <FormLabel>
+                Event Date <span className="text-red-500">*</span>
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>

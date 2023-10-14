@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,6 +34,7 @@ import { ITag } from "@/types/type";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
+import { Separator } from "@/components/ui/separator";
 
 export default function RegisterForm() {
   const [user] = useAuthState(auth);
@@ -110,7 +110,7 @@ export default function RegisterForm() {
             control={form.control}
             name="quote"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="w-full space-y-0">
                 <FormLabel>
                   Quote <span className="text-red-500">*</span>
                 </FormLabel>
@@ -130,7 +130,7 @@ export default function RegisterForm() {
             control={form.control}
             name="person"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="w-full space-y-0">
                 <FormLabel>
                   Person <span className="text-red-500">*</span>
                 </FormLabel>
@@ -147,12 +147,7 @@ export default function RegisterForm() {
             name="isDraft"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Draft</FormLabel>
-                  <FormDescription>
-                    Check if you do not want to display this on the home page
-                  </FormDescription>
-                </div>
+                <FormLabel className="text-base">Draft</FormLabel>
                 <FormControl>
                   <Switch
                     checked={field.value}
@@ -165,63 +160,57 @@ export default function RegisterForm() {
 
           <div>
             <FormLabel>Tags</FormLabel>
-
-            <div className="mt-2 flex items-center gap-5">
+            <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
               <Input
                 maxLength={20}
                 placeholder="Motivation"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
               />
-              <Select
-                onValueChange={(color) => {
-                  setTagColor(color);
-                }}
-                value={tagColor}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Color" />
-                </SelectTrigger>
-                <SelectContent>
-                  {tagColors.map((color) => (
-                    <SelectItem
-                      key={color}
-                      className={`${
-                        color === "red"
-                          ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
-                          : color === "orange"
-                          ? "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500"
-                          : color === "green"
-                          ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
-                          : color === "blue"
-                          ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
-                          : color === "violet"
-                          ? "bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500"
-                          : "bg-white text-black hover:bg-white hover:text-black"
-                      }`}
-                      value={color}
-                    >
-                      {tagInput}
+              <div className="flex gap-2 sm:gap-2 sm:justify-between w-full">
+                <Select
+                  onValueChange={(color) => {
+                    setTagColor(color);
+                  }}
+                  value={tagColor}
+                  disabled={tagInput.length === 0}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Color" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem disabled={true} key="tagColor" value="tagColor">
+                      Tag color
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                type="button"
-                onClick={() => {
-                  addTag(tagInput);
-                }}
-                className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
-              >
-                Add
-              </Button>
+                    <Separator />
+                    {tagColors.map((color) => (
+                      <SelectItem
+                        key={color}
+                        className={`${changeTagColor(color)}`}
+                        value={color}
+                      >
+                        {tagInput}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    addTag(tagInput);
+                  }}
+                  className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+                >
+                  Add
+                </Button>
+              </div>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {tags.map((tag, i) => (
                 <Badge
                   key={i}
                   onClick={() => removeTag(tag.tag)}
-                  className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
+                  className={`cursor-pointer border-none font-light ${changeTagColor(
                     tag.tagColor
                   )}`}
                 >

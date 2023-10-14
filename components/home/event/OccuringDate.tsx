@@ -1,11 +1,10 @@
-import { fontMerriweather } from "@/components/utils/fonts"
-import { IEvent } from "@/types/type"
-import React from 'react'
+import { fontMerriweather } from "@/components/utils/fonts";
+import { IEvent } from "@/types/type";
 
 type Props = {
-  event: IEvent
-}
-const OccuringDate = ({event}: Props) => {
+  event: IEvent;
+};
+const OccuringDate = ({ event }: Props) => {
   return (
     <span className={`${fontMerriweather.className}`}>
       {event.eventDate.toDate().getMonth() + 1}/
@@ -13,6 +12,6 @@ const OccuringDate = ({event}: Props) => {
       {event.eventDate.toDate().getFullYear()}
     </span>
   );
-}
+};
 
-export default OccuringDate
+export default OccuringDate;

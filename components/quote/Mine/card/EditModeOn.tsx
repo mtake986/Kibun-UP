@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,14 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { Plane, Trash } from "lucide-react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeQuote, ITag } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
-import { MdAdd, MdCancel, MdClose, MdOutlineCancel } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
@@ -36,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tagColors } from "@/data/CONSTANTS";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
   q: TypeQuote;
@@ -86,7 +83,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     },
   });
 
-  const { handleUpdate, handleDelete } = useQuote();
+  const { handleUpdate } = useQuote();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
@@ -111,8 +108,10 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           control={form.control}
           name="quote"
           render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Quote</FormLabel>
+            <FormItem className="w-full space-y-0">
+              <FormLabel>
+                Quote <span className="text-red-500">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Just Do It"
@@ -129,8 +128,10 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           control={form.control}
           name="person"
           render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Person</FormLabel>
+            <FormItem className="w-full space-y-0">
+              <FormLabel>
+                Person <span className="text-red-500">*</span>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="NIKE" {...field} />
               </FormControl>
@@ -143,12 +144,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           name="isDraft"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Draft</FormLabel>
-                <FormDescription>
-                  Check if you do not want to display this on the home page
-                </FormDescription>
-              </div>
+              <FormLabel className="text-base">Draft</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}
@@ -161,45 +157,50 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
 
         <div>
           <FormLabel>Tags</FormLabel>
-          {tagColor}
-
-          <div className="mt-2 flex items-center gap-5">
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
             <Input
               maxLength={20}
               placeholder="Motivation"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
             />
-            <Select
-              onValueChange={(color) => {
-                setTagColor(color);
-              }}
-              value={tagColor}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Color" />
-              </SelectTrigger>
-              <SelectContent>
-                {tagColors.map((color) => (
-                  <SelectItem
-                    key={color}
-                    className={`${changeTagColor(color)}`}
-                    value={color}
-                  >
-                    {tagInput}
+            <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
+              <Select
+                onValueChange={(color) => {
+                  setTagColor(color);
+                }}
+                value={tagColor}
+                disabled={tagInput.length === 0}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Color" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem disabled={true} key="tagColor" value="tagColor">
+                    Tag color
                   </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button
-              type="button"
-              onClick={() => {
-                addTag(tagInput);
-              }}
-              className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
-            >
-              Add
-            </Button>
+                  <Separator />
+                  {tagColors.map((color) => (
+                    <SelectItem
+                      key={color}
+                      className={`${changeTagColor(color)}`}
+                      value={color}
+                    >
+                      {tagInput}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                type="button"
+                onClick={() => {
+                  addTag(tagInput);
+                }}
+                className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+              >
+                Add
+              </Button>
+            </div>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {tags.map((tag, i) => (
@@ -226,33 +227,20 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <Button
-              onClick={() => setIsUpdateMode(false)}
-              className={` flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500`}
-              variant="ghost"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button
-              type="submit"
-              className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500`}
-              variant="ghost"
-            >
-              <span>Save</span>
-            </Button>
-          </div>
+        <div className="flex items-center gap-3">
           <Button
-            onClick={() => {
-              setIsUpdateMode(false);
-              handleDelete(q.id);
-            }}
-            className={`duration-300  hover:bg-red-50 hover:text-red-500`}
+            onClick={() => setIsUpdateMode(false)}
+            className={`flex w-full items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
             variant="ghost"
           >
-            <Trash size={14} />
-            {/* <span>Delete</span> */}
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70`}
+            variant="ghost"
+          >
+            Save
           </Button>
         </div>
       </form>

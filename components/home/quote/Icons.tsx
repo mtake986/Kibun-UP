@@ -76,7 +76,7 @@ const Icons = ({ quote, type, refetch }: Props) => {
         />
       )}
 
-      <div className="flex items-center gap-0.5">
+      <span className="flex items-center gap-0.5">
         {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
           <BsBookmarkFill
             size={14}
@@ -100,7 +100,7 @@ const Icons = ({ quote, type, refetch }: Props) => {
           )}
         </span>
         {/* <span>Edit</span> */}
-      </div>
+      </span>
     </div>
   );
 };

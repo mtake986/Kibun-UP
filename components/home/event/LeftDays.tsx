@@ -1,16 +1,19 @@
-import { fontDancingScript, fontMerriweather, fontRaleway } from "@/components/utils/fonts";
+import {
+  fontDancingScript,
+  fontMerriweather,
+  fontRaleway,
+} from "@/components/utils/fonts";
 import { calculateLeftDays } from "@/functions/functions";
 import { IEvent } from "@/types/type";
-import React from 'react'
 
 type Props = {
-    event: IEvent
-}
-const LeftDays = ({event}: Props) => {
+  event: IEvent;
+};
+const LeftDays = ({ event }: Props) => {
   return (
     <div className={`text-center ${fontDancingScript.className}`}>
       {calculateLeftDays(event.eventDate.toDate()) <= 0 ? (
-        <span className="text-center text-xl">
+        <span className="text-center text-3xl">
           You Can Do It <span className="text-2xl">🎉</span>
         </span>
       ) : (
@@ -38,4 +41,4 @@ const LeftDays = ({event}: Props) => {
   );
 };
 
-export default LeftDays
+export default LeftDays;
