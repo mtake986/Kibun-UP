@@ -1,14 +1,11 @@
 import { auth } from "@/config/Firebase";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import List from "@/components/quote/Mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
-import ListNotMine from "./NotMine/ListNotMine";
+import ListNotMine from "./notMine/ListNotMine";
 import Loading from "../utils/Loading";
-import ListOfBookmarks from "../profile/tabs/bookmarks/ListOfBookmarks";
+import List from "./mine/List";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -23,7 +20,6 @@ const SwitchTab = () => {
     fetchNumOfFavs,
     fetchMyBookmarks,
     fetchNumOfBookmarks,
-    myBookmarks,
     getLockedQuote,
 
     whichList,

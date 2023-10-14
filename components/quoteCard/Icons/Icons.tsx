@@ -1,4 +1,3 @@
-
 import { TypeQuote } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
@@ -9,7 +8,7 @@ import IconTrash from "./IconTrash";
 
 type Props = {
   q: TypeQuote;
-  setIsUpdateMode: (boo: boolean) => void;
+  setIsUpdateMode?: (boo: boolean) => void;
 };
 
 const Icons = ({ q, setIsUpdateMode }: Props) => {
@@ -17,21 +16,22 @@ const Icons = ({ q, setIsUpdateMode }: Props) => {
 
   if (!loginUser) {
     return null; // or return some default UI
-  } else {
+  }
 
-    return (
-      <div className="mt-5 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-5">
+  const mine = loginUser.uid === q.userInfo?.uid;
+  return (
+    <div className="mt-5 flex items-center justify-between gap-2">
+      <div className="flex items-center gap-5">
+        {mine && setIsUpdateMode ? (
           <IconEdit setIsUpdateMode={setIsUpdateMode} />
-          <IconLock q={q} loginUser={loginUser} />
-          <IconLike q={q} loginUser={loginUser} />
-          <IconBookmark q={q} loginUser={loginUser} />
-        </div>
-
-        <IconTrash q={q} />
+        ) : null}
+        <IconLock q={q} loginUser={loginUser} />
+        <IconLike q={q} loginUser={loginUser} />
+        <IconBookmark q={q} loginUser={loginUser} />
       </div>
-    );
-}
+      {mine ? <IconTrash q={q} /> : null}
+    </div>
+  );
 };
 
 export default Icons;
