@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { displayToast, tryCatchError } from "@/functions/functions";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
@@ -18,16 +18,16 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   } = useQuote();
 
   const handleBookmarkClick = () => {
-        try {
-          if (myBookmarks && myBookmarks.qids.includes(q.id)) {
-            removeQuoteFromBookmarks(loginUser.uid, q);
-          } else {
-            storeQuoteInBookmarks(loginUser.uid, q);
-          }
-        } catch (e) {
-          tryCatchError(e);
-        }
-  }
+    try {
+      if (myBookmarks && myBookmarks.qids.includes(q.id)) {
+        removeQuoteFromBookmarks(loginUser.uid, q);
+      } else {
+        storeQuoteInBookmarks(loginUser.uid, q);
+      }
+    } catch (e) {
+      displayErrorToast(e);
+    }
+  };
   return (
     <span
       onClick={handleBookmarkClick}

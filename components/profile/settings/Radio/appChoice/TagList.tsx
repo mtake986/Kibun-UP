@@ -19,9 +19,6 @@ type Props = {
 };
 
 const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
-
-  console.log(tags)
-  
   return (
     <div className="mt-2 flex gap-5 justify-start w-full items-center">
       <Label className="text-xs">Select a tag</Label>

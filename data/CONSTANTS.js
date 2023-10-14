@@ -126,3 +126,6 @@ export const CategoriesQuoteFromAPI = [
   "movies",
   "success",
 ];
+
+export const DEFAULT_URL_FOR_QUOTE =
+  " https://api.quotable.io/quotes/random";

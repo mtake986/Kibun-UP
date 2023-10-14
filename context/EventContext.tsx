@@ -21,9 +21,8 @@ type EventProviderProps = {
 };
 import { IEvent, IEventInputValues, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "@/functions/functions";
-import { useAuth } from "./AuthContext";
+import { displaySuccessToast } from "@/functions/displayToast";
 
 type EventContextType = {
   handleUpdate: (
@@ -83,9 +82,8 @@ export function EventProvider({ children }: EventProviderProps) {
       userInfo,
       createdAt: serverTimestamp(),
     }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Created",
+      displaySuccessToast({
+        text: "Created",
       });
     });
   };
@@ -112,9 +110,8 @@ export function EventProvider({ children }: EventProviderProps) {
         });
       }
     }
-    toast({
-      className: "border-none bg-green-500 text-white",
-      title: "Successfully Updated",
+    displaySuccessToast({
+      text: "Updated",
     });
     setIsLoading(false);
   };
@@ -187,7 +184,6 @@ export function EventProvider({ children }: EventProviderProps) {
       onSnapshot(q, (snapshot) => {
         const randomNum = getRandomNum(snapshot.docs.length);
         const doc = snapshot.docs[randomNum];
-        console.log(randomNum, doc.data())
         if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
       });
     }

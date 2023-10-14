@@ -1,4 +1,4 @@
-import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
+
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
@@ -24,7 +24,6 @@ const Icons = ({ quote, type, refetch }: Props) => {
     fetchNumOfBookmarks,
   } = useQuote();
   const { loginUser } = useAuth();
-  // const { refetch } = useFetchQuoteFromQuotableAPI();
 
   useEffect(() => {
     fetchMyBookmarks();
