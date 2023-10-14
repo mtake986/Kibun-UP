@@ -19,12 +19,10 @@ const useFetchTags = (url: string) => {
         return response.json();
       })
       .then((res) => {
-        const tagsWithDuplicates: TypeTagsQuotableAPI[] = res.filter(
-          (tag: any) => {
-            if (tag.quoteCount > 10)
-              return { name: tag.name, quoteCount: tag.quoteCount };
-          }
-        );
+
+        const tagsWithDuplicates: TypeTagsQuotableAPI[] = res
+          .filter((tag: any) => tag.quoteCount > 10)
+          .map((tag: any) => ({ name: tag.name, quoteCount: tag.quoteCount }));
         setTags(removeDuplicates(tagsWithDuplicates));
         setIsPending(false);
       })
