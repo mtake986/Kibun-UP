@@ -2,13 +2,12 @@
 import React, { useState } from "react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import QuoteCard from "./QuoteCard";
-import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
+import QuoteCard from "@/components/quoteCard/QuoteCard";
 
 type Props = {
   quotes: TypeQuote[];

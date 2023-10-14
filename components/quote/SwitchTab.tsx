@@ -3,10 +3,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import List from "@/components/quote/Mine/List";
+import List from "@/components/quote/mine/List";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
-import ListNotMine from "./NotMine/ListNotMine";
+import ListNotMine from "./notMine/ListNotMine";
 import Loading from "../utils/Loading";
 import ListOfBookmarks from "../profile/tabs/bookmarks/ListOfBookmarks";
 

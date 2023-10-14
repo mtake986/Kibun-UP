@@ -1,13 +1,13 @@
 "use client";
 import { TypeQuote } from "@/types/type";
-import CardNotMine from "./CardNotMine";
 import { useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterNotMine from "./Sort/SortFilterNotMine";
+import SortFilterNotMine from "./sort/SortFilterNotMine";
 import { useQuote } from "@/context/QuoteContext";
+import QuoteCard from "@/components/quoteCard/QuoteCard";
 
 type Props = {
   quotes: TypeQuote[];
@@ -25,7 +25,7 @@ const ListNotMine = ({ quotes }: Props) => {
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
-            <CardNotMine key={doc.id} q={doc} i={i} />
+            <QuoteCard key={doc.id} q={doc} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

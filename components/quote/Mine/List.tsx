@@ -1,14 +1,14 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import QuoteCard from "./QuoteCard";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterMine from "./Sort/SortFilterMine";
+import SortFilterMine from "./sort/SortFilterMine";
 import usePagination from "@/components/hooks/usePagination";
+import QuoteCard from "@/components/quoteCard/QuoteCard";
 
 type Props = {
   quotes: TypeQuote[];
@@ -31,7 +31,7 @@ const List = ({ quotes }: Props) => {
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} i={i} />
+            <QuoteCard key={doc.id} q={doc} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns
