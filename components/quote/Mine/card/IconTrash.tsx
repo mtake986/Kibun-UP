@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
@@ -16,9 +17,16 @@ const IconTrash = ({ q }: Props) => {
     <Trash
       size={14}
       onClick={() => {
-        handleDelete(q.id);
-        if (loginUser && lockedQuote?.id === q.id)
-          removeLockFromThisQuote(loginUser?.uid);
+        try {
+          handleDelete(q.id);
+          if (loginUser && lockedQuote?.id === q.id)
+            removeLockFromThisQuote(loginUser?.uid);
+        } catch (error) {
+          toast({
+            className: "border-none bg-red-100 text-red-500",
+            title: "Something wrong. Please reload and try again.",
+          });
+        }
       }}
       className="cursor-pointer duration-300 hover:opacity-50"
     />

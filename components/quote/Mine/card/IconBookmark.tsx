@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
+import { displayToast } from "@/functions/functions";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
@@ -16,9 +17,7 @@ const IconBookmark = ({ q, loginUser }: Props) => {
     removeQuoteFromBookmarks,
   } = useQuote();
 
-  return (
-    <span
-      onClick={() => {
+  const handleBookmarkClick = () => {
         try {
           if (myBookmarks && myBookmarks.qids.includes(q.id)) {
             removeQuoteFromBookmarks(loginUser.uid, q);
@@ -26,9 +25,16 @@ const IconBookmark = ({ q, loginUser }: Props) => {
             storeQuoteInBookmarks(loginUser.uid, q);
           }
         } catch (e) {
-          console.error(e);
+          if (typeof e === "string") {
+            displayToast(e.toUpperCase(), "red");
+          } else if (e instanceof Error) {
+            displayToast(e.message, "red");
+          }
         }
-      }}
+  }
+  return (
+    <span
+      onClick={handleBookmarkClick}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
     >
       {numOfBookmarks?.some(

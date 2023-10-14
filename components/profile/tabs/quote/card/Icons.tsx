@@ -1,21 +1,17 @@
-import { auth } from "@/config/Firebase";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import { Edit, Heart, Trash } from "lucide-react";
-import React, { useState } from "react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import styles from "./heart.module.css";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useAuth } from "@/context/AuthContext";
+import { displayToast, tryCatchError } from "@/functions/functions";
 
 type Props = {
   q: TypeQuote;
   setIsUpdateMode: (boo: boolean) => void;
-  isUpdateMode: boolean;
 };
 
-const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
+const Icons = ({ q, setIsUpdateMode }: Props) => {
   const {
     lockThisQuote,
     lockedQuote,
@@ -54,12 +50,13 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
             size={16}
             onClick={() => {
               try {
-                if (q.isDraft) alert("Needs to be Public.");
-                else {
+                if (q.isDraft) {
+                  displayToast("Needs to be Public", "red");
+                } else {
                   if (loginUser) lockThisQuote(loginUser.uid, q);
                 }
-              } catch (error) {
-                console.error(error);
+              } catch (e) {
+                tryCatchError(e);
               }
             }}
             className="cursor-pointer hover:opacity-50"
@@ -78,8 +75,8 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
                   ? removeFav(loginUser.uid, q)
                   : storeFav(loginUser.uid, q);
               }
-            } catch (error) {
-              alert(error);
+            } catch (e) {
+              tryCatchError(e);
             }
           }}
           className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
@@ -129,7 +126,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
                 }
               }
             } catch (e) {
-              console.error(e);
+              tryCatchError(e);
             }
           }}
           className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
@@ -174,8 +171,8 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
             handleDelete(q.id);
             if (loginUser && lockedQuote?.id === q.id)
               removeLockFromThisQuote(loginUser.uid);
-          } catch (error) {
-            console.error(error);
+          } catch (e) {
+            tryCatchError(e);
           }
         }}
         className="cursor-pointer duration-300 hover:opacity-50"

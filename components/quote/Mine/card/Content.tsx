@@ -48,7 +48,7 @@ const Content = ({ q }: Props ) => {
         <div className="flex flex-wrap items-center gap-2">
           {q.tags.map((tag, i) => (
             <Badge
-              key={i}
+              key={tag.tag}
               className={`border-none font-light ${changeTagColor(
                 tag.tagColor
               )}`}

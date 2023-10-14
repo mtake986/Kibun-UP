@@ -1,10 +1,11 @@
-
 import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "@/components/ui/use-toast";
+import { displayToast } from "@/functions/functions";
 
 type Props = {
   q: TypeQuote;
@@ -14,7 +15,6 @@ const Icons = ({ q }: Props) => {
   const {
     lockThisQuote,
     lockedQuote,
-    handleDelete,
     removeLockFromThisQuote,
     numOfFavs,
     myBookmarks,
@@ -27,13 +27,14 @@ const Icons = ({ q }: Props) => {
 
   const { loginUser } = useAuth();
 
+  if (!loginUser) return null;
   return (
     <div className="mt-5 flex items-center gap-5">
       {lockedQuote?.id === q.id ? (
         <BiLock
           size={16}
           onClick={() => {
-            if (loginUser) removeLockFromThisQuote(loginUser.uid);
+            removeLockFromThisQuote(loginUser.uid);
           }}
           className="cursor-pointer text-red-500 duration-300 hover:opacity-50"
         />
@@ -41,9 +42,10 @@ const Icons = ({ q }: Props) => {
         <BiLockOpen
           size={16}
           onClick={() => {
-            if (q.isDraft) alert("Needs to be Public.");
-            else {
-              if (loginUser) lockThisQuote(loginUser.uid, q);
+            if (q.isDraft) {
+              displayToast("Needs to be Public.", 'red');
+            } else {
+              lockThisQuote(loginUser.uid, q);
             }
           }}
           className="cursor-pointer hover:opacity-50"
@@ -52,14 +54,12 @@ const Icons = ({ q }: Props) => {
 
       <span
         onClick={() => {
-          if (loginUser) {
-            numOfFavs.some(
-              (favQuote) =>
-                favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
-            )
-              ? removeFav(loginUser.uid, q)
-              : storeFav(loginUser.uid, q);
-          }
+          numOfFavs.some(
+            (favQuote) =>
+              favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
+          )
+            ? removeFav(loginUser.uid, q)
+            : storeFav(loginUser.uid, q);
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
       >
@@ -99,15 +99,17 @@ const Icons = ({ q }: Props) => {
       <span
         onClick={() => {
           try {
-            if (loginUser) {
-              if (myBookmarks && myBookmarks.qids.includes(q.id)) {
-                removeQuoteFromBookmarks(loginUser.uid, q);
-              } else {
-                storeQuoteInBookmarks(loginUser.uid, q);
-              }
+            if (myBookmarks && myBookmarks.qids.includes(q.id)) {
+              removeQuoteFromBookmarks(loginUser.uid, q);
+            } else {
+              storeQuoteInBookmarks(loginUser.uid, q);
             }
           } catch (e) {
-            console.error(e);
+            if (typeof e === "string") {
+              displayToast(e.toUpperCase(), "red");
+            } else if (e instanceof Error) {
+              displayToast(e.message, "red");
+            }
           }
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
@@ -143,7 +145,6 @@ const Icons = ({ q }: Props) => {
           </>
         )}
       </span>
-
     </div>
   );
 };

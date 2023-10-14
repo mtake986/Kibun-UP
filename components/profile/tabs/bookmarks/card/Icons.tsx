@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useAuth } from "@/context/AuthContext";
+import { displayToast } from "@/functions/functions";
 
 type Props = {
   q: TypeQuote;
@@ -100,7 +101,11 @@ const Icons = ({ q }: Props) => {
               }
             }
           } catch (e) {
-            alert(e);
+            if (typeof e === "string") {
+              displayToast(e.toUpperCase(), "red");
+            } else if (e instanceof Error) {
+              displayToast(e.message, "red");
+            }
           }
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}

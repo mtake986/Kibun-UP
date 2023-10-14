@@ -10,35 +10,26 @@ type Props = {
 
 const IconLike = ({ q, loginUser }: Props) => {
   const { numOfFavs, storeFav, removeFav } = useQuote();
+  const isFav = numOfFavs.some(
+    (favQuote) => favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
+  );
+
+  const heartFill = isFav ? "red" : undefined;
 
   return (
     <span
       onClick={() => {
-        numOfFavs.some(
-          (favQuote) =>
-            favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
-        )
-          ? removeFav(loginUser.uid, q)
-          : storeFav(loginUser.uid, q);
+        isFav ? removeFav(loginUser.uid, q) : storeFav(loginUser.uid, q);
       }}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
     >
-      {
-      numOfFavs.some(
+      {numOfFavs.some(
         (favQuote) =>
           // favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
           favQuote.qid === q.id
       ) ? (
         <>
-          {
-            (numOfFavs.some(
-              (favQuote) =>
-                favQuote.qid === q.id && favQuote.uids.includes(loginUser.uid)
-            ) ? (
-              <Heart size={14} fill="red" className="text-red-500" />
-            ) : (
-              <Heart size={14} className="text-red-500" />
-            ))}
+          <Heart size={14} fill={heartFill} className="text-red-500" />
 
           {numOfFavs.map((favQuote, i) =>
             favQuote.qid === q.id ? (

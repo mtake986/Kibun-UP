@@ -23,7 +23,6 @@ const QuoteCard = ({ q }: Props) => {
       <Icons
         q={q}
         setIsUpdateMode={setIsUpdateMode}
-        isUpdateMode={isUpdateMode}
       />
     </div>
   );

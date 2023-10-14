@@ -31,7 +31,7 @@ const Btn = () => {
     >
       <Plus
         size={48}
-        className="fixed bottom-0 z-20 mb-6 rotate-0 cursor-pointer rounded-full bg-violet-50 p-2 text-violet-500 duration-300 hover:rotate-90 hover:bg-violet-100 "
+        className="fixed bottom-0 z-20 mb-6 rotate-0 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:rotate-90 hover:bg-violet-500"
       />
     </div>
   );

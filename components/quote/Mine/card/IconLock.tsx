@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
@@ -26,8 +27,12 @@ const IconLock = ({ q, loginUser }: Props) => {
         <BiLockOpen
           size={16}
           onClick={() => {
-            if (q.isDraft) alert("Needs to be Public.");
-            else {
+            if (q.isDraft) {
+              toast({
+                className: "border-none bg-red-100 text-red-500",
+                title: "Needs to be Public.",
+              });
+            } else {
               lockThisQuote(loginUser?.uid, q);
             }
           }}

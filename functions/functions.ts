@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { TypeTagsQuotableAPI } from "@/types/type";
 
 export function getRandomNum(max: number) {
@@ -45,3 +46,21 @@ export function removeDuplicates(
     return false;
   });
 }
+
+const styleMap: { [key: string]: string } = {
+  red: "bg-red-100 text-red-500",
+};
+export const displayToast = (text: string, color: string) => {
+  return toast({
+    className: `border-none ${styleMap[color]}`,
+    title: text || "Something wrong. Please reload and try again",
+  });
+};
+
+export const tryCatchError = (e: unknown) => {
+  if (typeof e === "string") {
+    displayToast(e.toUpperCase(), "red");
+  } else if (e instanceof Error) {
+    displayToast(e.message, "red");
+  }
+};
