@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { displayToast } from "@/functions/functions";
+import { displayToast, tryCatchError } from "@/functions/functions";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
@@ -25,11 +25,7 @@ const IconBookmark = ({ q, loginUser }: Props) => {
             storeQuoteInBookmarks(loginUser.uid, q);
           }
         } catch (e) {
-          if (typeof e === "string") {
-            displayToast(e.toUpperCase(), "red");
-          } else if (e instanceof Error) {
-            displayToast(e.message, "red");
-          }
+          tryCatchError(e);
         }
   }
   return (

@@ -5,13 +5,14 @@ import { BiLock, BiLockOpen } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/components/ui/use-toast";
-import { displayToast } from "@/functions/functions";
+import { displayToast, tryCatchError } from "@/functions/functions";
 
 type Props = {
   q: TypeQuote;
 };
 
 const Icons = ({ q }: Props) => {
+  const { loginUser } = useAuth();
   const {
     lockThisQuote,
     lockedQuote,
@@ -24,9 +25,7 @@ const Icons = ({ q }: Props) => {
     storeFav,
     removeFav,
   } = useQuote();
-
-  const { loginUser } = useAuth();
-
+  
   if (!loginUser) return null;
   return (
     <div className="mt-5 flex items-center gap-5">
@@ -105,11 +104,7 @@ const Icons = ({ q }: Props) => {
               storeQuoteInBookmarks(loginUser.uid, q);
             }
           } catch (e) {
-            if (typeof e === "string") {
-              displayToast(e.toUpperCase(), "red");
-            } else if (e instanceof Error) {
-              displayToast(e.message, "red");
-            }
+            tryCatchError(e);
           }
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
