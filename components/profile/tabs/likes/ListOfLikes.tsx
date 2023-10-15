@@ -2,7 +2,9 @@ import React from 'react'
 
 const ListOfLikes = () => {
   return (
-    <div>ListOfLikes</div>
+    <div>
+      quote card
+    </div>
   )
 }
 
