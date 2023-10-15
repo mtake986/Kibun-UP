@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
@@ -22,8 +21,8 @@ const IconTrash = ({ q }: Props) => {
           handleDelete(q.id);
           if (loginUser && lockedQuote?.id === q.id)
             removeLockFromThisQuote(loginUser?.uid);
-        } catch (error) {
-          displayErrorToast("Something wrong. Please reload and try again.");
+        } catch (e) {
+          displayErrorToast(e);
         }
       }}
       className="cursor-pointer duration-300 hover:opacity-50"

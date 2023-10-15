@@ -1,42 +1,44 @@
 import { toast } from "@/components/ui/use-toast";
 
-const styleMap: { [key: string]: string } = {
-  red: "bg-red-500 text-white",
-  green: "bg-green-500 text-white",
-  blue: "bg-blue-500 text-white",
-};
-
 export const displayToast = ({
   text,
   color,
 }: {
   text: string;
-  color: string;
+  color: "red" | "green" | "blue";
 }) => {
+  const styleMap: Record<"red" | "green" | "blue" | string, string> = {
+    red: "bg-red-500 text-white",
+    black: "bg-orange-500 text-white",
+    blue: "bg-blue-500 text-white",
+  };
   return toast({
     title: text,
     className: `border-none ${styleMap[color]}`,
   });
 };
-
-
 export const displaySuccessToast = ({
   text,
+  color = "blue",
 }: {
   text: string;
+  color?: "red" | "green" | "blue";
 }) => {
-  displayToast({text: text, color: "blue"})
+  displayToast({ text: text, color: color });
 };
 
-export const displayErrorToast = (e: unknown) => {
+export const displayErrorToast = (
+  e: unknown,
+  defaultMessage = "Something wrong. Please reload and try again"
+) => {
   if (typeof e === "string") {
     displayToast({
-      text: e || "Something wrong. Please reload and try again",
+      text: e || defaultMessage,
       color: "red",
     });
   } else if (e instanceof Error) {
     displayToast({
-      text: e.message || "Something wrong. Please reload and try again",
+      text: e.message || defaultMessage,
       color: "red",
     });
   }
