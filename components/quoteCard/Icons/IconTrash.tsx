@@ -1,6 +1,6 @@
-import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeQuote } from "@/types/type";
 import { Trash } from "lucide-react";
 import React from "react";
@@ -21,11 +21,8 @@ const IconTrash = ({ q }: Props) => {
           handleDelete(q.id);
           if (loginUser && lockedQuote?.id === q.id)
             removeLockFromThisQuote(loginUser?.uid);
-        } catch (error) {
-          toast({
-            className: "border-none bg-red-100 text-red-500",
-            title: "Something wrong. Please reload and try again.",
-          });
+        } catch (e) {
+          displayErrorToast(e);
         }
       }}
       className="cursor-pointer duration-300 hover:opacity-50"

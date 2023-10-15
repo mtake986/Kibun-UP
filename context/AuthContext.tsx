@@ -1,17 +1,10 @@
 "use client";
 
-import {
-  User,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
+import { User, signInWithPopup, updateProfile } from "firebase/auth";
 import { ReactNode, createContext, useContext, useState } from "react";
 import { auth, db, provider, storage } from "../config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { toast } from "@/components/ui/use-toast";
 import {
   addDoc,
   collection,
@@ -26,6 +19,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { TypeLoginUser, TypeUpdateUserInputs } from "@/types/type";
+import { displayErrorToast, displaySuccessToast, displayToast } from "@/functions/displayToast";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -77,9 +71,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
       }
       fetchLoginUser(auth.currentUser);
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Success: Log In",
+      displaySuccessToast({
+        text: "Logged in",
       });
       router.push("/");
     });
@@ -124,9 +117,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (success) {
       setLoginUser(undefined);
-      toast({
-        className: "border-none bg-blue-500 text-white",
-        title: "Success: Log Out",
+      displayToast({
+        text: "Logged Out",
+        color: "blue",
       });
       router.push("/");
     }
@@ -171,7 +164,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         "settings.itemsPerPage": payload.itemsPerPage,
       });
     } else {
-      console.warn("No user is signed in");
+      displayErrorToast("No user is signed in");
     }
     updateProfile(currentUser, payload)
       .then(() => {

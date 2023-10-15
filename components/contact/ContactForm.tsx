@@ -19,12 +19,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
-import { toast } from "../ui/use-toast";
 import { useEffect, useState } from "react";
 import Loading from "../utils/Loading";
 import HeadingTwo from "../utils/HeadingTwo";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
+import { displaySuccessToast, displayToast } from "@/functions/displayToast";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -68,17 +68,16 @@ export default function ContactForm() {
       // emailJS送信
       try {
         await send(serviceID, templateID, params);
-        toast({
-          className: "border-none bg-green-500 text-white",
-          title: "Success: Sent successfully",
+        displaySuccessToast({
+          text: "Thanks for reaching out to me!!",
         });
         form.reset();
         setLoading(false);
       } catch (error) {
         // 送信失敗したらalertで表示
-        toast({
-          className: "border-none bg-red-500 text-white",
-          title: "ERROR: Failed to send it",
+        displayToast({
+          text: "ERROR: Failed to send email.",
+          color: "red",
         });
         setLoading(false);
       }
@@ -103,7 +102,7 @@ export default function ContactForm() {
               control={form.control}
               name="sender_name"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full space-y-0">
                   <FormLabel>
                     Name <span className="text-red-500">*</span>
                   </FormLabel>
@@ -123,7 +122,7 @@ export default function ContactForm() {
               control={form.control}
               name="sender_email"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full space-y-0">
                   <FormLabel>
                     Email <span className="text-red-500">*</span>
                   </FormLabel>
@@ -139,7 +138,7 @@ export default function ContactForm() {
               control={form.control}
               name="title"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full space-y-0">
                   <FormLabel>
                     Title <span className="text-red-500">*</span>
                   </FormLabel>
@@ -155,7 +154,7 @@ export default function ContactForm() {
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full space-y-0">
                   <FormLabel className="text-base">
                     Message <span className="text-red-500">*</span>
                   </FormLabel>

@@ -14,7 +14,6 @@ type Props = {
   isPending?: boolean;
 };
 const QuoteCard = ({ quote, type, refetch, isPending }: Props) => {
-  console.log(type, quote);
   return (
     <div className="mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
       <QuoteContent quote={quote} />

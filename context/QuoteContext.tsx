@@ -34,8 +34,8 @@ import {
   TypeQuoteQuotetableAPI,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { toast } from "@/components/ui/use-toast";
 import { getRandomNum } from "../functions/functions";
+import { displayErrorToast, displaySuccessToast } from "@/functions/displayToast";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -192,9 +192,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       userInfo,
       createdAt: serverTimestamp(),
     }).then(() => {
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Successfully Created",
+      displaySuccessToast({
+        text: "Success: Created",
       });
     });
   };
@@ -286,27 +285,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }).then((res) => {
       if (lockedQuote?.id === qid && values.isDraft) {
         if (uid) removeLockFromThisQuote(uid);
-        toast({
-          className: "border-none bg-green-500 text-white",
-          title: "Successfully Updated",
-          // description: `
-          //   Quote: ${values.quote},
-          //   Person: ${values.person},
-          //   Draft: ${values.isDraft},
-          //   Tags: ${values.tags.map((value, i) => value)}
-          //   No Locked Quote.
-          // `,
-        });
-      } else {
-        toast({
-          className: "border-none bg-green-500 text-white",
-          title: "Successfully Updated",
-          // description: `
-          //   Quote: ${values.quote},
-          //   Person: ${values.person},
-          //   Draft: ${values.isDraft},
-          //   Tags: ${values.tags.map((value, i) => value)}
-          // `,
+        displaySuccessToast({
+          text: "Updated",
         });
       }
     });
@@ -720,11 +700,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const storeQuoteInBookmarks = async (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => {
+  const storeQuoteInBookmarks = async (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log(data)
     if (data) {
       await updateDoc(docRef, {
         qids: arrayUnion(q.id),
@@ -742,7 +724,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
     const nobData = numOfBookmarksDocSnap.data();
     if (nobData) {
-      console.log(nobData)
       await updateDoc(numOfBookmarksRef, {
         uids: arrayUnion(uid),
       });
@@ -758,7 +739,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const docRef = doc(db, "myBookmarks", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    console.log(data)
     if (data?.qids.includes(q.id) && data?.qids.length === 1) {
       await deleteDoc(doc(db, "myBookmarks", uid));
     } else {
@@ -771,7 +751,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
     const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
     const nobData = numOfBookmarksDocSnap.data();
-    console.log(nobData)
     if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
       await deleteDoc(doc(db, "numOfBookmarks", q.id));
     } else {
@@ -865,8 +844,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               quote: res.content,
             } as TypeQuote);
           })
-          .catch((err) => {
-            console.log(err.message);
+          .catch((e) => {
+            displayErrorToast(e.message);
           });
       }
     }
