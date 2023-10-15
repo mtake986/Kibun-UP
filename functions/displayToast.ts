@@ -5,11 +5,11 @@ export const displayToast = ({
   color,
 }: {
   text: string;
-  color: "red" | "green" | "blue";
+  color: "red" | "green" | "blue" | "black";
 }) => {
   const styleMap: Record<"red" | "green" | "blue" | string, string> = {
     red: "bg-red-500 text-white",
-    black: "bg-orange-500 text-white",
+    black: "bg-white text-black",
     blue: "bg-blue-500 text-white",
   };
   return toast({
@@ -39,6 +39,11 @@ export const displayErrorToast = (
   } else if (e instanceof Error) {
     displayToast({
       text: e.message || defaultMessage,
+      color: "red",
+    });
+  } else {
+    displayToast({
+      text: defaultMessage,
       color: "red",
     });
   }
