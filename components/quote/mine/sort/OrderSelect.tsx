@@ -19,8 +19,8 @@ const OrderSelect = () => {
       value={sortFilterByForMine.order}
       defaultValue={sortFilterByForMine.order}
     >
-      <SelectTrigger className="sm:w-[120px] w-full text-xs">
-        <SelectValue placeholder="Order" />
+      <SelectTrigger className="w-full text-xs sm:w-[120px]">
+        <SelectValue placeholder="Ex.) Order" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="asc">Asc.</SelectItem>

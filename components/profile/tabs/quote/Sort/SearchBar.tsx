@@ -10,7 +10,7 @@ export function SearchBar() {
   return (
     <>
       <Input
-        placeholder="Search a tag"
+        placeholder="Ex.) Search a tag"
         className="w-full text-xs"
         onChange={(e) => {
           updateSortFilterByForMine("searchTag", e.target.value);

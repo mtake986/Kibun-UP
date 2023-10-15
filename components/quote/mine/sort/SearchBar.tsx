@@ -5,15 +5,12 @@ import { useQuote } from "@/context/QuoteContext";
 import { SearchIcon } from "lucide-react";
 
 export function SearchBar() {
-  const {
-    updateSortFilterByForMine,
-    sortFilterByForMine,
-  } = useQuote();
+  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
 
   return (
     <>
       <Input
-        placeholder="Search a tag"
+        placeholder="Ex.) Search a tag"
         className="w-full text-xs"
         onChange={(e) => {
           updateSortFilterByForMine("searchTag", e.target.value);

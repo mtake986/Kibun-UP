@@ -8,6 +8,7 @@ export function getRandomNum(max: number) {
 }
 
 const colorMap: { [key: string]: string } = {
+  white: "text-[10px] bg-white text-black hover:bg-white hover:text-black",
   red: "text-[10px] bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
   orange:
     "text-[10px] bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",

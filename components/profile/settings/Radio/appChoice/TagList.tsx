@@ -20,7 +20,7 @@ type Props = {
 
 const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
   return (
-    <div className="mt-2 flex gap-5 justify-start w-full items-center">
+    <div className="mt-2 flex w-full items-center justify-start gap-5">
       <Label className="text-xs">Select a tag</Label>
       <Select
         defaultValue={loginUser.settings.tagForQuotableApi}
@@ -34,7 +34,7 @@ const TagList = ({ updateTagForQuotableApi, loginUser, tags }: Props) => {
               : null
           }`}
         >
-          <SelectValue placeholder="Select a Quote Tag" />
+          <SelectValue placeholder="Ex.) Select a Quote Tag" />
         </SelectTrigger>
         <SelectContent className="h-48">
           <SelectItem disabled={true} key="top" value="top">

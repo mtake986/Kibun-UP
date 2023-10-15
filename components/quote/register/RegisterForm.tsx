@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
@@ -35,15 +34,17 @@ import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { Separator } from "@/components/ui/separator";
+import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 
 export default function RegisterForm() {
   const [user] = useAuthState(auth);
-  const { registerQuote } = useQuote();
+  const { registerQuote, toggleRegisterFormOpen } = useQuote();
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<ITag[]>([]);
   const [tagColor, setTagColor] = useState<string>("");
 
   const addTag = (tagInput: string) => {
+    tagInput = capitalizeFirstLetter(tagInput);
     if (tagInput.length === 0) {
       alert("Min. 1 character.");
     } else if (tagInput.length > 20) {
@@ -116,7 +117,7 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Just Do It"
+                    placeholder="Ex.) Just Do It"
                     {...field}
                     // defaultValue={field.value}
                   />
@@ -135,7 +136,7 @@ export default function RegisterForm() {
                   Person <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="NIKE" {...field} />
+                  <Input placeholder="Ex.) NIKE" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -163,11 +164,16 @@ export default function RegisterForm() {
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
               <Input
                 maxLength={20}
-                placeholder="Motivation"
+                placeholder={
+                  tags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
+                }
                 value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
+                onChange={(e) =>
+                  setTagInput(capitalizeFirstLetter(e.target.value))
+                }
+                disabled={tags.length >= 5}
               />
-              <div className="flex gap-2 sm:gap-2 sm:justify-between w-full">
+              <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
                 <Select
                   onValueChange={(color) => {
                     setTagColor(color);
@@ -176,7 +182,7 @@ export default function RegisterForm() {
                   disabled={tagInput.length === 0}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Color" />
+                    <SelectValue placeholder="Ex.) Color" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem disabled={true} key="tagColor" value="tagColor">
@@ -188,6 +194,7 @@ export default function RegisterForm() {
                         key={color}
                         className={`${changeTagColor(color)}`}
                         value={color}
+                        placeholder="Ex.) Color"
                       >
                         {tagInput}
                       </SelectItem>
@@ -237,7 +244,13 @@ export default function RegisterForm() {
             >
               Submit
             </Button>
-            <UrlLink clickOn={<CloseBtn />} href="/quote" target="_self" />
+            <UrlLink
+              clickOn={
+                <CloseBtn toggleRegisterFormOpen={toggleRegisterFormOpen} />
+              }
+              href="/quote"
+              target="_self"
+            />
           </div>
         </form>
       </Form>
@@ -245,9 +258,11 @@ export default function RegisterForm() {
   );
 }
 
-const CloseBtn = () => {
-  const { toggleRegisterFormOpen } = useQuote();
-
+const CloseBtn = ({
+  toggleRegisterFormOpen,
+}: {
+  toggleRegisterFormOpen: () => void;
+}) => {
   return (
     <Button
       onClick={toggleRegisterFormOpen}
