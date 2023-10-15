@@ -9,6 +9,7 @@ import NoFetchedData from "@/components/utils/NoFetchedData";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import MobileSortFilterForQuotesOpenBtn from "./quote/MobileSortFilterForQuotesOpenBtn";
+import ListOfLikes from "./likes/ListOfLikes";
 
 const ContentSwitchTabs = () => {
   const [user] = useAuthState(auth);
@@ -108,7 +109,7 @@ const ContentSwitchTabs = () => {
           <NoFetchedData text="No Bookmarks" />
         )
       ) : profileWhichTab === "likes" ? (
-        <div>likes</div>
+        <ListOfLikes />
       ) : (
         <EventList />
       )}
