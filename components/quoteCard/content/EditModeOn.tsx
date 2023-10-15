@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import { tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
+import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 
 type Props = {
   q: TypeQuote;
@@ -114,7 +115,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Just Do It"
+                  placeholder="Ex.) Just Do It"
                   {...field}
                   // defaultValue={field.value}
                 />
@@ -133,7 +134,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 Person <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="NIKE" {...field} />
+                <Input placeholder="Ex.) NIKE" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,9 +161,12 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
             <Input
               maxLength={20}
-              placeholder="Motivation"
+              placeholder={tags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"}
               value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
+              onChange={(e) =>
+                setTagInput(capitalizeFirstLetter(e.target.value))
+              }
+              disabled={tags.length >= 5}
             />
             <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
               <Select
@@ -173,7 +177,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 disabled={tagInput.length === 0}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Color" />
+                  <SelectValue placeholder="Ex.) Color" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem disabled={true} key="tagColor" value="tagColor">

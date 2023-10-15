@@ -15,7 +15,7 @@ export function SearchBar() {
   return (
     <div className=" flex w-full flex-grow justify-between gap-2">
       <Input
-        placeholder="Search a tag"
+        placeholder="Ex.) Search a tag"
         className="w-full text-xs"
         onChange={(e) => {
           updateSortFilterByForNotMine("searchTag", e.target.value);
