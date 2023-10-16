@@ -1,11 +1,10 @@
-import IconLike from "@/components/quoteCard/Icons/IconLike";
-import { useAuth } from "@/context/AuthContext";
+
 import { useQuote } from "@/context/QuoteContext";
 import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { Heart } from "lucide-react";
 import React, { useEffect } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
-import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
   quote: TypeQuoteQuotetableAPI | TypeQuote;
@@ -21,7 +20,6 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
     myBookmarks,
     removeQuoteFromBookmarks,
     storeQuoteInBookmarks,
-    numOfBookmarks,
     fetchMyBookmarks,
     fetchNumOfBookmarks,
     removeFav,
