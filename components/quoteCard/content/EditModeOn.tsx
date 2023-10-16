@@ -92,6 +92,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     values.tags = tags;
+    alert(23)
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({

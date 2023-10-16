@@ -293,6 +293,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       }
     });
+    fetchMyFavs();
   };
 
   const toggleUpdateMode = (boo: boolean) => {
