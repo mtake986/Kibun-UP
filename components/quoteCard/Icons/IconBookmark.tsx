@@ -1,11 +1,11 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
   loginUser: TypeLoginUser;
 };
 

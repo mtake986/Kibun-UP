@@ -1,4 +1,4 @@
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";
@@ -6,7 +6,7 @@ import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
 };
 
 const QuoteCard = ({ q }: Props) => {
@@ -16,7 +16,7 @@ const QuoteCard = ({ q }: Props) => {
 
   return (
     <div className="mb-3 rounded-sm border p-4 sm:p-6">
-      {isUpdateMode ? (
+      {'person' in q && isUpdateMode ? (
         <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
       ) : (
         <Content q={q} />

@@ -1,11 +1,11 @@
 import { useQuote } from "@/context/QuoteContext";
 import { displayToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import React from "react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
   loginUser: TypeLoginUser;
 };
 
@@ -26,7 +26,7 @@ const IconLock = ({ q, loginUser }: Props) => {
         <BiLockOpen
           size={16}
           onClick={() => {
-            if (q.isDraft) {
+            if ("isDraft" in q && q.isDraft) {
               displayToast({
                 text: "Needs to be Public.",
                 color: "red",

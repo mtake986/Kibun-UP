@@ -33,8 +33,8 @@ const Tags = ({ quote }: Props) => {
                 #{tag.tag}
               </Badge>
             ))
-          : "none"
-        : "no quote"}
+          : null
+        : null}
     </ul>
   );
 };

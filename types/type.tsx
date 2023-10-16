@@ -91,12 +91,6 @@ export interface TypeLoginUser {
   };
 }
 
-export type typeQuoteFromAPI = {
-  quote: string;
-  author: string;
-  category: string;
-};
-
 export type TypeUpdateUserInputs = {
   photoURL?: string | null;
   displayName?: string;

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { TypeQuote, ITag } from "@/types/type";
+import { TypeQuote, ITag, TypeQuoteQuotetableAPI } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
@@ -105,6 +105,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div>editmode</div>
         <FormField
           control={form.control}
           name="quote"

@@ -88,6 +88,29 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
           className="cursor-pointer duration-300 hover:opacity-50"
         />
       )}
+      
+      <span
+        onClick={() => {
+          isFav
+            ? removeFav(loginUser.uid, quote)
+            : storeFav(loginUser.uid, quote);
+        }}
+        className={`duration-300 hover:opacity-50`}
+      >
+        {numOfFavs.some(
+          (favQuote) =>
+            // favQuote.qid === quote.id && favQuote.uids.includes(loginUser.uid)
+            favQuote.qid === quote.id
+        ) ? (
+          <>
+            <Heart size={14} fill={heartFill} className="text-red-500" />
+          </>
+        ) : (
+          <>
+            <Heart size={14} className="text-black" />
+          </>
+        )}
+      </span>
 
       {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
         <BsBookmarkFill
@@ -106,26 +129,6 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
           }}
         />
       )}
-      <span
-        onClick={() => {
-          isFav ? removeFav(loginUser.uid, quote) : storeFav(loginUser.uid, quote);
-        }}
-        className={`duration-300 hover:opacity-50`}
-      >
-        {numOfFavs.some(
-          (favQuote) =>
-            // favQuote.qid === quote.id && favQuote.uids.includes(loginUser.uid)
-            favQuote.qid === quote.id
-        ) ? (
-          <>
-            <Heart size={14} fill={heartFill} className="text-red-500" />
-          </>
-        ) : (
-          <>
-            <Heart size={14} className="text-black" />
-          </>
-        )}
-      </span>
     </div>
   );
 };

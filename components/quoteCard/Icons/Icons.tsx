@@ -1,4 +1,4 @@
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
 import IconLock from "./IconLock";
@@ -7,7 +7,7 @@ import IconBookmark from "./IconBookmark";
 import IconTrash from "./IconTrash";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
   setIsUpdateMode?: (boo: boolean) => void;
 };
 
@@ -18,7 +18,8 @@ const Icons = ({ q, setIsUpdateMode }: Props) => {
     return null; // or return some default UI
   }
 
-  const mine = loginUser.uid === q.userInfo?.uid;
+  const mine = q ? ("userInfo" in q && loginUser.uid === q.userInfo?.uid ? true : false) : null;
+
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">

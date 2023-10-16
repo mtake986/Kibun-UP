@@ -1,7 +1,4 @@
 "use client";
-
-import { auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import EventCard from "./EventCard";
 import { IEvent } from "@/types/type";
 import { useState } from "react";
@@ -15,7 +12,6 @@ type Props = {
 };
 
 const List = ({ events }: Props) => {
-  const [user] = useAuthState(auth);
 
   const [currentPage, setCurrentPage] = useState(1);
 

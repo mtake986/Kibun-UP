@@ -49,8 +49,11 @@ type QuoteContext = {
 
   randomQuote: TypeQuote | undefined;
 
-  lockThisQuote: (uid: string, data: TypeQuote) => void;
-  lockedQuote: TypeQuote | undefined;
+  lockThisQuote: (
+    uid: string,
+    data: TypeQuote | TypeQuoteQuotetableAPI
+  ) => void;
+  lockedQuote: TypeQuote | TypeQuoteQuotetableAPI | undefined;
 
   removeLockFromThisQuote: (uid: string) => void;
   getLockedQuote: () => void;
@@ -76,7 +79,7 @@ type QuoteContext = {
   fetchNumOfFavs: () => void;
 
   setRandomQuote: (quote: TypeQuote | undefined) => void;
-  setLockedQuote: (quote: TypeQuote | undefined) => void;
+  setLockedQuote: (quote: TypeQuote | TypeQuoteQuotetableAPI | undefined) => void;
 
   sortAndFilterMyQuotes: () => void;
 
@@ -157,7 +160,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [numOfBookmarks, setNumOfBookmarks] = useState<TypeNumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<TypeQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<TypeQuote>();
-  const [lockedQuote, setLockedQuote] = useState<TypeQuote>();
+  const [lockedQuote, setLockedQuote] = useState<TypeQuote | TypeQuoteQuotetableAPI>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
 
@@ -245,9 +248,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-  const lockThisQuote = async (uid: string, data: any) => {
+  const lockThisQuote = async (uid: string, data: TypeQuote | TypeQuoteQuotetableAPI) => {
     let payload;
-    if (!data.userInfo) {
+    if ('userInfo' in data && !data.userInfo) {
       payload = { ...data, userInfo: { uid } };
     } else {
       payload = data;

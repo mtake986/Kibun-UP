@@ -1,12 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { Trash } from "lucide-react";
 import React from "react";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
 };
 
 const IconTrash = ({ q }: Props) => {
