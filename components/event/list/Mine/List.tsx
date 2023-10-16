@@ -37,7 +37,10 @@ const List = ({ events }: Props) => {
           )}
         </>
       ) : (
-        <NoFetchedData text="No events found" />
+        <NoFetchedData
+          title="No Events"
+          text="You ain't created any events yet."
+        />
       )}
     </div>
   );

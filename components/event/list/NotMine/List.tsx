@@ -1,7 +1,4 @@
 "use client";
-
-import { auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { IEvent } from "@/types/type";
 import CardNotMine from "./EventCard";
 import { useState } from "react";
@@ -34,7 +31,7 @@ const List = ({ eventsNotMine }: Props) => {
           )}
         </>
       ) : (
-        <NoFetchedData text="No events found" />
+        <NoFetchedData title="No Events" text="Other users ain't created any events yet." />
       )}
     </div>
   );

@@ -1,17 +1,19 @@
-
+import IconLike from "@/components/quoteCard/Icons/IconLike";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { Heart } from "lucide-react";
 import React, { useEffect } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
 
 type Props = {
   quote: TypeQuoteQuotetableAPI | TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
+  loginUser: TypeLoginUser;
 };
-const Icons = ({ quote, type, refetch }: Props) => {
+const Icons = ({ quote, type, refetch, loginUser }: Props) => {
   const {
     removeLockFromThisQuote,
     lockThisQuote,
@@ -22,16 +24,30 @@ const Icons = ({ quote, type, refetch }: Props) => {
     numOfBookmarks,
     fetchMyBookmarks,
     fetchNumOfBookmarks,
+    removeFav,
+    storeFav,
+    numOfFavs,
+    fetchMyFavs,
+    fetchNumOfFavs,
   } = useQuote();
-  const { loginUser } = useAuth();
 
   useEffect(() => {
     fetchMyBookmarks();
     fetchNumOfBookmarks();
+
+    fetchMyFavs();
+    fetchNumOfFavs();
   }, []);
 
+  const isFav = numOfFavs.some(
+    (favQuote) =>
+      favQuote.qid === quote.id && favQuote.uids.includes(loginUser.uid)
+  );
+
+  const heartFill = isFav ? "red" : undefined;
+
   return (
-    <div className="flex items-center gap-3 cursor-pointer">
+    <div className="flex cursor-pointer items-center gap-3">
       <BiRefresh
         size={20}
         onClick={() => {
@@ -75,30 +91,42 @@ const Icons = ({ quote, type, refetch }: Props) => {
         />
       )}
 
-      <span className="flex items-center gap-0.5">
-        {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
-          <BsBookmarkFill
-            size={14}
-            className="text-green-500"
-            onClick={() => {
-              if (loginUser) removeQuoteFromBookmarks(loginUser.uid, quote);
-            }}
-          />
+      {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
+        <BsBookmarkFill
+          size={14}
+          className="text-green-500 duration-300 hover:opacity-50"
+          onClick={() => {
+            if (loginUser) removeQuoteFromBookmarks(loginUser.uid, quote);
+          }}
+        />
+      ) : (
+        <BsBookmark
+          size={14}
+          className="text-black duration-300 hover:opacity-50"
+          onClick={() => {
+            if (loginUser) storeQuoteInBookmarks(loginUser.uid, quote);
+          }}
+        />
+      )}
+      <span
+        onClick={() => {
+          isFav ? removeFav(loginUser.uid, quote) : storeFav(loginUser.uid, quote);
+        }}
+        className={`duration-300 hover:opacity-50`}
+      >
+        {numOfFavs.some(
+          (favQuote) =>
+            // favQuote.qid === quote.id && favQuote.uids.includes(loginUser.uid)
+            favQuote.qid === quote.id
+        ) ? (
+          <>
+            <Heart size={14} fill={heartFill} className="text-red-500" />
+          </>
         ) : (
-          <BsBookmark
-            size={14}
-            className="text-black"
-            onClick={() => {
-              if (loginUser) storeQuoteInBookmarks(loginUser.uid, quote);
-            }}
-          />
+          <>
+            <Heart size={14} className="text-black" />
+          </>
         )}
-        <span className="ml-1 text-xs text-black">
-          {numOfBookmarks?.map((bookmark, i) =>
-            bookmark.qid === quote.id ? bookmark.uids.length : null
-          )}
-        </span>
-        {/* <span>Edit</span> */}
       </span>
     </div>
   );

@@ -7,7 +7,6 @@ import EventList from "./event/EventList";
 import Loading from "@/components/utils/Loading";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
-import HeadingTwo from "@/components/utils/HeadingTwo";
 import MobileSortFilterForQuotesOpenBtn from "./quote/MobileSortFilterForQuotesOpenBtn";
 import ListOfLikes from "./likes/ListOfLikes";
 
@@ -26,6 +25,8 @@ const ContentSwitchTabs = () => {
     myBookmarks,
     profileWhichTab,
     handleProfileWhichTab,
+    fetchMyFavs,
+    myFavs
   } = useQuote();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const ContentSwitchTabs = () => {
     fetchMyBookmarks();
     fetchNumOfBookmarks();
     setLoading(false);
+    fetchMyFavs();
   }, [user]);
 
   if (loading) {
@@ -44,9 +46,9 @@ const ContentSwitchTabs = () => {
 
   return (
     <div className="relative mt-10">
-      <div className="flex items-center justify-center mb-5 gap-5 sm:gap-10">
+      <div className="mb-5 flex items-center justify-center gap-5 sm:gap-10">
         <div className="w-5 border border-b-[1px] border-black sm:w-20"></div>
-        <h3 className="font-serif drop-shadow-lg mb-0 text-3xl">Your Data</h3>
+        <h3 className="mb-0 font-serif text-3xl drop-shadow-lg">Your Data</h3>
         <div className="w-5 border border-b-[1px] border-black sm:w-20"></div>
       </div>
       {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
@@ -106,7 +108,10 @@ const ContentSwitchTabs = () => {
         myBookmarks?.quotes ? (
           <ListOfBookmarks quotes={myBookmarks.quotes} />
         ) : (
-          <NoFetchedData text="No Bookmarks" />
+          <NoFetchedData
+            title="No Bookmarks"
+            text="You ain't bookmarked any quotes yet."
+          />
         )
       ) : profileWhichTab === "likes" ? (
         <ListOfLikes />

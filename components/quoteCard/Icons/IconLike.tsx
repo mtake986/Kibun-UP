@@ -1,10 +1,10 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { Heart } from "lucide-react";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeQuote | TypeQuoteQuotetableAPI;
   loginUser: TypeLoginUser;
 };
 

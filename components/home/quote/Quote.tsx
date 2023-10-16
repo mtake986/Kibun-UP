@@ -8,18 +8,18 @@ import { useQuote } from "@/context/QuoteContext";
 import { useAuth } from "@/context/AuthContext";
 import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
 import QuoteCard from "./QuoteCard";
-import { TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { createProperUrl } from "@/functions/createProperUrl";
 import { displayErrorToast } from "@/functions/displayToast";
 
-const Quote = () => {
+type Props = {
+  loginUser: TypeLoginUser;
+};
+const Quote = ({ loginUser }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [user] = useAuthState(auth);
   const { randomQuote, updateRandomQuote, lockedQuote, getLockedQuote } =
     useQuote();
-
-  const { loginUser, fetchLoginUser } = useAuth();
-
   // https://api.quotable.io/quotes?tags=famous-quotes&page=&limit=1
 
   const { data, isPending, error, refetch } = useFetchQuoteFromQuotableAPI(
@@ -30,7 +30,6 @@ const Quote = () => {
       setLoading(true);
       getLockedQuote();
       updateRandomQuote();
-      fetchLoginUser(user);
     } catch (e) {
       displayErrorToast(e);
     }
@@ -48,7 +47,7 @@ const Quote = () => {
   // if (!loading && !isPending) {
   if (user) {
     if (lockedQuote) {
-      return <QuoteCard quote={lockedQuote} type="locked" refetch={refetch} />;
+      return <QuoteCard quote={lockedQuote} type="locked" refetch={refetch} loginUser={loginUser} />;
     } else if (data && loginUser?.settings.quoteTypeForHome === "appChoice") {
       return (
         <QuoteCard
@@ -56,6 +55,7 @@ const Quote = () => {
           type="appChoice"
           refetch={refetch}
           isPending={isPending}
+          loginUser={loginUser}
         />
       );
     } else if (randomQuote) {
@@ -64,6 +64,7 @@ const Quote = () => {
           quote={randomQuote as TypeQuote}
           type="notAppChoice"
           refetch={refetch}
+          loginUser={loginUser}
         />
       );
     }

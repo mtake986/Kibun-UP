@@ -36,7 +36,10 @@ const ListNotMine = ({ quotes }: Props) => {
           )}
         </>
       ) : (
-        <NoFetchedData text="No quotes found" />
+        <NoFetchedData
+          title="No Quotes"
+          text="Other users ain't created any quotes yet"
+        />
       )}
     </div>
   );

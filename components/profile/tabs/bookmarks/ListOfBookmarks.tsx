@@ -36,7 +36,7 @@ const ListOfBookmarks = ({ quotes }: Props) => {
           )}
         </>
       ) : (
-        <NoFetchedData text="No quotes found" />
+        <NoFetchedData title="No Quotes" text="You ain't bookmarked any quotes yet." />
       )}
     </div>
   );

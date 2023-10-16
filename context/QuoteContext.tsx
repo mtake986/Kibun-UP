@@ -70,8 +70,8 @@ type QuoteContext = {
 
   myFavs: TypeMyFavs;
   numOfFavs: TypeNumOfFavs[];
-  storeFav: (uid: string, q: TypeQuote) => void;
-  removeFav: (uid: string, q: TypeQuote) => void;
+  storeFav: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
+  removeFav: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
   fetchMyFavs: () => void;
   fetchNumOfFavs: () => void;
 
@@ -296,7 +296,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsUpdateMode(boo);
   };
 
-  const storeFav = async (uid: string, q: TypeQuote) => {
+  const storeFav = async (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => {
     const docRef = doc(db, "myFavs", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
@@ -325,7 +328,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const removeFav = async (uid: string, q: TypeQuote) => {
+  const removeFav = async (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => {
     const docRef = doc(db, "myFavs", uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
