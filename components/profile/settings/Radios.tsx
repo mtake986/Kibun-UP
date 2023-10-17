@@ -12,7 +12,7 @@ import useFetchTags from "@/components/hooks/useFetchTags";
 const Radios = () => {
   const { updateQuoteTypeForHome, loginUser, updateTagForQuotableApi } =
     useAuth();
-  const { fetchMyBookmarks, myBookmarks, getLoginUserQuotes, loginUserQuotes } =
+  const { getLoginUserQuotes, loginUserQuotes } =
     useQuote();
 
   const { tags, error, isPending } = useFetchTags(
@@ -20,9 +20,6 @@ const Radios = () => {
   );
 
   useEffect(() => {
-    if (!myBookmarks) {
-      fetchMyBookmarks();
-    }
     if (!loginUserQuotes) getLoginUserQuotes();
   }, []);
 

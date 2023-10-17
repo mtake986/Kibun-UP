@@ -10,7 +10,6 @@ type Props = {
   loginUser: TypeLoginUser;
 };
 const BookmarkRadioButton = ({ updateQuoteTypeForHome, loginUser }: Props) => {
-  const { myBookmarks } = useQuote();
   return (
     <div
       className={`flex flex-col sm:flex-row sm:items-center ${
@@ -25,13 +24,12 @@ const BookmarkRadioButton = ({ updateQuoteTypeForHome, loginUser }: Props) => {
           id="bookmarks"
           className="border-gray-300 text-violet-600"
           onClick={(e) => updateQuoteTypeForHome("bookmarks")}
-          disabled={!myBookmarks}
         />
         <Label htmlFor="bookmarks" className="text-md">
           Bookmarks
         </Label>
       </div>
-      {!myBookmarks ? <p className="text-xs text-violet-500">No bookmarks available</p> : null}
+      {/* {!myBookmarks ? <p className="text-xs text-violet-500">No bookmarks available</p> : null} */}
     </div>
   );
 };
