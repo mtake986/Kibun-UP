@@ -35,7 +35,10 @@ import {
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
-import { displayErrorToast, displaySuccessToast } from "@/functions/displayToast";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+} from "@/functions/displayToast";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -190,6 +193,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await addDoc(quotesCollectionRef, {
       ...values,
       userInfo,
+      likedBy: [],
+      bookmarkedBy: [],
       createdAt: serverTimestamp(),
     }).then(() => {
       displaySuccessToast({
@@ -297,57 +302,79 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const storeFav = async (uid: string, q: TypeQuote) => {
-    const docRef = doc(db, "myFavs", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data) {
-      await updateDoc(docRef, {
-        qids: arrayUnion(q.id),
-        quotes: arrayUnion(q),
-      });
-    } else {
-      await setDoc(doc(db, "myFavs", uid), {
-        uid,
-        qids: [q.id],
-        quotes: [q],
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        likedBy: arrayUnion(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
+    // const docRef = doc(db, "myFavs", uid);
+    // const docSnap = await getDoc(docRef);
+    // const data = docSnap.data();
+    // if (data) {
+    //   await updateDoc(docRef, {
+    //     qids: arrayUnion(q.id),
+    //     quotes: arrayUnion(q),
+    //   });
+    // } else {
+    //   await setDoc(doc(db, "myFavs", uid), {
+    //     uid,
+    //     qids: [q.id],
+    //     quotes: [q],
+    //   });
+    // }
 
-    const numOfFavsRef = doc(db, "numOfFavs", q.id);
-    const numOfFavsDocSnap = await getDoc(numOfFavsRef);
-    const nobData = numOfFavsDocSnap.data();
-    if (nobData) {
-      await updateDoc(numOfFavsRef, {
-        uids: arrayUnion(uid),
-      });
-    } else {
-      await setDoc(doc(db, "numOfFavs", q.id), { qid: q.id, uids: [uid] });
-    }
+    // const numOfFavsRef = doc(db, "numOfFavs", q.id);
+    // const numOfFavsDocSnap = await getDoc(numOfFavsRef);
+    // const nobData = numOfFavsDocSnap.data();
+    // if (nobData) {
+    //   await updateDoc(numOfFavsRef, {
+    //     uids: arrayUnion(uid),
+    //   });
+    // } else {
+    //   await setDoc(doc(db, "numOfFavs", q.id), { qid: q.id, uids: [uid] });
+    // }
   };
 
   const removeFav = async (uid: string, q: TypeQuote) => {
-    const docRef = doc(db, "myFavs", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data?.qids.includes(q.id) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "myFavs", uid));
-    } else {
-      await updateDoc(docRef, {
-        qids: arrayRemove(q.id),
-        quotes: arrayRemove(q),
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        likedBy: arrayRemove(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
+    //   const docRef = doc(db, "myFavs", uid);
+    //   const docSnap = await getDoc(docRef);
+    //   const data = docSnap.data();
+    //   if (data?.qids.includes(q.id) && data?.qids.length === 1) {
+    //     await deleteDoc(doc(db, "myFavs", uid));
+    //   } else {
+    //     await updateDoc(docRef, {
+    //       qids: arrayRemove(q.id),
+    //       quotes: arrayRemove(q),
+    //     });
+    //   }
 
-    const numOfFavsDocRef = doc(db, "numOfFavs", q.id);
-    const numOfFavsDocSnap = await getDoc(numOfFavsDocRef);
-    const nobData = numOfFavsDocSnap.data();
-    if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
-      await deleteDoc(doc(db, "numOfFavs", q.id));
-    } else {
-      await updateDoc(numOfFavsDocRef, {
-        uids: arrayRemove(uid),
-      });
-    }
+    //   const numOfFavsDocRef = doc(db, "numOfFavs", q.id);
+    //   const numOfFavsDocSnap = await getDoc(numOfFavsDocRef);
+    //   const nobData = numOfFavsDocSnap.data();
+    //   if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
+    //     await deleteDoc(doc(db, "numOfFavs", q.id));
+    //   } else {
+    //     await updateDoc(numOfFavsDocRef, {
+    //       uids: arrayRemove(uid),
+    //     });
+    //   }
   };
 
   const fetchMyFavs = async () => {
@@ -704,58 +731,58 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     uid: string,
     q: TypeQuote | TypeQuoteQuotetableAPI
   ) => {
-    const docRef = doc(db, "myBookmarks", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data) {
-      await updateDoc(docRef, {
-        qids: arrayUnion(q.id),
-        quotes: arrayUnion(q),
-      });
-    } else {
-      await setDoc(doc(db, "myBookmarks", uid), {
-        uid,
-        qids: [q.id],
-        quotes: [q],
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        bookmarkedBy: arrayUnion(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
+    // const docRef = doc(db, "myBookmarks", uid);
+    // const docSnap = await getDoc(docRef);
+    // const data = docSnap.data();
+    // if (data) {
+    //   await updateDoc(docRef, {
+    //     qids: arrayUnion(q.id),
+    //     quotes: arrayUnion(q),
+    //   });
+    // } else {
+    //   await setDoc(doc(db, "myBookmarks", uid), {
+    //     uid,
+    //     qids: [q.id],
+    //     quotes: [q],
+    //   });
+    // }
 
-    const numOfBookmarksRef = doc(db, "numOfBookmarks", q.id);
-    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
-    const nobData = numOfBookmarksDocSnap.data();
-    if (nobData) {
-      await updateDoc(numOfBookmarksRef, {
-        uids: arrayUnion(uid),
-      });
-    } else {
-      await setDoc(doc(db, "numOfBookmarks", q.id), { qid: q.id, uids: [uid] });
-    }
+    // const numOfBookmarksRef = doc(db, "numOfBookmarks", q.id);
+    // const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
+    // const nobData = numOfBookmarksDocSnap.data();
+    // if (nobData) {
+    //   await updateDoc(numOfBookmarksRef, {
+    //     uids: arrayUnion(uid),
+    //   });
+    // } else {
+    //   await setDoc(doc(db, "numOfBookmarks", q.id), { qid: q.id, uids: [uid] });
+    // }
   };
 
   const removeQuoteFromBookmarks = async (
     uid: string,
     q: TypeQuote | TypeQuoteQuotetableAPI
   ) => {
-    const docRef = doc(db, "myBookmarks", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data?.qids.includes(q.id) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "myBookmarks", uid));
-    } else {
-      await updateDoc(docRef, {
-        qids: arrayRemove(q.id),
-        quotes: arrayRemove(q),
-      });
-    }
-
-    const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
-    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
-    const nobData = numOfBookmarksDocSnap.data();
-    if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
-      await deleteDoc(doc(db, "numOfBookmarks", q.id));
-    } else {
-      await updateDoc(numOfBookmarksDocRef, {
-        uids: arrayRemove(uid),
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        likedBy: arrayRemove(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
   };
