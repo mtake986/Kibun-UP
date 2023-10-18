@@ -13,15 +13,15 @@ export interface IEvent {
 
 export type TypeQuote = {
   id: string;
-  person: string;
-  quote: string;
-  isDraft: boolean;
-  createdAt: Date;
-  userInfo: IUserInfo;
-  updatedAt?: Date;
+  author: string;
+  content: string;
   tags: ITag[];
-  likedBy: string[],
-  bookmarkedBy: string[],
+  likedBy: string[];
+  bookmarkedBy: string[];
+  userInfo: IUserInfo | 'api';
+  isDraft: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export interface IEventInputValues {
@@ -32,8 +32,8 @@ export interface IEventInputValues {
 }
 
 export interface TypeQuoteInputValues {
-  person: string;
-  quote: string;
+  author: string;
+  content: string;
   isDraft: boolean;
   tags: ITag[];
 }
@@ -45,8 +45,8 @@ export interface IUserInfo {
 }
 
 export interface ITag {
-  tag: string;
-  tagColor: string;
+  name: string;
+  color: string;
 }
 
 export interface ISortFilterBy {
@@ -68,12 +68,6 @@ export interface TypeLoginUser {
   };
 }
 
-export type typeQuoteFromAPI = {
-  quote: string;
-  author: string;
-  category: string;
-};
-
 export type TypeUpdateUserInputs = {
   photoURL?: string | null;
   displayName?: string;
@@ -83,11 +77,4 @@ export type TypeUpdateUserInputs = {
 export type TypeTagsQuotableAPI = {
   name: string;
   quoteCount: number;
-}
-
-export type TypeQuoteQuotetableAPI = {
-  id: string;
-  content: string;
-  author: string;
-  tags: string[];
 };

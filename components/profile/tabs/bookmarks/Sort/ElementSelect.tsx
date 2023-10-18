@@ -25,7 +25,7 @@ const ElementSelect = () => {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="quote">Quote</SelectItem>
-        <SelectItem value="person">Person</SelectItem>
+        <SelectItem value="author">Author</SelectItem>
         <SelectItem value="createdAt">Created At</SelectItem>
       </SelectContent>
     </Select>
