@@ -319,7 +319,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     const quoteDocSnap = await getDoc(quoteDocRef);
     if (quoteDocSnap.exists()) {
       await updateDoc(quoteDocRef, {
-        bookamrkedBy: arrayRemove(uid),
+        bookmarkedBy: arrayRemove(uid),
       }).catch((e) => {
         displayErrorToast({
           e,
