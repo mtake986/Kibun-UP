@@ -21,10 +21,13 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   return (
     <span
       onClick={useCallback(() => {
-        console.log('renders')
-        isBookmarked
-          ? removeBookmark(loginUser.uid, q)
-          : storeBookmark(loginUser.uid, q);
+        try {
+          isBookmarked
+            ? removeBookmark(loginUser.uid, q)
+            : storeBookmark(loginUser.uid, q);
+        } catch (e) {
+          displayErrorToast(e);
+        }
       }, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, q])}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
     >

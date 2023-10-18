@@ -16,7 +16,6 @@ const IconLike = ({ q, loginUser }: Props) => {
   return (
   <span
     onClick={() => {
-      console.log(1234567)
       isLiked ? removeFav(loginUser.uid, q) : storeFav(loginUser.uid, q);
     }}
     className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
