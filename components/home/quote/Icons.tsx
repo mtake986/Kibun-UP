@@ -1,8 +1,6 @@
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
-import React, { useEffect } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
