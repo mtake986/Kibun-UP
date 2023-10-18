@@ -17,9 +17,6 @@ const SwitchTab = () => {
     getLoginUserQuotes,
     quotesNotMine,
     getQuotesNotMine,
-    fetchNumOfFavs,
-    fetchMyBookmarks,
-    fetchNumOfBookmarks,
     getLockedQuote,
 
     whichList,
@@ -30,10 +27,7 @@ const SwitchTab = () => {
     setLoading(true);
     getLoginUserQuotes();
     getQuotesNotMine();
-    fetchNumOfFavs();
     getLockedQuote();
-    fetchMyBookmarks();
-    fetchNumOfBookmarks();
     setLoading(false);
   }, [user]);
 

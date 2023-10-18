@@ -17,12 +17,8 @@ const ContentSwitchTabs = () => {
 
   const {
     getLockedQuote,
-    fetchNumOfFavs,
     getLoginUserQuotes,
     loginUserQuotes,
-    fetchMyBookmarks,
-    fetchNumOfBookmarks,
-    myBookmarks,
     profileWhichTab,
     handleProfileWhichTab,
   } = useQuote();
@@ -31,10 +27,6 @@ const ContentSwitchTabs = () => {
     setLoading(true);
     getLoginUserQuotes();
     getLockedQuote();
-    fetchNumOfFavs();
-    fetchMyBookmarks();
-    fetchNumOfBookmarks();
-    setLoading(false);
   }, [user]);
 
   if (loading) {
@@ -101,13 +93,15 @@ const ContentSwitchTabs = () => {
 
       {profileWhichTab === "quotes" ? (
         <QuoteList quotes={loginUserQuotes} />
-      ) : profileWhichTab === "bookmarks" ? (
-        myBookmarks?.quotes ? (
-          <ListOfBookmarks quotes={myBookmarks.quotes} />
-        ) : (
-          <NoFetchedData text="No Bookmarks" />
-        )
-      ) : profileWhichTab === "likes" ? (
+      ) 
+      // : profileWhichTab === "bookmarks" ? (
+      //   myBookmarks?.quotes ? (
+      //     <ListOfBookmarks quotes={myBookmarks.quotes} />
+      //   ) : (
+      //     <NoFetchedData text="No Bookmarks" />
+      //   )
+      // ) 
+      : profileWhichTab === "likes" ? (
         <div>likes</div>
       ) : (
         <EventList />

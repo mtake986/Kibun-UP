@@ -46,9 +46,17 @@ const Quote = () => {
   }
 
   // if (!loading && !isPending) {
-  if (user) {
+  // if (user) {
+  if (loginUser) {
     if (lockedQuote) {
-      return <QuoteCard quote={lockedQuote} type="locked" refetch={refetch} />;
+      return (
+        <QuoteCard
+          quote={lockedQuote}
+          type="locked"
+          refetch={refetch}
+          loginUser={loginUser}
+        />
+      );
     } else if (data && loginUser?.settings.quoteTypeForHome === "appChoice") {
       return (
         <QuoteCard
@@ -56,6 +64,7 @@ const Quote = () => {
           type="appChoice"
           refetch={refetch}
           isPending={isPending}
+          loginUser={loginUser}
         />
       );
     } else if (randomQuote) {
@@ -64,6 +73,7 @@ const Quote = () => {
           quote={randomQuote as TypeQuote}
           type="notAppChoice"
           refetch={refetch}
+          loginUser={loginUser}
         />
       );
     }

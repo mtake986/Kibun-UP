@@ -27,15 +27,14 @@ import {
   ISortFilterBy,
   ITag,
   TypeLoginUser,
-  TypeMyFavs,
-  TypeNumOfFavs,
-  TypeMyBookmarks,
-  TypeNumOfBookmarks,
   TypeQuoteQuotetableAPI,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
-import { displayErrorToast, displaySuccessToast } from "@/functions/displayToast";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+} from "@/functions/displayToast";
 
 type QuoteProviderProps = {
   children: ReactNode;
@@ -68,12 +67,10 @@ type QuoteContext = {
 
   registerQuote: (values: TypeQuoteInputValues, userInfo: IUserInfo) => void;
 
-  myFavs: TypeMyFavs;
-  numOfFavs: TypeNumOfFavs[];
   storeFav: (uid: string, q: TypeQuote) => void;
   removeFav: (uid: string, q: TypeQuote) => void;
-  fetchMyFavs: () => void;
-  fetchNumOfFavs: () => void;
+  storeBookmark: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
+  removeBookmark: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
 
   setRandomQuote: (quote: TypeQuote | undefined) => void;
   setLockedQuote: (quote: TypeQuote | undefined) => void;
@@ -87,20 +84,6 @@ type QuoteContext = {
 
   updateSortFilterByForNotMine: (which: string, ele: string) => void;
   sortFilterByForNotMine: ISortFilterBy;
-
-  storeQuoteInBookmarks: (
-    uid: string,
-    q: TypeQuote | TypeQuoteQuotetableAPI
-  ) => void;
-  removeQuoteFromBookmarks: (
-    uid: string,
-    q: TypeQuote | TypeQuoteQuotetableAPI
-  ) => void;
-  fetchMyBookmarks: () => void;
-  myBookmarks: TypeMyBookmarks;
-
-  fetchNumOfBookmarks: () => void;
-  numOfBookmarks: TypeNumOfBookmarks[] | undefined;
 
   fetchQuotesForHomePage: (
     user: TypeLoginUser,
@@ -147,14 +130,6 @@ export function useQuote() {
 }
 
 export function QuoteProvider({ children }: QuoteProviderProps) {
-  const [myFavs, setMyFavs] = useState<TypeMyFavs>({} as TypeMyFavs);
-  const [numOfFavs, setNumOfFavs] = useState<TypeNumOfFavs[]>([]);
-  const [myBookmarks, setMyBookmarks] = useState<TypeMyBookmarks>({
-    uid: "",
-    qids: [],
-    quotes: [],
-  });
-  const [numOfBookmarks, setNumOfBookmarks] = useState<TypeNumOfBookmarks[]>();
   const [loginUserQuotes, setLoginUserQuotes] = useState<TypeQuote[]>([]);
   const [randomQuote, setRandomQuote] = useState<TypeQuote>();
   const [lockedQuote, setLockedQuote] = useState<TypeQuote>();
@@ -162,10 +137,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
 
   const quotesCollectionRef = collection(db, "quotes");
-  const numOfFavsCollectionRef = collection(db, "numOfFavs");
-  const MY_FAVS_COLLECTION_REF = collection(db, "myFavs");
-  const myBookmarksCollectionRef = collection(db, "myBookmarks");
-  const numOfBookmarksCollectionRef = collection(db, "numOfBookmarks");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
 
   const [user] = useAuthState(auth);
@@ -190,6 +161,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await addDoc(quotesCollectionRef, {
       ...values,
       userInfo,
+      likedBy: [],
+      bookmarkedBy: [],
       createdAt: serverTimestamp(),
     }).then(() => {
       displaySuccessToast({
@@ -297,73 +270,62 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const storeFav = async (uid: string, q: TypeQuote) => {
-    const docRef = doc(db, "myFavs", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data) {
-      await updateDoc(docRef, {
-        qids: arrayUnion(q.id),
-        quotes: arrayUnion(q),
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        likedBy: arrayUnion(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
-    } else {
-      await setDoc(doc(db, "myFavs", uid), {
-        uid,
-        qids: [q.id],
-        quotes: [q],
-      });
-    }
-
-    const numOfFavsRef = doc(db, "numOfFavs", q.id);
-    const numOfFavsDocSnap = await getDoc(numOfFavsRef);
-    const nobData = numOfFavsDocSnap.data();
-    if (nobData) {
-      await updateDoc(numOfFavsRef, {
-        uids: arrayUnion(uid),
-      });
-    } else {
-      await setDoc(doc(db, "numOfFavs", q.id), { qid: q.id, uids: [uid] });
     }
   };
 
   const removeFav = async (uid: string, q: TypeQuote) => {
-    const docRef = doc(db, "myFavs", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data?.qids.includes(q.id) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "myFavs", uid));
-    } else {
-      await updateDoc(docRef, {
-        qids: arrayRemove(q.id),
-        quotes: arrayRemove(q),
-      });
-    }
-
-    const numOfFavsDocRef = doc(db, "numOfFavs", q.id);
-    const numOfFavsDocSnap = await getDoc(numOfFavsDocRef);
-    const nobData = numOfFavsDocSnap.data();
-    if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
-      await deleteDoc(doc(db, "numOfFavs", q.id));
-    } else {
-      await updateDoc(numOfFavsDocRef, {
-        uids: arrayRemove(uid),
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        likedBy: arrayRemove(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
   };
 
-  const fetchMyFavs = async () => {
-    if (user) {
-      let q = query(MY_FAVS_COLLECTION_REF, where("uid", "==", user?.uid));
-
-      onSnapshot(q, (snapshot) => {
-        setMyFavs(snapshot.docs.map((doc) => doc.data() as TypeMyFavs)[0]);
+  const storeBookmark = async (
+    uid: string,
+    q: TypeQuote | TypeQuoteQuotetableAPI
+  ) => {
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        bookmarkedBy: arrayUnion(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
       });
     }
   };
 
-  const fetchNumOfFavs = async () => {
-    onSnapshot(numOfFavsCollectionRef, (snapshot) => {
-      setNumOfFavs(snapshot.docs.map((doc) => doc.data() as TypeNumOfFavs));
-    });
+  const removeBookmark = async (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => {
+    const quoteDocRef = doc(db, "quotes", q.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      await updateDoc(quoteDocRef, {
+        bookmarkedBy: arrayRemove(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
+      });
+    }
   };
 
   const sortAndFilterMyQuotes = async () => {
@@ -700,85 +662,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const storeQuoteInBookmarks = async (
-    uid: string,
-    q: TypeQuote | TypeQuoteQuotetableAPI
-  ) => {
-    const docRef = doc(db, "myBookmarks", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data) {
-      await updateDoc(docRef, {
-        qids: arrayUnion(q.id),
-        quotes: arrayUnion(q),
-      });
-    } else {
-      await setDoc(doc(db, "myBookmarks", uid), {
-        uid,
-        qids: [q.id],
-        quotes: [q],
-      });
-    }
-
-    const numOfBookmarksRef = doc(db, "numOfBookmarks", q.id);
-    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksRef);
-    const nobData = numOfBookmarksDocSnap.data();
-    if (nobData) {
-      await updateDoc(numOfBookmarksRef, {
-        uids: arrayUnion(uid),
-      });
-    } else {
-      await setDoc(doc(db, "numOfBookmarks", q.id), { qid: q.id, uids: [uid] });
-    }
-  };
-
-  const removeQuoteFromBookmarks = async (
-    uid: string,
-    q: TypeQuote | TypeQuoteQuotetableAPI
-  ) => {
-    const docRef = doc(db, "myBookmarks", uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    if (data?.qids.includes(q.id) && data?.qids.length === 1) {
-      await deleteDoc(doc(db, "myBookmarks", uid));
-    } else {
-      await updateDoc(docRef, {
-        qids: arrayRemove(q.id),
-        quotes: arrayRemove(q),
-      });
-    }
-
-    const numOfBookmarksDocRef = doc(db, "numOfBookmarks", q.id);
-    const numOfBookmarksDocSnap = await getDoc(numOfBookmarksDocRef);
-    const nobData = numOfBookmarksDocSnap.data();
-    if (nobData?.uids.includes(uid) && nobData?.uids.length === 1) {
-      await deleteDoc(doc(db, "numOfBookmarks", q.id));
-    } else {
-      await updateDoc(numOfBookmarksDocRef, {
-        uids: arrayRemove(uid),
-      });
-    }
-  };
-
-  const fetchMyBookmarks = async () => {
-    if (user) {
-      let q = query(myBookmarksCollectionRef, where("uid", "==", user?.uid));
-
-      onSnapshot(q, (snapshot) => {
-        setMyBookmarks(
-          snapshot.docs.map((doc) => doc.data() as TypeMyBookmarks)[0]
-        );
-      });
-    }
-  };
-
-  const fetchNumOfBookmarks = async () => {
-    onSnapshot(numOfBookmarksCollectionRef, (snapshot) => {
-      setNumOfBookmarks(
-        snapshot.docs.map((doc) => doc.data() as TypeNumOfBookmarks)
-      );
-    });
-  };
 
   const fetchQuotesForHomePage = (
     user: TypeLoginUser,
@@ -788,9 +671,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user.settings.quoteTypeForHome === "mine") {
       setQuotesForHomePage(loginUserQuotes);
     } else if (user.settings.quoteTypeForHome === "bookmarks") {
-      setQuotesForHomePage(myBookmarks.quotes);
+      // setQuotesForHomePage(myBookmarks.quotes);
     } else {
-      setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
+      // setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
     }
     setIsLoading(false);
   };
@@ -817,17 +700,17 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           if (doc) setRandomQuote({ ...doc.data(), id: doc.id } as TypeQuote);
         });
       } else if (lu && lu?.settings.quoteTypeForHome === "bookmarks") {
-        setRandomQuote({} as TypeQuote);
-        const q = query(
-          myBookmarksCollectionRef,
-          where("uid", "==", user?.uid)
-        );
-        onSnapshot(q, (snapshot) => {
-          const bookmarkedQuotes = snapshot.docs[0].data().quotes;
-          const randomNum = getRandomNum(bookmarkedQuotes.length);
-          const doc = bookmarkedQuotes[randomNum];
-          if (doc) setRandomQuote(doc as TypeQuote);
-        });
+        // setRandomQuote({} as TypeQuote);
+        // const q = query(
+        //   myBookmarksCollectionRef,
+        //   where("uid", "==", user?.uid)
+        // );
+        // onSnapshot(q, (snapshot) => {
+        //   const bookmarkedQuotes = snapshot.docs[0].data().quotes;
+        //   const randomNum = getRandomNum(bookmarkedQuotes.length);
+        //   const doc = bookmarkedQuotes[randomNum];
+        //   if (doc) setRandomQuote(doc as TypeQuote);
+        // });
       } else {
         fetch(
           `https://api.quotable.io/quotes?tags=${lu?.settings.tagForQuotableApi}`
@@ -951,12 +834,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         getQuotesNotMine,
         registerQuote,
 
-        myFavs,
-        numOfFavs,
         storeFav,
         removeFav,
-        fetchMyFavs,
-        fetchNumOfFavs,
+        storeBookmark,
+        removeBookmark,
 
         setRandomQuote,
         setLockedQuote,
@@ -971,13 +852,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         updateSortFilterByForNotMine,
         sortFilterByForNotMine,
 
-        storeQuoteInBookmarks,
-        removeQuoteFromBookmarks,
-        fetchMyBookmarks,
-        myBookmarks,
-
-        fetchNumOfBookmarks,
-        numOfBookmarks,
 
         fetchQuotesForHomePage,
         quotesForHomePage,

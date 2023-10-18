@@ -20,6 +20,8 @@ export type TypeQuote = {
   userInfo: IUserInfo;
   updatedAt?: Date;
   tags: ITag[];
+  likedBy: string[],
+  bookmarkedBy: string[],
 };
 
 export interface IEventInputValues {
@@ -52,31 +54,6 @@ export interface ISortFilterBy {
   sortByElement: string;
   searchTag: string;
 }
-
-export type TypeMyBookmarks = {
-  qids: string[];
-  uid: string;
-  quotes: TypeQuote[];
-  id?: string;
-};
-
-export type TypeNumOfBookmarks = {
-  qid: string;
-  uids: string[];
-  id?: string;
-};
-
-export type TypeMyFavs = {
-  qids: string[];
-  uid: string;
-  quotes: TypeQuote[];
-  id?: string;
-};
-export type TypeNumOfFavs = {
-  qid: string;
-  uids: string[];
-  id?: string;
-};
 
 export interface TypeLoginUser {
   uid: string;

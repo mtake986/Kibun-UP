@@ -1,7 +1,7 @@
-
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { Heart } from "lucide-react";
 import React, { useEffect } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
@@ -10,28 +10,28 @@ type Props = {
   quote: TypeQuoteQuotetableAPI | TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
+  loginUser: TypeLoginUser;
 };
-const Icons = ({ quote, type, refetch }: Props) => {
+const Icons = ({ quote, type, refetch, loginUser }: Props) => {
   const {
     removeLockFromThisQuote,
     lockThisQuote,
     updateRandomQuote,
-    myBookmarks,
-    removeQuoteFromBookmarks,
-    storeQuoteInBookmarks,
-    numOfBookmarks,
-    fetchMyBookmarks,
-    fetchNumOfBookmarks,
+    storeFav,
+    removeFav,
+    storeBookmark,
+    removeBookmark,
   } = useQuote();
-  const { loginUser } = useAuth();
 
-  useEffect(() => {
-    fetchMyBookmarks();
-    fetchNumOfBookmarks();
-  }, []);
+  const notAPI = "likedBy" in quote;
+  const isLiked = notAPI && quote.likedBy.some((id) => id === loginUser.uid);
+  const isBookmarked = notAPI && quote.bookmarkedBy.some((id) => id === loginUser.uid);
+
+  const heartFill = isLiked ? "red" : undefined;
+  const bookmarkFill = isBookmarked ? "green" : undefined;
 
   return (
-    <div className="flex items-center gap-3 cursor-pointer">
+    <div className="flex cursor-pointer items-center gap-3">
       <BiRefresh
         size={20}
         onClick={() => {
@@ -75,31 +75,63 @@ const Icons = ({ quote, type, refetch }: Props) => {
         />
       )}
 
-      <span className="flex items-center gap-0.5">
-        {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
-          <BsBookmarkFill
-            size={14}
-            className="text-green-500"
-            onClick={() => {
-              if (loginUser) removeQuoteFromBookmarks(loginUser.uid, quote);
-            }}
-          />
-        ) : (
-          <BsBookmark
-            size={14}
-            className="text-black"
-            onClick={() => {
-              if (loginUser) storeQuoteInBookmarks(loginUser.uid, quote);
-            }}
-          />
-        )}
-        <span className="ml-1 text-xs text-black">
-          {numOfBookmarks?.map((bookmark, i) =>
-            bookmark.qid === quote.id ? bookmark.uids.length : null
+      {notAPI ? (
+        <span
+          onClick={() => {
+            isLiked
+              ? removeFav(loginUser.uid, quote)
+              : storeFav(loginUser.uid, quote);
+          }}
+          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+        >
+          {isLiked ? (
+            <Heart size={14} className="text-red-500" fill={heartFill} />
+          ) : (
+            <Heart size={14} className="text-red-500" />
           )}
+          <span className={`text-red-500`}>{quote.likedBy.length}</span>
         </span>
-        {/* <span>Edit</span> */}
-      </span>
+      ) : null}
+
+      {notAPI ? (
+        <span
+          onClick={() => {
+            isLiked
+              ? removeFav(loginUser.uid, quote)
+              : storeFav(loginUser.uid, quote);
+          }}
+          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+        >
+          {isLiked ? (
+            <Heart size={14} className="text-red-500" fill={heartFill} />
+          ) : (
+            <Heart size={14} className="text-red-500" />
+          )}
+          <span className={`text-red-500`}>{quote.likedBy.length}</span>
+        </span>
+      ) : null}
+
+      {notAPI ? (
+        <span
+          onClick={() => {
+            isBookmarked
+              ? removeBookmark(loginUser.uid, quote)
+              : storeBookmark(loginUser.uid, quote);
+          }}
+          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+        >
+          {isBookmarked ? (
+            <BsBookmarkFill
+              size={12}
+              className="text-green-500"
+              fill={bookmarkFill}
+            />
+          ) : (
+            <BsBookmark size={12} className="text-green-500" />
+          )}
+          <span className={`text-green-500`}>{quote.bookmarkedBy.length}</span>
+        </span>
+      ) : null}
     </div>
   );
 };
