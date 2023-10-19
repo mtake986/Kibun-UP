@@ -13,7 +13,7 @@ type Props = {
 
 const QuoteContent = ({ quote }: Props) => {
   return (
-    // <strong className={`text-lg sm:text-xl ${fontRaleway.className}`}>
+  // <strong className={`text-lg sm:text-xl ${fontRaleway.className}`}>
     <strong className={`text-lg sm:text-xl ${fontMerriweather.className}`}>
       {quote.content}
       {/* {TypeQuote(quote) ? quote.content : quote.content} */}

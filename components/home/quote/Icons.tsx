@@ -74,9 +74,11 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
 
       <span
         onClick={() => {
-          isLiked
-            ? removeFav(loginUser.uid, quote)
-            : storeFav(loginUser.uid, quote);
+          if (isLiked) {
+            removeFav(loginUser.uid, quote);
+          } else {
+            storeFav(loginUser.uid, quote);
+          }
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
       >
@@ -87,7 +89,6 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
         )}
         <span className={`text-red-500`}>{quote.likedBy?.length}</span>
       </span>
-      <span className="text-gray-500">|</span>
 
       <span
         onClick={() => {

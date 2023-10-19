@@ -17,7 +17,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
-import { IUserInfo } from "@/types/type";
+import { IUserInfo, TypeTagErrors, ITag, TypeTagError } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
@@ -29,12 +29,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tagColors } from "@/data/CONSTANTS";
-import { ITag } from "@/types/type";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
+import TagErrors from "@/components/quoteCard/content/TagErrors";
 
 export default function RegisterForm() {
   const [user] = useAuthState(auth);
@@ -42,27 +42,56 @@ export default function RegisterForm() {
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
   const [inputTags, setInputTags] = useState<ITag[]>([]);
+  const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
 
-  const addTag = (inputTagName: string) => {
-    const defaultColor = "white";
-    inputTagName = capitalizeFirstLetter(inputTagName);
-    console.log(inputTagName)
+  const validateInputTags = (): string => {
     if (!inputTagName || inputTagName.length <= 0) {
-      alert("Min. 1 character.");
-    } else if (inputTagName.length > 20) {
-      alert("Max. 20 characters.");
-    } else if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
-      alert("Not Allowed The Same Tag.");
-    } else if (inputTags.length === 5) {
-      alert("Maximum 5 tags.");
+      const error: TypeTagError = {
+        message: "Tag name is required",
+      };
+      setTagErrors({ ...tagErrors, undefOrNoChars: error });
+      return "fail";
     } else {
-      setInputTags([
-        ...inputTags,
-        { name: inputTagName, color: inputTagColor || defaultColor },
-      ]);
-      setInputTagName("");
-      setInputTagColor("");
+      delete tagErrors["undefOrNoChars"];
     }
+    if (inputTagName.length > 20) {
+      const error: TypeTagError = {
+        message: "Max. 20 characters",
+      };
+      setTagErrors({ ...tagErrors, over20chars: error });
+      return "fail";
+    } else {
+      delete tagErrors["over20chars"];
+    }
+    if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
+      const error: TypeTagError = {
+        message: "Not Allowed The Same Tag",
+      };
+      setTagErrors({ ...tagErrors, sameTagName: error });
+      return "fail";
+    } else {
+      delete tagErrors["sameTagName"];
+    }
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return "fail";
+    } else {
+      delete tagErrors["over5tags"];
+    }
+    return "fine";
+  };
+
+  const addTag = () => {
+    const defaultColor = "white";
+    setInputTags([
+      ...inputTags,
+      { name: inputTagName, color: inputTagColor || defaultColor },
+    ]);
+    setInputTagName("");
+    setInputTagColor("");
   };
   const removeTag = (inputTagName: string) => {
     setInputTags(inputTags.filter((tag) => tag.name !== inputTagName));
@@ -206,7 +235,7 @@ export default function RegisterForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    addTag(inputTagName);
+                    if (validateInputTags() === "fine") addTag();
                   }}
                   className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
                 >
@@ -237,6 +266,7 @@ export default function RegisterForm() {
                 </Badge>
               )}
             </div>
+            <TagErrors tagErrors={tagErrors} />
           </div>
 
           <div className="flex items-center gap-3">

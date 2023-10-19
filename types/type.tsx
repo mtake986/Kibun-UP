@@ -18,7 +18,7 @@ export type TypeQuote = {
   tags: ITag[];
   likedBy: string[];
   bookmarkedBy: string[];
-  userInfo: IUserInfo | 'api';
+  userInfo: IUserInfo | "api";
   isDraft: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -77,4 +77,16 @@ export type TypeUpdateUserInputs = {
 export type TypeTagsQuotableAPI = {
   name: string;
   quoteCount: number;
+};
+
+export type TypeTagError = {
+  // errorName: "undefOrNoChars" | "over20chars" | "sameTagName" | "over5tags";
+  // isError: boolean;
+  message: string;
+};
+export type TypeTagErrors = {
+  undefOrNoChars?: TypeTagError;
+  over20chars?: TypeTagError;
+  sameTagName?: TypeTagError;
+  over5tags?: TypeTagError;
 };

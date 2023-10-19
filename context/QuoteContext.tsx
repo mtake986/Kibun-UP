@@ -119,6 +119,9 @@ type QuoteContext = {
   resetSortFilterByForNotMineInputs: () => void;
 
   updateRandomQuote: () => void;
+
+  fetchAllQuotes: () => void;
+  allQuotes: TypeQuote[];
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -133,6 +136,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [lockedQuote, setLockedQuote] = useState<TypeQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
+  const [allQuotes, setAllQuotes] = useState<TypeQuote[]>([]);
 
   const quotesCollectionRef = collection(db, "quotes");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
@@ -270,6 +274,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const storeFav = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
+    console.log(q.id, quoteDocSnap)
     if (quoteDocSnap.exists()) {
       await updateDoc(quoteDocRef, {
         likedBy: arrayUnion(uid),
@@ -279,7 +284,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       });
     } else {
-      await addDoc(quotesCollectionRef, {
+      console.log('doesnt exist')
+      await setDoc(doc(db, 'quotes', q.id), {
         ...q,
         likedBy: [uid],
         createdAt: serverTimestamp(),
@@ -298,8 +304,17 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           e,
         });
       });
-    }
+    } 
   };
+
+  const fetchAllQuotes = () => {
+    const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      setAllQuotes(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+      );
+    });
+  }
 
   const storeBookmark = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
@@ -888,6 +903,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         resetSortFilterByForNotMineInputs,
 
         updateRandomQuote,
+
+        fetchAllQuotes,
+        allQuotes,
       }}
     >
       {children}

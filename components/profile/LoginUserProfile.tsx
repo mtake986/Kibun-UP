@@ -1,6 +1,6 @@
 'use client';
 import { auth } from "@/config/Firebase";
-import ContentSwitchTabs from "@/components/profile/tabs/ContentSwitchTabs";
+import Data from "@/components/profile/data/Data";
 import Loading from "@/components/utils/Loading";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -37,7 +37,7 @@ const LoginUserProfile = () => {
           </>
         )}
       </div>
-      <ContentSwitchTabs />
+      <Data loginUser={loginUser} />
       <Settings />
     </div>
   );

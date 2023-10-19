@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { TypeQuote, ITag } from "@/types/type";
+import { TypeQuote, ITag, TypeTagErrors, TypeTagError } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
@@ -34,6 +34,7 @@ import {
 import { tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
+import TagErrors from "./TagErrors";
 
 type Props = {
   q: TypeQuote;
@@ -45,30 +46,60 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const { reset } = useForm();
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
-  const [tags, setTags] = useState<ITag[]>(q.tags || []);
+  const [inputTags, setInputTags] = useState<ITag[]>(q.tags || []);
+  const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
 
-  const addTag = (inputTagName: string) => {
-    const defaultColor = "white";
-    inputTagName = capitalizeFirstLetter(inputTagName);
-    if (inputTagName || inputTagName.length === 0) {
-      alert("Min. 1 character.");
-    } else if (inputTagName.length > 20) {
-      alert("Max. 20 characters.");
-    } else if (tags.map((tag) => tag.name).includes(inputTagName)) {
-      alert("Not Allowed The Same Tag.");
-    } else if (tags.length === 5) {
-      alert("Maximum 5 tags.");
+  const validateInputTags = (): string => {
+    if (!inputTagName || inputTagName.length <= 0) {
+      const error: TypeTagError = {
+        message: "Tag name is required",
+      };
+      setTagErrors({ ...tagErrors, undefOrNoChars: error });
+      return "fail";
     } else {
-      setTags([
-        ...tags,
-        { name: inputTagName, color: inputTagColor || defaultColor },
-      ]);
-      setInputTagName("");
-      setInputTagColor("");
+      delete tagErrors["undefOrNoChars"];
     }
+    if (inputTagName.length > 20) {
+      const error: TypeTagError = {
+        message: "Max. 20 characters",
+      };
+      setTagErrors({ ...tagErrors, over20chars: error });
+      return "fail";
+    } else {
+      delete tagErrors["over20chars"];
+    }
+    if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
+      const error: TypeTagError = {
+        message: "Not Allowed The Same Tag",
+      };
+      setTagErrors({ ...tagErrors, sameTagName: error });
+      return "fail";
+    } else {
+      delete tagErrors["sameTagName"];
+    }
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return "fail";
+    } else {
+      delete tagErrors["over5tags"];
+    }
+    return "fine";
   };
-  const removeTag = (inputTagName: string) => {
-    setTags(tags.filter((tag) => tag.name !== inputTagName));
+  const addTag = () => {
+    const defaultColor = "white";
+    setInputTags([
+      ...inputTags,
+      { name: inputTagName, color: inputTagColor || defaultColor },
+    ]);
+    setInputTagName("");
+    setInputTagColor("");
+  };
+
+  const removeTag = (tagName: string) => {
+    setInputTags(inputTags.filter((tag) => tag.name !== tagName));
   };
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
@@ -88,7 +119,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    values.tags = tags;
+    values.tags = inputTags;
     handleUpdate(q.id, values, user?.uid);
     setIsUpdateMode(false);
     reset({
@@ -158,12 +189,14 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
             <Input
               maxLength={20}
-              placeholder={tags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"}
+              placeholder={
+                inputTags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
+              }
               value={inputTagName}
               onChange={(e) =>
                 setInputTagName(capitalizeFirstLetter(e.target.value))
               }
-              disabled={tags.length >= 5}
+              disabled={inputTags.length >= 5}
             />
             <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
               <Select
@@ -177,7 +210,11 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                   <SelectValue placeholder="Ex.) Color" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem disabled={true} key="inputTagColor" value="inputTagColor">
+                  <SelectItem
+                    disabled={true}
+                    key="inputTagColor"
+                    value="inputTagColor"
+                  >
                     Tag color
                   </SelectItem>
                   <Separator />
@@ -195,7 +232,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <Button
                 type="button"
                 onClick={() => {
-                  addTag(inputTagName);
+                  if (validateInputTags() === "fine") addTag();
                 }}
                 className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
               >
@@ -204,7 +241,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             </div>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            {tags.map((tag, i) => (
+            {inputTags.map((tag, i) => (
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.name)}
@@ -226,22 +263,23 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               </Badge>
             )}
           </div>
+          <TagErrors tagErrors={tagErrors} />
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            onClick={() => setIsUpdateMode(false)}
-            className={`flex w-full items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
-            variant="ghost"
-          >
-            Cancel
-          </Button>
           <Button
             type="submit"
             className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70`}
             variant="ghost"
           >
             Save
+          </Button>
+          <Button
+            onClick={() => setIsUpdateMode(false)}
+            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
+            variant="ghost"
+          >
+            Cancel
           </Button>
         </div>
       </form>

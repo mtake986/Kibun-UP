@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote } from "@/types/type";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
@@ -11,14 +11,20 @@ import QuoteCard from "@/components/quoteCard/QuoteCard";
 
 type Props = {
   quotes: TypeQuote[];
+  loginUser: TypeLoginUser;
 };
 
-const ListOfBookmarks = ({ quotes }: Props) => {
-  const [user] = useAuthState(auth);
-
+const ListOfLikes = ({ quotes, loginUser }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = usePagination(currentPage, quotes);
+  const quotesLikedByLoginUser = quotes.filter((q) =>
+    q.likedBy.includes(loginUser.uid)
+  );
+
+  const { nPages, currentRecords } = usePagination(
+    currentPage,
+    quotesLikedByLoginUser
+  );
 
   return (
     <div className="mb-20">
@@ -42,4 +48,4 @@ const ListOfBookmarks = ({ quotes }: Props) => {
   );
 };
 
-export default ListOfBookmarks;
+export default ListOfLikes;
