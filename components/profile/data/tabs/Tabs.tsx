@@ -2,11 +2,6 @@ import { useEvent } from "@/context/EventContext";
 import { useQuote } from "@/context/QuoteContext";
 import { TypeLoginUser, profileTabs } from "@/types/type";
 import React from "react";
-
-import QuoteList from "./quotes/QuoteList";
-import EventList from "./events/EventList";
-import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
-import ListOfLikes from "./likes/ListOfLikes";
 import { useQuotesBookmarkedByLoginUser } from "@/components/hooks/useQuotesBookmarkedByLoginUser";
 import { useQuotesLikedByLoginUser } from "@/components/hooks/useQuotesLikedByLoginUser";
 
