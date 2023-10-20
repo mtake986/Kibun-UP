@@ -1,4 +1,3 @@
-
 import { TypeTagsQuotableAPI } from "@/types/type";
 
 export function getRandomNum(max: number) {
@@ -19,9 +18,9 @@ const colorMap: { [key: string]: string } = {
     "text-[10px] bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
   gray: "text-[10px] bg-gray-50 text-gray-500 hover:bg-gray-50 hover:text-gray-500",
 };
-export const changeTagColor = (tagColor: string) => {
+export const changeTagColor = (inputTagColor: string) => {
   return (
-    colorMap[tagColor] ||
+    colorMap[inputTagColor] ||
     "text-[10px] bg-white text-black hover:bg-white hover:text-black"
   );
 };

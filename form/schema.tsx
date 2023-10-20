@@ -11,14 +11,14 @@ export const eventSchema = z.object({
 });
 
 export const quoteSchema = z.object({
-  person: z.string().min(2).max(100),
-  quote: z.string().min(2).max(1000),
+  author: z.string().min(2).max(100),
+  content: z.string().min(2).max(1000),
   isDraft: z.boolean(),
   // tags: z.tuple([z.string()]),
   tags: z.array(
     z.object({
-      tag: z.string().max(30),
-      tagColor: z.string(),
+      name: z.string().max(30),
+      color: z.string(),
     })
   ),
 });

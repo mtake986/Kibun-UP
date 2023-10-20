@@ -7,25 +7,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useQuote } from "@/context/QuoteContext";
-import { ISortFilterBy } from "@/types/type";
 
 const ElementSelect = () => {
-  const { updateSortFilterByForNotMine, sortFilterByForNotMine } = useQuote();
+  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
 
   return (
     <Select
       onValueChange={(ele) => {
-        updateSortFilterByForNotMine("sortByElement", ele);
+        updateSortFilterByForMine("sortByElement", ele);
       }}
-      value={sortFilterByForNotMine.sortByElement}
-      defaultValue={sortFilterByForNotMine.sortByElement}
+      value={sortFilterByForMine.sortByElement}
+      defaultValue={sortFilterByForMine.sortByElement}
     >
-      <SelectTrigger className="w-full text-xs sm:w-[180px]">
+      <SelectTrigger className="w-full text-xs sm:w-[120px]">
         <SelectValue placeholder="Ex.) By" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="quote">Quote</SelectItem>
-        <SelectItem value="person">Person</SelectItem>
+        <SelectItem value="author">Author</SelectItem>
         <SelectItem value="createdAt">Created At</SelectItem>
       </SelectContent>
     </Select>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+
 import {
   Card,
   CardContent,
@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BsFillPersonFill, BsChatLeftText } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
@@ -15,7 +14,6 @@ import { IEvent } from "@/types/type";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
 import HeadingThree from "@/components/utils/HeadingThree";
-import HeadingFour from "@/components/utils/HeadingFour";
 
 type Props = {
   event: IEvent;

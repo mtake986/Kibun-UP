@@ -17,7 +17,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
-import { IUserInfo } from "@/types/type";
+import { IUserInfo, TypeTagErrors, ITag, TypeTagError } from "@/types/type";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
@@ -29,46 +29,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tagColors } from "@/data/CONSTANTS";
-import { ITag } from "@/types/type";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
+import TagErrors from "@/components/quoteCard/content/TagErrors";
 
 export default function RegisterForm() {
   const [user] = useAuthState(auth);
   const { registerQuote, toggleRegisterFormOpen } = useQuote();
-  const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<ITag[]>([]);
-  const [tagColor, setTagColor] = useState<string>("");
+  const [inputTagName, setInputTagName] = useState("");
+  const [inputTagColor, setInputTagColor] = useState<string>("");
+  const [inputTags, setInputTags] = useState<ITag[]>([]);
+  const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
 
-  const addTag = (tagInput: string) => {
-    tagInput = capitalizeFirstLetter(tagInput);
-    if (tagInput.length === 0) {
-      alert("Min. 1 character.");
-    } else if (tagInput.length > 20) {
-      alert("Maximum 20 characters.");
+  const validateInputTags = (): string => {
+    if (!inputTagName || inputTagName.length <= 0) {
+      const error: TypeTagError = {
+        message: "Tag name is required",
+      };
+      setTagErrors({ ...tagErrors, undefOrNoChars: error });
+      return "fail";
     } else {
-      if (!tags.map((tag) => tag.tag).includes(tagInput)) {
-        if (tags.length === 0) {
-          setTags([{ tag: tagInput, tagColor }]);
-          setTagInput("");
-          setTagColor("");
-        } else if (tags.length === 5) {
-          alert("Maximum 5 tags.");
-        } else {
-          setTags([...tags, { tag: tagInput, tagColor }]);
-          setTagInput("");
-          setTagColor("");
-        }
-      } else {
-        alert("Not Allowed The Same Tag.");
-      }
+      delete tagErrors["undefOrNoChars"];
     }
+    if (inputTagName.length > 20) {
+      const error: TypeTagError = {
+        message: "Max. 20 characters",
+      };
+      setTagErrors({ ...tagErrors, over20chars: error });
+      return "fail";
+    } else {
+      delete tagErrors["over20chars"];
+    }
+    if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
+      const error: TypeTagError = {
+        message: "Not Allowed The Same Tag",
+      };
+      setTagErrors({ ...tagErrors, sameTagName: error });
+      return "fail";
+    } else {
+      delete tagErrors["sameTagName"];
+    }
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return "fail";
+    } else {
+      delete tagErrors["over5tags"];
+    }
+    return "fine";
   };
-  const removeTag = (tagInput: string) => {
-    setTags(tags.filter((tag) => tag.tag !== tagInput));
+
+  const addTag = () => {
+    const defaultColor = "white";
+    setInputTags([
+      ...inputTags,
+      { name: inputTagName, color: inputTagColor || defaultColor },
+    ]);
+    setInputTagName("");
+    setInputTagColor("");
+  };
+  const removeTag = (inputTagName: string) => {
+    setInputTags(inputTags.filter((tag) => tag.name !== inputTagName));
   };
 
   const { reset } = useForm();
@@ -76,8 +102,8 @@ export default function RegisterForm() {
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
     defaultValues: {
-      person: "",
-      quote: "",
+      author: "",
+      content: "",
       isDraft: false,
       tags: [],
     },
@@ -90,17 +116,17 @@ export default function RegisterForm() {
       displayName: user?.displayName,
       photoUrl: user?.photoURL,
     };
-    values.tags = tags;
+    values.tags = inputTags;
     registerQuote(values, userInfo);
 
     reset({
-      person: "",
-      quote: "",
+      author: "",
+      content: "",
       isDraft: false,
       tags: [],
     });
     form.reset();
-    setTags([]);
+    setInputTags([]);
   }
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
@@ -109,11 +135,11 @@ export default function RegisterForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
-            name="quote"
+            name="content"
             render={({ field }) => (
               <FormItem className="w-full space-y-0">
                 <FormLabel>
-                  Quote <span className="text-red-500">*</span>
+                  Content <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -129,11 +155,11 @@ export default function RegisterForm() {
 
           <FormField
             control={form.control}
-            name="person"
+            name="author"
             render={({ field }) => (
               <FormItem className="w-full space-y-0">
                 <FormLabel>
-                  Person <span className="text-red-500">*</span>
+                  Author <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="Ex.) NIKE" {...field} />
@@ -165,27 +191,32 @@ export default function RegisterForm() {
               <Input
                 maxLength={20}
                 placeholder={
-                  tags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
+                  inputTags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
                 }
-                value={tagInput}
+                value={inputTagName}
                 onChange={(e) =>
-                  setTagInput(capitalizeFirstLetter(e.target.value))
+                  setInputTagName(capitalizeFirstLetter(e.target.value))
                 }
-                disabled={tags.length >= 5}
+                disabled={inputTags.length >= 5}
               />
               <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
                 <Select
                   onValueChange={(color) => {
-                    setTagColor(color);
+                    setInputTagColor(color);
                   }}
-                  value={tagColor}
-                  disabled={tagInput.length === 0}
+                  value={inputTagColor}
+                  disabled={inputTagName.length === 0}
+                  defaultValue="white"
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Ex.) Color" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem disabled={true} key="tagColor" value="tagColor">
+                    <SelectItem
+                      disabled={true}
+                      key="inputTagColor"
+                      value="inputTagColor"
+                    >
                       Tag color
                     </SelectItem>
                     <Separator />
@@ -196,7 +227,7 @@ export default function RegisterForm() {
                         value={color}
                         placeholder="Ex.) Color"
                       >
-                        {tagInput}
+                        {inputTagName}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -204,7 +235,7 @@ export default function RegisterForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    addTag(tagInput);
+                    if (validateInputTags() === "fine") addTag();
                   }}
                   className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
                 >
@@ -213,28 +244,29 @@ export default function RegisterForm() {
               </div>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              {tags.map((tag, i) => (
+              {inputTags.map((tag, i) => (
                 <Badge
                   key={i}
-                  onClick={() => removeTag(tag.tag)}
+                  onClick={() => removeTag(tag.name)}
                   className={`cursor-pointer border-none font-light ${changeTagColor(
-                    tag.tagColor
+                    tag.color
                   )}`}
                 >
-                  #{tag.tag}
+                  #{tag.name}
                   <MdClose className="ml-1 cursor-pointer rounded-full" />
                 </Badge>
               ))}
-              {tagInput && (
+              {inputTagName && (
                 <Badge
                   className={` border-none font-light hover:opacity-70 ${changeTagColor(
-                    tagColor
+                    inputTagColor
                   )}`}
                 >
-                  #{tagInput}
+                  #{inputTagName}
                 </Badge>
               )}
             </div>
+            <TagErrors tagErrors={tagErrors} />
           </div>
 
           <div className="flex items-center gap-3">

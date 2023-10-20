@@ -1,13 +1,11 @@
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeLoginUser, TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
-import React, { useEffect } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
-  quote: TypeQuoteQuotetableAPI | TypeQuote;
+  quote: TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
   loginUser: TypeLoginUser;
@@ -23,9 +21,8 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
     removeBookmark,
   } = useQuote();
 
-  const notAPI = "likedBy" in quote;
-  const isLiked = notAPI && quote.likedBy.some((id) => id === loginUser.uid);
-  const isBookmarked = notAPI && quote.bookmarkedBy.some((id) => id === loginUser.uid);
+  const isLiked = quote.likedBy?.some((id) => id === loginUser.uid);
+  const isBookmarked = quote.bookmarkedBy?.some((id) => id === loginUser.uid);
 
   const heartFill = isLiked ? "red" : undefined;
   const bookmarkFill = isBookmarked ? "green" : undefined;
@@ -75,63 +72,43 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
         />
       )}
 
-      {notAPI ? (
-        <span
-          onClick={() => {
-            isLiked
-              ? removeFav(loginUser.uid, quote)
-              : storeFav(loginUser.uid, quote);
-          }}
-          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
-        >
-          {isLiked ? (
-            <Heart size={14} className="text-red-500" fill={heartFill} />
-          ) : (
-            <Heart size={14} className="text-red-500" />
-          )}
-          <span className={`text-red-500`}>{quote.likedBy.length}</span>
-        </span>
-      ) : null}
+      <span
+        onClick={() => {
+          if (isLiked) {
+            removeFav(loginUser.uid, quote);
+          } else {
+            storeFav(loginUser.uid, quote);
+          }
+        }}
+        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+      >
+        {isLiked ? (
+          <Heart size={14} className="text-red-500" fill={heartFill} />
+        ) : (
+          <Heart size={14} className="text-red-500" />
+        )}
+        <span className={`text-red-500`}>{quote.likedBy?.length}</span>
+      </span>
 
-      {notAPI ? (
-        <span
-          onClick={() => {
-            isLiked
-              ? removeFav(loginUser.uid, quote)
-              : storeFav(loginUser.uid, quote);
-          }}
-          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
-        >
-          {isLiked ? (
-            <Heart size={14} className="text-red-500" fill={heartFill} />
-          ) : (
-            <Heart size={14} className="text-red-500" />
-          )}
-          <span className={`text-red-500`}>{quote.likedBy.length}</span>
-        </span>
-      ) : null}
-
-      {notAPI ? (
-        <span
-          onClick={() => {
-            isBookmarked
-              ? removeBookmark(loginUser.uid, quote)
-              : storeBookmark(loginUser.uid, quote);
-          }}
-          className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
-        >
-          {isBookmarked ? (
-            <BsBookmarkFill
-              size={12}
-              className="text-green-500"
-              fill={bookmarkFill}
-            />
-          ) : (
-            <BsBookmark size={12} className="text-green-500" />
-          )}
-          <span className={`text-green-500`}>{quote.bookmarkedBy.length}</span>
-        </span>
-      ) : null}
+      <span
+        onClick={() => {
+          isBookmarked
+            ? removeBookmark(loginUser.uid, quote)
+            : storeBookmark(loginUser.uid, quote);
+        }}
+        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+      >
+        {isBookmarked ? (
+          <BsBookmarkFill
+            size={12}
+            className="text-green-500"
+            fill={bookmarkFill}
+          />
+        ) : (
+          <BsBookmark size={12} className="text-green-500" />
+        )}
+        <span className={`text-green-500`}>{quote.bookmarkedBy?.length}</span>
+      </span>
     </div>
   );
 };

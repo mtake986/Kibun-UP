@@ -5,7 +5,6 @@ import {
   collection,
   query,
   where,
-  getDocs,
   onSnapshot,
   deleteDoc,
   doc,
@@ -27,7 +26,6 @@ import {
   ISortFilterBy,
   ITag,
   TypeLoginUser,
-  TypeQuoteQuotetableAPI,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -69,8 +67,8 @@ type QuoteContext = {
 
   storeFav: (uid: string, q: TypeQuote) => void;
   removeFav: (uid: string, q: TypeQuote) => void;
-  storeBookmark: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
-  removeBookmark: (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => void;
+  storeBookmark: (uid: string, q: TypeQuote) => void;
+  removeBookmark: (uid: string, q: TypeQuote) => void;
 
   setRandomQuote: (quote: TypeQuote | undefined) => void;
   setLockedQuote: (quote: TypeQuote | undefined) => void;
@@ -121,6 +119,9 @@ type QuoteContext = {
   resetSortFilterByForNotMineInputs: () => void;
 
   updateRandomQuote: () => void;
+
+  fetchAllQuotes: () => void;
+  allQuotes: TypeQuote[];
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -135,6 +136,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [lockedQuote, setLockedQuote] = useState<TypeQuote>();
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
+  const [allQuotes, setAllQuotes] = useState<TypeQuote[]>([]);
 
   const quotesCollectionRef = collection(db, "quotes");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
@@ -280,6 +282,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           e,
         });
       });
+    } else {
+      await setDoc(doc(db, 'quotes', q.id), {
+        ...q,
+        likedBy: [uid],
+        createdAt: serverTimestamp(),
+      })
     }
   };
 
@@ -294,13 +302,19 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           e,
         });
       });
-    }
+    } 
   };
 
-  const storeBookmark = async (
-    uid: string,
-    q: TypeQuote | TypeQuoteQuotetableAPI
-  ) => {
+  const fetchAllQuotes = () => {
+    const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      setAllQuotes(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+      );
+    });
+  }
+
+  const storeBookmark = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
     if (quoteDocSnap.exists()) {
@@ -311,10 +325,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           e,
         });
       });
+    } else {
+      await addDoc(quotesCollectionRef, {
+        ...q,
+        bookmarkedBy: [uid],
+        createdAt: serverTimestamp(),
+      });
     }
   };
 
-  const removeBookmark = async (uid: string, q: TypeQuote | TypeQuoteQuotetableAPI) => {
+  const removeBookmark = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
     if (quoteDocSnap.exists()) {
@@ -350,18 +370,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             where("userInfo.uid", "==", user?.uid),
             orderBy("quote", "desc")
           );
-      } else if (sortFilterByForMine.sortByElement === "person") {
+      } else if (sortFilterByForMine.sortByElement === "author") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
             where("userInfo.uid", "==", user?.uid),
-            orderBy("person", "asc")
+            orderBy("author", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
             where("userInfo.uid", "==", user?.uid),
-            orderBy("person", "desc")
+            orderBy("author", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "createdAt") {
         if (sortFilterByForMine.order === "asc")
@@ -386,7 +406,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
                   .data()
                   // below return true or false
                   .tags.some(
-                    (tag: ITag) => tag.tag === sortFilterByForMine.searchTag
+                    (tag: ITag) => tag.name === sortFilterByForMine.searchTag
                   )
               );
             }
@@ -426,7 +446,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'person' instead.
+            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
             // where("userInfo.uid", "!=", user?.uid),
             orderBy("quote", "asc")
           );
@@ -436,18 +456,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             // where("userInfo.uid", "!=", user?.uid),
             orderBy("quote", "desc")
           );
-      } else if (sortFilterByForNotMine.sortByElement === "person") {
+      } else if (sortFilterByForNotMine.sortByElement === "author") {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
             // where("userInfo.uid", "!=", user?.uid),
-            orderBy("person", "asc")
+            orderBy("author", "asc")
           );
         else if (sortFilterByForNotMine.order === "desc")
           q = query(
             quotesCollectionRef,
             // where("userInfo.uid", "!=", user?.uid),
-            orderBy("person", "desc")
+            orderBy("author", "desc")
           );
       } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
         if (sortFilterByForNotMine.order === "asc")
@@ -475,7 +495,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
                     // below return true or false
                     .tags.some(
                       (tag: ITag) =>
-                        tag.tag === sortFilterByForNotMine.searchTag
+                        tag.name === sortFilterByForNotMine.searchTag
                     )
                 );
               }
@@ -525,18 +545,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             where("userInfo.uid", "==", user?.uid),
             orderBy("quote", "desc")
           );
-      } else if (sortFilterByForMine.sortByElement === "person") {
+      } else if (sortFilterByForMine.sortByElement === "author") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
             where("userInfo.uid", "==", user?.uid),
-            orderBy("person", "asc")
+            orderBy("author", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
             where("userInfo.uid", "==", user?.uid),
-            orderBy("person", "desc")
+            orderBy("author", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "createdAt") {
         if (sortFilterByForMine.order === "asc")
@@ -576,7 +596,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'person' instead.
+            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'userInfo.uid' and so you must also use 'userInfo.uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
             // where("userInfo.uid", "!=", user?.uid),
             orderBy("quote", "asc")
           );
@@ -586,18 +606,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             // where("userInfo.uid", "!=", user?.uid),
             orderBy("quote", "desc")
           );
-      } else if (sortFilterByForNotMine.sortByElement === "person") {
+      } else if (sortFilterByForNotMine.sortByElement === "author") {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
             // where("userInfo.uid", "!=", user?.uid),
-            orderBy("person", "asc")
+            orderBy("author", "asc")
           );
         else if (sortFilterByForNotMine.order === "desc")
           q = query(
             quotesCollectionRef,
             // where("userInfo.uid", "!=", user?.uid),
-            orderBy("person", "desc")
+            orderBy("author", "desc")
           );
       } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
         if (sortFilterByForNotMine.order === "asc")
@@ -662,7 +682,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-
   const fetchQuotesForHomePage = (
     user: TypeLoginUser,
     setIsLoading: (boo: boolean) => void
@@ -723,8 +742,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           })
           .then((res) => {
             setRandomQuote({
-              person: res.author,
-              quote: res.content,
+              author: res.author,
+              content: res.content,
             } as TypeQuote);
           })
           .catch((e) => {
@@ -852,7 +871,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         updateSortFilterByForNotMine,
         sortFilterByForNotMine,
 
-
         fetchQuotesForHomePage,
         quotesForHomePage,
 
@@ -883,6 +901,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         resetSortFilterByForNotMineInputs,
 
         updateRandomQuote,
+
+        fetchAllQuotes,
+        allQuotes,
       }}
     >
       {children}

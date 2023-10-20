@@ -1,14 +1,14 @@
 "use client";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { DEFAULT_URL_FOR_QUOTE } from "@/data/CONSTANTS";
+import { TypeQuote } from "@/types/type";
 
 const useFetchQuoteFromQuotableAPI = (url: string) => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const [data, setData] = useState<TypeQuoteQuotetableAPI>();
+  const [data, setData] = useState<TypeQuote>();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState(null);
 
@@ -27,8 +27,14 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           id: res[0]._id,
           author: res[0].author,
           content: res[0].content,
-          tags: res[0].tags,
-        } as TypeQuoteQuotetableAPI);
+          tags: res[0].tags.map((tag: string) => {
+            return { name: tag, color: "white" };
+          }),
+          likedBy: [],
+          bookmarkedBy: [],
+          userInfo: 'api',
+          isDraft: false,
+        });
         setIsPending(false);
       })
       .catch((e) => {
@@ -49,7 +55,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
               author: res[0].author,
               content: res[0].content,
               tags: res[0].tags,
-            } as TypeQuoteQuotetableAPI);
+            } as TypeQuote);
             setIsPending(false);
           })
           .catch((e) => {
