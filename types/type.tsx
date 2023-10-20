@@ -94,4 +94,5 @@ export type TypeTagErrors = {
 
 export type profileTabs = {
   name: "quotes" | "bookmarks" | "likes" | "events";
+  length: number
 }

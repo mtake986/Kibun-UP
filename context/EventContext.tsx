@@ -120,8 +120,21 @@ export function EventProvider({ children }: EventProviderProps) {
     await deleteDoc(doc(db, "events", id));
   };
 
+  // const fetchAllQuotes = () => {
+  //   const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+  //   onSnapshot(q, (snapshot) => {
+  //     setAllQuotes(
+  //       snapshot.docs.map(
+  //         (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
+  //       )
+  //     );
+  //   });
+  // };
+
   const getLoginUserEvents = async () => {
+    console.log("before uid");
     if (user?.uid) {
+      console.log("after uid");
       const q = query(
         eventCollectionRef,
         where("userInfo.uid", "==", user?.uid),

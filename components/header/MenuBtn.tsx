@@ -1,16 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import {
-  MenuIcon,
-} from "lucide-react";
+import { MenuIcon } from "lucide-react";
 // import { hamburgerMenus } from "@/data/CONSTANTS";
-import {
-  BsChatQuote,
-  BsFlag,
-  BsHouse,
-  BsPerson,
-} from "react-icons/bs";
+import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
