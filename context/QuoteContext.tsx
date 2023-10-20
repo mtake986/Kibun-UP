@@ -274,7 +274,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const storeFav = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
-    console.log(q.id, quoteDocSnap)
     if (quoteDocSnap.exists()) {
       await updateDoc(quoteDocRef, {
         likedBy: arrayUnion(uid),
@@ -284,7 +283,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       });
     } else {
-      console.log('doesnt exist')
       await setDoc(doc(db, 'quotes', q.id), {
         ...q,
         likedBy: [uid],

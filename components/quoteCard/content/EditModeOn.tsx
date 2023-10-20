@@ -57,7 +57,12 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
       return "fail";
     } else {
-      delete tagErrors["undefOrNoChars"];
+      // delete tagErrors["undefOrNoChars"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["undefOrNoChars"];
+        return newErrors;
+      });
     }
     if (inputTagName.length > 20) {
       const error: TypeTagError = {
@@ -66,7 +71,11 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       setTagErrors({ ...tagErrors, over20chars: error });
       return "fail";
     } else {
-      delete tagErrors["over20chars"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over20chars"];
+        return newErrors;
+      });
     }
     if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
       const error: TypeTagError = {
@@ -75,7 +84,11 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       setTagErrors({ ...tagErrors, sameTagName: error });
       return "fail";
     } else {
-      delete tagErrors["sameTagName"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["sameTagName"];
+        return newErrors;
+      });
     }
     if (inputTags.length === 5) {
       const error: TypeTagError = {
@@ -84,10 +97,15 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       setTagErrors({ ...tagErrors, over5tags: error });
       return "fail";
     } else {
-      delete tagErrors["over5tags"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over5tags"];
+        return newErrors;
+      });
     }
     return "fine";
   };
+
   const addTag = () => {
     const defaultColor = "white";
     setInputTags([
@@ -101,6 +119,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const removeTag = (tagName: string) => {
     setInputTags(inputTags.filter((tag) => tag.name !== tagName));
   };
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),

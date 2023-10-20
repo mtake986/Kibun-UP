@@ -10,6 +10,7 @@ import { TypeLoginUser } from "@/types/type";
 import Tabs from "./Tabs";
 import ListOfLikes from "./likes/ListOfLikes";
 import SectionTitle from "../SectionTitle";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -28,15 +29,15 @@ const Data = ({loginUser}: Props) => {
   } = useQuote();
 
   useEffect(() => {
-    setLoading(true);
-    getLoginUserQuotes();
-    fetchAllQuotes();
-    getLockedQuote();
+    try {
+      setLoading(true);
+      getLoginUserQuotes();
+      fetchAllQuotes();
+      getLockedQuote();
+    } catch (error) {
+      displayErrorToast(error);
+    }
   }, [user]);
-
-  // if (loading) {
-  //   return <Loading />;
-  // }
 
   return (
     <div className="relative mt-10">

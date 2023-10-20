@@ -84,9 +84,14 @@ export type TypeTagError = {
   // isError: boolean;
   message: string;
 };
+
 export type TypeTagErrors = {
   undefOrNoChars?: TypeTagError;
   over20chars?: TypeTagError;
   sameTagName?: TypeTagError;
   over5tags?: TypeTagError;
 };
+
+export type profileTabs = {
+  name: "quotes" | "bookmarks" | "likes" | "events";
+}

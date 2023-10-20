@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
@@ -17,8 +17,9 @@ type Props = {
 const ListOfLikes = ({ quotes, loginUser }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const quotesLikedByLoginUser = quotes.filter((q) =>
-    q.likedBy.includes(loginUser.uid)
+  const quotesLikedByLoginUser = useMemo(
+    () => quotes.filter((q) => q.likedBy.includes(loginUser.uid)),
+    [quotes, loginUser.uid]
   );
 
   const { nPages, currentRecords } = usePagination(
