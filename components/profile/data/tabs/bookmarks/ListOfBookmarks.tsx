@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import usePagination from "@/components/hooks/usePagination";
 
@@ -18,9 +16,13 @@ type Props = {
 const ListOfBookmarks = ({ quotes, loginUser }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  const quotesBookmarkedByLoginUser = useQuotesBookmarkedByLoginUser(
+    quotes,
+    loginUser
+  );
   const { nPages, currentRecords } = usePagination(
     currentPage,
-    useQuotesBookmarkedByLoginUser(quotes, loginUser),
+    quotesBookmarkedByLoginUser
   );
 
   return (
