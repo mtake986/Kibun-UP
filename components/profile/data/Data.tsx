@@ -2,66 +2,44 @@ import { auth } from "@/config/Firebase";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuote } from "@/context/QuoteContext";
-import QuoteList from "./quotes/QuoteList";
-import EventList from "./events/EventList";
-import ListOfBookmarks from "./bookmarks/ListOfBookmarks";
-import MobileSortFilterForQuotesOpenBtn from "./quotes/MobileSortFilterForQuotesOpenBtn";
+import QuoteList from "./tabs/quotes/QuoteList";
+import EventList from "./tabs/events/EventList";
+import ListOfBookmarks from "./tabs/bookmarks/ListOfBookmarks";
+import MobileSortFilterForQuotesOpenBtn from "./tabs/quotes/MobileSortFilterForQuotesOpenBtn";
 import { TypeLoginUser } from "@/types/type";
-import Tabs from "./Tabs";
-import ListOfLikes from "./likes/ListOfLikes";
+import Tabs from "./tabs/Tabs";
+import ListOfLikes from "./tabs/likes/ListOfLikes";
 import SectionTitle from "../SectionTitle";
 import { displayErrorToast } from "@/functions/displayToast";
+import { useEvent } from "@/context/EventContext";
 
 type Props = {
   loginUser: TypeLoginUser;
-}
-const Data = ({loginUser}: Props) => {
-  const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState<boolean>(false);
-
+};
+const Data = ({ loginUser }: Props) => {
   const {
-    getLockedQuote,
-    getLoginUserQuotes,
     loginUserQuotes,
     profileWhichTab,
-    fetchAllQuotes,
     allQuotes,
   } = useQuote();
-
-  useEffect(() => {
-    try {
-      setLoading(true);
-      getLoginUserQuotes();
-      fetchAllQuotes();
-      getLockedQuote();
-    } catch (error) {
-      displayErrorToast(error);
-    }
-  }, [user]);
 
   return (
     <div className="relative mt-10">
       <SectionTitle title="Your Data" />
-      {/* <span className="absolute top-0 right-0 text-xs text-gray-400">
-          {user?.displayName}
-        </span> */}
 
       {profileWhichTab === "quotes" ? (
         <MobileSortFilterForQuotesOpenBtn />
       ) : null}
 
-      <Tabs />
+      <Tabs loginUser={loginUser} />
 
       {profileWhichTab === "quotes" ? (
         <QuoteList quotes={loginUserQuotes} />
-      ) 
-      : profileWhichTab === "bookmarks" ? (
-          <ListOfBookmarks quotes={allQuotes} loginUser={loginUser} />
-      ) 
-      : profileWhichTab === "likes" ? (
+      ) : profileWhichTab === "bookmarks" ? (
+        <ListOfBookmarks quotes={allQuotes} loginUser={loginUser} />
+      ) : profileWhichTab === "likes" ? (
         <ListOfLikes quotes={allQuotes} loginUser={loginUser} />
-      ) 
-      : (
+      ) : (
         <EventList />
       )}
     </div>

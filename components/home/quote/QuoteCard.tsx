@@ -1,4 +1,3 @@
-
 import QuoteContent from "./QuoteContent";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import AuthorText from "./AuthorText";
