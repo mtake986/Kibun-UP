@@ -29,7 +29,7 @@ const LoginUserProfile = () => {
   const { loginUser, fetchLoginUser } = useAuth();
   const { loginUserEvents, getLoginUserEvents } = useEvent();
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState(false);
   useEffect(() => {
     try {
       !loginUser ? fetchLoginUser(auth.currentUser) : null;
@@ -42,14 +42,14 @@ const LoginUserProfile = () => {
       setIsError(false);
     } catch (error) {
       displayErrorToast(error);
-      setIsError(true)
+      setIsError(true);
     }
   }, [user]);
 
   if (!loginUser) return <Loading />;
 
   if (isError) return <div>Something wrong here</div>;
-  
+
   return (
     <div className="mb-32 p-5 sm:p-0">
       <div className="relative my-10 flex flex-col items-center gap-5 px-5">

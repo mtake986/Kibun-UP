@@ -14,15 +14,19 @@ const Tabs = ({ loginUser }: Props) => {
     useQuote();
   const { loginUserEvents } = useEvent();
 
+  const lengths = {
+    bookmarks: useQuotesBookmarkedByLoginUser(allQuotes, loginUser).length,
+    likes: useQuotesLikedByLoginUser(allQuotes, loginUser).length,
+  };
   const tabs: profileTabs[] = [
     { name: "quotes", length: loginUserQuotes.length },
     {
       name: "bookmarks",
-      length: useQuotesBookmarkedByLoginUser(allQuotes, loginUser).length,
+      length: lengths.bookmarks,
     },
     {
       name: "likes",
-      length: useQuotesLikedByLoginUser(allQuotes, loginUser).length,
+      length: lengths.likes,
     },
     { name: "events", length: loginUserEvents.length },
   ];
