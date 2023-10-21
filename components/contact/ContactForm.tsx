@@ -15,12 +15,10 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
 import { useEffect, useState } from "react";
-import Loading from "../utils/Loading";
 import HeadingTwo from "../utils/HeadingTwo";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";

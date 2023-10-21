@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
-import Loading from "../utils/Loading";
 import List from "./mine/List";
 
 const SwitchTab = () => {

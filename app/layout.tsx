@@ -8,7 +8,7 @@ import FtrFolder from "@/components/footer/Footer";
 import Hdr from "@/components/header/Header";
 import { fontRaleway, fontRoboto } from "@/components/utils/fonts";
 import { ThemeProvider } from "./theme-provider";
-import { ThemeSwitcher } from "@/components/header/ThemeToggleBtn";
+import { ThemeSwitcher } from "@/components/header/ThemeSwitcher";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -34,9 +34,8 @@ export default function RootLayout({
                 enableSystem
               >
                 <main className="relative min-h-screen">
-                  <ThemeSwitcher />
                   <Hdr />
-                    
+
                   <div className="relative mx-auto max-w-2xl text-slate-800 sm:p-12">
                     {children}
                   </div>

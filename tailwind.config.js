@@ -19,6 +19,9 @@ module.exports = {
     //   },
     // },
     extend: {
+      colors: {
+        darkColorPrimary: '#1e293b',
+      }
       // colors: {
       //   ...colors,
       //   border: "hsl(var(--border))",

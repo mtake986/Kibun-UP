@@ -9,6 +9,7 @@ import { useEffect } from "react";
 // import ThemeToggleBtn from "./ThemeToggleBtn";
 import { fontRoboto } from "../utils/fonts";
 import { usePathname } from "next/navigation";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function Header() {
   const { fetchLoginUser, signInWithGoogle } = useAuth();
@@ -18,9 +19,8 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-slate-50 px-5 py-4 text-violet-500 shadow-lg dark:bg-gray-900">
+    <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-900 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
-        {/* <ThemeToggleBtn /> */}
         <div className="mr-6 flex flex-shrink-0 items-center">
           <UrlLink
             clickOn="Kibun UP"
@@ -33,42 +33,31 @@ export default function Header() {
           <UrlLink
             href="/quote"
             target="_self"
-            className={`text-violet-500 lg:mt-0 lg:inline-block ${
-              pathname?.includes("/quote") && "underline font-semibold"
+            className={`text-violet-500 dark:text-white ${
+              pathname?.includes("/quote") && "font-semibold underline"
             }`}
             clickOn="Quote"
           />
           <UrlLink
             href="/event"
-            className={`text-violet-500 lg:mt-0 lg:inline-block ${
-              pathname?.includes("/event") && "underline font-semibold"
+            className={`text-violet-500 dark:text-white ${
+              pathname?.includes("/event") && "font-semibold underline"
             }`}
             target="_self"
             clickOn="Event"
           />
           <UrlLink
             href="/contact"
-            className={`text-violet-500 lg:mt-0 lg:inline-block ${
-              pathname?.includes("/contact") && "underline font-semibold"
+            className={`text-violet-500 dark:text-white ${
+              pathname?.includes("/contact") && "font-semibold underline"
             }`}
             target="_self"
             clickOn="Contact"
           />
         </div>
         <div className="hidden items-center justify-between sm:flex">
-          {auth.currentUser ? (
-            <ProfilePic />
-          ) : (
-            <div
-              onClick={() => {
-                signInWithGoogle();
-              }}
-              // href="/login"
-              className="hover cursor-pointer text-violet-200 duration-300 lg:mt-0 lg:inline-block"
-            >
-              Login
-            </div>
-          )}
+          <ThemeSwitcher />
+          <ProfilePic />
         </div>
         <div className="sm:hidden">
           <MenuBtn />

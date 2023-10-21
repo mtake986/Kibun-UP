@@ -19,12 +19,10 @@ type Props = {
   i: number;
 };
 
-import { IEventInputValues, IEvent } from "@/types/type";
+import { IEvent } from "@/types/type";
 import { useEvent } from "@/context/EventContext";
 import EditModeOn from "./EditModeOn";
-import Loading from "@/components/utils/Loading";
 import HeadingThree from "@/components/utils/HeadingThree";
-import HeadingFour from "@/components/utils/HeadingFour";
 
 const EventCard = ({ event, i }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
