@@ -1,5 +1,4 @@
 "use client";
-
 import { auth } from "../../config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
@@ -7,18 +6,22 @@ import ProfilePic from "./ProfilePic";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
+// import ThemeToggleBtn from "./ThemeToggleBtn";
+import { fontRoboto } from "../utils/fonts";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const { fetchLoginUser, signInWithGoogle } = useAuth();
-
+  const pathname = usePathname();
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
   }, []);
 
   return (
-    <header className="bg-violet-500 px-5 py-4">
+    <header className="bg-slate-50 px-5 py-4 text-violet-500 shadow-lg dark:bg-gray-900">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
-        <div className="mr-6 flex flex-shrink-0 items-center text-white">
+        {/* <ThemeToggleBtn /> */}
+        <div className="mr-6 flex flex-shrink-0 items-center">
           <UrlLink
             clickOn="Kibun UP"
             href="/"
@@ -30,18 +33,24 @@ export default function Header() {
           <UrlLink
             href="/quote"
             target="_self"
-            className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
+            className={`text-violet-500 lg:mt-0 lg:inline-block ${
+              pathname?.includes("/quote") && "underline font-semibold"
+            }`}
             clickOn="Quote"
           />
           <UrlLink
             href="/event"
-            className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
+            className={`text-violet-500 lg:mt-0 lg:inline-block ${
+              pathname?.includes("/event") && "underline font-semibold"
+            }`}
             target="_self"
             clickOn="Event"
           />
           <UrlLink
             href="/contact"
-            className="text-violet-200 hover:text-white lg:mt-0 lg:inline-block"
+            className={`text-violet-500 lg:mt-0 lg:inline-block ${
+              pathname?.includes("/contact") && "underline font-semibold"
+            }`}
             target="_self"
             clickOn="Contact"
           />
@@ -55,7 +64,7 @@ export default function Header() {
                 signInWithGoogle();
               }}
               // href="/login"
-              className="cursor-pointer text-violet-200 duration-300 hover:text-white lg:mt-0 lg:inline-block"
+              className="hover cursor-pointer text-violet-200 duration-300 lg:mt-0 lg:inline-block"
             >
               Login
             </div>

@@ -52,7 +52,7 @@ const EventCard = ({ event, i }: Props) => {
       <Card className="mb-3">
         <CardHeader></CardHeader>
         <CardContent>
-          <Loading />
+          <div>Loading...</div>
         </CardContent>
         <CardFooter></CardFooter>
       </Card>

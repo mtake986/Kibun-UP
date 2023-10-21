@@ -94,7 +94,7 @@ export default function ContactForm() {
     <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
       <HeadingTwo text="Contact Form" />
       {loading ? (
-        <Loading />
+        <div>Loading...</div>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

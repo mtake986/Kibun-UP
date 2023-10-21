@@ -32,7 +32,7 @@ const SwitchTab = () => {
   }, [user]);
 
   if (loading) {
-    return <Loading />;
+    return <div>Loading...</div>;
   }
 
   return (

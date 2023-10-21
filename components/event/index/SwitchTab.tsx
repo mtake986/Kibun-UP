@@ -7,7 +7,6 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import List from "../list/Mine/List";
 import Loading from "@/components/utils/Loading";
 
-
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
 
@@ -25,7 +24,7 @@ const SwitchTab = () => {
     setLoading(false);
   }, [user]);
 
-  if (loading) return <Loading />;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>

@@ -46,7 +46,7 @@ const LoginUserProfile = () => {
     }
   }, [user]);
 
-  if (!loginUser) return <Loading />;
+  if (!loginUser) return <div>Loading...</div>;
 
   if (isError) return <div>Something wrong here</div>;
 

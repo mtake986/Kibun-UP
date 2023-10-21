@@ -13,7 +13,7 @@ type Props = {
 };
 const QuoteCard = ({ quote, type, refetch, isPending, loginUser }: Props) => {
   return (
-    <div className="mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
+    <div className="dark:text-red mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
       <QuoteContent quote={quote} />
       <AuthorText quote={quote} />
       <div className="mt-3 flex items-start justify-between">
