@@ -9,12 +9,11 @@
     --text-primary-color-whenThemeDark-: white;
   }
 
-  .dark {
+  html.dark {
+    background-color: black;
   }
 }
 
-@layer base {
-}
 
 .table-wrapper {
   overflow-x: scroll;

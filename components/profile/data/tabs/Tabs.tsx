@@ -32,7 +32,7 @@ const Tabs = ({ loginUser }: Props) => {
   ];
 
   return (
-    <div className="mb-1 flex items-stretch">
+    <div className="mb-3 flex items-stretch">
       {tabs.map((tab) => (
         <span
           key={tab.name}

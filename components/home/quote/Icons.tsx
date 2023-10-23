@@ -58,7 +58,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
               }
             }
           }}
-          className={`text-red-500  duration-300 hover:opacity-50 hover:text-red-500`}
+          className={`text-red-500  duration-300 hover:text-red-500 hover:opacity-50`}
         />
       ) : (
         <BiLockOpen

@@ -4,8 +4,8 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
-import FtrFolder from "@/components/footer/Footer";
-import Hdr from "@/components/header/Header";
+import Footer from "@/components/footer/Footer";
+import Header from "@/components/header/Header";
 import { fontRaleway, fontRoboto } from "@/components/utils/fonts";
 import { ThemeProvider } from "./theme-provider";
 import { ThemeSwitcher } from "@/components/header/ThemeSwitcher";
@@ -27,19 +27,18 @@ export default function RootLayout({
       <AuthProvider>
         <QuoteProvider>
           <EventProvider>
-            <body className={fontRaleway.className}>
+            <body className={`${fontRaleway.className}`}>
               <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
                 enableSystem
               >
-                <main className="relative min-h-screen">
-                  <Hdr />
-
-                  <div className="relative mx-auto max-w-2xl text-slate-800 sm:p-12">
+                <main className="relative min-h-screen dark:bg-slate-950">
+                  <Header />
+                  <div className="relative mx-auto max-w-2xl text-slate-800 dark:text-slate-100 sm:p-12">
                     {children}
                   </div>
-                  <FtrFolder />
+                  <Footer />
                 </main>
                 <Toaster />
               </ThemeProvider>

@@ -10,7 +10,7 @@ const GoogleLoginBtn = () => {
         onClick={() => {
           signInWithGoogle();
         }}
-        className="mx-auto flex gap-2 rounded-lg border border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow"
+        className="mx-auto flex gap-2 rounded-lg dark:text-white border dark:border-none border-slate-200 px-4 py-2 text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow dark:bg-slate-900"
       >
         <Image
           className="h-6 w-6"

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuote } from "@/context/QuoteContext";
@@ -17,7 +17,11 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { sortFilterAreaForMineShown } = useQuote();
+  const {
+    sortFilterAreaForMineShown,
+    sortFilterByForMine,
+    sortAndFilterMyQuotes,
+  } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 

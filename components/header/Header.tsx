@@ -24,7 +24,7 @@ export default function Header() {
         <div className="mr-6 flex flex-shrink-0 items-center">
           <UrlLink
             clickOn="Kibun UP"
-            href="/"
+            href="/home"
             target="_self"
             className="text-xl font-semibold tracking-tight"
           />

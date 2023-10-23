@@ -5,10 +5,10 @@ import { SearchBar } from "./SearchBar";
 import Btns from "./Btns";
 import OnlySortBtn from "./OnlySortBtn";
 
-const SortFilterMine = () => {
+const SortFilterNotMine = () => {
   return (
-    <div>
-    {/* mobile */}
+    <>
+      {/* mobile */}
       <div className="mb-3 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
@@ -31,8 +31,8 @@ const SortFilterMine = () => {
         <SearchBar />
         <Btns />
       </div>
-    </div>
+    </>
   );
 };
 
-export default SortFilterMine;
+export default SortFilterNotMine;

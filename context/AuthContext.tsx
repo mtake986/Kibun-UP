@@ -74,7 +74,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       displaySuccessToast({
         text: "Logged in",
       });
-      router.push("/");
+      router.push("/home");
     });
   }
 

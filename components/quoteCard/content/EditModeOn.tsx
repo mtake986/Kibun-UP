@@ -50,6 +50,19 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
 
   const validateInputTags = (): string => {
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return "fail";
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over5tags"];
+        return newErrors;
+      });
+    }
     if (!inputTagName || inputTagName.length <= 0) {
       const error: TypeTagError = {
         message: "Tag name is required",
@@ -87,19 +100,6 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
         delete newErrors["sameTagName"];
-        return newErrors;
-      });
-    }
-    if (inputTags.length === 5) {
-      const error: TypeTagError = {
-        message: "Maximum 5 tags",
-      };
-      setTagErrors({ ...tagErrors, over5tags: error });
-      return "fail";
-    } else {
-      setTagErrors((prevErrors) => {
-        const newErrors = { ...prevErrors };
-        delete newErrors["over5tags"];
         return newErrors;
       });
     }
@@ -240,7 +240,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                   {tagColors.map((color) => (
                     <SelectItem
                       key={color}
-                      className={`${changeTagColor(color)}`}
+                      className={`hover:opacity-100 ${changeTagColor(color)}`}
                       value={color}
                     >
                       {inputTagName}
@@ -253,7 +253,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 onClick={() => {
                   if (validateInputTags() === "fine") addTag();
                 }}
-                className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+                className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200 hover:opacity-70 dark:bg-slate-700 dark:text-white"
               >
                 Add
               </Button>
@@ -264,7 +264,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.name)}
-                className={`cursor-pointer border-none font-light ${changeTagColor(
+                className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
                   tag.color
                 )}`}
               >
@@ -274,7 +274,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
             ))}
             {inputTagName && (
               <Badge
-                className={` border-none font-light hover:opacity-70 ${changeTagColor(
+                className={`border-none font-light hover:opacity-70 ${changeTagColor(
                   inputTagColor
                 )}`}
               >
@@ -288,14 +288,14 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         <div className="flex items-center gap-3">
           <Button
             type="submit"
-            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70`}
+            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-slate-700 dark:text-white`}
             variant="ghost"
           >
             Save
           </Button>
           <Button
             onClick={() => setIsUpdateMode(false)}
-            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70`}
+            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-slate-900 `}
             variant="ghost"
           >
             Cancel

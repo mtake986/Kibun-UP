@@ -7,7 +7,7 @@ type Props = {
 const HeadingFour = (props: Props) => {
   return (
     <h4
-      className={`text-center text-lg font-bold sm:text-xl ${props.className}`}
+      className={`dark:text-white text-center text-lg font-bold sm:text-xl ${props.className}`}
     >
       {props.text}
     </h4>

@@ -13,7 +13,7 @@ const IconLock = ({ q, loginUser }: Props) => {
   const { lockThisQuote, lockedQuote, removeLockFromThisQuote } = useQuote();
 
   return (
-    <>
+    <span className="duration-300 hover:opacity-50">
       {lockedQuote?.id === q.id ? (
         <BiLock
           size={16}
@@ -38,7 +38,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           className="cursor-pointer hover:opacity-50"
         />
       )}
-    </>
+    </span>
   );
 };
 

@@ -8,15 +8,13 @@ export function SearchBar() {
   const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
 
   return (
-    <>
-      <Input
-        placeholder="Ex.) Search a tag"
-        className="w-full text-xs"
-        onChange={(e) => {
-          updateSortFilterByForMine("searchTag", e.target.value);
-        }}
-        value={sortFilterByForMine.searchTag}
-      />
-    </>
+    <Input
+      placeholder="Ex.) Search a tag"
+      className="w-full text-xs"
+      onChange={(e) => {
+        updateSortFilterByForMine("searchTag", e.target.value);
+      }}
+      value={sortFilterByForMine.searchTag}
+    />
   );
 }
