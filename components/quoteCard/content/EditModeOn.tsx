@@ -49,6 +49,11 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
   const [inputTags, setInputTags] = useState<ITag[]>(q.tags || []);
   const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
 
+  const isAddBtnDisabled =
+    inputTagName.length <= 0 ||
+    inputTagName.length > 20 ||
+    inputTags.length >= 5 ||
+    inputTags.some((tag) => tag.name === inputTagName);
   const validateInputTags = (): string => {
     if (inputTags.length === 5) {
       const error: TypeTagError = {
@@ -217,7 +222,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
               }
               disabled={inputTags.length >= 5}
             />
-            <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
+            <div className="flex w-full gap-2 sm:justify-between">
               <Select
                 onValueChange={(color) => {
                   setInputTagColor(color);
@@ -249,11 +254,14 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 </SelectContent>
               </Select>
               <Button
+                disabled={isAddBtnDisabled}
                 type="button"
                 onClick={() => {
                   if (validateInputTags() === "fine") addTag();
                 }}
-                className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200 hover:opacity-70 dark:bg-slate-700 dark:text-white"
+                className={`${
+                  isAddBtnDisabled ? "cursor-not-allowed" : "cursor-pointer"
+                } bg-blue-50 text-blue-500 duration-300 hover:bg-blue-50 hover:text-blue-500 hover:opacity-70 dark:bg-slate-700 dark:text-white`}
               >
                 Add
               </Button>
@@ -288,14 +296,14 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         <div className="flex items-center gap-3">
           <Button
             type="submit"
-            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-slate-700 dark:text-white`}
+            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-violet-700 dark:text-white`}
             variant="ghost"
           >
             Save
           </Button>
           <Button
             onClick={() => setIsUpdateMode(false)}
-            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-slate-900 `}
+            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-red-900 dark:text-white`}
             variant="ghost"
           >
             Cancel
