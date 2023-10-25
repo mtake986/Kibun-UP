@@ -23,7 +23,8 @@ export default function MenuBtn() {
     {
       href: "/",
       className: `flex items-center gap-5 ${
-        pathname?.includes("/home") && "font-semibold underline"
+        pathname === "/home" &&
+        "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
       clickOn: HomeListItem,
@@ -31,7 +32,7 @@ export default function MenuBtn() {
     {
       href: "/quote",
       className: `flex items-center gap-5 ${
-        pathname?.includes("/quote") && "font-semibold underline"
+        pathname === "/quote" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
       clickOn: QuoteListItem,
@@ -39,7 +40,7 @@ export default function MenuBtn() {
     {
       href: "/event",
       className: `flex items-center gap-5 ${
-        pathname?.includes("/event") && "font-semibold underline"
+        pathname === "/event" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
       clickOn: EventListItem,
@@ -47,7 +48,8 @@ export default function MenuBtn() {
     {
       href: `/user/profile/${user?.uid}`,
       className: `flex items-center gap-5 ${
-        pathname?.includes("/profile") && "font-semibold underline"
+        pathname === "/profile" &&
+        "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
       clickOn: ProfileListItem,
@@ -55,7 +57,7 @@ export default function MenuBtn() {
     {
       href: `/contact`,
       className: `flex items-center gap-5 ${
-        pathname?.includes("/contact") && "font-semibold underline"
+        pathname === "/contact" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
       clickOn: ContactListItem,
@@ -86,12 +88,12 @@ export default function MenuBtn() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="min-h-screen flex flex-col justify-start gap-2 p-5 dark:bg-slate-900">
+      <div className="flex min-h-screen flex-col justify-start gap-2 p-5 dark:bg-slate-900">
         {/* <div className="flex flex-col gap-3"> */}
         {headerListItems.map((item, i) => (
           <Button
             key={i}
-            className="dark:bg-slate-900 dark:text-white flex items-center justify-center bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50"
+            className="flex items-center justify-center bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50 dark:bg-slate-900 dark:text-white"
           >
             <UrlLink
               href={item.href}

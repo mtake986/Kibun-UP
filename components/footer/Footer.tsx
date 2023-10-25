@@ -12,7 +12,7 @@ const Footer = () => {
         href="/creator-info"
         clickOn="Masahiro Takechi"
         target="_self"
-        className="text-sky-500 hover:underline"
+        className="text-sky-500 underline-offset-2 hover:underline"
       />
     </footer>
   );

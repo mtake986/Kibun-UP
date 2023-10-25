@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/data/CONSTANTS";
+import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "./TagErrors";
@@ -60,7 +60,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         message: "Maximum 5 tags",
       };
       setTagErrors({ ...tagErrors, over5tags: error });
-      return "fail";
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -73,7 +73,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         message: "Tag name is required",
       };
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
-      return "fail";
+      return VALIDATION_STATUS.FAIL;
     } else {
       // delete tagErrors["undefOrNoChars"];
       setTagErrors((prevErrors) => {
@@ -87,7 +87,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         message: "Max. 20 characters",
       };
       setTagErrors({ ...tagErrors, over20chars: error });
-      return "fail";
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -100,7 +100,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         message: "Not Allowed The Same Tag",
       };
       setTagErrors({ ...tagErrors, sameTagName: error });
-      return "fail";
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -108,7 +108,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
         return newErrors;
       });
     }
-    return "fine";
+    return VALIDATION_STATUS.PASS;
   };
 
   const addTag = () => {
@@ -257,7 +257,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 disabled={isAddBtnDisabled}
                 type="button"
                 onClick={() => {
-                  if (validateInputTags() === "fine") addTag();
+                  if (validateInputTags() === "pass") addTag();
                 }}
                 className={`${
                   isAddBtnDisabled ? "cursor-not-allowed" : "cursor-pointer"

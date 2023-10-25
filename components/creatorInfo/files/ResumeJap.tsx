@@ -7,7 +7,7 @@ const ResumeJap = () => {
       href="/files/masahiro-takechi-resume-jap.pdf"
       target="_blank"
       clickOn="履歴書"
-      className="text-xs text-sky-500 hover:underline sm:text-sm"
+      className="text-xs text-sky-500 underline-offset-2 hover:underline sm:text-sm"
     />
   );
 };

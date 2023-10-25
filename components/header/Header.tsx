@@ -34,14 +34,16 @@ export default function Header() {
             href="/quote"
             target="_self"
             className={`text-violet-500 dark:text-white ${
-              pathname?.includes("/quote") && "font-semibold underline"
+              pathname === "/quote" &&
+              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
             }`}
             clickOn="Quote"
           />
           <UrlLink
             href="/event"
             className={`text-violet-500 dark:text-white ${
-              pathname?.includes("/event") && "font-semibold underline"
+              pathname === "/event" &&
+              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
             }`}
             target="_self"
             clickOn="Event"
@@ -49,7 +51,8 @@ export default function Header() {
           <UrlLink
             href="/contact"
             className={`text-violet-500 dark:text-white ${
-              pathname?.includes("/contact") && "font-semibold underline"
+              pathname === "/contact" &&
+              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
             }`}
             target="_self"
             clickOn="Contact"

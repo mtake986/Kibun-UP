@@ -60,3 +60,8 @@ export const mySnsInfo = [
 
 export const DEFAULT_URL_FOR_QUOTE =
   " https://api.quotable.io/quotes/random";
+
+export const VALIDATION_STATUS = {
+  FAIL : "fail",
+  PASS : "pass",
+}

@@ -5,7 +5,7 @@ const NoEventAvailable = () => {
     <div className="flex h-64 flex-col items-center justify-center rounded-lg bg-violet-50 p-12 text-center">
       <UrlLink
         href="/event"
-        className="cursor-pointer text-blue-400 underline duration-300 hover:opacity-70"
+        className="cursor-pointer text-blue-400 underline underline-offset-2 duration-300 hover:opacity-70"
         target="_self"
         clickOn="You have no events yet."
       />

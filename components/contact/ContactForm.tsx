@@ -73,7 +73,7 @@ export default function ContactForm() {
       } catch (error) {
         // 送信失敗したらalertで表示
         displayToast({
-          text: "ERROR: Failed to send email.",
+          text: "ERROR: Failed to send email. Please try again. " + error,
           color: "red",
         });
         setLoading(false);
@@ -177,7 +177,7 @@ export default function ContactForm() {
       <p className="sm:text-md mt-5 text-center text-xs">
         Or, you can{" "}
         <UrlLink
-          className="text-sky-500 hover:underline"
+          className="text-sky-500 underline-offset-2 hover:underline"
           target="_blank"
           href="https://github.com/mtake986/Kibun-UP/issues"
           clickOn="create an issue"
