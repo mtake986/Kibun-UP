@@ -21,7 +21,7 @@ const Btns = () => {
       <HoverCard>
         <HoverCardTrigger>
           <Button
-            className={`cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-500`}
+            className={`cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-500 hover:opacity-70 dark:bg-slate-900 dark:text-white`}
             onClick={() => {
               sortAndFilterNotMyQuotes();
             }}
@@ -29,13 +29,12 @@ const Btns = () => {
             <SearchIcon size={20} />
           </Button>
         </HoverCardTrigger>
-        <HoverCardContent className="w-auto px-3 py-2 text-center text-sm">
+        <HoverCardContent className="w-auto px-3 py-2 text-center">
           Sort & Filter
         </HoverCardContent>
       </HoverCard>
-
       <Button
-        className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
+        className={`hover:opacity-70 cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500 dark:bg-slate-900 dark:text-white`}
         onClick={() => {
           getQuotesNotMine();
           resetSortFilterByForNotMineInputs();

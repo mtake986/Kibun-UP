@@ -15,18 +15,11 @@ type Props = {
 const EventCard = ({ event, type }: Props) => {
   return (
     <div
-      className="relative bg-violet-50 p-6 sm:rounded-lg sm:p-12"
-      // style={{
-      //   color: "white",
-      //   background:
-      //     "linear-gradient(109.6deg, rgb(123, 90, 224) 10%, rgb(164, 46, 253) 30%, rgb(213, 56, 234) 60%, rgb(251, 138, 52) 100%)",
-      // }}
+      className="dark:bg-slate-900 relative bg-violet-50 p-6 sm:rounded-lg sm:p-12"
     >
       <DescriptionToggleBtn event={event} />
       <LeftDays event={event} />
-
       <HeadingFour text={event.eventTitle} />
-
       {/* </Suspense> */}
       <div className="mt-5 flex justify-between text-right text-xs">
         <OccuringDate event={event} />

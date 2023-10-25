@@ -1,7 +1,6 @@
 "use client";
 import { auth } from "@/config/Firebase";
 import Data from "@/components/profile/data/Data";
-import Loading from "@/components/utils/Loading";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
@@ -46,7 +45,7 @@ const LoginUserProfile = () => {
     }
   }, [user]);
 
-  if (!loginUser) return <Loading />;
+  if (!loginUser) return <div>Loading...</div>;
 
   if (isError) return <div>Something wrong here</div>;
 

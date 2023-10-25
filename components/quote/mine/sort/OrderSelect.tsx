@@ -19,7 +19,7 @@ const OrderSelect = () => {
       value={sortFilterByForMine.order}
       defaultValue={sortFilterByForMine.order}
     >
-      <SelectTrigger className="w-full text-xs sm:w-[120px]">
+      <SelectTrigger>
         <SelectValue placeholder="Ex.) Order" />
       </SelectTrigger>
       <SelectContent>

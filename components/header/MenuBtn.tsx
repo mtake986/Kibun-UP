@@ -11,40 +11,54 @@ import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
 import { Button } from "../ui/button";
 import { AiOutlineContacts } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 type Anchor = "right";
 
 export default function MenuBtn() {
   const [user] = useAuthState(auth);
+  const pathname = usePathname();
 
   const headerListItems = [
     {
       href: "/",
-      className: "flex items-center gap-5",
+      className: `flex items-center gap-5 ${
+        pathname === "/home" &&
+        "font-semibold underline underline-offset-2"
+      }`,
       target: "_self",
       clickOn: HomeListItem,
     },
     {
       href: "/quote",
-      className: "flex items-center gap-5",
+      className: `flex items-center gap-5 ${
+        pathname === "/quote" && "font-semibold underline underline-offset-2"
+      }`,
       target: "_self",
       clickOn: QuoteListItem,
     },
     {
       href: "/event",
-      className: "flex items-center gap-5",
+      className: `flex items-center gap-5 ${
+        pathname === "/event" && "font-semibold underline underline-offset-2"
+      }`,
       target: "_self",
       clickOn: EventListItem,
     },
     {
       href: `/user/profile/${user?.uid}`,
-      className: "flex items-center gap-5",
+      className: `flex items-center gap-5 ${
+        pathname === "/profile" &&
+        "font-semibold underline underline-offset-2"
+      }`,
       target: "_self",
       clickOn: ProfileListItem,
     },
     {
       href: `/contact`,
-      className: "flex items-center gap-5",
+      className: `flex items-center gap-5 ${
+        pathname === "/contact" && "font-semibold underline underline-offset-2"
+      }`,
       target: "_self",
       clickOn: ContactListItem,
     },
@@ -64,7 +78,6 @@ export default function MenuBtn() {
       ) {
         return;
       }
-
       setState({ ...state, [anchor]: open });
     };
 
@@ -75,12 +88,12 @@ export default function MenuBtn() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="flex flex-col justify-between gap-2 p-5">
+      <div className="flex min-h-screen flex-col justify-start gap-2 p-5 dark:bg-slate-900">
         {/* <div className="flex flex-col gap-3"> */}
         {headerListItems.map((item, i) => (
           <Button
             key={i}
-            className="flex items-center justify-start bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50"
+            className="flex items-center justify-center bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50 dark:bg-slate-900 dark:text-white"
           >
             <UrlLink
               href={item.href}

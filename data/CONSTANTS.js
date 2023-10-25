@@ -32,7 +32,7 @@ export const hamburgerMenus = [
   { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];
 
-export const tagColors = ["white", "red", "green", "blue", "violet", "gray"];
+export const tagColors = ["white", "red", "green", "blue", "violet"];
 
 export const mySnsInfo = [
   {
@@ -60,3 +60,8 @@ export const mySnsInfo = [
 
 export const DEFAULT_URL_FOR_QUOTE =
   " https://api.quotable.io/quotes/random";
+
+export const VALIDATION_STATUS = {
+  FAIL : "fail",
+  PASS : "pass",
+}

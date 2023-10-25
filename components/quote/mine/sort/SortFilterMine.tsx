@@ -7,9 +7,9 @@ import OnlySortBtn from "./OnlySortBtn";
 
 const SortFilterMine = () => {
   return (
-    <>
+    <div>
     {/* mobile */}
-      <div className="my-2 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
+      <div className="mb-3 flex flex-col items-center gap-2 sm:hidden sm:flex-row">
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
@@ -21,7 +21,7 @@ const SortFilterMine = () => {
         </div>
       </div>
       {/* Tablet */}
-      <div className="my-2 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
+      <div className="mb-3 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
@@ -31,7 +31,7 @@ const SortFilterMine = () => {
         <SearchBar />
         <Btns />
       </div>
-    </>
+    </div>
   );
 };
 

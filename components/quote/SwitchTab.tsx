@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
-import Loading from "../utils/Loading";
 import List from "./mine/List";
 
 const SwitchTab = () => {
@@ -32,16 +31,16 @@ const SwitchTab = () => {
   }, [user]);
 
   if (loading) {
-    return <Loading />;
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <div className="mb-1 flex items-stretch">
+      <div className="mb-3 flex items-stretch">
         <span
           className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             whichList === "yours"
-              ? "rounded-2xl bg-violet-50 text-violet-500"
+              ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
               : ""
           }`}
           onClick={() => handleWhichList("yours")}
@@ -51,7 +50,7 @@ const SwitchTab = () => {
         <span
           className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             whichList === "all"
-              ? "rounded-2xl bg-violet-50 text-violet-500"
+              ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
               : ""
           }`}
           onClick={() => handleWhichList("all")}

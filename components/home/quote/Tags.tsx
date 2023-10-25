@@ -14,7 +14,7 @@ const Tags = ({ quote }: Props) => {
         <Badge
           key={i}
           className={`whitespace-nowrap font-light hover:opacity-70 ${changeTagColor(
-            "gray"
+            tag.color
           )}`}
         >
           #{tag.name}

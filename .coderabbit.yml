@@ -1,0 +1,16 @@
+settings:
+  enable_draft_pr_reviews: true
+  additional_branches_to_be_reviewed:
+    - "master"
+    - "yaml/test"
+  disable_high_level_summary: false
+  path_based_instructions:
+    - path: "**.*.go"
+      instructions: ""
+    - path: "**.js"
+      instructions: "Use google style guide for javascript. Quote spefically what does not match as per the style guide "
+  ignored_pr_titles: "WIP"
+  review_language: "ja"
+  disable_review_status: false
+  collapse_walkthrough_comment: true
+  disable_review: false

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,12 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
 import { useEffect, useState } from "react";
-import Loading from "../utils/Loading";
 import HeadingTwo from "../utils/HeadingTwo";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
@@ -76,7 +73,7 @@ export default function ContactForm() {
       } catch (error) {
         // 送信失敗したらalertで表示
         displayToast({
-          text: "ERROR: Failed to send email.",
+          text: "ERROR: Failed to send email. Please try again. " + error,
           color: "red",
         });
         setLoading(false);
@@ -94,7 +91,7 @@ export default function ContactForm() {
     <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
       <HeadingTwo text="Contact Form" />
       {loading ? (
-        <Loading />
+        <div>Loading...</div>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -180,7 +177,7 @@ export default function ContactForm() {
       <p className="sm:text-md mt-5 text-center text-xs">
         Or, you can{" "}
         <UrlLink
-          className="text-sky-500 hover:underline"
+          className="text-sky-500 underline-offset-2 hover:underline"
           target="_blank"
           href="https://github.com/mtake986/Kibun-UP/issues"
           clickOn="create an issue"

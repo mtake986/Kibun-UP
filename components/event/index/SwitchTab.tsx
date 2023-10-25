@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEvent } from "@/context/EventContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import List from "../list/Mine/List";
-import Loading from "@/components/utils/Loading";
-
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
@@ -25,7 +22,7 @@ const SwitchTab = () => {
     setLoading(false);
   }, [user]);
 
-  if (loading) return <Loading />;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>

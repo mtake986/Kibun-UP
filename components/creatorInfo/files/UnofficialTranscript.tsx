@@ -7,7 +7,7 @@ const UnofficialTranscript = () => {
       href="/files/unofficial_transcript.pdf"
       target="_blank"
       clickOn="Unofficial Transcript (成績証明書)"
-      className="text-xs text-sky-500 hover:underline sm:text-sm"
+      className="text-xs text-sky-500 underline-offset-2 hover:underline sm:text-sm"
     />
   );
 };

@@ -17,7 +17,11 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const { sortFilterAreaForMineShown } = useQuote();
+  const {
+    sortFilterAreaForMineShown,
+    sortFilterByForMine,
+    sortAndFilterMyQuotes,
+  } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
 

@@ -9,13 +9,13 @@ import {
 import { useQuote } from "@/context/QuoteContext";
 
 const OnlySortBtn = () => {
-  const {onlySortMyQuotes} = useQuote();
+  const { onlySortMyQuotes } = useQuote();
 
   return (
     <HoverCard>
       <HoverCardTrigger>
         <Button
-          className={`cursor-pointer bg-green-50 text-green-500 hover:bg-green-100 hover:text-green-500`}
+          className={`cursor-pointer bg-green-50 text-green-500 hover:bg-green-100 hover:text-green-500 hover:opacity-70 dark:bg-slate-900 dark:text-white`}
           onClick={() => {
             onlySortMyQuotes();
           }}

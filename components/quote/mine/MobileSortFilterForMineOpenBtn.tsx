@@ -9,9 +9,6 @@ export default function MobileSortFilterForMineOpenBtn() {
 
   return (
     <div className="absolute right-0 top-0 cursor-pointer">
-      {/* <span className="absolute -top-2.5 left-[50%] -translate-x-1/2 text-[8px]">
-        Mine
-      </span> */}
       <Filter
         className={`text-gray-400`}
         size={20}

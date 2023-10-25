@@ -16,7 +16,7 @@ const QuoteCard = ({ quote, type, refetch, isPending, loginUser }: Props) => {
     <div className="mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
       <QuoteContent quote={quote} />
       <AuthorText quote={quote} />
-      <div className="mt-3 flex items-start justify-between">
+      <div className="mt-5 flex items-start justify-between">
         <Tags quote={quote} />
         <Icons
           quote={quote}

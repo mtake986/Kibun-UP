@@ -15,7 +15,7 @@ const QuoteCard = ({ q }: Props) => {
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
 
   return (
-    <div className="mb-3 rounded-sm border p-4 sm:p-6">
+    <div className="mb-3 rounded-sm border p-4 sm:p-6 dark:border-none dark:bg-slate-900">
       {isUpdateMode ? (
         <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
       ) : (
