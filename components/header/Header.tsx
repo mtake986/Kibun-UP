@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { linkHoverEffect } from "@/data/CONSTANTS";
 
+// const linkHoverEffect = "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100 dark:after:bg-white"
 export default function Header() {
   const { fetchLoginUser, signInWithGoogle } = useAuth();
   const pathname = usePathname();
