@@ -1,12 +1,8 @@
-import { TypeEvent, TypeQuote } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
 import IconLock from "./IconLock";
-import IconLike from "./IconLike";
-import IconBookmark from "./IconBookmark";
 import IconTrash from "./IconTrash";
-import { useEvent } from "@/context/EventContext";
-import { Edit, Target, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { auth } from "@/config/Firebase";
 

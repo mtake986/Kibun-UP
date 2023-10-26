@@ -1,11 +1,3 @@
-import { Badge } from "@/components/ui/badge";
-import { changeTagColor } from "@/functions/functions";
-import {
-  BsChatLeftText,
-  BsFillPersonFill,
-  BsToggle2Off,
-  BsToggle2On,
-} from "react-icons/bs";
 import { TypeEvent } from "@/types/type";
 import HeadingThree from "@/components/utils/HeadingThree";
 import { MdPlace } from "react-icons/md";

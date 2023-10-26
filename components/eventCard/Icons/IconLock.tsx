@@ -1,9 +1,7 @@
 import { useEvent } from "@/context/EventContext";
-import { displayToast } from "@/functions/displayToast";
-import { TypeEvent, TypeLoginUser } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
 import React from "react";
-import { BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
   event: TypeEvent;
