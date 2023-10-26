@@ -1,9 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useEffect } from "react";
 import SwitchTab from "./SwitchTab";
-import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import { auth } from "@/config/Firebase";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";

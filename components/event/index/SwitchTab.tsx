@@ -16,25 +16,29 @@ const SwitchTab = () => {
     eventsNotMine,
     getEventsNotMine,
   } = useEvent();
+
   useEffect(() => {
     setIsLoading(true);
-    const fetchDocs = () => {
-      setIsLoading(true);
-      getLoginUserEvents();
-      getEventsNotMine();
-      setIsLoading(false);
-    }
-    try {
-      fetchDocs();
-    } catch (error) {
-      displayErrorToast(error);
-    }
-    setIsLoading(false);
+    const fetchDocs = async () => {
+      try {
+        await getLoginUserEvents();
+        await getEventsNotMine();
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDocs();
   }, [user]);
 
   return (
     <>
-      {loginUserEvents.length >= 1 ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
+      {loginUserEvents.length >= 1 ? (
+        <List events={loginUserEvents} />
+      ) : (
+        <GoogleLoginBtn />
+      )}
     </>
   );
 };

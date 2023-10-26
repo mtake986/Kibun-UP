@@ -1,4 +1,5 @@
 import { useEvent } from "@/context/EventContext";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
 import React, { useState } from "react";
@@ -34,6 +35,7 @@ const IconLock = ({ event }: Props) => {
               await unlockThisEvent();
             } catch (error) {
               console.error(error);
+              displayErrorToast(error);
             }
             setIsLoading(false);
           }}
@@ -48,6 +50,7 @@ const IconLock = ({ event }: Props) => {
               await lockThisEvent(event);
             } catch (error) {
               console.error(error);
+              displayErrorToast(error);
             }
             setIsLoading(false);
           }}
