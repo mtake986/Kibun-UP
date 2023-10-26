@@ -34,22 +34,7 @@ const SwitchTab = () => {
 
   return (
     <>
-      {/* <Tabs defaultValue="yours" className="w-full">
-        <TabsList className="flex items-stretch">
-          <TabsTrigger value="yours" className="w-full text-center">
-            Yours
-          </TabsTrigger>
-          <TabsTrigger value="All" className="w-full text-center">
-            All
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="yours"> */}
       {loginUserEvents.length >= 1 ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
-      {/* </TabsContent>
-        <TabsContent value="All">
-          <ListNotMine eventsNotMine={eventsNotMine} />
-        </TabsContent>
-      </Tabs> */}
     </>
   );
 };
