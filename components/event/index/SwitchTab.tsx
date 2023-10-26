@@ -34,7 +34,7 @@ const SwitchTab = () => {
 
   return (
     <>
-      {loginUserEvents.length >= 1 ? (
+      {user ? (
         <List events={loginUserEvents} />
       ) : (
         <GoogleLoginBtn />
