@@ -5,6 +5,7 @@ import IconLock from "./IconLock";
 import IconTrash from "./IconTrash";
 import { useEffect } from "react";
 import { auth } from "@/config/Firebase";
+import { displayErrorToast, displayToast } from "@/functions/displayToast";
 
 type Props = {
   event: TypeEvent;
@@ -20,7 +21,8 @@ const Icons = ({ event, setIsUpdateMode, isUpdateMode }: Props) => {
   }, []);
 
   if (!loginUser) {
-    return null; // or return some default UI
+    displayToast({text: 'No Login User', color: 'red'});
+    return null // or return some default UI
   }
 
   return (

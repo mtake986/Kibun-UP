@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -15,14 +15,15 @@ export const metadata = {
 };
 
 const Event = () => {
-  const {loginUser, fetchLoginUser} = useAuth();
-  const {isRegisterFormOpen} = useEvent();
+  const { loginUser, fetchLoginUser } = useAuth();
+  const { isRegisterFormOpen } = useEvent();
 
   useEffect(() => {
-    fetchLoginUser(auth.currentUser);
-  }, [])
-
-  // if (!loginUser) return <GoogleLoginBtn />;
+    const fetchUser = async () => {
+      await fetchLoginUser(auth.currentUser);
+    };
+    fetchUser();
+  }, [auth.currentUser]);
 
   return (
     <div className="px-5 py-10 sm:mb-32 sm:p-0">

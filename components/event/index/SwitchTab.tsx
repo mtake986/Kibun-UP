@@ -4,11 +4,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import List from "../mine/List";
+import { displayErrorToast } from "@/functions/displayToast";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     loginUserEvents,
     getLoginUserEvents,
@@ -16,13 +17,20 @@ const SwitchTab = () => {
     getEventsNotMine,
   } = useEvent();
   useEffect(() => {
-    setLoading(true);
-    getLoginUserEvents();
-    getEventsNotMine();
-    setLoading(false);
+    setIsLoading(true);
+    const fetchDocs = () => {
+      setIsLoading(true);
+      getLoginUserEvents();
+      getEventsNotMine();
+      setIsLoading(false);
+    }
+    try {
+      fetchDocs();
+    } catch (error) {
+      displayErrorToast(error);
+    }
+    setIsLoading(false);
   }, [user]);
-
-  if (loading) return <div>Loading...</div>;
 
   return (
     <>
@@ -36,7 +44,7 @@ const SwitchTab = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="yours"> */}
-      {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
+      {loginUserEvents.length >= 1 ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
       {/* </TabsContent>
         <TabsContent value="All">
           <ListNotMine eventsNotMine={eventsNotMine} />
