@@ -1,4 +1,4 @@
-import { TypeQuote } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";
@@ -6,23 +6,27 @@ import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
 
 type Props = {
-  q: TypeQuote;
+  event: TypeEvent;
 };
 
-const QuoteCard = ({ q }: Props) => {
+const EventCard = ({ event }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
 
   return (
-    <div className="mb-3 rounded-sm border p-4 sm:p-6">
+    <div className="mb-3 rounded-sm border px-4 py-6 dark:border-white sm:p-6">
       {isUpdateMode ? (
-        <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
+        <EditModeOn
+          event={event}
+          setIsUpdateMode={setIsUpdateMode}
+          setIsLoading={setIsLoading}
+        />
       ) : (
-        <Content q={q} />
+        <Content event={event} />
       )}
       <Icons
-        q={q}
+        event={event}
         setIsUpdateMode={setIsUpdateMode}
         isUpdateMode={isUpdateMode}
       />
@@ -30,4 +34,4 @@ const QuoteCard = ({ q }: Props) => {
   );
 };
 
-export default QuoteCard;
+export default EventCard;

@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 
-export interface IEvent {
+export interface TypeEvent {
   id: string;
   eventTitle: string;
   place?: string;
@@ -24,7 +24,7 @@ export type TypeQuote = {
   updatedAt?: Date;
 };
 
-export interface IEventInputValues {
+export interface TypeEventInputValues {
   eventTitle: string;
   place?: string;
   description?: string;
@@ -94,5 +94,5 @@ export type TypeTagErrors = {
 
 export type profileTabs = {
   name: "quotes" | "bookmarks" | "likes" | "events";
-  length: number
-}
+  length: number;
+};

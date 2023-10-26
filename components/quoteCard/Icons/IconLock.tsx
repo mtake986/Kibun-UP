@@ -20,7 +20,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           onClick={() => {
             removeLockFromThisQuote(loginUser?.uid);
           }}
-          className="cursor-pointer text-red-500 duration-300 hover:opacity-50"
+          className="cursor-pointer text-red-500 duration-300 hover:opacity-70"
         />
       ) : (
         <BiLockOpen
@@ -35,7 +35,7 @@ const IconLock = ({ q, loginUser }: Props) => {
               lockThisQuote(loginUser?.uid, q);
             }
           }}
-          className="cursor-pointer hover:opacity-50"
+          className="cursor-pointer hover:opacity-70"
         />
       )}
     </span>

@@ -10,13 +10,23 @@ import { useEffect } from "react";
 import { fontRoboto } from "../utils/fonts";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { linkHoverEffect } from "@/data/CONSTANTS";
 
 export default function Header() {
-  const { fetchLoginUser, signInWithGoogle } = useAuth();
+  const { fetchLoginUser } = useAuth();
   const pathname = usePathname();
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
   }, []);
+
+  function getLinkStyle(link: string) {
+    return `text-violet-500 dark:text-white ${
+      pathname === link
+        ? "font-bold underline underline-offset-2"
+        : linkHoverEffect
+    }`;
+  }
+
 
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-900 dark:text-white">
@@ -33,27 +43,18 @@ export default function Header() {
           <UrlLink
             href="/quote"
             target="_self"
-            className={`text-violet-500 dark:text-white ${
-              pathname === "/quote" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
-            }`}
+            className={getLinkStyle("/quote")}
             clickOn="Quote"
           />
           <UrlLink
             href="/event"
-            className={`text-violet-500 dark:text-white ${
-              pathname === "/event" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
-            }`}
+            className={getLinkStyle("/event")}
             target="_self"
             clickOn="Event"
           />
           <UrlLink
             href="/contact"
-            className={`text-violet-500 dark:text-white ${
-              pathname === "/contact" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
-            }`}
+            className={getLinkStyle('/contact')}
             target="_self"
             clickOn="Contact"
           />

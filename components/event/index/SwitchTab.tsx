@@ -3,45 +3,42 @@ import { useEvent } from "@/context/EventContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import List from "../list/Mine/List";
+import List from "../mine/List";
+import { displayErrorToast } from "@/functions/displayToast";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     loginUserEvents,
     getLoginUserEvents,
     eventsNotMine,
     getEventsNotMine,
   } = useEvent();
-  useEffect(() => {
-    setLoading(true);
-    getLoginUserEvents();
-    getEventsNotMine();
-    setLoading(false);
-  }, [user]);
 
-  if (loading) return <div>Loading...</div>;
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchDocs = async () => {
+      try {
+        await getLoginUserEvents();
+        await getEventsNotMine();
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDocs();
+  }, [user]);
 
   return (
     <>
-      {/* <Tabs defaultValue="yours" className="w-full">
-        <TabsList className="flex items-stretch">
-          <TabsTrigger value="yours" className="w-full text-center">
-            Yours
-          </TabsTrigger>
-          <TabsTrigger value="All" className="w-full text-center">
-            All
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="yours"> */}
-      {user ? <List events={loginUserEvents} /> : <GoogleLoginBtn />}
-      {/* </TabsContent>
-        <TabsContent value="All">
-          <ListNotMine eventsNotMine={eventsNotMine} />
-        </TabsContent>
-      </Tabs> */}
+      {user ? (
+        <List events={loginUserEvents} />
+      ) : (
+        <GoogleLoginBtn />
+      )}
     </>
   );
 };

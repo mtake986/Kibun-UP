@@ -9,21 +9,25 @@ import IconTrash from "./IconTrash";
 type Props = {
   q: TypeQuote;
   setIsUpdateMode?: (boo: boolean) => void;
+  isUpdateMode: boolean;
 };
 
-const Icons = ({ q, setIsUpdateMode }: Props) => {
+const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
   const { loginUser } = useAuth();
 
   if (!loginUser) {
     return null; // or return some default UI
   }
 
-  const mine = q.userInfo !== 'api' && loginUser.uid === q.userInfo.uid;
+  const mine = q.userInfo !== "api" && loginUser.uid === q.userInfo.uid;
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">
         {mine && setIsUpdateMode ? (
-          <IconEdit setIsUpdateMode={setIsUpdateMode} />
+          <IconEdit
+            setIsUpdateMode={setIsUpdateMode}
+            isUpdateMode={isUpdateMode}
+          />
         ) : null}
         <IconLock q={q} loginUser={loginUser} />
         <IconLike q={q} loginUser={loginUser} />

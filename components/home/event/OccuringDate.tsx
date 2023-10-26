@@ -1,8 +1,8 @@
 import { fontMerriweather } from "@/components/utils/fonts";
-import { IEvent } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 
 type Props = {
-  event: IEvent;
+  event: TypeEvent;
 };
 const OccuringDate = ({ event }: Props) => {
   return (

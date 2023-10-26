@@ -14,7 +14,7 @@ const UrlLink = (props: Props) => {
     <Link
       href={props.href}
       target={props.target}
-      className={`${props.className}`}
+      className={`${props.className} cursor-pointer`}
     >
       {props.clickOn}
     </Link>

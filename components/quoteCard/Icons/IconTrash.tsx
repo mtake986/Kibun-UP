@@ -25,7 +25,7 @@ const IconTrash = ({ q }: Props) => {
           displayErrorToast(e);
         }
       }}
-      className="cursor-pointer duration-300 hover:opacity-50"
+      className="cursor-pointer duration-300 hover:opacity-70"
     />
   );
 };

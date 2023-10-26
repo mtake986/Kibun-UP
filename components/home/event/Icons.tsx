@@ -1,11 +1,11 @@
 import { useEvent } from "@/context/EventContext";
-import { IEvent } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
 import React, { useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 
 type Props = {
-  event: IEvent;
+  event: TypeEvent;
   type: "random" | "locked";
 };
 const Icons = ({ event, type }: Props) => {
