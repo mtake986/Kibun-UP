@@ -3,7 +3,7 @@ import { useEvent } from "@/context/EventContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import List from "../list/Mine/List";
+import List from "../mine/List";
 
 const SwitchTab = () => {
   const [user] = useAuthState(auth);

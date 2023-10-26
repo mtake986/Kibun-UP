@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 // import EditModeOn from "./EditModeOn";
 import { MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
-import { IEvent, IEventInputValues } from "@/types/type";
+import { TypeEvent, TypeEventInputValues } from "@/types/type";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 import EditModeOn from "./EditModeOn";
 import { useEvent } from "@/context/EventContext";
@@ -25,7 +25,7 @@ import HeadingThree from "@/components/utils/HeadingThree";
 import HeadingFour from "@/components/utils/HeadingFour";
 
 type Props = {
-  event: IEvent;
+  event: TypeEvent;
 };
 const QuoteCard = ({ event }: Props) => {
   const [detailsOpen, setDetailsOpen] = useState(false);

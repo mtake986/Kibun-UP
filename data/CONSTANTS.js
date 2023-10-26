@@ -57,11 +57,12 @@ export const mySnsInfo = [
   },
 ];
 
-
-export const DEFAULT_URL_FOR_QUOTE =
-  " https://api.quotable.io/quotes/random";
+export const DEFAULT_URL_FOR_QUOTE = " https://api.quotable.io/quotes/random";
 
 export const VALIDATION_STATUS = {
-  FAIL : "fail",
-  PASS : "pass",
-}
+  FAIL: "fail",
+  PASS: "pass",
+};
+
+export const linkHoverEffect =
+  "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100";

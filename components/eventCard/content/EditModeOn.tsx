@@ -28,15 +28,12 @@ import { CalendarIcon, Plane, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IEvent } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { useEvent } from "@/context/EventContext";
-import { MdOutlineCancel } from "react-icons/md";
-import { useState } from "react";
 
 type Props = {
-  event: IEvent;
+  event: TypeEvent;
   setIsUpdateMode: (boo: boolean) => void;
   setIsLoading: (boo: boolean) => void;
 };
@@ -80,12 +77,12 @@ export default function EditModeOn({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex flex-col gap-8 sm:flex-row">
+        <div className="flex flex-col sm:flex-row sm:gap-8">
           <FormField
             control={form.control}
             name="eventTitle"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="mb-2 w-full sm:mb-0">
                 <FormLabel>
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
@@ -128,7 +125,7 @@ export default function EditModeOn({
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        "w-[240px] border-none bg-slate-50 pl-3 text-left font-normal dark:border-none dark:bg-slate-900",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -148,6 +145,7 @@ export default function EditModeOn({
                     onSelect={field.onChange}
                     disabled={(date) => date < new Date()}
                     initialFocus
+                    className="bg-slate-50 dark:border-none dark:bg-slate-900"
                   />
                 </PopoverContent>
               </Popover>
@@ -172,33 +170,20 @@ export default function EditModeOn({
             </FormItem>
           )}
         />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <Button
-              onClick={() => setIsUpdateMode(false)}
-              className={` flex items-center gap-2 duration-300  hover:bg-slate-50 hover:text-slate-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button
-              type="submit"
-              className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
-              variant="ghost"
-            >
-              <span>Save</span>
-            </Button>
-          </div>
+        <div className="flex items-center gap-3">
           <Button
-            onClick={() => {
-              setIsUpdateMode(false);
-              handleDelete(event.id);
-            }}
-            className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+            type="submit"
+            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-violet-700 dark:text-white`}
             variant="ghost"
           >
-            <Trash size={14} />
-            {/* <span>Delete</span> */}
+            Save
+          </Button>
+          <Button
+            onClick={() => setIsUpdateMode(false)}
+            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-red-900 dark:text-white`}
+            variant="ghost"
+          >
+            Cancel
           </Button>
         </div>
       </form>

@@ -29,7 +29,7 @@ const IconBookmark = ({ q, loginUser }: Props) => {
           displayErrorToast(e);
         }
       }, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, q])}
-      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >
       {isBookmarked ? (
         <BsBookmarkFill size={12} className="text-green-500" />

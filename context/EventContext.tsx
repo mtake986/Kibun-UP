@@ -19,37 +19,37 @@ import {
 type EventProviderProps = {
   children: ReactNode;
 };
-import { IEvent, IEventInputValues, IUserInfo } from "@/types/type";
+import { TypeEvent, TypeEventInputValues, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "@/functions/functions";
 import { displaySuccessToast } from "@/functions/displayToast";
 
 type EventContextType = {
   handleUpdate: (
-    values: IEventInputValues,
+    values: TypeEventInputValues,
     eid: string,
     setIsLoading: (boo: boolean) => void
   ) => void;
   handleDelete: (id: string) => void;
 
   getLoginUserEvents: () => void;
-  loginUserEvents: IEvent[] | [];
+  loginUserEvents: TypeEvent[] | [];
 
-  lockThisEvent: (data: IEvent) => void;
+  lockThisEvent: (data: TypeEvent) => void;
   unlockThisEvent: () => void;
   getLockedEvent: () => void;
 
-  lockedEvent: IEvent | undefined;
+  lockedEvent: TypeEvent | undefined;
 
-  randomEvent: IEvent | undefined;
+  randomEvent: TypeEvent | undefined;
   getRandomEvent: () => void;
 
-  eventsNotMine: IEvent[] | [];
+  eventsNotMine: TypeEvent[] | [];
   getEventsNotMine: () => void;
-  setRandomEvent: (event: IEvent | undefined) => void;
-  setLockedEvent: (event: IEvent | undefined) => void;
+  setRandomEvent: (event: TypeEvent | undefined) => void;
+  setLockedEvent: (event: TypeEvent | undefined) => void;
 
-  registerEvent: (values: IEventInputValues, userInfo: IUserInfo) => void;
+  registerEvent: (values: TypeEventInputValues, userInfo: IUserInfo) => void;
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
@@ -62,19 +62,19 @@ export function useEvent() {
 }
 
 export function EventProvider({ children }: EventProviderProps) {
-  const [loginUserEvents, setLoginUserEvents] = useState<IEvent[]>([]);
+  const [loginUserEvents, setLoginUserEvents] = useState<TypeEvent[]>([]);
 
-  const [lockedEvent, setLockedEvent] = useState<IEvent>();
-  const [randomEvent, setRandomEvent] = useState<IEvent>();
+  const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
+  const [randomEvent, setRandomEvent] = useState<TypeEvent>();
 
-  const [eventsNotMine, setEventsNotMine] = useState<IEvent[]>([]);
+  const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
 
   const eventCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
 
   const registerEvent = async (
-    values: IEventInputValues,
+    values: TypeEventInputValues,
     userInfo: IUserInfo
   ) => {
     await addDoc(eventCollectionRef, {
@@ -89,11 +89,12 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const handleUpdate = async (
-    values: IEventInputValues,
+    values: TypeEventInputValues,
     eid: string,
     setIsLoading: (boo: boolean) => void
   ) => {
     setIsLoading(true);
+    console.log(values)
     const docRef = doc(db, "events", eid);
     await updateDoc(docRef, {
       ...values,
@@ -129,7 +130,9 @@ export function EventProvider({ children }: EventProviderProps) {
       );
       onSnapshot(q, (snapshot) => {
         setLoginUserEvents(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+          snapshot.docs.map(
+            (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
+          )
         );
       });
     }
@@ -147,13 +150,13 @@ export function EventProvider({ children }: EventProviderProps) {
     //   );
     //   onSnapshot(q, (snapshot) => {
     //     setLoginUserEvents(
-    //       snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+    //       snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
     //     );
     //   });
     // }
   };
 
-  const lockThisEvent = async (data: IEvent) => {
+  const lockThisEvent = async (data: TypeEvent) => {
     user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
     setLockedEvent(data);
   };
@@ -170,7 +173,7 @@ export function EventProvider({ children }: EventProviderProps) {
         where("userInfo.uid", "==", user?.uid)
       );
       onSnapshot(q, (snapshot) => {
-        setLockedEvent(snapshot.docs[0]?.data() as IEvent);
+        setLockedEvent(snapshot.docs[0]?.data() as TypeEvent);
       });
     }
   };
@@ -184,7 +187,7 @@ export function EventProvider({ children }: EventProviderProps) {
       onSnapshot(q, (snapshot) => {
         const randomNum = getRandomNum(snapshot.docs.length);
         const doc = snapshot.docs[randomNum];
-        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as IEvent);
+        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as TypeEvent);
       });
     }
   };
@@ -197,7 +200,9 @@ export function EventProvider({ children }: EventProviderProps) {
       );
       onSnapshot(q, (snapshot) => {
         setEventsNotMine(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as IEvent))
+          snapshot.docs.map(
+            (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
+          )
         );
       });
     }

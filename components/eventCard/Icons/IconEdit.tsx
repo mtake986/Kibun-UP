@@ -1,6 +1,5 @@
 import { Edit } from "lucide-react";
-import React from 'react'
-
+import React from "react";
 
 type Props = {
   setIsUpdateMode: (boo: boolean) => void;
@@ -17,4 +16,4 @@ const IconEdit = ({ setIsUpdateMode, isUpdateMode }: Props) => {
   );
 };
 
-export default IconEdit
+export default IconEdit;

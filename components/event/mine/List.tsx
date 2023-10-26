@@ -2,28 +2,31 @@
 
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { IEvent } from "@/types/type";
-import CardNotMine from "./EventCard";
+import { TypeEvent } from "@/types/type";
 import { useState } from "react";
-import PaginationBtns from "@/components/utils/PaginationBtns";
-import NoFetchedData from "@/components/utils/NoFetchedData";
 import usePagination from "@/components/hooks/usePagination";
 
+import PaginationBtns from "@/components/utils/PaginationBtns";
+import NoFetchedData from "@/components/utils/NoFetchedData";
+import EventCard from "@/components/eventCard/EventCard";
+
 type Props = {
-  eventsNotMine: IEvent[];
+  events: TypeEvent[];
 };
 
-const List = ({ eventsNotMine }: Props) => {
+const List = ({ events }: Props) => {
+  const [user] = useAuthState(auth);
+
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = usePagination(currentPage, eventsNotMine);
+  const { nPages, currentRecords } = usePagination(currentPage, events);
 
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
         <>
           {currentRecords.map((doc, i) => (
-            <CardNotMine key={doc.id} event={doc} i={i} />
+            <EventCard key={doc.id} event={doc} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

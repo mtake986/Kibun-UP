@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { fontRoboto } from "../utils/fonts";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { linkHoverEffect } from "@/data/CONSTANTS";
 
 export default function Header() {
   const { fetchLoginUser, signInWithGoogle } = useAuth();
@@ -34,16 +35,18 @@ export default function Header() {
             href="/quote"
             target="_self"
             className={`text-violet-500 dark:text-white ${
-              pathname === "/quote" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
+              pathname === "/quote"
+                ? "font-bold underline underline-offset-2"
+                : linkHoverEffect
             }`}
             clickOn="Quote"
           />
           <UrlLink
             href="/event"
             className={`text-violet-500 dark:text-white ${
-              pathname === "/event" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
+              pathname === "/event"
+                ? "font-bold underline underline-offset-2"
+                : linkHoverEffect
             }`}
             target="_self"
             clickOn="Event"
@@ -51,8 +54,9 @@ export default function Header() {
           <UrlLink
             href="/contact"
             className={`text-violet-500 dark:text-white ${
-              pathname === "/contact" &&
-              "underline-offset-2-offset-2 font-semibold underline underline underline-offset-2"
+              pathname === "/contact"
+                ? "font-bold underline underline-offset-2"
+                : linkHoverEffect
             }`}
             target="_self"
             clickOn="Contact"

@@ -196,12 +196,13 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
           control={form.control}
           name="isDraft"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg p-4 dark:bg-slate-900 bg-slate-50">
               <FormLabel className="text-base">Draft</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="dark:bg-slate-300 text-red-600"
                 />
               </FormControl>
             </FormItem>
@@ -230,7 +231,11 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
                 value={inputTagColor}
                 disabled={inputTagName.length === 0}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger
+                  className={`${changeTagColor(
+                    inputTagColor
+                  )} ${inputTagColor ? 'border-none' : null} w-full`}
+                >
                   <SelectValue placeholder="Ex.) Color" />
                 </SelectTrigger>
                 <SelectContent>

@@ -4,10 +4,10 @@ import {
   fontRaleway,
 } from "@/components/utils/fonts";
 import { calculateLeftDays } from "@/functions/functions";
-import { IEvent } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 
 type Props = {
-  event: IEvent;
+  event: TypeEvent;
 };
 const LeftDays = ({ event }: Props) => {
   return (

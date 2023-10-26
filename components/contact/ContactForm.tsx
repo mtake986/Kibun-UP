@@ -105,9 +105,10 @@ export default function ContactForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ex.) Ex.) John Doe"
+                      placeholder="Ex.) John Doe"
                       {...field}
                       // defaultValue={field.value}
+                      className="border-none bg-slate-50 dark:border-none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -124,7 +125,11 @@ export default function ContactForm() {
                     Email <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex.) john.doe@gmail.com" {...field} />
+                    <Input
+                      placeholder="Ex.) john.doe@gmail.com"
+                      {...field}
+                      className="border-none bg-slate-50 dark:border-none"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,7 +145,11 @@ export default function ContactForm() {
                     Title <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex.) This is Awesome!!" {...field} />
+                    <Input
+                      placeholder="Ex.) This is Awesome!!"
+                      {...field}
+                      className="border-none bg-slate-50 dark:border-none"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -156,7 +165,11 @@ export default function ContactForm() {
                     Message <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Ex.) This is Awesome!!" {...field} />
+                    <Textarea
+                      className="border-none bg-slate-50 dark:border-none"
+                      placeholder="Ex.) This is Awesome!!"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,7 +178,7 @@ export default function ContactForm() {
 
             <div className="flex items-center gap-3">
               <Button
-                className="w-full bg-violet-100 text-violet-500 hover:bg-violet-100 hover:opacity-70"
+                className="w-full bg-violet-100 text-violet-500 duration-300 hover:bg-violet-100 dark:bg-violet-500 dark:text-white  dark:hover:bg-violet-600"
                 type="submit"
               >
                 Submit
