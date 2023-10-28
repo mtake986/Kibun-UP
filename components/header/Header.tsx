@@ -59,7 +59,7 @@ export default function Header() {
             clickOn="Contact"
           />
         </div>
-        <div className="hidden items-center justify-between sm:flex">
+        <div className="hidden items-center justify-between sm:flex gap-1">
           <ThemeSwitcher />
           <ProfilePic />
         </div>

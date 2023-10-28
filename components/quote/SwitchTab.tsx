@@ -37,26 +37,19 @@ const SwitchTab = () => {
   return (
     <div>
       <div className="mb-3 flex items-stretch">
-        <span
-          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
-            whichList === "yours"
-              ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
-              : ""
-          }`}
-          onClick={() => handleWhichList("yours")}
-        >
-          Mine
-        </span>
-        <span
-          className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
-            whichList === "all"
-              ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
-              : ""
-          }`}
-          onClick={() => handleWhichList("all")}
-        >
-          All
-        </span>
+        {tabs.map((tab) => (
+          <span
+            key={tab.name}
+            className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
+              whichList === tab.name
+                ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
+                : ""
+            }`}
+            onClick={() => handleWhichList(tab.name)}
+          >
+            {tab.label}
+          </span>
+        ))}
       </div>
 
       {whichList === "yours" ? (
@@ -71,5 +64,13 @@ const SwitchTab = () => {
     </div>
   );
 };
+
+const tabs: { name: "all" | "yours"; label: string }[] = [
+  {
+    name: "yours",
+    label: "Mine",
+  },
+  { name: "all", label: "All" },
+];
 
 export default SwitchTab;

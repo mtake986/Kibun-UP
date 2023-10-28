@@ -4,6 +4,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
@@ -11,16 +12,22 @@ type Props = {
 
 const QuoteCard = ({ q }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-
-  // if (q.userInfo.uid !== user?.uid && q.isDraft) return null;
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="mb-3 rounded-sm border p-4 sm:p-6">
-      {isUpdateMode ? (
-        <EditModeOn q={q} setIsUpdateMode={setIsUpdateMode} />
+    <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
+      {isLoading ? (
+        <LoadingSpinnerS />
+      ) : isUpdateMode ? (
+        <EditModeOn
+          q={q}
+          setIsUpdateMode={setIsUpdateMode}
+          setIsLoading={setIsLoading}
+        />
       ) : (
         <Content q={q} />
       )}
+
       <Icons
         q={q}
         setIsUpdateMode={setIsUpdateMode}

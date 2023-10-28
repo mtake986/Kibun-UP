@@ -24,7 +24,7 @@ const List = ({ events }: Props) => {
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
-        <>
+        <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <EventCard key={doc.id} event={doc} />
           ))}
@@ -35,7 +35,7 @@ const List = ({ events }: Props) => {
               setCurrentPage={setCurrentPage}
             />
           )}
-        </>
+        </div>
       ) : (
         <NoFetchedData text="No events found" />
       )}

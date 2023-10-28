@@ -1,14 +1,7 @@
 import React from "react";
-import { auth } from "@/config/Firebase";
 import Image from "next/image";
-import { useAuthState } from "react-firebase-hooks/auth";
-import defaultIcon from "@/public/defaultUserImage.png";
-import LogOutBtn from "./LogOutBtn";
-import { useAuth } from "@/context/AuthContext";
 import { TypeLoginUser } from "@/types/type";
-import { useQuote } from "@/context/QuoteContext";
-import { Quote } from "lucide-react";
-import { BsChatQuote } from "react-icons/bs";
+import LogOutBtn from "./LogOutBtn";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -24,11 +17,11 @@ const UserInfoCard = ({ loginUser }: Props) => {
         className="h-40 w-40 rounded-full object-cover object-center sm:h-48 sm:w-48"
       />
       <div className="flex flex-col items-center">
-        <p>
+        <p className="flex items-center gap-1">
           <span className="text-xs">Name: </span>
           <span className="font-semibold">{loginUser.displayName}</span>
         </p>
-        <p>
+        <p className="flex items-center gap-1">
           <span className="text-xs">Items/page: </span>
           <span className="font-semibold">
             {loginUser.settings.itemsPerPage}

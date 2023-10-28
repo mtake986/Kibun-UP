@@ -39,9 +39,11 @@ import TagErrors from "./TagErrors";
 type Props = {
   q: TypeQuote;
   setIsUpdateMode: (boo: boolean) => void;
+  setIsLoading: (boo: boolean) => void;
+
 };
 
-export default function EditModeOn({ q, setIsUpdateMode }: Props) {
+export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) {
   const [user] = useAuthState(auth);
   const { reset } = useForm();
   const [inputTagName, setInputTagName] = useState("");
@@ -144,7 +146,7 @@ export default function EditModeOn({ q, setIsUpdateMode }: Props) {
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     values.tags = inputTags;
-    handleUpdate(q.id, values, user?.uid);
+    handleUpdate(values, q.id, setIsLoading, user?.uid);
     setIsUpdateMode(false);
     reset({
       author: "",

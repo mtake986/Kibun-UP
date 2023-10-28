@@ -1,6 +1,8 @@
 import { useQuote } from "@/context/QuoteContext";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
+import { useCallback } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
@@ -74,40 +76,48 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
 
       <span
         onClick={() => {
-          if (isLiked) {
-            removeFav(loginUser.uid, quote);
-          } else {
-            storeFav(loginUser.uid, quote);
-          }
+          isLiked ? removeFav(loginUser.uid, quote) : storeFav(loginUser.uid, quote);
         }}
-        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
       >
         {isLiked ? (
-          <Heart size={14} className="text-red-500" fill={heartFill} />
+          <>
+            <Heart size={14} className="text-red-500" fill={heartFill} />
+            <span className={`text-red-500`}>{quote.likedBy.length}</span>
+          </>
         ) : (
-          <Heart size={14} className="text-red-500" />
+          <>
+            <Heart size={14} />
+            <span>{quote.likedBy.length}</span>
+          </>
         )}
-        <span className={`text-red-500`}>{quote.likedBy?.length}</span>
       </span>
 
       <span
-        onClick={() => {
-          isBookmarked
-            ? removeBookmark(loginUser.uid, quote)
-            : storeBookmark(loginUser.uid, quote);
-        }}
-        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-50`}
+        onClick={useCallback(() => {
+          try {
+            isBookmarked
+              ? removeBookmark(loginUser.uid, quote)
+              : storeBookmark(loginUser.uid, quote);
+          } catch (e) {
+            displayErrorToast(e);
+          }
+        }, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, quote])}
+        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
       >
         {isBookmarked ? (
-          <BsBookmarkFill
-            size={12}
-            className="text-green-500"
-            fill={bookmarkFill}
-          />
+          <>
+            <BsBookmarkFill size={12} className="text-green-500" />
+            <span className={`text-green-500`}>
+              {quote.bookmarkedBy.length}
+            </span>
+          </>
         ) : (
-          <BsBookmark size={12} className="text-green-500" />
+          <>
+            <BsBookmark size={12} />
+            <span>{quote.bookmarkedBy.length}</span>
+          </>
         )}
-        <span className={`text-green-500`}>{quote.bookmarkedBy?.length}</span>
       </span>
     </div>
   );
