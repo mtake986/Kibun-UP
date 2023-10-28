@@ -1,3 +1,4 @@
+import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import { useEvent } from "@/context/EventContext";
 import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
@@ -14,7 +15,7 @@ const Icons = ({ event, type }: Props) => {
   const { getRandomEvent, lockThisEvent, unlockThisEvent } = useEvent();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinnerS />;
   }
   return (
     <div className="flex items-center justify-end gap-3">

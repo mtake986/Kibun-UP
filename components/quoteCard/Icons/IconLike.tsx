@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
 
@@ -15,8 +16,14 @@ const IconLike = ({ q, loginUser }: Props) => {
 
   return (
     <span
-      onClick={() => {
-        isLiked ? removeFav(loginUser.uid, q) : storeFav(loginUser.uid, q);
+      onClick={async () => {
+            try {
+              isLiked
+                ? await removeFav(loginUser.uid, q)
+                : await storeFav(loginUser.uid, q);
+            } catch (error) {
+              displayErrorToast(error);
+            }
       }}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >

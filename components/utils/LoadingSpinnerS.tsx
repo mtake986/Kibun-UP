@@ -1,12 +1,7 @@
 import React from "react";
 
-type Props = {
-  scale: number;
-};
-const LoadingSpinner = ({ scale }: Props) => {
-  const scaleOfClassName = () => {
-    return `w-${scale} h-${scale}`;
-  };
+const LoadingSpinnerS = () => {
+
   return (
     <div className="flex items-center justify-center h-40">
       <div
@@ -20,4 +15,4 @@ const LoadingSpinner = ({ scale }: Props) => {
   );
 };
 
-export default LoadingSpinner;
+export default LoadingSpinnerS;

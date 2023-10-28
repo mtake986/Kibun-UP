@@ -4,7 +4,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
-import LoadingSpinner from "../utils/LoadingSpinner";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   event: TypeEvent;
@@ -17,7 +17,7 @@ const EventCard = ({ event }: Props) => {
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isLoading ? (
-        <LoadingSpinner scale={48} />
+        <LoadingSpinnerS />
       ) : isUpdateMode ? (
         <EditModeOn
           event={event}

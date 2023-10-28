@@ -35,10 +35,11 @@ const IconLock = ({ event }: Props) => {
             } catch (error) {
               console.error(error);
               displayErrorToast(error);
+            } finally {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 500);
             }
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 500);
           }}
           className="cursor-pointer text-red-500 duration-300 hover:opacity-70"
         />
@@ -52,10 +53,11 @@ const IconLock = ({ event }: Props) => {
             } catch (error) {
               console.error(error);
               displayErrorToast(error);
+            } finally {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 500);
             }
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 500);
           }}
           className="cursor-pointer hover:opacity-70"
         />

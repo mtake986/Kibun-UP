@@ -4,7 +4,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
-import LoadingSpinner from "../utils/LoadingSpinner";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
@@ -17,7 +17,7 @@ const QuoteCard = ({ q }: Props) => {
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isLoading ? (
-        <LoadingSpinner scale={48} />
+        <LoadingSpinnerS />
       ) : isUpdateMode ? (
         <EditModeOn
           q={q}
@@ -38,23 +38,3 @@ const QuoteCard = ({ q }: Props) => {
 };
 
 export default QuoteCard;
-
-    // <div className="rounded-sm border px-4 py-6 dark:border-white sm:p-6">
-    //   {isLoading ? (
-    //     <LoadingSpinner scale={48} />
-    //   ) : isUpdateMode ? (
-    //     <EditModeOn
-    //       event={event}
-    //       setIsUpdateMode={setIsUpdateMode}
-    //       setIsLoading={setIsLoading}
-    //     />
-    //   ) : (
-    //     <Content event={event} />
-    //   )}
-
-    //   <Icons
-    //     event={event}
-    //     setIsUpdateMode={setIsUpdateMode}
-    //     isUpdateMode={isUpdateMode}
-    //   />
-    // </div>;
