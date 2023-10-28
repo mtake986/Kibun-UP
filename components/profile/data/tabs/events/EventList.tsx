@@ -2,12 +2,12 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { app, auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import EventCard from "./EventCard";
 import { useEvent } from "@/context/EventContext";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
+import EventCard from "@/components/eventCard/EventCard";
 
 const EventList = () => {
   const [user] = useAuthState(auth);
@@ -24,9 +24,9 @@ const EventList = () => {
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
-        <>
+        <div className="flex flex-col gap-3">
           {currentRecords.map((doc) => (
-            <EventCard key={doc.id} event={doc} />
+            <EventCard event={doc} key={doc.id} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns
@@ -35,7 +35,7 @@ const EventList = () => {
               setCurrentPage={setCurrentPage}
             />
           )}
-        </>
+        </div>
       ) : (
         <NoFetchedData text="No events found" />
       )}

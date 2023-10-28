@@ -55,9 +55,10 @@ type QuoteContext = {
   isUpdateMode: boolean;
   toggleUpdateMode: (boo: boolean) => void;
   handleUpdate: (
-    qid: string,
     values: TypeQuoteInputValues,
-    uid?: string
+    qid: string,
+    setIsLoading: (boo: boolean) => void,
+    uid?: string,
   ) => void;
 
   quotesNotMine: TypeQuote[];
@@ -249,10 +250,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const handleUpdate = async (
-    qid: string,
     values: TypeQuoteInputValues,
-    uid?: string
+    qid: string,
+    setIsLoading: (boo: boolean) => void,
+    uid?: string,
   ) => {
+    setIsLoading(true);
     const docRef = doc(db, "quotes", qid);
     await updateDoc(docRef, {
       ...values,
@@ -264,6 +267,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           text: "Updated",
         });
       }
+      setTimeout(() => {
+        setIsLoading(false);
+        displaySuccessToast({
+          text: "Updated",
+        });
+      }, 500);
     });
   };
 
@@ -283,11 +292,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       });
     } else {
-      await setDoc(doc(db, 'quotes', q.id), {
+      await setDoc(doc(db, "quotes", q.id), {
         ...q,
         likedBy: [uid],
         createdAt: serverTimestamp(),
-      })
+      });
     }
   };
 
@@ -302,7 +311,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           e,
         });
       });
-    } 
+    }
   };
 
   const fetchAllQuotes = () => {
@@ -312,7 +321,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
       );
     });
-  }
+  };
 
   const storeBookmark = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);

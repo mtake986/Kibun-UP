@@ -32,11 +32,16 @@ const IconBookmark = ({ q, loginUser }: Props) => {
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >
       {isBookmarked ? (
-        <BsBookmarkFill size={12} className="text-green-500" />
+        <>
+          <BsBookmarkFill size={12} className="text-green-500" />
+          <span className={`text-green-500`}>{q.bookmarkedBy.length}</span>
+        </>
       ) : (
-        <BsBookmark size={12} className="text-green-500" />
+        <>
+          <BsBookmark size={12} />
+          <span>{q.bookmarkedBy.length}</span>
+        </>
       )}
-      <span className={`text-green-500`}>{q.bookmarkedBy.length}</span>
     </span>
   );
 };

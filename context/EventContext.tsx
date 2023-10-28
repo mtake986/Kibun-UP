@@ -22,7 +22,10 @@ type EventProviderProps = {
 import { TypeEvent, TypeEventInputValues, IUserInfo } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "@/functions/functions";
-import { displaySuccessToast } from "@/functions/displayToast";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+} from "@/functions/displayToast";
 
 type EventContextType = {
   handleUpdate: (
@@ -53,6 +56,8 @@ type EventContextType = {
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
+
+  isUpdateLoading: boolean;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -72,6 +77,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const eventCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
+  const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
 
   const registerEvent = async (
     values: TypeEventInputValues,
@@ -94,7 +100,7 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsLoading: (boo: boolean) => void
   ) => {
     setIsLoading(true);
-    console.log(values)
+    console.log(values);
     const docRef = doc(db, "events", eid);
     await updateDoc(docRef, {
       ...values,
@@ -111,10 +117,12 @@ export function EventProvider({ children }: EventProviderProps) {
         });
       }
     }
-    displaySuccessToast({
-      text: "Updated",
-    });
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+      displaySuccessToast({
+        text: "Updated",
+      });
+    }, 500);
   };
 
   const handleDelete = async (id: string) => {
@@ -157,13 +165,21 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const lockThisEvent = async (data: TypeEvent) => {
-    user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
-    setLockedEvent(data);
+    try {
+      user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
+      setLockedEvent(data);
+    } catch (error) {
+      displayErrorToast(error);
+    }
   };
 
   const unlockThisEvent = async () => {
-    user && (await deleteDoc(doc(db, "lockedEvents", user?.uid)));
-    setLockedEvent(undefined);
+    try {
+      user && (await deleteDoc(doc(db, "lockedEvents", user?.uid)));
+      setLockedEvent(undefined);
+    } catch (error) {
+      displayErrorToast(error);
+    }
   };
 
   const getLockedEvent = async () => {
@@ -234,6 +250,8 @@ export function EventProvider({ children }: EventProviderProps) {
 
         isRegisterFormOpen,
         toggleRegisterFormOpen,
+
+        isUpdateLoading,
       }}
     >
       {children}

@@ -47,7 +47,7 @@ const Icons = ({ event, type }: Props) => {
             ? "cursor-pointer text-red-500 duration-300 hover:opacity-50"
             : "cursor-pointer duration-300 hover:opacity-50"
         }`}
-        size={16}
+        size={14}
       />
     </div>
   );

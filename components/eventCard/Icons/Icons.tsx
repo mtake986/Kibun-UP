@@ -13,7 +13,11 @@ type Props = {
   isUpdateMode: boolean;
 };
 
-const Icons = ({ event, setIsUpdateMode, isUpdateMode }: Props) => {
+const Icons = ({
+  event,
+  setIsUpdateMode,
+  isUpdateMode,
+}: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
 
   useEffect(() => {
@@ -21,8 +25,8 @@ const Icons = ({ event, setIsUpdateMode, isUpdateMode }: Props) => {
   }, []);
 
   if (!loginUser) {
-    displayToast({text: 'No Login User', color: 'red'});
-    return null // or return some default UI
+    displayToast({ text: "No Login User", color: "red" });
+    return null; // or return some default UI
   }
 
   return (

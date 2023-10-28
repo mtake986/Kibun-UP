@@ -27,9 +27,8 @@ const IconLock = ({ event }: Props) => {
     <span className="duration-300 hover:opacity-50">
       {lockedEvent?.id === event.id ? (
         <Target
-          size={16}
+          size={14}
           onClick={async () => {
-            if (isLoading) return;
             setIsLoading(true);
             try {
               await unlockThisEvent();
@@ -37,13 +36,15 @@ const IconLock = ({ event }: Props) => {
               console.error(error);
               displayErrorToast(error);
             }
-            setIsLoading(false);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
           }}
           className="cursor-pointer text-red-500 duration-300 hover:opacity-70"
         />
       ) : (
         <Target
-          size={16}
+          size={14}
           onClick={async () => {
             setIsLoading(true);
             try {
@@ -52,7 +53,9 @@ const IconLock = ({ event }: Props) => {
               console.error(error);
               displayErrorToast(error);
             }
-            setIsLoading(false);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
           }}
           className="cursor-pointer hover:opacity-70"
         />

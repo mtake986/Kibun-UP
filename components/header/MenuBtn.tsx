@@ -22,7 +22,7 @@ export default function MenuBtn() {
   const headerListItems = [
     {
       href: "/",
-      className: `flex items-center gap-5 ${
+      className: `flex items-center gap-3 ${
         pathname === "/home" &&
         "font-semibold underline underline-offset-2"
       }`,
@@ -31,7 +31,7 @@ export default function MenuBtn() {
     },
     {
       href: "/quote",
-      className: `flex items-center gap-5 ${
+      className: `flex items-center gap-3 ${
         pathname === "/quote" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
@@ -39,7 +39,7 @@ export default function MenuBtn() {
     },
     {
       href: "/event",
-      className: `flex items-center gap-5 ${
+      className: `flex items-center gap-3 ${
         pathname === "/event" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
@@ -47,7 +47,7 @@ export default function MenuBtn() {
     },
     {
       href: `/user/profile/${user?.uid}`,
-      className: `flex items-center gap-5 ${
+      className: `flex items-center gap-3 ${
         pathname === "/profile" &&
         "font-semibold underline underline-offset-2"
       }`,
@@ -56,7 +56,7 @@ export default function MenuBtn() {
     },
     {
       href: `/contact`,
-      className: `flex items-center gap-5 ${
+      className: `flex items-center gap-3 ${
         pathname === "/contact" && "font-semibold underline underline-offset-2"
       }`,
       target: "_self",
@@ -112,7 +112,7 @@ export default function MenuBtn() {
   return (
     <div>
       <MenuIcon
-        className="cursor-pointer text-white duration-300 hover:opacity-70"
+        className="cursor-pointer text-violet-500 dark:text-white duration-300 hover:opacity-70"
         onClick={toggleDrawer("right", true)}
       />
       <Drawer

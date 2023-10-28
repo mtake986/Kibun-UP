@@ -38,7 +38,7 @@ const Tabs = ({ loginUser }: Props) => {
           key={tab.name}
           className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
             profileWhichTab === tab.name
-              ? "rounded-2xl bg-violet-50 text-violet-500"
+              ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
               : ""
           }`}
           onClick={() => handleProfileWhichTab(tab.name)}

@@ -23,7 +23,7 @@ const ListNotMine = ({ quotes }: Props) => {
     <div className="mb-20">
       {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
       {currentRecords && currentRecords.length >= 1 ? (
-        <>
+        <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <QuoteCard key={doc.id} q={doc} />
           ))}
@@ -34,7 +34,7 @@ const ListNotMine = ({ quotes }: Props) => {
               setCurrentPage={setCurrentPage}
             />
           )}
-        </>
+        </div>
       ) : (
         <NoFetchedData text="No quotes found" />
       )}

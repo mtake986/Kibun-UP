@@ -1,7 +1,7 @@
 import { useQuote } from "@/context/QuoteContext";
-import { displayToast } from "@/functions/displayToast";
+import { displayErrorToast, displayToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
-import React from "react";
+import React, { useState } from "react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
@@ -11,6 +11,19 @@ type Props = {
 
 const IconLock = ({ q, loginUser }: Props) => {
   const { lockThisQuote, lockedQuote, removeLockFromThisQuote } = useQuote();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  if (isLoading) {
+    return (
+      <div
+        className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-current border-t-transparent text-slate-600"
+        role="status"
+        aria-label="loading"
+      >
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
 
   return (
     <span className="duration-300 hover:opacity-50">
@@ -18,7 +31,16 @@ const IconLock = ({ q, loginUser }: Props) => {
         <BiLock
           size={16}
           onClick={() => {
-            removeLockFromThisQuote(loginUser?.uid);
+            setIsLoading(true);
+            try {
+              removeLockFromThisQuote(loginUser?.uid);
+            } catch (error) {
+              console.error(error);
+              displayErrorToast(error);
+            }
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
           }}
           className="cursor-pointer text-red-500 duration-300 hover:opacity-70"
         />
@@ -26,14 +48,23 @@ const IconLock = ({ q, loginUser }: Props) => {
         <BiLockOpen
           size={16}
           onClick={() => {
-            if (q.isDraft) {
-              displayToast({
-                text: "Needs to be Public.",
-                color: "red",
-              });
-            } else {
-              lockThisQuote(loginUser?.uid, q);
+            setIsLoading(true);
+            try {
+              if (q.isDraft) {
+                displayToast({
+                  text: "Needs to be Public.",
+                  color: "red",
+                });
+              } else {
+                lockThisQuote(loginUser?.uid, q);
+              }
+            } catch (error) {
+              console.error(error);
+              displayErrorToast(error);
             }
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
           }}
           className="cursor-pointer hover:opacity-70"
         />

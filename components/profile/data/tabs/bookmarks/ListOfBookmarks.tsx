@@ -28,7 +28,7 @@ const ListOfBookmarks = ({ quotes, loginUser }: Props) => {
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
-        <>
+        <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <QuoteCard key={doc.id} q={doc} />
           ))}
@@ -39,7 +39,7 @@ const ListOfBookmarks = ({ quotes, loginUser }: Props) => {
               setCurrentPage={setCurrentPage}
             />
           )}
-        </>
+        </div>
       ) : (
         <NoFetchedData text="No quotes found" />
       )}
