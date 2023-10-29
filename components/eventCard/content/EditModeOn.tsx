@@ -169,20 +169,18 @@ export default function EditModeOn({
           )}
         />
         <div className="flex items-center gap-3">
-          <Button
+          <button
             type="submit"
-            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-violet-700 dark:text-white`}
-            variant="ghost"
+            className={`w-full rounded-md bg-green-50 px-3 py-2 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600`}
           >
             Save
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={() => setIsUpdateMode(false)}
-            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-red-900 dark:text-white`}
-            variant="ghost"
+            className={`rounded-md bg-red-50 px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
           >
             Cancel
-          </Button>
+          </button>
         </div>
       </form>
     </Form>

@@ -9,19 +9,11 @@ type Props = {
 };
 const EditBtn = ({ isEditMode, setIsEditMode }: Props) => {
   return (
-    <div className="absolute right-0 top-0">
-      <Button
-        onClick={() => setIsEditMode((prev) => !prev)}
-        className={` ${
-          isEditMode
-            ? "hover:bg-red-50 hover:text-red-500"
-            : "hover:bg-blue-50 hover:text-blue-500"
-        } duration-300 sm:w-auto`}
-        variant="ghost"
-      >
-        {isEditMode ? <MdClose size={14} /> : <Edit size={14} />}
-      </Button>
-    </div>
+    <Edit
+      className="absolute right-0 top-0"
+      size={14}
+      onClick={() => setIsEditMode((prev) => !prev)}
+    />
   );
 };
 
