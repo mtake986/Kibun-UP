@@ -21,7 +21,7 @@ const Btns = () => {
       <HoverCard>
         <HoverCardTrigger>
           <Button
-            className={`cursor-pointer bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-500`}
+            className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
             onClick={() => {
               sortAndFilterMyQuotes();
             }}
@@ -34,7 +34,7 @@ const Btns = () => {
         </HoverCardContent>
       </HoverCard>
       <Button
-        className={`cursor-pointer bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-500`}
+        className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white  dark:hover:bg-red-600"
         onClick={() => {
           getLoginUserQuotes();
           resetSortFilterByForMineInputs();
