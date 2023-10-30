@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
+import { cn } from "@/lib/utils";
 import { TypeQuote } from "@/types/type";
 import React from "react";
 
@@ -13,9 +14,10 @@ const Tags = ({ quote }: Props) => {
       {quote.tags?.map((tag, i) => (
         <Badge
           key={i}
-          className={`whitespace-nowrap font-light hover:opacity-70 ${changeTagColor(
-            tag.color
-          )}`}
+          className={cn(
+            `whitespace-nowrap font-light hover:opacity-70`,
+            changeTagColor(tag.color)
+          )}
         >
           #{tag.name}
         </Badge>
