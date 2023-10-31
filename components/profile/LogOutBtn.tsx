@@ -6,9 +6,12 @@ import React from "react";
 const LogOutBtn = () => {
   const { handleLogout } = useAuth();
 
+  const buttonStyle =
+    "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:opacity-70 dark:text-red-500";
+
   return (
     <button
-      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:opacity-70 dark:text-red-500"
+      className={buttonStyle}
       onClick={async () => {
         try {
           await handleLogout();

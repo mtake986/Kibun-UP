@@ -22,8 +22,12 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   const clsNameNotFocused =
     "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600";
 
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === nPages;
+
   const displaybuttons = () => {
-    if (currentPage === 1) {
+    if (isFirstPage) {
       return (
         <div className="flex items-center gap-1">
           <button
@@ -43,7 +47,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           </button>
         </div>
       );
-    } else if (currentPage === nPages) {
+    } else if (isLastPage) {
       return (
         <div className="flex items-center gap-1">
           <button
@@ -95,8 +99,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
     }
   };
 
-  const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === nPages;
   return (
     <nav className="flex gap-1">
       <button
