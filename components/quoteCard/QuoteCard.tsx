@@ -12,17 +12,17 @@ type Props = {
 
 const QuoteCard = ({ q }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCardLoading, setIsCardLoading] = useState(false);
 
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
-      {isLoading ? (
+      {isCardLoading ? (
         <LoadingSpinnerS />
       ) : isUpdateMode ? (
         <EditModeOn
           q={q}
           setIsUpdateMode={setIsUpdateMode}
-          setIsLoading={setIsLoading}
+          setIsCardLoading={setIsCardLoading}
         />
       ) : (
         <Content q={q} />

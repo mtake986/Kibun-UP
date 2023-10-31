@@ -8,11 +8,15 @@ type Props = {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const EditBtn = ({ isEditMode, setIsEditMode }: Props) => {
+  const toggleEditMode = () => {
+    setIsEditMode((prev) => !prev);
+  };
+
   return (
     <Edit
       className="absolute right-0 top-0"
       size={14}
-      onClick={() => setIsEditMode((prev) => !prev)}
+      onClick={toggleEditMode}
     />
   );
 };

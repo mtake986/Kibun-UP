@@ -17,10 +17,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   };
 
   const clsNameFocused =
-    "rounded-md bg-blue-500 px-3 py-2 text-xs text-blue-50 duration-300 ease-in hover:bg-blue-600 dark:bg-gray-50 dark:text-black dark:hover:g-gray-100";
+    "cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-xs text-blue-50 duration-300 ease-in hover:bg-blue-600 dark:bg-gray-50 dark:text-black dark:hover:g-gray-100";
 
   const clsNameNotFocused =
-    "rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600";
+    "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600";
 
   const displaybuttons = () => {
     if (currentPage === 1) {

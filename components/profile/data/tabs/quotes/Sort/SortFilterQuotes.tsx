@@ -5,7 +5,10 @@ import { SearchBar } from "./SearchBar";
 import Btns from "./Btns";
 import OnlySortBtn from "./OnlySortBtn";
 
-const SortFilterQuotes = () => {
+type Props = {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const SortFilterQuotes = ({setIsLoading}: Props) => {
   return (
     <>
       {/* mobile */}
@@ -13,23 +16,23 @@ const SortFilterQuotes = () => {
         <div className="flex w-full flex-row gap-3">
           <OrderSelect />
           <ElementSelect />
-          <OnlySortBtn />
+          <OnlySortBtn setIsLoading={setIsLoading} />
         </div>
         <div className="flex w-full flex-grow justify-between gap-2">
           <SearchBar />
-          <Btns />
+          <Btns setIsLoading={setIsLoading} />
         </div>
       </div>
       {/* Tablet */}
       <div className="mb-3 hidden flex-col items-center gap-2 sm:flex sm:flex-row">
-        <div className="flex w-full flex-row gap-3">
+        {/* <div className="flex w-full flex-row gap-3"> */}
           <OrderSelect />
           <ElementSelect />
-          <OnlySortBtn />
-        </div>
+          <OnlySortBtn setIsLoading={setIsLoading} />
+        {/* </div> */}
 
         <SearchBar />
-        <Btns />
+        <Btns setIsLoading={setIsLoading} />
       </div>
     </>
   );
