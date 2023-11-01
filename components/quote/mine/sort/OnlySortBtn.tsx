@@ -11,11 +11,14 @@ import { useQuote } from "@/context/QuoteContext";
 const OnlySortBtn = () => {
   const { onlySortMyQuotes } = useQuote();
 
+  const buttonClass =
+    "rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
+  
   return (
     <HoverCard>
       <HoverCardTrigger>
         <Button
-          className={`cursor-pointer bg-green-50 text-green-500 hover:bg-green-100 hover:text-green-500 hover:opacity-70 dark:bg-slate-900 dark:text-white`}
+          className = { buttonClass }
           onClick={() => {
             onlySortMyQuotes();
           }}

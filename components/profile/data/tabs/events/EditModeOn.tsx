@@ -134,7 +134,10 @@ export default function EditModeOn({
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent
+                  className="w-auto p-0 dark:bg-slate-800 dark:text-white"
+                  align="start"
+                >
                   <Calendar
                     mode="single"
                     selected={field.value}

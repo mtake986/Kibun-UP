@@ -9,6 +9,8 @@ import { TypeQuote } from "@/types/type";
 import SortFilterQuotes from "./Sort/SortFilterQuotes";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 
+import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
+
 type Props = {
   quotes: TypeQuote[];
 };
@@ -20,10 +22,20 @@ const QuoteList = ({ quotes }: Props) => {
 
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  if (isLoading) {
+    return (
+      <div className="h-40 flex items-center justify-center">
+        <LoadingSpinnerL />
+      </div>
+    );
+  }
   // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
     <div className="mb-20">
-      {sortFilterAreaForMineShown ? <SortFilterQuotes /> : null}
+      {sortFilterAreaForMineShown ? (
+        <SortFilterQuotes setIsLoading={setIsLoading} />
+      ) : null}
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc) => (

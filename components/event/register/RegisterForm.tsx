@@ -175,7 +175,10 @@ export default function RegisterForm() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent
+                    className="w-auto p-0 dark:bg-slate-800 dark:text-white"
+                    align="start"
+                  >
                     <Calendar
                       mode="single"
                       selected={field.value}
@@ -211,12 +214,12 @@ export default function RegisterForm() {
           />
 
           <div className="flex items-center gap-3">
-            <Button
-              className="w-full bg-violet-100 text-violet-500 hover:bg-violet-50"
+            <button
+              className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
               type="submit"
             >
               Submit
-            </Button>
+            </button>
             <UrlLink clickOn={<CloseBtn />} href="/event" target="_self" />
           </div>
         </form>
@@ -229,11 +232,11 @@ const CloseBtn = () => {
   const { toggleRegisterFormOpen } = useEvent();
 
   return (
-    <Button
+    <button
       onClick={toggleRegisterFormOpen}
-      className="w-full bg-red-100 text-red-500 duration-200 hover:bg-red-200"
+      className="cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white  dark:hover:bg-red-600"
     >
       Close
-    </Button>
+    </button>
   );
 };

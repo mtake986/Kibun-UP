@@ -136,7 +136,10 @@ export default function EditModeOn({
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent
+                  className="w-auto p-0 dark:bg-slate-800 dark:text-white"
+                  align="start"
+                >
                   <Calendar
                     mode="single"
                     selected={field.value}
@@ -169,20 +172,20 @@ export default function EditModeOn({
           )}
         />
         <div className="flex items-center gap-3">
-          <Button
+          <button
+            aria-label="Save changes"
             type="submit"
-            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-violet-700 dark:text-white`}
-            variant="ghost"
+            className={`w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600`}
           >
             Save
-          </Button>
-          <Button
+          </button>
+          <button
+            aria-label="Cancel editing"
             onClick={() => setIsUpdateMode(false)}
-            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-red-900 dark:text-white`}
-            variant="ghost"
+            className={`cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
           >
             Cancel
-          </Button>
+          </button>
         </div>
       </form>
     </Form>

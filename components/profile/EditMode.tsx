@@ -101,18 +101,18 @@ const EditMode = ({ setIsEditMode }: Props) => {
       </div>
 
       <div className="flex items-center gap-5 ">
-        <Button
-          className="w-full bg-blue-50 text-blue-500 hover:bg-blue-100"
+        <button
+          className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
           type="submit"
         >
           Submit
-        </Button>
-        <Button
-          className="bg-slate-50 text-slate-500 hover:bg-slate-100"
+        </button>
+        <button
+          className="cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white  dark:hover:bg-red-600"
           onClick={() => setIsEditMode(false)}
         >
           Close
-        </Button>
+        </button>
       </div>
     </form>
   );

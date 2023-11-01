@@ -8,8 +8,8 @@ const LogOutBtn = () => {
   const { handleLogout } = useAuth();
 
   return (
-    <Button
-      className="flex cursor-pointer items-center gap-3 bg-red-50 p-1 text-red-500 duration-300 hover:bg-red-50 hover:opacity-70 dark:bg-slate-900"
+    <button
+      className="flex cursor-pointer items-center justify-center gap-3 bg-red-50 p-1 text-sm text-red-500 transition duration-300 ease-in hover:bg-red-50 hover:opacity-70 dark:bg-slate-900"
       onClick={async () => {
         try {
           await handleLogout();
@@ -20,7 +20,7 @@ const LogOutBtn = () => {
     >
       <LogOut size={14} />
       Logout
-    </Button>
+    </button>
   );
 };
 

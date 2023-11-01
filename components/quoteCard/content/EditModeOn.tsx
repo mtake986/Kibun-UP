@@ -38,12 +38,15 @@ import TagErrors from "./TagErrors";
 
 type Props = {
   q: TypeQuote;
-  setIsUpdateMode: (boo: boolean) => void;
-  setIsLoading: (boo: boolean) => void;
-
+  setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCardLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) {
+export default function EditModeOn({
+  q,
+  setIsUpdateMode,
+  setIsCardLoading,
+}: Props) {
   const [user] = useAuthState(auth);
   const { reset } = useForm();
   const [inputTagName, setInputTagName] = useState("");
@@ -146,7 +149,7 @@ export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) 
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     values.tags = inputTags;
-    handleUpdate(values, q.id, setIsLoading, user?.uid);
+    handleUpdate(values, q.id, setIsCardLoading, user?.uid);
     setIsUpdateMode(false);
     reset({
       author: "",
@@ -198,13 +201,13 @@ export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) 
           control={form.control}
           name="isDraft"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg p-4 dark:bg-slate-900 bg-slate-50">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
               <FormLabel className="text-base">Draft</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="dark:bg-slate-300 text-red-600"
+                  className="text-red-600 dark:bg-slate-300"
                 />
               </FormControl>
             </FormItem>
@@ -234,9 +237,9 @@ export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) 
                 disabled={inputTagName.length === 0}
               >
                 <SelectTrigger
-                  className={`${changeTagColor(
-                    inputTagColor
-                  )} ${inputTagColor ? 'border-none' : null} w-full`}
+                  className={`${changeTagColor(inputTagColor)} ${
+                    inputTagColor ? "border-none" : null
+                  } w-full`}
                 >
                   <SelectValue placeholder="Ex.) Color" />
                 </SelectTrigger>
@@ -260,18 +263,20 @@ export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) 
                   ))}
                 </SelectContent>
               </Select>
-              <Button
+              <button
                 disabled={isAddBtnDisabled}
                 type="button"
                 onClick={() => {
                   if (validateInputTags() === "pass") addTag();
                 }}
                 className={`${
-                  isAddBtnDisabled ? "cursor-not-allowed" : "cursor-pointer"
-                } bg-blue-50 text-blue-500 duration-300 hover:bg-blue-50 hover:text-blue-500 hover:opacity-70 dark:bg-slate-700 dark:text-white`}
+                  isAddBtnDisabled
+                    ? "cursor-not-allowed cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
+                    : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
+                } `}
               >
                 Add
-              </Button>
+              </button>
             </div>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -303,14 +308,14 @@ export default function EditModeOn({ q, setIsUpdateMode, setIsLoading }: Props) 
         <div className="flex items-center gap-3">
           <Button
             type="submit"
-            className={`flex w-full items-center gap-2 bg-emerald-50 text-emerald-500 duration-300 hover:bg-emerald-50 hover:text-emerald-500 hover:opacity-70 dark:bg-violet-700 dark:text-white`}
+            className={`w-full cursor-pointer rounded-md bg-green-50 px-3 py-2 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 hover:text-green-500 dark:bg-green-700 dark:text-white dark:hover:bg-green-600`}
             variant="ghost"
           >
             Save
           </Button>
           <Button
             onClick={() => setIsUpdateMode(false)}
-            className={`flex items-center gap-2 bg-red-50 text-red-500 duration-300 hover:bg-red-50 hover:text-red-500 hover:opacity-70 dark:bg-red-900 dark:text-white`}
+            className={`cursor-pointer rounded-md bg-red-50 px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
             variant="ghost"
           >
             Cancel

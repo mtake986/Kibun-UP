@@ -177,12 +177,12 @@ export default function ContactForm() {
             />
 
             <div className="flex items-center gap-3">
-              <Button
-                className="w-full bg-violet-100 text-violet-500 duration-300 hover:bg-violet-100 dark:bg-violet-500 dark:text-white  dark:hover:bg-violet-600"
+              <button
+                className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
                 type="submit"
               >
                 Submit
-              </Button>
+              </button>
             </div>
           </form>
         </Form>

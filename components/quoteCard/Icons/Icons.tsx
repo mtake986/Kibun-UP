@@ -8,7 +8,7 @@ import IconTrash from "./IconTrash";
 
 type Props = {
   q: TypeQuote;
-  setIsUpdateMode?: (boo: boolean) => void;
+  setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
   isUpdateMode: boolean;
 };
 
