@@ -1,52 +1,45 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { auth, db } from "@/config/Firebase";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuthState } from "react-firebase-hooks/auth";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import { useAuth } from "@/context/AuthContext";
-import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
 import QuoteCard from "./QuoteCard";
-import { TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { createProperUrl } from "@/functions/createProperUrl";
+import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
+import { useEffect, useState } from "react";
+import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
+import LoadingIndicator from "../LoadingIndicator";
 
 const Quote = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [user] = useAuthState(auth);
-  const { randomQuote, updateRandomQuote, lockedQuote, getLockedQuote } =
-    useQuote();
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { loginUser, fetchLoginUser } = useAuth();
 
-  // https://api.quotable.io/quotes?tags=famous-quotes&page=&limit=1
-
+  const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
+    useQuote();
   const { data, isPending, error, refetch } = useFetchQuoteFromQuotableAPI(
     createProperUrl(loginUser?.settings.tagForQuotableApi)
   );
-  const fetchDocuments = async () => {
-    try {
-      setLoading(true);
-      getLockedQuote();
-      updateRandomQuote();
-      fetchLoginUser(user);
-    } catch (e) {
-      displayErrorToast(e);
-    }
-    setLoading(false);
-  };
 
   useEffect(() => {
-    if (user) fetchDocuments();
-  }, [user]);
+    const fetchQuotes = async () => {
+      getLockedQuote();
+      updateRandomQuote();
+    };
 
-  if (loading || isPending) {
-    return <Skeleton className="mb-20 h-48 w-full" />;
+    setIsLoading(true);
+    try {
+      fetchQuotes();
+    } catch (error) {
+      displayErrorToast(error);
+    } finally {
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, []);
+
+  if (isLoading || isPending) {
+    return <LoadingIndicator text={"Loading a Quote..."} />;
   }
-
-  // if (!loading && !isPending) {
-  // if (user) {
   if (loginUser) {
     if (lockedQuote) {
       return (
@@ -57,13 +50,13 @@ const Quote = () => {
           loginUser={loginUser}
         />
       );
-    } else if (data && loginUser?.settings.quoteTypeForHome === "appChoice") {
+    } else if (data && loginUser.settings.quoteTypeForHome === "appChoice") {
+      console.log("randomequote", data);
       return (
         <QuoteCard
           quote={data}
           type="appChoice"
           refetch={refetch}
-          isPending={isPending}
           loginUser={loginUser}
         />
       );
@@ -77,14 +70,6 @@ const Quote = () => {
         />
       );
     }
-  } else {
-    return (
-      <div className="mt-6 flex flex-col items-center p-12 py-16 sm:rounded-lg sm:shadow">
-        <p>Login to create quotes</p>
-        <GoogleLoginBtn />
-      </div>
-    );
-    // }
   }
   return <div>Something wrong here</div>;
 };

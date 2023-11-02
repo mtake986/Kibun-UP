@@ -6,18 +6,48 @@ import Event from "./event/Event";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
+import { useEvent } from "@/context/EventContext";
+import { displayErrorToast, displayToast } from "@/functions/displayToast";
+import LoadingSpinnerL from "../utils/LoadingSpinnerL";
+import { useQuote } from "@/context/QuoteContext";
+import { useAuth } from "@/context/AuthContext";
+import useFetchQuoteFromQuotableAPI from "../hooks/useFetchQuoteFromQuotableAPI";
+import { createProperUrl } from "@/functions/createProperUrl";
+import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
-  const [user] = useAuthState(auth);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  if (!user) return <GoogleLoginBtn />;
+  const { loginUser, fetchLoginUser } = useAuth();
 
-  return (
-    <>
-      <Event />
-      <Quote />
-    </>
-  );
+  useEffect(() => {
+    setIsLoading(true);
+    try {
+      fetchLoginUser(auth.currentUser);
+    } catch (error) {
+      displayErrorToast(error);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      console.log(auth.currentUser);
+    }
+  }, []);
+
+  if (isLoading) {
+    return <LoadingIndicator text={"Loading an Login User..."} />;
+  } else {
+    if (!auth.currentUser) {
+      return <GoogleLoginBtn />;
+    } else {
+      return (
+        <>
+          <Event />
+          <Quote />
+        </>
+      );
+    }
+  }
 };
 
 export default Home;

@@ -1,54 +1,50 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "@/context/EventContext";
 import { auth } from "@/config/Firebase";
 import EventCard from "./EventCard";
 import NoEventAvailable from "./NoEventAvailable";
+import { useEffect, useState } from "react";
+import { displayErrorToast } from "@/functions/displayToast";
+import { useAuth } from "@/context/AuthContext";
+import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
+import LoadingIndicator from "../LoadingIndicator";
 
 const Event = () => {
-  const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { randomEvent, lockedEvent } = useEvent();
 
-  const {
-    randomEvent,
-    getRandomEvent,
-    lockedEvent,
-    getLockedEvent,
-    setRandomEvent,
-    setLockedEvent,
-  } = useEvent();
+  const { getRandomEvent, getLockedEvent } = useEvent();
+
+  const { loginUser, fetchLoginUser } = useAuth();
 
   useEffect(() => {
-    setLoading(true);
-    setRandomEvent(undefined);
-    setLockedEvent(undefined);
-    getLockedEvent();
-    if (user) getRandomEvent();
-    setLoading(false);
-  }, [user]);
+    const fetchEvents = () => {
+      getLockedEvent();
+      if (auth.currentUser) getRandomEvent();
+    };
 
-  if (loading) {
-    return <Skeleton className="relative h-64 w-full rounded-lg p-12" />;
+    setIsLoading(true);
+    try {
+      if (loginUser) fetchLoginUser(auth.currentUser);
+      fetchEvents();
+    } catch (error) {
+      displayErrorToast(error);
+    } finally {
+      console.log(auth.currentUser);
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, []);
+
+  if (isLoading) {
+    return <LoadingIndicator text={"Loading an Event..."} />;
   }
 
-  if (!loading) {
-    if (user) {
-      if (!lockedEvent && !randomEvent) {
-        return <NoEventAvailable />;
-      } else if (lockedEvent) {
-        return <EventCard event={lockedEvent} type="locked" />;
-      } else if (randomEvent) {
-        return <EventCard event={randomEvent} type="random" />;
-      }
-    } else {
-      return (
-        <div className="flex h-64 flex-col items-center justify-center bg-violet-50 p-12 text-center sm:rounded-lg">
-          Login to set events
-        </div>
-      );
-    }
+  if (!lockedEvent && !randomEvent) {
+    return <NoEventAvailable />;
+  } else if (lockedEvent) {
+    return <EventCard event={lockedEvent} type="locked" />;
+  } else if (randomEvent) {
+    return <EventCard event={randomEvent} type="random" />;
   }
   return <div>Something wrong here</div>;
 };
