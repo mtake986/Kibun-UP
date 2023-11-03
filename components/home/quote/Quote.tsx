@@ -12,34 +12,17 @@ import { displayErrorToast } from "@/functions/displayToast";
 import LoadingIndicator from "../LoadingIndicator";
 
 const Quote = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { loginUser, fetchLoginUser } = useAuth();
+  const { loginUser } = useAuth();
 
-  const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
-    useQuote();
+  const { randomQuote, lockedQuote } = useQuote();
   const { data, isPending, error, refetch } = useFetchQuoteFromQuotableAPI(
     createProperUrl(loginUser?.settings.tagForQuotableApi)
   );
 
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      getLockedQuote();
-      updateRandomQuote();
-    };
-
-    setIsLoading(true);
-    try {
-      fetchQuotes();
-    } catch (error) {
-      displayErrorToast(error);
-    } finally {
-      setTimeout(() => setIsLoading(false), 500);
-    }
-  }, []);
-
-  if (isLoading || isPending) {
+  if (isPending) {
     return <LoadingIndicator text={"Loading a Quote..."} />;
   }
+
   if (loginUser) {
     if (lockedQuote) {
       return (

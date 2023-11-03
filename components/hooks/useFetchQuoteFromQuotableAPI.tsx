@@ -12,6 +12,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState(null);
 
+  
   const fetchData = useCallback(async () => {
     setIsPending(true);
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -32,10 +33,12 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           }),
           likedBy: [],
           bookmarkedBy: [],
-          userInfo: 'api',
+          userInfo: "api",
           isDraft: false,
         });
-        setIsPending(false);
+        // setTimeout(() => {
+          setIsPending(false);
+        // }, 500);
       })
       .catch((e) => {
         // error handling when no quote with this user's tag is found
@@ -56,7 +59,9 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
               content: res[0].content,
               tags: res[0].tags,
             } as TypeQuote);
-            setIsPending(false);
+            // setTimeout(() => {
+              setIsPending(false);
+            // }, 500);
           })
           .catch((e) => {
             // error handling when failed to even fetch a quote randomly
@@ -64,7 +69,9 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
               `Failed to fetch a random quote, ${url}. Try again later.`
             );
             setError(e.message);
-            setIsPending(false);
+            // setTimeout(() => {
+              setIsPending(false);
+            // }, 500);
           });
       });
   }, [url]);
