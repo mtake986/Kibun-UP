@@ -16,7 +16,7 @@ const Event = () => {
   const { getRandomEvent, getLockedEvent } = useEvent();
 
   const { loginUser, fetchLoginUser } = useAuth();
-
+// todo: no need to refetch if exists
   useEffect(() => {
     const fetchEvents = () => {
       getLockedEvent();
@@ -30,7 +30,6 @@ const Event = () => {
     } catch (error) {
       displayErrorToast(error);
     } finally {
-      console.log(auth.currentUser);
       setTimeout(() => setIsLoading(false), 500);
     }
   }, []);

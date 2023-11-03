@@ -97,16 +97,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const fetchLoginUser = async (user: User | null) => {
-    // if (user) {
-    //   const docRef = doc(db, "users", user?.uid);
-    //   const docSnap = await getDoc(docRef);
-    //   if (docSnap.exists()) {
-    //     setLoginUser(docSnap.data() as TypeLoginUser);
-    //   }
-    // }
+    console.log(user)
     if (user) {
-      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      const q = query(
+        collection(db, "users"),
+        where("uid", "==", user.uid)
+      );
       onSnapshot(q, (snapshot) => {
+        console.log(snapshot.docs[0]?.data());
         setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
       });
     }

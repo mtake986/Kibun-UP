@@ -8,12 +8,15 @@ import Radio from "./Radio";
 const radios = [
   {
     id: "mine",
+    label: "Mine",
   },
   {
     id: "bookmarks",
+    label: "Bookmarks",
   },
   {
     id: "appChoice",
+    label: "App Choice",
   },
 ];
 
@@ -49,22 +52,6 @@ const Radios = () => {
             loginUserQuotes={loginUserQuotes}
           />
         ))}
-        {/* <MineRadioBtn
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-          loginUserQuotes={loginUserQuotes}
-        />
-
-        <BookmarkRadioButton
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-        />
-        <AppChoice
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-          updateTagForQuotableApi={updateTagForQuotableApi}
-          tags={tags}
-        /> */}
       </RadioGroup>
     );
   } else return null;

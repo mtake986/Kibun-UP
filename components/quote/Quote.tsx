@@ -11,34 +11,60 @@ import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import MobileSortFilterForMineOpenBtn from "./mine/MobileSortFilterForMineOpenBtn";
 import MobileSortFilterForNotMineOpenBtn from "./notMine/MobileSortFilterForNotMineOpenBtn";
-
+import { displayErrorToast } from "@/functions/displayToast";
+import LoadingIndicator from "../home/LoadingIndicator";
 
 const Quote = () => {
   const [user] = useAuthState(auth);
-  const { fetchLoginUser } = useAuth();
+  const { loginUser, fetchLoginUser } = useAuth();
 
   const { whichList } = useQuote();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchLoginUser(user);
+    const fetchDocs = async () => {
+      console.log("fetch loginUser");
+      fetchLoginUser(user);
+    };
+
+    if (user) {
+      try {
+        if (!loginUser) {
+          fetchDocs();
+        }
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        console.log(user);
+        setTimeout(() => setIsLoading(false), 500);
+      }
+    } else {
+      setIsLoading(true);
+    }
   }, [user]);
-  if (!user) return <GoogleLoginBtn />;
 
-  return (
-    <div className="px-5 py-10 sm:mb-32 sm:p-0">
-      <div className="relative">
-        <HeadingTwo text="Quotes" />
-        <RegisterFormToggleBtn />
-        {whichList === "yours" ? (
-          <MobileSortFilterForMineOpenBtn />
-        ) : whichList === "all" ? (
-          <MobileSortFilterForNotMineOpenBtn />
-        ) : null}
+  if (isLoading) {
+    return <LoadingIndicator text={"Loading a Login User..."} />;
+  } else {
+    if (!loginUser) return <GoogleLoginBtn />;
+    else {
+      return (
+        <div className="px-5 py-10 sm:mb-32 sm:p-0">
+          <div className="relative">
+            <HeadingTwo text="Quotes" />
+            <RegisterFormToggleBtn />
+            {whichList === "yours" ? (
+              <MobileSortFilterForMineOpenBtn />
+            ) : whichList === "all" ? (
+              <MobileSortFilterForNotMineOpenBtn />
+            ) : null}
 
-        <SelectTab />
-      </div>
-    </div>
-  );
+            <SelectTab loginUser={loginUser} />
+          </div>
+        </div>
+      );
+    }
+  }
 };
 
 export default Quote;

@@ -5,35 +5,56 @@ import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
 import List from "./mine/List";
+import { displayErrorToast } from "@/functions/displayToast";
+import { useAuth } from "@/context/AuthContext";
+import LoadingIndicator from "../home/LoadingIndicator";
+import { TypeLoginUser } from "@/types/type";
 
-const SwitchTab = () => {
+type Props = {
+  loginUser: TypeLoginUser;
+};
+const SwitchTab = ({ loginUser }: Props) => {
   const [user] = useAuthState(auth);
-
-  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     loginUserQuotes,
     getLoginUserQuotes,
     quotesNotMine,
-    getQuotesNotMine,
     getLockedQuote,
-
     whichList,
     handleWhichList,
+    lockedQuote,
+    getQuotesNotMine,
   } = useQuote();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   useEffect(() => {
-    setLoading(true);
-    getLoginUserQuotes();
-    getQuotesNotMine();
-    getLockedQuote();
-    setLoading(false);
-  }, [user]);
+    const fetchQuotes = async () => {
+      if (loginUserQuotes.length === 0) getLoginUserQuotes();
+      if (!lockedQuote) getLockedQuote();
+      if (quotesNotMine.length === 0) getQuotesNotMine();
+    };
 
-  if (loading) {
-    return <div>Loading...</div>;
+    try {
+      if (
+        loginUserQuotes.length === 0 ||
+        !lockedQuote ||
+        quotesNotMine.length === 0
+      ) {
+        console.log("no quotes , so needto fetch");
+        fetchQuotes();
+      }
+    } catch (error) {
+      displayErrorToast(error);
+    } finally {
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, []);
+
+  if (isLoading) {
+    return <LoadingIndicator text={"Loading Quotes..."} />;
   }
-
   return (
     <div>
       <div className="mb-3 flex items-stretch">
@@ -53,11 +74,7 @@ const SwitchTab = () => {
       </div>
 
       {whichList === "yours" ? (
-        user ? (
-          <List quotes={loginUserQuotes} />
-        ) : (
-          <GoogleLoginBtn />
-        )
+        <List quotes={loginUserQuotes} />
       ) : (
         <ListNotMine quotes={quotesNotMine} />
       )}

@@ -16,23 +16,27 @@ import { createProperUrl } from "@/functions/createProperUrl";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { loginUser, fetchLoginUser } = useAuth();
 
+  const [user] = useAuthState(auth);
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      fetchLoginUser(auth.currentUser);
-    } catch (error) {
-      displayErrorToast(error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-      console.log(auth.currentUser);
+    if (user) {
+      try {
+        fetchLoginUser(auth.currentUser);
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+        console.log(auth.currentUser);
+      }
+    } else {
+      setIsLoading(true);
     }
-  }, []);
+  }, [user]);
 
   if (isLoading) {
     return <LoadingIndicator text={"Loading an Login User..."} />;

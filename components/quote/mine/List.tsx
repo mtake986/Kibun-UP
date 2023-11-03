@@ -24,7 +24,6 @@ const List = ({ quotes }: Props) => {
   } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
-
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
   return (
