@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../config/Firebase";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
-import SelectTab from "@/components/quote/SwitchTab";
+import Tabs from "@/components/quote/Tabs";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import { useAuth } from "@/context/AuthContext";
@@ -17,30 +17,39 @@ import LoadingIndicator from "../home/LoadingIndicator";
 const Quote = () => {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
-
-  const { whichList } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    loginUserQuotes,
+    getLoginUserQuotes,
+    quotesNotMine,
+    getLockedQuote,
+    whichList,
+    handleWhichList,
+    lockedQuote,
+    getQuotesNotMine,
+  } = useQuote();
 
   useEffect(() => {
     const fetchDocs = async () => {
-      console.log("fetch loginUser");
-      fetchLoginUser(user);
+      if (!loginUser) fetchLoginUser(user);
     };
-
-    if (user) {
+    const fetchQuotes = async () => {
+      if (loginUserQuotes.length === 0) getLoginUserQuotes();
+      if (!lockedQuote) getLockedQuote();
+      if (quotesNotMine.length === 0) getQuotesNotMine();
+    };
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        if (!loginUser) {
-          fetchDocs();
-        }
+        await fetchDocs();
+        await fetchQuotes();
       } catch (error) {
         displayErrorToast(error);
       } finally {
-        console.log(user);
-        setTimeout(() => setIsLoading(false), 500);
+        setIsLoading(false);
       }
-    } else {
-      setIsLoading(true);
-    }
+    };
+    fetchData();
   }, [user]);
 
   if (isLoading) {
@@ -59,7 +68,7 @@ const Quote = () => {
               <MobileSortFilterForNotMineOpenBtn />
             ) : null}
 
-            <SelectTab loginUser={loginUser} />
+            <Tabs loginUser={loginUser} />
           </div>
         </div>
       );

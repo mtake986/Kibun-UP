@@ -27,34 +27,6 @@ const SwitchTab = ({ loginUser }: Props) => {
     getQuotesNotMine,
   } = useQuote();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      if (loginUserQuotes.length === 0) getLoginUserQuotes();
-      if (!lockedQuote) getLockedQuote();
-      if (quotesNotMine.length === 0) getQuotesNotMine();
-    };
-
-    try {
-      if (
-        loginUserQuotes.length === 0 ||
-        !lockedQuote ||
-        quotesNotMine.length === 0
-      ) {
-        console.log("no quotes , so needto fetch");
-        fetchQuotes();
-      }
-    } catch (error) {
-      displayErrorToast(error);
-    } finally {
-      setTimeout(() => setIsLoading(false), 500);
-    }
-  }, []);
-
-  if (isLoading) {
-    return <LoadingIndicator text={"Loading Quotes..."} />;
-  }
   return (
     <div>
       <div className="mb-3 flex items-stretch">

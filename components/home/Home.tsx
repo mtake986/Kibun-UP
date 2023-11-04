@@ -26,12 +26,13 @@ const Home = () => {
   useEffect(() => {
     const fetchEvents = () => {
       setIsLoading(true);
-      if (!lockedEvent) getLockedEvent();
-      if (auth.currentUser && !randomEvent) getRandomEvent();
+      if (user && !lockedEvent) getLockedEvent();
+      if (user && !randomEvent) getRandomEvent();
     };
     const fetchQuotes = async () => {
-      getLockedQuote();
-      updateRandomQuote();
+      console.log("randomQuote: ", randomQuote);
+      if (user && !lockedQuote) getLockedQuote();
+      if (user && !randomQuote) updateRandomQuote();
     };
 
     if (user) {
@@ -41,6 +42,7 @@ const Home = () => {
           fetchEvents();
         }
         if (!(lockedQuote || randomQuote) && !lockedQuote && !randomQuote) {
+          console.log("randomQuote: ", randomQuote);
           fetchQuotes();
         }
       } catch (error) {
