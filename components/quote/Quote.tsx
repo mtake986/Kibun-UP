@@ -17,14 +17,12 @@ import LoadingIndicator from "../home/LoadingIndicator";
 const Quote = () => {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     loginUserQuotes,
     getLoginUserQuotes,
     quotesNotMine,
     getLockedQuote,
     whichList,
-    handleWhichList,
     lockedQuote,
     getQuotesNotMine,
   } = useQuote();
@@ -39,40 +37,38 @@ const Quote = () => {
       if (quotesNotMine.length === 0) getQuotesNotMine();
     };
     const fetchData = async () => {
-      setIsLoading(true);
       try {
         await fetchDocs();
         await fetchQuotes();
       } catch (error) {
         displayErrorToast(error);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchData();
   }, [user]);
 
-  if (isLoading) {
+  if (!user) {
+    return <GoogleLoginBtn />;
+  }
+
+  if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;
   } else {
-    if (!loginUser) return <GoogleLoginBtn />;
-    else {
-      return (
-        <div className="px-5 py-10 sm:mb-32 sm:p-0">
-          <div className="relative">
-            <HeadingTwo text="Quotes" />
-            <RegisterFormToggleBtn />
-            {whichList === "yours" ? (
-              <MobileSortFilterForMineOpenBtn />
-            ) : whichList === "all" ? (
-              <MobileSortFilterForNotMineOpenBtn />
-            ) : null}
+    return (
+      <div className="px-5 py-10 sm:mb-32 sm:p-0">
+        <div className="relative">
+          <HeadingTwo text="Quotes" />
+          <RegisterFormToggleBtn />
+          {whichList === "yours" ? (
+            <MobileSortFilterForMineOpenBtn />
+          ) : whichList === "all" ? (
+            <MobileSortFilterForNotMineOpenBtn />
+          ) : null}
 
-            <Tabs loginUser={loginUser} />
-          </div>
+          <Tabs loginUser={loginUser} />
         </div>
-      );
-    }
+      </div>
+    );
   }
 };
 

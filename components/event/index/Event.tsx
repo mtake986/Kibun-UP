@@ -30,7 +30,6 @@ const Event = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
   useEffect(() => {
     const fetchDocs = async () => {
       if (!loginUser) fetchLoginUser(user);
@@ -53,23 +52,23 @@ const Event = () => {
     fetchData();
   }, [user]);
 
+  if (!user) {
+    return <GoogleLoginBtn />;
+  }
 
-  if (isLoading) {
+  if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;
   } else {
-    if (!loginUser) return <GoogleLoginBtn />;
-    else {
-      return (
-        <div className="px-5 py-10 sm:mb-32 sm:p-0">
-          <div className="relative">
-            <HeadingTwo text="Events" />
-            {!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null}
+    return (
+      <div className="px-5 py-10 sm:mb-32 sm:p-0">
+        <div className="relative">
+          <HeadingTwo text="Events" />
+          {!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null}
 
-            <Tabs loginUser={loginUser} />
-          </div>
+          <Tabs loginUser={loginUser} />
         </div>
-      );
-    }
+      </div>
+    );
   }
 };
 

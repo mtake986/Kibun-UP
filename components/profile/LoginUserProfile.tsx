@@ -11,6 +11,8 @@ import Settings from "./settings/Settings";
 import { useQuote } from "@/context/QuoteContext";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
+import LoadingSpinnerL from "../utils/LoadingSpinnerL";
+import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 
 export const metadata = {
   title: "Login User Profile",
@@ -45,7 +47,11 @@ const LoginUserProfile = () => {
     }
   }, [user]);
 
-  if (!loginUser) return <div>Loading...</div>;
+  if (!user) {
+    return <GoogleLoginBtn />;
+  }
+
+  if (!loginUser) return <LoadingSpinnerL />;
 
   if (isError) return <div>Something wrong here</div>;
 

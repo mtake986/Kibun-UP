@@ -14,9 +14,9 @@ const Quote = () => {
     createProperUrl(loginUser?.settings.tagForQuotableApi)
   );
 
-  if (isPending) {
-    return <LoadingIndicator text={"Loading a Quote..."} />;
-  }
+  // if (isPending) {
+  //   return <LoadingIndicator text={"Loading a Quote..."} />;
+  // }
 
   if (loginUser) {
     if (lockedQuote) {
