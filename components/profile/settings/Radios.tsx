@@ -4,16 +4,20 @@ import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import useFetchTags from "@/components/hooks/useFetchTags";
 import Radio from "./Radio";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const radios = [
   {
     id: "mine",
+    label: "Mine",
   },
   {
     id: "bookmarks",
+    label: "Bookmarks",
   },
   {
     id: "appChoice",
+    label: "App Choice",
   },
 ];
 
@@ -49,25 +53,15 @@ const Radios = () => {
             loginUserQuotes={loginUserQuotes}
           />
         ))}
-        {/* <MineRadioBtn
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-          loginUserQuotes={loginUserQuotes}
-        />
-
-        <BookmarkRadioButton
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-        />
-        <AppChoice
-          updateQuoteTypeForHome={updateQuoteTypeForHome}
-          loginUser={loginUser}
-          updateTagForQuotableApi={updateTagForQuotableApi}
-          tags={tags}
-        /> */}
       </RadioGroup>
     );
-  } else return null;
+  } else
+    return (
+      <div>
+        <GoogleLoginBtn />
+        <p>Please log in to view this content.</p>
+      </div>
+    );
 };
 
 export default Radios;

@@ -29,7 +29,7 @@ export default function Header() {
 
 
   return (
-    <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-900 dark:text-white">
+    <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
         <div className="mr-6 flex flex-shrink-0 items-center">
           <UrlLink

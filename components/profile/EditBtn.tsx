@@ -14,7 +14,7 @@ const EditBtn = ({ isEditMode, setIsEditMode }: Props) => {
 
   return (
     <Edit
-      className="absolute right-0 top-0"
+      className="absolute right-0 top-0 cursor-pointer duration-300 transition-opacity hover:opacity-70"
       size={14}
       onClick={toggleEditMode}
     />

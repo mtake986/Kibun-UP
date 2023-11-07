@@ -30,7 +30,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
   const bookmarkFill = isBookmarked ? "green" : undefined;
 
   return (
-    <div className="flex cursor-pointer items-center gap-3">
+    <div className="flex cursor-pointer items-center justify-end gap-3">
       <BiRefresh
         size={20}
         onClick={() => {
@@ -76,19 +76,21 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
 
       <span
         onClick={() => {
-          isLiked ? removeFav(loginUser.uid, quote) : storeFav(loginUser.uid, quote);
+          isLiked
+            ? removeFav(loginUser.uid, quote)
+            : storeFav(loginUser.uid, quote);
         }}
         className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
       >
         {isLiked ? (
           <>
             <Heart size={14} className="text-red-500" fill={heartFill} />
-            <span className={`text-red-500`}>{quote.likedBy.length}</span>
+            <span className={`text-red-500`}>{quote.likedBy?.length}</span>
           </>
         ) : (
           <>
             <Heart size={14} />
-            <span>{quote.likedBy.length}</span>
+            <span>{quote.likedBy?.length || 0}</span>
           </>
         )}
       </span>
@@ -109,13 +111,13 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
           <>
             <BsBookmarkFill size={12} className="text-green-500" />
             <span className={`text-green-500`}>
-              {quote.bookmarkedBy.length}
+              {quote.bookmarkedBy?.length || 0}
             </span>
           </>
         ) : (
           <>
             <BsBookmark size={12} />
-            <span>{quote.bookmarkedBy.length}</span>
+            <span>{quote.bookmarkedBy?.length}</span>
           </>
         )}
       </span>

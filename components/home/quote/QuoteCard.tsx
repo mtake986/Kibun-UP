@@ -8,23 +8,20 @@ type Props = {
   quote: TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
-  isPending?: boolean;
   loginUser: TypeLoginUser;
 };
-const QuoteCard = ({ quote, type, refetch, isPending, loginUser }: Props) => {
+const QuoteCard = ({ quote, type, refetch, loginUser }: Props) => {
   return (
-    <div className="mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
+    <div className="mb-20 p-6 flex flex-col gap-1 sm:rounded-lg sm:p-12 sm:shadow">
       <QuoteContent quote={quote} />
       <AuthorText quote={quote} />
-      <div className="mt-5 flex items-start justify-between">
-        <Tags quote={quote} />
-        <Icons
-          quote={quote}
-          type={type}
-          refetch={refetch}
-          loginUser={loginUser}
-        />
-      </div>
+      <Tags quote={quote} />
+      <Icons
+        quote={quote}
+        type={type}
+        refetch={refetch}
+        loginUser={loginUser}
+      />
     </div>
   );
 };

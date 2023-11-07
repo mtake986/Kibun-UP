@@ -6,7 +6,7 @@ import { styleVariables } from "./styles";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 
 type Props = {
-  radio: {id: string},
+  radio: {id: string, label: string},
   updateQuoteTypeForHome: (text: string) => void;
   loginUser: TypeLoginUser;
   loginUserQuotes: TypeQuote[];
@@ -37,7 +37,7 @@ const Radio = ({
             disabled={!loginUserQuotes}
           />
           <Label htmlFor={radio.id} className="text-md">
-            {capitalizeFirstLetter(radio.id)}
+            {radio.label}
           </Label>
           {loginUser.settings.quoteTypeForHome === radio.id &&
           !loginUserQuotes ? (
