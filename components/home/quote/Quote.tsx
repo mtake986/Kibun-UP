@@ -7,11 +7,6 @@ import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQu
 import LoadingIndicator from "../LoadingIndicator";
 import { TypeQuote } from "@/types/type";
 
-type childProps = {
-  quote: any;
-  type: "locked" | "appChoice" | "notAppChoice";
-  refetch?: () => void;
-};
 const Quote = () => {
   const { loginUser } = useAuth();
 

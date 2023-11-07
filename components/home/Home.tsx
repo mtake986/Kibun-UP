@@ -13,7 +13,7 @@ import { useAuth } from "@/context/AuthContext";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { loginUser, fetchLoginUser } = useAuth();
   const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent } =
