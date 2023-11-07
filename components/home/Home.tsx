@@ -30,7 +30,6 @@ const Home = () => {
       if (user && !randomEvent) getRandomEvent();
     };
     const fetchQuotes = async () => {
-      console.log("randomQuote: ", randomQuote);
       if (user && !lockedQuote) getLockedQuote();
       if (user && !randomQuote) updateRandomQuote();
     };

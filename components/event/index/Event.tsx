@@ -69,7 +69,7 @@ const Event = () => {
           <HeadingTwo text="Events" />
           {!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null}
 
-          <Tabs loginUser={loginUser} />
+          <Tabs />
         </div>
       </div>
     );

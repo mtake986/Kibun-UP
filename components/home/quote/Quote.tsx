@@ -5,7 +5,13 @@ import QuoteCard from "./QuoteCard";
 import { createProperUrl } from "@/functions/createProperUrl";
 import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
 import LoadingIndicator from "../LoadingIndicator";
+import { TypeQuote } from "@/types/type";
 
+type childProps = {
+  quote: any;
+  type: "locked" | "appChoice" | "notAppChoice";
+  refetch?: () => void;
+};
 const Quote = () => {
   const { loginUser } = useAuth();
 
@@ -21,27 +27,24 @@ const Quote = () => {
     return <div>Error: {error}</div>;
   }
   if (loginUser) {
+    const renderQuoteCard = (
+      quote: TypeQuote,
+      type: "locked" | "appChoice" | "notAppChoice",
+      refetch?: () => Promise<void>
+    ) => (
+      <QuoteCard
+        quote={quote}
+        type={type}
+        refetch={refetch}
+        loginUser={loginUser}
+      />
+    );
     if (lockedQuote) {
-      return (
-        <QuoteCard quote={lockedQuote} type="locked" loginUser={loginUser} />
-      );
+      return renderQuoteCard(lockedQuote, "locked");
     } else if (data && loginUser.settings.quoteTypeForHome === "appChoice") {
-      return (
-        <QuoteCard
-          quote={data}
-          type="appChoice"
-          refetch={refetch}
-          loginUser={loginUser}
-        />
-      );
+      return renderQuoteCard(data, "appChoice", refetch);
     } else if (randomQuote) {
-      return (
-        <QuoteCard
-          quote={randomQuote}
-          type="notAppChoice"
-          loginUser={loginUser}
-        />
-      );
+      return renderQuoteCard(randomQuote, "notAppChoice");
     }
   }
 
