@@ -1,4 +1,3 @@
-"use client";
 import { useQuote } from "@/context/QuoteContext";
 import { useAuth } from "@/context/AuthContext";
 import QuoteCard from "./QuoteCard";
@@ -43,7 +42,7 @@ const Quote = () => {
     }
   }
 
-  return <div>No quotes available</div>;
+  return <div>Smoething wrong here</div>;
 };
 
 export default Quote;
