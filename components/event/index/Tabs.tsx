@@ -14,7 +14,6 @@ type Props = {
 const Tabs = ({ loginUser }: Props) => {
   const [user] = useAuthState(auth);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { lockedEvent, getLockedEvent, loginUserEvents, getLoginUserEvents, getEventsNotMine } = useEvent();
 
   return <List events={loginUserEvents} />;

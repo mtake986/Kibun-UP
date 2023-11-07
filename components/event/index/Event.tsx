@@ -31,6 +31,7 @@ const Event = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchDocs = async () => {
       if (!loginUser) fetchLoginUser(user);
     };
@@ -50,6 +51,9 @@ const Event = () => {
       }
     };
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   if (!user) {

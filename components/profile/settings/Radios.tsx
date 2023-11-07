@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import useFetchTags from "@/components/hooks/useFetchTags";
 import Radio from "./Radio";
+import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 
 const radios = [
   {
@@ -54,7 +55,13 @@ const Radios = () => {
         ))}
       </RadioGroup>
     );
-  } else return null;
+  } else
+    return (
+      <div>
+        <GoogleLoginBtn />
+        <p>Please log in to view this content.</p>
+      </div>
+    );
 };
 
 export default Radios;

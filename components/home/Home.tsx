@@ -38,10 +38,12 @@ const Home = () => {
     if (user) {
       try {
         fetchLoginUser(auth.currentUser);
-        if (!(lockedEvent || randomEvent) && !lockedEvent && !randomEvent) {
+        // if (!(lockedEvent || randomEvent) && !lockedEvent && !randomEvent) {
+        if (!lockedEvent && !randomEvent) {
           fetchEvents();
         }
-        if (!(lockedQuote || randomQuote) && !lockedQuote && !randomQuote) {
+        // if (!(lockedQuote || randomQuote) && !lockedQuote && !randomQuote) {
+        if (!lockedQuote && !randomQuote) {
           console.log("randomQuote: ", randomQuote);
           fetchQuotes();
         }

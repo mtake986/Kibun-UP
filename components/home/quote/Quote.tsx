@@ -14,18 +14,16 @@ const Quote = () => {
     createProperUrl(loginUser?.settings.tagForQuotableApi)
   );
 
-  // if (isPending) {
-  //   return <LoadingIndicator text={"Loading a Quote..."} />;
-  // }
-
+  if (isPending) {
+    return <LoadingIndicator text={"Loading a Quote..."} />;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   if (loginUser) {
     if (lockedQuote) {
       return (
-        <QuoteCard
-          quote={lockedQuote}
-          type="locked"
-          loginUser={loginUser}
-        />
+        <QuoteCard quote={lockedQuote} type="locked" loginUser={loginUser} />
       );
     } else if (data && loginUser.settings.quoteTypeForHome === "appChoice") {
       return (
@@ -46,7 +44,8 @@ const Quote = () => {
       );
     }
   }
-  return <div>Something wrong here</div>;
+
+  return <div>No quotes available</div>;
 };
 
 export default Quote;
