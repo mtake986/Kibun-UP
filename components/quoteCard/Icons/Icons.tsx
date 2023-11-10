@@ -5,7 +5,6 @@ import IconLock from "./IconLock";
 import IconLike from "./IconLike";
 import IconBookmark from "./IconBookmark";
 import IconTrash from "./IconTrash";
-
 type Props = {
   q: TypeQuote;
   setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +13,7 @@ type Props = {
 
 const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
   const { loginUser } = useAuth();
+
 
   if (!loginUser) {
     return null; // or return some default UI

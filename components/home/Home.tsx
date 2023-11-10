@@ -13,7 +13,7 @@ import { useAuth } from "@/context/AuthContext";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { loginUser, fetchLoginUser } = useAuth();
   const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent } =
@@ -25,7 +25,7 @@ const Home = () => {
   const [user] = useAuthState(auth);
   useEffect(() => {
     const fetchEvents = () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       if (user && !lockedEvent) getLockedEvent();
       if (user && !randomEvent) getRandomEvent();
     };
@@ -44,24 +44,26 @@ const Home = () => {
         // if (!(lockedQuote || randomQuote) && !lockedQuote && !randomQuote) {
         if (!lockedQuote && !randomQuote) {
           console.log("randomQuote: ", randomQuote);
-          fetchQuotes();
+          fetchQuotes().then(() => {
+            // setIsLoading(false);
+          });
         }
       } catch (error) {
         displayErrorToast(error);
       } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 500);
+        // setTimeout(() => {
+        //   setIsLoading(false);
+        // }, 500);
         console.log(auth.currentUser);
       }
     } else {
-      setIsLoading(true);
+      // setIsLoading(true);
     }
   }, [user]);
 
-  if (isLoading) {
-    return <LoadingIndicator text={"Loading contents..."} />;
-  } else {
+  // if (isLoading) {
+  //   return <LoadingIndicator text={"Loading contents..."} />;
+  // } else {
     if (!auth.currentUser) {
       return <GoogleLoginBtn />;
     } else {
@@ -79,7 +81,7 @@ const Home = () => {
           )}
         </>
       );
-    }
+    // }
   }
 };
 

@@ -22,6 +22,8 @@ export type TypeQuote = {
   isDraft: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  qid?: string; 
+  uid?: string;
 };
 
 export interface TypeEventInputValues {

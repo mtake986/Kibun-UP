@@ -14,6 +14,26 @@ const Quote = () => {
     createProperUrl(loginUser?.settings.tagForQuotableApi)
   );
 
+  if (!loginUser) return <div>No Login User</div>;
+
+  console.log('locked:', lockedQuote);
+  const renderQuoteCard = (
+    quote: TypeQuote,
+    type: "locked" | "appChoice" | "notAppChoice",
+    refetch?: () => Promise<void>
+  ) => (
+    <QuoteCard
+      quote={quote}
+      type={type}
+      refetch={refetch}
+      loginUser={loginUser}
+    />
+  );
+
+  if (lockedQuote) {
+    return renderQuoteCard(lockedQuote, "locked");
+  }
+
   if (isPending) {
     return <LoadingIndicator text={"Loading a Quote..."} />;
   }
@@ -21,18 +41,6 @@ const Quote = () => {
     return <div>Error: {error}</div>;
   }
   if (loginUser) {
-    const renderQuoteCard = (
-      quote: TypeQuote,
-      type: "locked" | "appChoice" | "notAppChoice",
-      refetch?: () => Promise<void>
-    ) => (
-      <QuoteCard
-        quote={quote}
-        type={type}
-        refetch={refetch}
-        loginUser={loginUser}
-      />
-    );
     if (lockedQuote) {
       return renderQuoteCard(lockedQuote, "locked");
     } else if (data && loginUser.settings.quoteTypeForHome === "appChoice") {
