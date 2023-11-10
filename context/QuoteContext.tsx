@@ -235,7 +235,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLockedQuote = async () => {
-    
     const q = query(lockedQuotesCollectionRef, where("uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);

@@ -25,6 +25,7 @@ const LoginUserProfile = () => {
     getLoginUserQuotes,
     fetchAllQuotes,
     lockedQuote,
+    loginUserQuotes,
     allQuotes,
   } = useQuote();
   const { loginUser, fetchLoginUser } = useAuth();
@@ -33,19 +34,24 @@ const LoginUserProfile = () => {
   const [isError, setIsError] = useState(false);
   useEffect(() => {
     try {
-      !loginUser ? fetchLoginUser(auth.currentUser) : null;
-      if (!allQuotes || allQuotes.length <= 0) fetchAllQuotes();
-      if (!loginUser) getLoginUserQuotes();
-      if (!lockedQuote) getLockedQuote();
-      if (!loginUserEvents || loginUserEvents.length <= 0) {
-        getLoginUserEvents();
+      if (loginUser) {
+        if (!allQuotes || allQuotes.length <= 0) fetchAllQuotes();
+        if (!loginUserQuotes || loginUserQuotes.length === 0) {
+          getLoginUserQuotes();
+        }
+        if (!lockedQuote) getLockedQuote();
+        if (!loginUserEvents || loginUserEvents.length === 0) {
+          getLoginUserEvents();
+        }
+      } else {
+        fetchLoginUser(auth.currentUser);
       }
       setIsError(false);
     } catch (error) {
       displayErrorToast(error);
       setIsError(true);
     }
-  }, [user]);
+  }, [user, loginUser]);
 
   if (!user) {
     return <GoogleLoginBtn />;
