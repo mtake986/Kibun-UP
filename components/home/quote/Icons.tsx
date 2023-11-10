@@ -76,6 +76,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
         />
       )}
 
+      {/* Not allowed to like and bookmark from Home */}
       {/* {!pathname.includes("home") ? (
         <>
           <span

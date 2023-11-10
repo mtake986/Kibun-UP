@@ -16,8 +16,6 @@ import {
   arrayUnion,
   arrayRemove,
   orderBy,
-  DocumentData,
-  QuerySnapshot,
 } from "firebase/firestore";
 
 import {
@@ -223,12 +221,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const lockThisQuote = async (uid: string, data: TypeQuote) => {
-    // let payload;
-    // if (!data.userInfo) {
-    //   payload = { ...data, userInfo: { uid } };
-    // } else {
-    //   payload = data;
-    // }
     await setDoc(doc(db, "lockedQuotes", uid), {
       ...data,
       qid: data.id,

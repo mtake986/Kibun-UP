@@ -15,8 +15,6 @@ const Quote = () => {
   );
 
   if (!loginUser) return <div>No Login User</div>;
-
-  console.log('locked:', lockedQuote);
   const renderQuoteCard = (
     quote: TypeQuote,
     type: "locked" | "appChoice" | "notAppChoice",
