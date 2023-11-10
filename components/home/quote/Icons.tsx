@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { useCallback } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { usePathname } from "next/navigation";
 
 type Props = {
   quote: TypeQuote;
@@ -22,6 +23,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
     storeBookmark,
     removeBookmark,
   } = useQuote();
+  const pathname = usePathname();
 
   const isLiked = quote.likedBy?.some((id) => id === loginUser.uid);
   const isBookmarked = quote.bookmarkedBy?.some((id) => id === loginUser.uid);
@@ -74,53 +76,72 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
         />
       )}
 
-      <span
-        onClick={() => {
-          isLiked
-            ? removeFav(loginUser.uid, quote)
-            : storeFav(loginUser.uid, quote);
-        }}
-        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
-      >
-        {isLiked ? (
-          <>
-            <Heart size={14} className="text-red-500" fill={heartFill} />
-            <span className={`text-red-500`}>{quote.likedBy?.length}</span>
-          </>
-        ) : (
-          <>
-            <Heart size={14} />
-            <span>{quote.likedBy?.length || 0}</span>
-          </>
-        )}
-      </span>
+      {/* Not allowed to like and bookmark from Home */}
+      {/* {!pathname.includes("home") ? (
+        <>
+          <span
+            onClick={() => {
+              isLiked
+                ? removeFav(loginUser.uid, quote)
+                : storeFav(loginUser.uid, quote);
+            }}
+            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+          >
+            {isLiked ? (
+              <>
+                <Heart size={14} className="text-red-500" fill={heartFill} />
+                <span className={`text-red-500`}>{quote.likedBy?.length}</span>
+              </>
+            ) : (
+              <>
+                <Heart size={14} />
+                <span>{quote.likedBy?.length || 0}</span>
+              </>
+            )}
+          </span>
 
-      <span
-        onClick={useCallback(() => {
-          try {
-            isBookmarked
-              ? removeBookmark(loginUser.uid, quote)
-              : storeBookmark(loginUser.uid, quote);
-          } catch (e) {
-            displayErrorToast(e);
-          }
-        }, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, quote])}
-        className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
-      >
-        {isBookmarked ? (
-          <>
-            <BsBookmarkFill size={12} className="text-green-500" />
-            <span className={`text-green-500`}>
-              {quote.bookmarkedBy?.length || 0}
-            </span>
-          </>
-        ) : (
-          <>
-            <BsBookmark size={12} />
-            <span>{quote.bookmarkedBy?.length}</span>
-          </>
-        )}
-      </span>
+          <span
+            onClick={() => {
+              try {
+                if (isBookmarked) {
+                  removeBookmark(loginUser.uid, quote);
+                  console.log(
+                    "remove bookmark",
+                    quote.id,
+                    quote.bookmarkedBy,
+                    loginUser.uid
+                  );
+                } else {
+                  storeBookmark(loginUser.uid, quote);
+                  console.log(
+                    "store bookmark",
+                    quote.id,
+                    quote.bookmarkedBy,
+                    loginUser.uid
+                  );
+                }
+              } catch (e) {
+                displayErrorToast(e);
+              }
+            }}
+            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+          >
+            {isBookmarked ? (
+              <>
+                <BsBookmarkFill size={12} className="text-green-500" />
+                <span className={`text-green-500`}>
+                  {quote.bookmarkedBy?.length || 0}
+                </span>
+              </>
+            ) : (
+              <>
+                <BsBookmark size={12} />
+                <span>{quote.bookmarkedBy?.length}</span>
+              </>
+            )}
+          </span>
+        </>
+      ) : null} */}
     </div>
   );
 };

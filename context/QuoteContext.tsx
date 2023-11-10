@@ -16,7 +16,6 @@ import {
   arrayUnion,
   arrayRemove,
   orderBy,
-  DocumentData,
 } from "firebase/firestore";
 
 import {
@@ -58,7 +57,7 @@ type QuoteContext = {
     values: TypeQuoteInputValues,
     qid: string,
     setIsLoading: (boo: boolean) => void,
-    uid?: string,
+    uid?: string
   ) => void;
 
   quotesNotMine: TypeQuote[];
@@ -221,14 +220,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-  const lockThisQuote = async (uid: string, data: any) => {
-    let payload;
-    if (!data.userInfo) {
-      payload = { ...data, userInfo: { uid } };
-    } else {
-      payload = data;
-    }
-    await setDoc(doc(db, "lockedQuotes", uid), payload);
+  const lockThisQuote = async (uid: string, data: TypeQuote) => {
+    await setDoc(doc(db, "lockedQuotes", uid), {
+      ...data,
+      qid: data.id,
+      uid: uid,
+    });
     setLockedQuote(data);
   };
 
@@ -238,22 +235,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLockedQuote = async () => {
-    if (user?.uid) {
-      const q = query(
-        lockedQuotesCollectionRef,
-        where("userInfo.uid", "==", user?.uid)
-      );
-      onSnapshot(q, (snapshot) => {
-        setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);
-      });
-    }
+    
+    const q = query(lockedQuotesCollectionRef, where("uid", "==", user?.uid));
+    onSnapshot(q, (snapshot) => {
+      setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);
+    });
   };
 
   const handleUpdate = async (
     values: TypeQuoteInputValues,
     qid: string,
     setIsLoading: (boo: boolean) => void,
-    uid?: string,
+    uid?: string
   ) => {
     setIsLoading(true);
     const docRef = doc(db, "quotes", qid);
@@ -335,7 +328,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       });
     } else {
-      await addDoc(quotesCollectionRef, {
+      await setDoc(doc(db, "quotes", q.id), {
         ...q,
         bookmarkedBy: [uid],
         createdAt: serverTimestamp(),
@@ -350,9 +343,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       await updateDoc(quoteDocRef, {
         bookmarkedBy: arrayRemove(uid),
       }).catch((e) => {
-        displayErrorToast({
-          e,
-        });
+        displayErrorToast(e);
       });
     }
   };
