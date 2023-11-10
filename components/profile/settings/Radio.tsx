@@ -28,7 +28,7 @@ const Radio = ({
         <RadioGroupItem
           value={radio.id}
           id={radio.id}
-          className={`text-gray-600 border-gray-300 `}
+          className={`text-gray-600 border-gray-300 dark:text-white  `}
           onClick={(e) => updateQuoteTypeForHome(radio.id)}
           disabled={!loginUserQuotes}
         />
