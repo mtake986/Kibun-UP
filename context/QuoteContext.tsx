@@ -234,11 +234,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setLockedQuote(undefined);
   };
 
-  const getLockedQuote = async () => {
-    
+  const getLockedQuote = () => {
     const q = query(lockedQuotesCollectionRef, where("uid", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
-      setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);
+      if (snapshot.docs[0]) {
+        setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);
+      } else {
+        // Handle the case when snapshot.docs[0] is undefined
+      }
     });
   };
 
