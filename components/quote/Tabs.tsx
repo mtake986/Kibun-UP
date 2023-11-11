@@ -8,7 +8,9 @@ import List from "./mine/List";
 import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
 import LoadingIndicator from "../home/LoadingIndicator";
-import { TypeLoginUser } from "@/types/type";
+import { TypeLoginUser, TypeQuote, typeTabNamesOfQuotes } from "@/types/type";
+import ListOfRandom from "./random/ListOfRandom";
+import useQuotesFromQuotableAPI from "../hooks/useQuotesFromQuotableAPI";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -16,50 +18,50 @@ type Props = {
 const SwitchTab = ({ loginUser }: Props) => {
   const [user] = useAuthState(auth);
 
-  const {
-    loginUserQuotes,
-    getLoginUserQuotes,
-    quotesNotMine,
-    getLockedQuote,
-    whichList,
-    handleWhichList,
-    lockedQuote,
-    getQuotesNotMine,
-  } = useQuote();
+  const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
+    useQuote();
 
-  return (
-    <div>
-      <div className="mb-3 flex items-stretch">
-        {tabs.map((tab) => (
-          <span
-            key={tab.name}
-            className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
-              whichList === tab.name
-                ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
-                : ""
-            }`}
-            onClick={() => handleWhichList(tab.name)}
-          >
-            {tab.label}
-          </span>
-        ))}
+  const { data, isPending, error, refetch } = useQuotesFromQuotableAPI();
+
+  if (data) {
+    return (
+      <div>
+        <div className="mb-3 flex items-stretch">
+          {tabs.map((tab) => (
+            <span
+              key={tab.name}
+              className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
+                whichList === tab.name
+                  ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
+                  : ""
+              }`}
+              onClick={() => handleWhichList(tab.name)}
+            >
+              {tab.label}
+            </span>
+          ))}
+        </div>
+
+        {whichList === "mine" ? (
+          <List quotes={loginUserQuotes} />
+        ) : whichList === "all" ? (
+          <ListNotMine quotes={quotesNotMine} />
+        ) : (
+          <ListOfRandom quotes={data} />
+        )}
       </div>
-
-      {whichList === "yours" ? (
-        <List quotes={loginUserQuotes} />
-      ) : (
-        <ListNotMine quotes={quotesNotMine} />
-      )}
-    </div>
-  );
+    );
+  }
+  return <div>Something is off</div>;
 };
 
-const tabs: { name: "all" | "yours"; label: string }[] = [
+const tabs: { name: typeTabNamesOfQuotes; label: string }[] = [
   {
-    name: "yours",
+    name: "mine",
     label: "Mine",
   },
   { name: "all", label: "All" },
+  { name: "api", label: "Random" },
 ];
 
 export default SwitchTab;

@@ -22,7 +22,7 @@ export type TypeQuote = {
   isDraft: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  qid?: string; 
+  qid?: string;
   uid?: string;
 };
 
@@ -98,3 +98,5 @@ export type profileTabs = {
   name: "quotes" | "bookmarks" | "likes" | "events";
   length: number;
 };
+
+export type typeTabNamesOfQuotes = "all" | "mine" | "api";
