@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import useFetchTags from "@/components/hooks/useFetchTags";
 import Radio from "./Radio";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 
 const radios = [
   {
