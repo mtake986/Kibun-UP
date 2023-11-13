@@ -30,13 +30,12 @@ const Quote = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchDocs = async () => {
-
-          if (!loginUserQuotes || loginUserQuotes.length === 0) {
-            getLoginUserQuotes();
-          }
-          if (!lockedQuote) getLockedQuote();
-          if (!quotesNotMine || quotesNotMine.length === 0) getQuotesNotMine();
-      }
+        if (!loginUserQuotes || loginUserQuotes.length === 0) {
+          getLoginUserQuotes();
+        }
+        if (!lockedQuote) getLockedQuote();
+        if (!quotesNotMine || quotesNotMine.length === 0) getQuotesNotMine();
+      };
       try {
         if (loginUser) {
           fetchDocs();
@@ -67,7 +66,7 @@ const Quote = () => {
           ) : whichList === "all" ? (
             <MobileSortFilterForNotMineOpenBtn />
           ) : null}
-          <Tabs loginUser={loginUser} />
+          <Tabs />
         </div>
       </div>
     );

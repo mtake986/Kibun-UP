@@ -100,3 +100,5 @@ export type profileTabs = {
 };
 
 export type typeTabNamesOfQuotes = "all" | "mine" | "api";
+
+export type typeQuotesPerPage = 10 | 25 | 50 | 100;

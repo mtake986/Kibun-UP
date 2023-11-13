@@ -7,39 +7,58 @@ import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortFilterNotMine from "./sort/SortFilterNotMine";
 import { useQuote } from "@/context/QuoteContext";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
+import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
+import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
+import SelectResultPerPage from "./SelectQuotesPerPage";
 
-type Props = {
-  quotes: TypeQuote[];
-};
-
-const ListOfRandom = ({ quotes }: Props) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  console.log(quotes.length, quotes)
-  const { nPages, currentRecords } = usePagination(currentPage, quotes);
-
+const ListOfRandom = () => {
+  const {
+    currentRecords,
+    isPending,
+    error,
+    refetch,
+    nPages,
+    currentPage,
+    setCurrentPage,
+  } = useQuotesFromQuotableAPI();
+  // const { nPages, currentRecords } = usePagination(currentPage, quotes);
   const { sortFilterAreaForNotMineShown } = useQuote();
-  return (
-    <div className="mb-20">
-      {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
-      {currentRecords && currentRecords.length >= 1 ? (
-        <div className="flex flex-col gap-3">
-          {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} />
-          ))}
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
-        </div>
-      ) : (
-        <NoFetchedData text="No quotes found" />
-      )}
-    </div>
-  );
+
+  if (isPending) {
+    return <LoadingSpinnerL />;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (currentRecords) {
+    return (
+      <div className="mb-20">
+        {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
+        {currentRecords && currentRecords.length >= 1 ? (
+          <div className="flex flex-col gap-3">
+            {currentRecords.map((doc, i) => (
+              <QuoteCard key={doc.id} q={doc} />
+            ))}
+            <div className="flex items-center justify-between">
+              {nPages >= 2 && (
+                <PaginationBtns
+                  nPages={nPages}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              )}
+              <SelectResultPerPage  />
+            </div>
+          </div>
+        ) : (
+          <NoFetchedData text="No quotes found" />
+        )}
+      </div>
+    );
+  }
+  return <div>No Quotes Found</div>;
 };
 
 export default ListOfRandom;
