@@ -11,6 +11,8 @@ import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAP
 import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 import SelectResultPerPage from "./SelectQuotesPerPage";
 import SelectTags from "./SelectTags";
+import { Settings } from "lucide-react";
+import { MdSettings } from "react-icons/md";
 
 
 type Props = {
@@ -47,6 +49,8 @@ const ListOfRandom = ({loginUser}: Props) => {
         {currentRecords && currentRecords.length >= 1 ? (
           <div className="flex flex-col gap-3">
             {/* Actions */}
+            {/* MODAL */}
+            {/* <Settings className="hover:opacity-70 cursor-pointer hover:rotate-45 duration-300 ease-in" /> */}
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-5">
               {/* Pagination */}
               <div className="flex flex-col gap-1 xs:flex-row xs:items-center xs:justify-between">
