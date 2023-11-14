@@ -1,4 +1,4 @@
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, typeQuotesPerPage } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";
@@ -15,7 +15,7 @@ const QuoteCard = ({ q }: Props) => {
   const [isCardLoading, setIsCardLoading] = useState(false);
 
   return (
-    <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
+    <div className="relative rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isCardLoading ? (
         <LoadingSpinnerS />
       ) : isUpdateMode ? (

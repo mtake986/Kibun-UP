@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import { fontRoboto } from "../utils/fonts";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import { linkHoverEffect } from "@/data/CONSTANTS";
 
 export default function Header() {
   const { fetchLoginUser } = useAuth();
@@ -23,7 +22,7 @@ export default function Header() {
     return `text-violet-500 dark:text-white ${
       pathname === link
         ? "font-bold underline underline-offset-2"
-        : linkHoverEffect
+        : "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100 dark:after:bg-white"
     }`;
   }
 

@@ -6,7 +6,10 @@ import List from "./mine/List";
 import { TypeLoginUser, typeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 
-const SwitchTab = () => {
+type Props = {
+  loginUser: TypeLoginUser;
+};
+const SwitchTab = ({ loginUser }: Props) => {
   const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
     useQuote();
 
@@ -33,7 +36,7 @@ const SwitchTab = () => {
       ) : whichList === "all" ? (
         <ListNotMine quotes={quotesNotMine} />
       ) : (
-        <ListOfRandom />
+        <ListOfRandom loginUser={loginUser} />
       )}
     </div>
   );

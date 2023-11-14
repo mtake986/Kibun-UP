@@ -740,7 +740,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         )
           .then((response) => {
             if (!response.ok) {
-              throw Error(`不具合が発生しました!! status: ${response.status}`);
+              throw Error(`Something went wrong!! status: ${response.status}`);
             }
             return response.json();
           })

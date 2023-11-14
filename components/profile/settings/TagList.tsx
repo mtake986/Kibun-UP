@@ -21,9 +21,7 @@ type Props = {
 
 const TagList = ({ loginUser }: Props) => {
   const { updateTagForQuotableApi } = useAuth();
-  const { tags, error, isPending } = useFetchTags(
-    "https://api.quotable.io/tags"
-  );
+  const { tags, error, isPending } = useFetchTags();
 
   if (isPending) {
     return <LoadingSpinnerS />;

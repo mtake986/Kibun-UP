@@ -18,7 +18,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
     fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw Error(`不具合が発生しました!! status: ${response.status}`);
+          throw Error(`Something went wrong!! status: ${response.status}`);
         }
         return response.json();
       })
@@ -44,34 +44,35 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
         displayErrorToast(
           `Failed to fetch a quote with a tag, ${url}. Try again later.`
         );
-        fetch(DEFAULT_URL_FOR_RANDOM_QUOTE)
-          .then((response) => {
-            if (!response.ok) {
-              throw Error(`不具合が発生しました!! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((res) => {
-            setData({
-              id: res[0]._id,
-              author: res[0].author,
-              content: res[0].content,
-              tags: res[0].tags,
-            } as TypeQuote);
-            // setTimeout(() => {
-            setIsPending(false);
-            // }, 500);
-          })
-          .catch((e) => {
-            // error handling when failed to even fetch a quote randomly
-            displayErrorToast(
-              `Failed to fetch a random quote, ${url}. Try again later.`
-            );
-            setError(e.message);
-            // setTimeout(() => {
-            setIsPending(false);
-            // }, 500);
-          });
+        setIsPending(false);
+        // fetch(DEFAULT_URL_FOR_RANDOM_QUOTE)
+        //   .then((response) => {
+        //     if (!response.ok) {
+        //       throw Error(`Something went wrong!! status: ${response.status}`);
+        //     }
+        //     return response.json();
+        //   })
+        //   .then((res) => {
+        //     setData({
+        //       id: res[0]._id,
+        //       author: res[0].author,
+        //       content: res[0].content,
+        //       tags: res[0].tags,
+        //     } as TypeQuote);
+        //     // setTimeout(() => {
+        //     setIsPending(false);
+        //     // }, 500);
+        //   })
+        //   .catch((e) => {
+        //     // error handling when failed to even fetch a quote randomly
+        //     displayErrorToast(
+        //       `Failed to fetch a random quote, ${url}. Try again later.`
+        //     );
+        //     setError(e.message);
+        //     // setTimeout(() => {
+        //     setIsPending(false);
+        //     // }, 500);
+        //   });
       });
   }, [url]);
 

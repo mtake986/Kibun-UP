@@ -66,7 +66,7 @@ const Quote = () => {
           ) : whichList === "all" ? (
             <MobileSortFilterForNotMineOpenBtn />
           ) : null}
-          <Tabs />
+          <Tabs loginUser={loginUser} />
         </div>
       </div>
     );

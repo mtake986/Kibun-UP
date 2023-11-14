@@ -15,58 +15,86 @@ const useQuotesFromQuotableAPI = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [nPages, setNPages] = useState<number>(0);
   const [currentRecords, setCurrentRecords] = useState<TypeQuote[]>([]);
-  const [quotesPerPage, setQuotesPerPage] = useState<typeQuotesPerPage>(10);
-  
-  const fetchData = useCallback(async (currentPage: number) => {
-    const url = DEFAULT_URL_FOR_ALL_QUOTES + `?page=${currentPage}`;
-    console.log(url);
-    setIsPending(true);
-    if (loginUser) {
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw Error(`不具合が発生しました!! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((result) => {
-          console.log("result: ", result);
-          setNPages(result.totalPages);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-          const quotes = result.results.map((quote: any) => ({
-            id: quote._id,
-            author: quote.author,
-            content: quote.content,
-            tags: quote.tags.map((tag: string) => {
-              return { name: tag, color: "white" };
-            }),
-            likedBy: [],
-            bookmarkedBy: [],
-            userInfo: "api",
-            isDraft: false,
-          }));
-          setCurrentRecords(quotes);
-          setIsPending(false);
-        })
-        .catch((e) => {
-          displayErrorToast(
-            `Failed to fetch a quote with a tag, ${url}. Try again later.`
-          );
-        });
-    } else {
-      fetchLoginUser(auth.currentUser);
-    }
-  }, []);
+  const fetchData = useCallback(
+    async (currentPage: number, selectedTags: string[]) => {
+      const pageNum = `page=${currentPage}`;
+      const limit = `limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
+      const tags = selectedTags ? `tags=${selectedTags.join("|")}` : "";
+      const sortBy = "sortBy=author";
+      console.log(selectedTags, tags);
+      const url =
+        DEFAULT_URL_FOR_ALL_QUOTES +
+        "?" +
+        pageNum +
+        "&" +
+        limit +
+        "&" +
+        sortBy +
+        "&" +
+        tags;
+      console.log(url);
+      setIsPending(true);
+      if (loginUser) {
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw Error(`Something went wrong!! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((result) => {
+            console.log("result: ", result);
+            setNPages(result.totalPages);
 
-  const changeQuotesPerPage = (quotesPerPage: typeQuotesPerPage) => {
-    setQuotesPerPage(quotesPerPage);
-    setCurrentPage(1);
-  }
+            const quotes = result.results.map((quote: any) => ({
+              id: quote._id,
+              author: quote.author,
+              content: quote.content,
+              tags: quote.tags.map((tag: string) => {
+                return { name: tag, color: "white" };
+              }),
+              likedBy: [],
+              bookmarkedBy: [],
+              userInfo: "api",
+              isDraft: false,
+            }));
+            setCurrentRecords(quotes);
+            console.log(currentRecords.length);
+            setIsPending(false);
+          })
+          .catch((e) => {
+            displayErrorToast(
+              `Failed to fetch a quote with a tag, ${url}. Try again later.`
+            );
+            setIsPending(false);
+          });
+      } else {
+        fetchLoginUser(auth.currentUser);
+      }
+    },
+    [loginUser?.settings?.apiQuotesPerPage]
+  );
 
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
+    fetchData(currentPage, selectedTags);
+  }, [currentPage, loginUser?.settings?.apiQuotesPerPage, selectedTags]);
+  // }, [currentPage, loginUser?.settings?.apiQuotesPerPage, selectedTags]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [loginUser?.settings?.apiQuotesPerPage]);
+
+  const handleTags = (value: string) => {
+    setSelectedTags(() => {
+      if (selectedTags.includes(value)) {
+        return selectedTags.filter((tag) => tag !== value);
+      } else {
+        return [...selectedTags, value];
+      }
+    });
+  };
   return {
     currentRecords,
     isPending,
@@ -76,9 +104,9 @@ const useQuotesFromQuotableAPI = () => {
     currentPage,
     nPages,
     setNPages,
-    quotesPerPage,
-    setQuotesPerPage,
-    changeQuotesPerPage,
+    selectedTags,
+    setSelectedTags,
+    handleTags,
   };
 };
 

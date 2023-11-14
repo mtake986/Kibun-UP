@@ -57,7 +57,7 @@ export interface ISortFilterBy {
   searchTag: string;
 }
 
-export interface TypeLoginUser {
+export type TypeLoginUser = {
   uid: string;
   email: string;
   displayName: string;
@@ -66,9 +66,12 @@ export interface TypeLoginUser {
   settings: {
     itemsPerPage: number;
     tagForQuotableApi: string;
-    quoteTypeForHome: "bookmarks" | "mine" | "appChoice";
+    quoteTypeForHome: typeQuoteTypeForHome;
+    apiQuotesPerPage: typeQuotesPerPage;
   };
-}
+};
+
+export type typeQuoteTypeForHome = "bookmarks" | "mine" | "appChoice";
 
 export type TypeUpdateUserInputs = {
   photoURL?: string | null;

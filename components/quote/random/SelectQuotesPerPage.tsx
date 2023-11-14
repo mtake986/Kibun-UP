@@ -6,25 +6,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/context/AuthContext";
 import { QUOTES_PER_PAGE } from "@/data/CONSTANTS";
+import { typeQuotesPerPage } from "@/types/type";
 
 const SelectQuotesPerPage = () => {
-  const { changeQuotesPerPage } = useQuotesFromQuotableAPI();
+  const { updateQuotesPerPage, loginUser } = useAuth();
+  // const { handleQuotesPerPage } = useQuotesFromQuotableAPI();
 
   return (
     <Select
-      onValueChange={(value) => {
-        changeQuotesPerPage(value);
+      onValueChange={(value: unknown) => {
+        updateQuotesPerPage(Number(value) as typeQuotesPerPage);
+        // handleQuotesPerPage(Number(value) as typeQuotesPerPage);
       }}
-      value={sortFilterByForMine.order}
+      value={loginUser?.settings?.apiQuotesPerPage.toString()}
     >
-      <SelectTrigger className="w-full text-xs sm:w-[120px]">
-        <SelectValue placeholder="Ex.) Order" />
+      <SelectTrigger className="w-full xs:max-w-[200px] text-xs">
+        <SelectValue
+          placeholder="Select Quotes/Page"
+        />
       </SelectTrigger>
       <SelectContent>
         {QUOTES_PER_PAGE.map((value) => (
           <SelectItem key={value} value={value.toString()}>
-            {value}
+            {value} Qoutes/Page
           </SelectItem>
         ))}
       </SelectContent>

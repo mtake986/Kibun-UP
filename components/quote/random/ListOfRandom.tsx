@@ -1,5 +1,5 @@
 "use client";
-import { TypeQuote } from "@/types/type";
+import { TypeLoginUser, TypeQuote } from "@/types/type";
 import { useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
 import PaginationBtns from "@/components/utils/PaginationBtns";
@@ -10,27 +10,35 @@ import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 import SelectResultPerPage from "./SelectQuotesPerPage";
+import SelectTags from "./SelectTags";
 
-const ListOfRandom = () => {
+
+type Props = {
+  loginUser: TypeLoginUser;
+};
+
+const ListOfRandom = ({loginUser}: Props) => {
   const {
     currentRecords,
     isPending,
     error,
-    refetch,
     nPages,
     currentPage,
     setCurrentPage,
+    selectedTags,
+    handleTags,
   } = useQuotesFromQuotableAPI();
+  
   // const { nPages, currentRecords } = usePagination(currentPage, quotes);
   const { sortFilterAreaForNotMineShown } = useQuote();
 
-  if (isPending) {
-    return <LoadingSpinnerL />;
-  }
+  // if (isPending) {
+  //   return <LoadingSpinnerL />;
+  // }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // if (error) {
+  //   return <div>{error}</div>;
+  // }
 
   if (currentRecords) {
     return (
@@ -38,19 +46,26 @@ const ListOfRandom = () => {
         {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
         {currentRecords && currentRecords.length >= 1 ? (
           <div className="flex flex-col gap-3">
+            {/* Actions */}
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-5">
+              {/* Pagination */}
+              <div className="flex flex-col gap-1 xs:flex-row xs:items-center xs:justify-between">
+                {nPages >= 2 && (
+                  <PaginationBtns
+                    nPages={nPages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                )}
+                <SelectResultPerPage />
+              </div>
+              {/* Tags for filter */}
+              <SelectTags selectedTags={selectedTags} handleTags={handleTags} />
+            </div>
+            {/* List */}
             {currentRecords.map((doc, i) => (
               <QuoteCard key={doc.id} q={doc} />
             ))}
-            <div className="flex items-center justify-between">
-              {nPages >= 2 && (
-                <PaginationBtns
-                  nPages={nPages}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                />
-              )}
-              <SelectResultPerPage  />
-            </div>
           </div>
         ) : (
           <NoFetchedData text="No quotes found" />
