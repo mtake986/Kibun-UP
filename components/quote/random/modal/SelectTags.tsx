@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { TypeTagsQuotableAPI, typeQuotesPerPage } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
+import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 
 type Props = {
   selectedTags: string[];
@@ -19,10 +20,15 @@ const SelectTags = ({ selectedTags, handleTags }: Props) => {
   const { updateQuotesPerPage, loginUser } = useAuth();
   const { tags, error, isPending } = useFetchTags();
 
+  if (isPending) {
+    return <LoadingSpinnerL />;
+  }
   return (
     <div>
-      <p className="mb-1">{selectedTags.length} selected</p>
-      <div className="flex h-20 flex-wrap gap-3 overflow-scroll">
+      <p className="mb-1">
+        {selectedTags.length} of {tags.length} selected
+      </p>
+      <div className="flex flex-wrap gap-3 overflow-scroll">
         {tags.map((tag: TypeTagsQuotableAPI) => (
           <div key={tag.name} className="flex items-center space-x-2">
             <Checkbox
@@ -30,6 +36,7 @@ const SelectTags = ({ selectedTags, handleTags }: Props) => {
               onClick={() => {
                 handleTags(tag.name);
               }}
+              checked={isPending ? false : selectedTags.includes(tag.name)}
             />
             <div className="grid gap-1.5 leading-none">
               <label

@@ -25,13 +25,17 @@ const useFetchTags = () => {
           .filter((tag: any) => tag.quoteCount > 10)
           .map((tag: any) => ({ name: tag.name, quoteCount: tag.quoteCount }));
         setTags(removeDuplicates(tagsWithDuplicates));
-        setIsPending(false);
+        setTimeout(() => {
+          setIsPending(false);
+        }, 500);
       })
       .catch((err) => {
         setError(err.message);
-        setIsPending(false);
+        setTimeout(() => {
+          setIsPending(false);
+        }, 500);
       });
-  }, [url]);
+  }, []);
 
   useEffect(() => {
     fetchTags();

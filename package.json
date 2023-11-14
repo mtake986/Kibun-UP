@@ -64,6 +64,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "daisyui": "^4.0.5",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0"
   },
