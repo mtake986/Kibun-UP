@@ -1,4 +1,3 @@
-
 import {
   Select,
   SelectContent,
@@ -15,8 +14,11 @@ const SelectQuotesPerPage = () => {
 
   return (
     <Select
-      onValueChange={(value: unknown) => {
-        updateQuotesPerPage(Number(value) as TypeQuotesPerPage);
+      onValueChange={(value: string) => {
+        const numericValue = Number(value);
+        if (QUOTES_PER_PAGE.includes(numericValue)) {
+          updateQuotesPerPage(numericValue as TypeQuotesPerPage);
+        }
       }}
       value={loginUser?.settings?.apiQuotesPerPage.toString()}
     >

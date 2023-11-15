@@ -19,7 +19,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
       .then((response) => {
         if (!response.ok) {
           throw Error(
-            `Something went wrong!! status: c ${response.statusText}`
+            `Something went wrong!! status: ${response.status} ${response.statusText}`
           );
         }
         return response.json();
@@ -42,7 +42,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
       .catch((e) => {
         // error handling when no quote with this user's tag is found
         displayErrorToast(
-          `Failed to fetch a quote with a tag. Try again later.`
+          `Failed to fetch a quote with a tag. Try again later. \n Error: ${e}`
         );
         setIsPending(false);
       });

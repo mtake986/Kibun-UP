@@ -66,6 +66,7 @@ const useQuotesFromQuotableAPI = () => {
             displayErrorToast(
               `Failed to fetch quotes. Please try again later.`
             );
+            setError(e.message);
             setIsPending(false);
           });
       } else {
