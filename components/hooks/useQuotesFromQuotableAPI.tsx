@@ -3,8 +3,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
-import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
-import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
+import { AND_OR, DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
+import { TypeAndOr, TypeQuote } from "@/types/type";
+import useSelectedAuthors from "./useSelectedAuthors";
+
+export type PropsFetchData = {
+  currentPage: number;
+  selectedTags: string[];
+  selectedAuthors: string[];
+  andOr: TypeAndOr;
+};
 
 const useQuotesFromQuotableAPI = () => {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -15,14 +23,27 @@ const useQuotesFromQuotableAPI = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [nPages, setNPages] = useState<number>(0);
   const [currentRecords, setCurrentRecords] = useState<TypeQuote[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [andOr, setAndOr] = useState<TypeAndOr>({ label: "or", value: "|" });
+  const { selectedAuthors, handleAuthors } = useSelectedAuthors();
 
   const fetchData = useCallback(
-    async (currentPage: number, selectedTags: string[]) => {
+    async ({
+      currentPage,
+      selectedTags,
+      selectedAuthors,
+      andOr,
+    }: PropsFetchData) => {
       const pageNum = `page=${currentPage}`;
       const limit = `limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
-      const tags = selectedTags ? `tags=${selectedTags.join("|")}` : "";
+      const tags = selectedTags ? `tags=${selectedTags.join(andOr.value)}` : "";
       const sortBy = "sortBy=author";
+      const authors = selectedAuthors
+        ? `author=${selectedAuthors.join("|")}`
+        : "";
+
       const url =
         DEFAULT_URL_FOR_ALL_QUOTES +
         "?" +
@@ -32,7 +53,12 @@ const useQuotesFromQuotableAPI = () => {
         "&" +
         sortBy +
         "&" +
-        tags;
+        tags +
+        "&" +
+        authors;
+
+      console.log(url);
+
       setIsPending(true);
       if (loginUser) {
         fetch(url)
@@ -46,10 +72,12 @@ const useQuotesFromQuotableAPI = () => {
           })
           .then((result) => {
             setNPages(result.totalPages);
+            setTotalCount(result.totalCount);
 
-            const quotes = result.results.map((quote: any) => ({
+            const quotes: TypeQuote[] = result.results.map((quote: any) => ({
               id: quote._id,
               author: quote.author,
+              authorSlug: quote.authorSlug,
               content: quote.content,
               tags: quote.tags.map((tag: string) => {
                 return { name: tag, color: "white" };
@@ -77,11 +105,9 @@ const useQuotesFromQuotableAPI = () => {
   );
 
   useEffect(() => {
-    fetchData(currentPage, selectedTags);
+    fetchData({ currentPage, selectedTags, selectedAuthors, andOr });
   }, [
-    currentPage,
-    loginUser?.settings?.apiQuotesPerPage,
-    selectedTags,
+    // loginUser?.settings?.apiQuotesPerPage,
     fetchData,
   ]);
 
@@ -98,6 +124,10 @@ const useQuotesFromQuotableAPI = () => {
       }
     });
   };
+
+  const handleAndOr = (value: string) => {
+    setAndOr(AND_OR.find((ele) => ele.label === value) as TypeAndOr);
+  };
   return {
     currentRecords,
     isPending,
@@ -106,10 +136,15 @@ const useQuotesFromQuotableAPI = () => {
     setCurrentPage,
     currentPage,
     nPages,
-    setNPages,
+    totalCount,
     selectedTags,
     setSelectedTags,
     handleTags,
+    andOr,
+    handleAndOr,
+    selectedAuthors,
+    handleAuthors,
+    fetchData,
   };
 };
 

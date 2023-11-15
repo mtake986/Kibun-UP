@@ -26,19 +26,19 @@ const Content = ({ event }: Props) => {
       />
       {event.place && (
         <Info
-          icon={<MdPlace size={20} className="mr-5" />}
+          icon={<MdPlace size={16} className="mr-5" />}
           text={event.place}
         />
       )}
       {event.eventDate && (
         <Info
-          icon={<BiTime size={24} className="mr-5" />}
+          icon={<BiTime size={20} className="mr-5" />}
           text={event.eventDate ? event.eventDate.toDate().toDateString() : 'Error'}
         />
       )}
       {event.description && (
         <Info
-          icon={<BiInfoCircle size={24} className="mr-5" />}
+          icon={<BiInfoCircle size={20} className="mr-5" />}
           text={event.description}
         />
       )}

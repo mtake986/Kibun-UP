@@ -62,6 +62,7 @@ export const DEFAULT_URL_FOR_RANDOM_QUOTE =
 export const DEFAULT_URL_FOR_ALL_QUOTES =
   "https://api.quotable.io/quotes";
 export const DEFAULT_URL_TO_FETCH_TAGS = "https://api.quotable.io/tags";
+export const DEFAULT_URL_TO_FETCH_AUTHORS = "https://api.quotable.io/authors";
 export const VALIDATION_STATUS = {
   FAIL: "fail",
   PASS: "pass",
@@ -70,4 +71,15 @@ export const VALIDATION_STATUS = {
 export const linkHoverEffect =
   "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100 dark:after:bg-white";
 
-export const QUOTES_PER_PAGE = [10, 25, 50, 100];
+export const QUOTES_PER_PAGE = [10, 25, 50, 100]
+
+export const AND_OR = [
+  {
+    label: "and",
+    value: "&",
+  }, 
+  {
+    label: "or",
+    value: "|",
+  }
+];

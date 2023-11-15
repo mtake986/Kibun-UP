@@ -8,6 +8,7 @@ import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -20,9 +21,15 @@ const ListOfRandom = ({ loginUser }: Props) => {
     error,
     nPages,
     currentPage,
+    totalCount,
     setCurrentPage,
     selectedTags,
     handleTags,
+    selectedAuthors,
+    handleAuthors,
+    fetchData,
+    andOr,
+    handleAndOr,
   } = useQuotesFromQuotableAPI();
 
   if (isPending) {
@@ -46,11 +53,27 @@ const ListOfRandom = ({ loginUser }: Props) => {
                 setCurrentPage={setCurrentPage}
               />
             )}
-            <Modal selectedTags={selectedTags} handleTags={handleTags} />
+            <Modal
+              selectedTags={selectedTags}
+              currentPage={currentPage}
+              selectedAuthors={selectedAuthors}
+              andOr={andOr}
+              handleAndOr={handleAndOr}
+              handleTags={handleTags}
+              fetchData={fetchData}
+            />
           </div>
           {/* List */}
+          <div className="flex flex-col gap-3 text-gray-400">
+            {totalCount} quotes found
+          </div>
           {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} />
+            <QuoteCard
+              key={doc.id}
+              q={doc}
+              selectedAuthors={selectedAuthors}
+              handleAuthors={handleAuthors}
+            />
           ))}
         </div>
       ) : (

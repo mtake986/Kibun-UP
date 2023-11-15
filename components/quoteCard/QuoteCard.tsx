@@ -8,9 +8,11 @@ import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
+  selectedAuthors: string[];
+  handleAuthors: (value: string) => void;
 };
 
-const QuoteCard = ({ q }: Props) => {
+const QuoteCard = ({ q, selectedAuthors, handleAuthors }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [isCardLoading, setIsCardLoading] = useState(false);
 
@@ -25,7 +27,11 @@ const QuoteCard = ({ q }: Props) => {
           setIsCardLoading={setIsCardLoading}
         />
       ) : (
-        <Content q={q} />
+        <Content
+          q={q}
+          selectedAuthors={selectedAuthors}
+          handleAuthors={handleAuthors}
+        />
       )}
 
       <Icons
