@@ -29,7 +29,7 @@ const ListOfRandom = ({ loginUser }: Props) => {
     return <LoadingSpinnerM />;
   }
   if (error) {
-    return <div>{error}</div>;
+    return <div>Error</div>;
   }
 
   return (
