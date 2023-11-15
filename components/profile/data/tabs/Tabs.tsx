@@ -1,6 +1,6 @@
 import { useEvent } from "@/context/EventContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeLoginUser, profileTabs } from "@/types/type";
+import { TypeLoginUser, ProfileTabs } from "@/types/type";
 import React from "react";
 import { useQuotesBookmarkedByLoginUser } from "@/components/hooks/useQuotesBookmarkedByLoginUser";
 import { useQuotesLikedByLoginUser } from "@/components/hooks/useQuotesLikedByLoginUser";
@@ -18,7 +18,7 @@ const Tabs = ({ loginUser }: Props) => {
     bookmarks: useQuotesBookmarkedByLoginUser(allQuotes, loginUser).length,
     likes: useQuotesLikedByLoginUser(allQuotes, loginUser).length,
   };
-  const tabs: profileTabs[] = [
+  const tabs: ProfileTabs[] = [
     { name: "quotes", length: loginUserQuotes.length },
     {
       name: "bookmarks",

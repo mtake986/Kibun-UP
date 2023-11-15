@@ -36,8 +36,9 @@ const Quote = () => {
     return <LoadingIndicator text={"Loading a Quote..."} />;
   }
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error</div>;
   }
+  
   if (loginUser) {
     if (lockedQuote) {
       return renderQuoteCard(lockedQuote, "locked");

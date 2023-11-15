@@ -25,6 +25,7 @@ import {
   ISortFilterBy,
   ITag,
   TypeLoginUser,
+  TypeTabNamesOfQuotes,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -89,8 +90,8 @@ type QuoteContext = {
   ) => void;
   quotesForHomePage: TypeQuote[];
 
-  whichList: "yours" | "all";
-  handleWhichList: (value: "yours" | "all") => void;
+  whichList: TypeTabNamesOfQuotes;
+  handleWhichList: (value: TypeTabNamesOfQuotes) => void;
   sortFilterAreaForMineShown: boolean;
   handleSortFilterAreaForMineShown: () => void;
   sortFilterAreaForNotMineShown: boolean;
@@ -739,7 +740,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         )
           .then((response) => {
             if (!response.ok) {
-              throw Error(`不具合が発生しました!! status: ${response.status}`);
+              throw Error(
+                `Something went wrong!! status: ${response.status}, ${response.statusText}`
+              );
             }
             return response.json();
           })
@@ -756,8 +759,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const [whichList, setWhichList] = useState<"yours" | "all">("yours");
-  const handleWhichList = (value: "yours" | "all") => {
+  const [whichList, setWhichList] = useState<TypeTabNamesOfQuotes>("mine");
+  const handleWhichList = (value: TypeTabNamesOfQuotes) => {
     setWhichList(value);
   };
 

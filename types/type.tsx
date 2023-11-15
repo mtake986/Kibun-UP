@@ -22,7 +22,7 @@ export type TypeQuote = {
   isDraft: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  qid?: string; 
+  qid?: string;
   uid?: string;
 };
 
@@ -57,7 +57,7 @@ export interface ISortFilterBy {
   searchTag: string;
 }
 
-export interface TypeLoginUser {
+export type TypeLoginUser = {
   uid: string;
   email: string;
   displayName: string;
@@ -66,9 +66,12 @@ export interface TypeLoginUser {
   settings: {
     itemsPerPage: number;
     tagForQuotableApi: string;
-    quoteTypeForHome: "bookmarks" | "mine" | "appChoice";
+    quoteTypeForHome: TypeQuoteTypeForHome;
+    apiQuotesPerPage: TypeQuotesPerPage;
   };
-}
+};
+
+export type TypeQuoteTypeForHome = "bookmarks" | "mine" | "appChoice";
 
 export type TypeUpdateUserInputs = {
   photoURL?: string | null;
@@ -94,7 +97,11 @@ export type TypeTagErrors = {
   over5tags?: TypeTagError;
 };
 
-export type profileTabs = {
+export type ProfileTabs = {
   name: "quotes" | "bookmarks" | "likes" | "events";
   length: number;
 };
+
+export type TypeTabNamesOfQuotes = "all" | "mine" | "api";
+
+export type TypeQuotesPerPage = 10 | 25 | 50 | 100;

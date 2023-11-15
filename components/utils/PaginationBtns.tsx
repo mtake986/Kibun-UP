@@ -17,10 +17,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   };
 
   const clsNameFocused =
-    "cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-xs text-blue-50 duration-300 ease-in hover:bg-blue-600 dark:bg-slate-800 dark:hover:bg-slate-800 dark:hover:opacity-70";
+    "cursor-pointer rounded-md bg-blue-500 sm:px-3 sm:py-2 px-2 py-1 text-xs text-blue-50 duration-300 ease-in hover:bg-blue-600 dark:bg-slate-800 dark:hover:bg-slate-800 dark:hover:opacity-70";
 
   const clsNameNotFocused =
-    "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:opacity-70";
+    "cursor-pointer rounded-md bg-blue-50 sm:px-3 sm:py-2 px-2 py-1 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:opacity-70";
 
 
   const isFirstPage = currentPage === 1;
@@ -102,7 +102,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   return (
     <nav className="flex gap-1">
       <button
-        className={`cursor-pointer px-3 py-2 text-xs text-blue-500 dark:text-white ${
+        className={`cursor-pointer sm:px-3 sm:py-2 px-2 py-1 text-xs text-blue-500 dark:text-white ${
           isFirstPage && "opacity-30"
         }`}
         onClick={prevPage}
@@ -124,7 +124,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           ))
         : displaybuttons()}
       <button
-        className={`cursor-pointer px-3 py-2 text-xs text-blue-500 dark:text-white ${
+        className={`cursor-pointer sm:px-3 sm:py-2 px-2 py-1 text-xs text-blue-500 dark:text-white ${
           isLastPage && "opacity-30"
         }`}
         onClick={nextPage}

@@ -1,31 +1,28 @@
-import { auth } from "@/config/Firebase";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
 import List from "./mine/List";
-import { displayErrorToast } from "@/functions/displayToast";
-import { useAuth } from "@/context/AuthContext";
-import LoadingIndicator from "../home/LoadingIndicator";
-import { TypeLoginUser } from "@/types/type";
+import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
+import ListOfRandom from "./random/ListOfRandom";
 
 type Props = {
   loginUser: TypeLoginUser;
 };
 const SwitchTab = ({ loginUser }: Props) => {
-  const [user] = useAuthState(auth);
+  const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
+    useQuote();
 
-  const {
-    loginUserQuotes,
-    getLoginUserQuotes,
-    quotesNotMine,
-    getLockedQuote,
-    whichList,
-    handleWhichList,
-    lockedQuote,
-    getQuotesNotMine,
-  } = useQuote();
+  const displayList = () => {
+    switch (whichList) {
+      case "mine":
+        return <List quotes={loginUserQuotes} />;
+      case "all":
+        return <ListNotMine quotes={quotesNotMine} />;
+      case "api":
+        return <ListOfRandom loginUser={loginUser} />;
+      default:
+        return <div>error</div>;
+    }
+  };
 
   return (
     <div>
@@ -45,21 +42,18 @@ const SwitchTab = ({ loginUser }: Props) => {
         ))}
       </div>
 
-      {whichList === "yours" ? (
-        <List quotes={loginUserQuotes} />
-      ) : (
-        <ListNotMine quotes={quotesNotMine} />
-      )}
+      {displayList()}
     </div>
   );
 };
 
-const tabs: { name: "all" | "yours"; label: string }[] = [
+const tabs: { name: TypeTabNamesOfQuotes; label: string }[] = [
   {
-    name: "yours",
+    name: "mine",
     label: "Mine",
   },
   { name: "all", label: "All" },
+  { name: "api", label: "Random" },
 ];
 
 export default SwitchTab;

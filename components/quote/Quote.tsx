@@ -28,24 +28,31 @@ const Quote = () => {
   } = useQuote();
 
   useEffect(() => {
-    const fetchDocs = async () => {
-      if (!loginUser) fetchLoginUser(user);
-    };
-    const fetchQuotes = async () => {
-      if (loginUserQuotes.length === 0) getLoginUserQuotes();
-      if (!lockedQuote) getLockedQuote();
-      if (quotesNotMine.length === 0) getQuotesNotMine();
-    };
     const fetchData = async () => {
+      const fetchDocs = async () => {
+        if (!loginUserQuotes || loginUserQuotes.length === 0) {
+          getLoginUserQuotes();
+        }
+        if (!lockedQuote) getLockedQuote();
+        if (!quotesNotMine || quotesNotMine.length === 0) getQuotesNotMine();
+      };
       try {
-        await fetchDocs();
-        await fetchQuotes();
+        if (loginUser) {
+          fetchDocs();
+        } else {
+          if (auth.currentUser) {
+            fetchLoginUser(auth.currentUser);
+          } else {
+            // Handle the case where auth.currentUser is null
+            displayErrorToast('no auth.currentUser');
+          }
+        }
       } catch (error) {
         displayErrorToast(error);
       }
     };
     fetchData();
-  }, [user]);
+  }, [user, loginUser]);
 
   if (!user) {
     return <GoogleLoginBtn />;
@@ -59,12 +66,11 @@ const Quote = () => {
         <div className="relative">
           <HeadingTwo text="Quotes" />
           <RegisterFormToggleBtn />
-          {whichList === "yours" ? (
+          {whichList === "mine" ? (
             <MobileSortFilterForMineOpenBtn />
           ) : whichList === "all" ? (
             <MobileSortFilterForNotMineOpenBtn />
           ) : null}
-
           <Tabs loginUser={loginUser} />
         </div>
       </div>

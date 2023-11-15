@@ -1,12 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { TypeQuote, TypeLoginUser, TypeTagsQuotableAPI } from "@/types/type";
+import { TypeQuote, TypeLoginUser } from "@/types/type";
 import React from "react";
-import { styleVariables } from "./styles";
-import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
-import useFetchTags from "@/components/hooks/useFetchTags";
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
-import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import TagList from "./TagList";
 
 type Props = {
