@@ -9,7 +9,7 @@ import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
 const useQuotesFromQuotableAPI = () => {
   const { loginUser, fetchLoginUser } = useAuth();
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   // todo: pagination | need some states for current page, total pages, and different quotes-per-page
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -64,7 +64,7 @@ const useQuotesFromQuotableAPI = () => {
           })
           .catch((e) => {
             displayErrorToast(
-              `Failed to fetch quotes. Please try again later.`
+              `Failed to fetch quotes. Please try again later. Error: ${e.message}`
             );
             setError(e.message);
             setIsPending(false);

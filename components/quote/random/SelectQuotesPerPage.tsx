@@ -20,7 +20,7 @@ const SelectQuotesPerPage = () => {
           updateQuotesPerPage(numericValue as TypeQuotesPerPage);
         }
       }}
-      value={loginUser?.settings?.apiQuotesPerPage.toString()}
+      value={loginUser?.settings?.apiQuotesPerPage.toString() ?? ""}
     >
       <SelectTrigger className="w-full text-xs xs:max-w-[200px]">
         <SelectValue placeholder="Select Quotes/Page" />
