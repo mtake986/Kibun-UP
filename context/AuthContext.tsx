@@ -18,8 +18,16 @@ import {
   where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { TypeLoginUser, TypeUpdateUserInputs, typeQuotesPerPage } from "@/types/type";
-import { displayErrorToast, displaySuccessToast, displayToast } from "@/functions/displayToast";
+import {
+  TypeLoginUser,
+  TypeUpdateUserInputs,
+  TypeQuotesPerPage,
+} from "@/types/type";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+  displayToast,
+} from "@/functions/displayToast";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -41,7 +49,7 @@ type AuthContextType = {
   fetchLoginUser: (user: any) => void;
   isFetchingUser: boolean;
   updateTagForQuotableApi: (text: string) => void;
-  updateQuotesPerPage: (quotesPerPage: typeQuotesPerPage) => void;
+  updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
 };
 
 const AuthContext = createContext({} as AuthContextType);
@@ -99,10 +107,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const fetchLoginUser = async (user: User | null) => {
     if (user) {
-      const q = query(
-        collection(db, "users"),
-        where("uid", "==", user.uid)
-      );
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
       onSnapshot(q, (snapshot) => {
         setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
       });
@@ -198,7 +203,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const updateQuotesPerPage = async (quotesPerPage: typeQuotesPerPage) => {
+  const updateQuotesPerPage = async (quotesPerPage: TypeQuotesPerPage) => {
     if (loginUser) {
       const docRef = doc(db, "users", loginUser.uid);
       await updateDoc(docRef, {

@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
-import { TypeQuote, typeQuotesPerPage } from "@/types/type";
+import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
 
 const useQuotesFromQuotableAPI = () => {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -23,7 +23,6 @@ const useQuotesFromQuotableAPI = () => {
       const limit = `limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
       const tags = selectedTags ? `tags=${selectedTags.join("|")}` : "";
       const sortBy = "sortBy=author";
-      console.log(selectedTags, tags);
       const url =
         DEFAULT_URL_FOR_ALL_QUOTES +
         "?" +
@@ -34,18 +33,18 @@ const useQuotesFromQuotableAPI = () => {
         sortBy +
         "&" +
         tags;
-      console.log(url);
       setIsPending(true);
       if (loginUser) {
         fetch(url)
           .then((response) => {
             if (!response.ok) {
-              throw Error(`Something went wrong!! status: ${response.status}`);
+              throw Error(
+                `Something went wrong!! status: ${response.status}, ${response.statusText}`
+              );
             }
             return response.json();
           })
           .then((result) => {
-            console.log("result: ", result);
             setNPages(result.totalPages);
 
             const quotes = result.results.map((quote: any) => ({
@@ -61,12 +60,11 @@ const useQuotesFromQuotableAPI = () => {
               isDraft: false,
             }));
             setCurrentRecords(quotes);
-            console.log(currentRecords.length);
             setIsPending(false);
           })
           .catch((e) => {
             displayErrorToast(
-              `Failed to fetch a quote with a tag, ${url}. Try again later.`
+              `Failed to fetch quotes. Please try again later.`
             );
             setIsPending(false);
           });
@@ -80,7 +78,6 @@ const useQuotesFromQuotableAPI = () => {
   useEffect(() => {
     fetchData(currentPage, selectedTags);
   }, [currentPage, loginUser?.settings?.apiQuotesPerPage, selectedTags]);
-  // }, [currentPage, loginUser?.settings?.apiQuotesPerPage, selectedTags]);
 
   useEffect(() => {
     setCurrentPage(1);

@@ -1,4 +1,4 @@
-import { TypeQuote, typeQuotesPerPage } from "@/types/type";
+import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";

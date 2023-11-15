@@ -66,12 +66,12 @@ export type TypeLoginUser = {
   settings: {
     itemsPerPage: number;
     tagForQuotableApi: string;
-    quoteTypeForHome: typeQuoteTypeForHome;
-    apiQuotesPerPage: typeQuotesPerPage;
+    quoteTypeForHome: TypeQuoteTypeForHome;
+    apiQuotesPerPage: TypeQuotesPerPage;
   };
 };
 
-export type typeQuoteTypeForHome = "bookmarks" | "mine" | "appChoice";
+export type TypeQuoteTypeForHome = "bookmarks" | "mine" | "appChoice";
 
 export type TypeUpdateUserInputs = {
   photoURL?: string | null;
@@ -97,11 +97,11 @@ export type TypeTagErrors = {
   over5tags?: TypeTagError;
 };
 
-export type profileTabs = {
+export type ProfileTabs = {
   name: "quotes" | "bookmarks" | "likes" | "events";
   length: number;
 };
 
-export type typeTabNamesOfQuotes = "all" | "mine" | "api";
+export type TypeTabNamesOfQuotes = "all" | "mine" | "api";
 
-export type typeQuotesPerPage = 10 | 25 | 50 | 100;
+export type TypeQuotesPerPage = 10 | 25 | 50 | 100;

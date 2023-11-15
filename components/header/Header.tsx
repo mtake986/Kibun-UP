@@ -1,13 +1,10 @@
 "use client";
 import { auth } from "../../config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import MenuBtn from "./MenuBtn";
 import ProfilePic from "./ProfilePic";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
-// import ThemeToggleBtn from "./ThemeToggleBtn";
-import { fontRoboto } from "../utils/fonts";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 

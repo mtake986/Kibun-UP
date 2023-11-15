@@ -46,6 +46,7 @@ const LoginUserProfile = () => {
       } else {
         fetchLoginUser(auth.currentUser);
       }
+      setIsError(false);
     } catch (error) {
       displayErrorToast(error);
       setIsError(true);

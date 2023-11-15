@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { TypeQuote, TypeLoginUser, TypeTagsQuotableAPI } from "@/types/type";
+import { TypeQuote, TypeLoginUser } from "@/types/type";
 import React from "react";
 import TagList from "./TagList";
 

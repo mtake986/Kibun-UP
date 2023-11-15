@@ -10,7 +10,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
   const { loginUser, fetchLoginUser } = useAuth();
   const [data, setData] = useState<TypeQuote>();
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | Error | null>(null);
 
   const fetchData = useCallback(async () => {
     setIsPending(true);
@@ -18,7 +18,9 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
     fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw Error(`Something went wrong!! status: ${response.status}`);
+          throw Error(
+            `Something went wrong!! status: c ${response.statusText}`
+          );
         }
         return response.json();
       })
@@ -35,44 +37,14 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           userInfo: "api",
           isDraft: false,
         });
-        // setTimeout(() => {
         setIsPending(false);
-        // }, 500);
       })
       .catch((e) => {
         // error handling when no quote with this user's tag is found
         displayErrorToast(
-          `Failed to fetch a quote with a tag, ${url}. Try again later.`
+          `Failed to fetch a quote with a tag. Try again later.`
         );
         setIsPending(false);
-        // fetch(DEFAULT_URL_FOR_RANDOM_QUOTE)
-        //   .then((response) => {
-        //     if (!response.ok) {
-        //       throw Error(`Something went wrong!! status: ${response.status}`);
-        //     }
-        //     return response.json();
-        //   })
-        //   .then((res) => {
-        //     setData({
-        //       id: res[0]._id,
-        //       author: res[0].author,
-        //       content: res[0].content,
-        //       tags: res[0].tags,
-        //     } as TypeQuote);
-        //     // setTimeout(() => {
-        //     setIsPending(false);
-        //     // }, 500);
-        //   })
-        //   .catch((e) => {
-        //     // error handling when failed to even fetch a quote randomly
-        //     displayErrorToast(
-        //       `Failed to fetch a random quote, ${url}. Try again later.`
-        //     );
-        //     setError(e.message);
-        //     // setTimeout(() => {
-        //     setIsPending(false);
-        //     // }, 500);
-        //   });
       });
   }, [url]);
 

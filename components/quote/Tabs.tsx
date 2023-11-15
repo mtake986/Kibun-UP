@@ -1,9 +1,7 @@
-import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
 import List from "./mine/List";
-import { TypeLoginUser, typeTabNamesOfQuotes } from "@/types/type";
+import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 
 type Props = {
@@ -12,6 +10,19 @@ type Props = {
 const SwitchTab = ({ loginUser }: Props) => {
   const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
     useQuote();
+
+  const displayList = () => {
+    switch (whichList) {
+      case "mine":
+        return <List quotes={loginUserQuotes} />;
+      case "all":
+        return <ListNotMine quotes={quotesNotMine} />;
+      case "api":
+        return <ListOfRandom loginUser={loginUser} />;
+      default:
+        return <div>error</div>;
+    }
+  };
 
   return (
     <div>
@@ -31,18 +42,12 @@ const SwitchTab = ({ loginUser }: Props) => {
         ))}
       </div>
 
-      {whichList === "mine" ? (
-        <List quotes={loginUserQuotes} />
-      ) : whichList === "all" ? (
-        <ListNotMine quotes={quotesNotMine} />
-      ) : (
-        <ListOfRandom loginUser={loginUser} />
-      )}
+      {displayList()}
     </div>
   );
 };
 
-const tabs: { name: typeTabNamesOfQuotes; label: string }[] = [
+const tabs: { name: TypeTabNamesOfQuotes; label: string }[] = [
   {
     name: "mine",
     label: "Mine",

@@ -40,7 +40,12 @@ const Quote = () => {
         if (loginUser) {
           fetchDocs();
         } else {
-          fetchLoginUser(auth.currentUser);
+          if (auth.currentUser) {
+            fetchLoginUser(auth.currentUser);
+          } else {
+            // Handle the case where auth.currentUser is null
+            displayErrorToast('no auth.currentUser');
+          }
         }
       } catch (error) {
         displayErrorToast(error);

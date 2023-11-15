@@ -58,9 +58,10 @@ export const mySnsInfo = [
 ];
 
 export const DEFAULT_URL_FOR_RANDOM_QUOTE =
-  " https://api.quotable.io/quotes/random";
+  "https://api.quotable.io/quotes/random";
 export const DEFAULT_URL_FOR_ALL_QUOTES =
   "https://api.quotable.io/quotes";
+export const DEFAULT_URL_TO_FETCH_TAGS = "https://api.quotable.io/tags";
 export const VALIDATION_STATUS = {
   FAIL: "fail",
   PASS: "pass",
