@@ -73,12 +73,17 @@ const useQuotesFromQuotableAPI = () => {
         fetchLoginUser(auth.currentUser);
       }
     },
-    [loginUser?.settings?.apiQuotesPerPage]
+    [loginUser, loginUser?.settings?.apiQuotesPerPage]
   );
 
   useEffect(() => {
     fetchData(currentPage, selectedTags);
-  }, [currentPage, loginUser?.settings?.apiQuotesPerPage, selectedTags]);
+  }, [
+    currentPage,
+    loginUser?.settings?.apiQuotesPerPage,
+    selectedTags,
+    fetchData,
+  ]);
 
   useEffect(() => {
     setCurrentPage(1);
