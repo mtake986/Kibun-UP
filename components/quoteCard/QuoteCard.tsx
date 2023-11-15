@@ -8,8 +8,8 @@ import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
-  selectedAuthors: string[];
-  handleAuthors: (value: string) => void;
+  selectedAuthors?: string[];
+  handleAuthors?: (value: string) => void;
 };
 
 const QuoteCard = ({ q, selectedAuthors, handleAuthors }: Props) => {
