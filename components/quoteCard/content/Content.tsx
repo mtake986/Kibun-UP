@@ -11,8 +11,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   q: TypeQuote;
-  selectedAuthors: string[];
-  handleAuthors: (value: string) => void;
+  selectedAuthors?: string[];
+  handleAuthors?: (value: string) => void;
 };
 
 const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
@@ -33,8 +33,7 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
             {q.author}
           </label>
         </div>
-        {selectedAuthors}
-        {q?.authorSlug ? (
+        {q?.authorSlug && handleAuthors ? (
           <Checkbox
             id={q.authorSlug}
             onClick={() => {

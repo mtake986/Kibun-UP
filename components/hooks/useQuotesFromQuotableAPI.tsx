@@ -36,26 +36,20 @@ const useQuotesFromQuotableAPI = () => {
       selectedAuthors,
       andOr,
     }: PropsFetchData) => {
-      const pageNum = `page=${currentPage}`;
-      const limit = `limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
-      const tags = selectedTags ? `tags=${selectedTags.join(andOr.value)}` : "";
-      const sortBy = "sortBy=author";
-      const authors = selectedAuthors
-        ? `author=${selectedAuthors.join("|")}`
-        : "";
+      const pageNum = `?page=${currentPage}`;
+      const limit = `&limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
+      const tags =
+        selectedTags.length > 0
+          ? `&tags=${selectedTags.join(andOr.value)}`
+          : "";
+      const sortBy = "&sortBy=author";
+      const authors =
+        selectedAuthors.length > 0
+          ? `&author=${selectedAuthors.join("|")}`
+          : "";
 
       const url =
-        DEFAULT_URL_FOR_ALL_QUOTES +
-        "?" +
-        pageNum +
-        "&" +
-        limit +
-        "&" +
-        sortBy +
-        "&" +
-        tags +
-        "&" +
-        authors;
+        DEFAULT_URL_FOR_ALL_QUOTES + pageNum + limit + sortBy + tags + authors;
 
       console.log(url);
 

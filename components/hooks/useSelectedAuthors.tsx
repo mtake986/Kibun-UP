@@ -11,7 +11,6 @@ const useSelectedAuthors = () => {
     } else {
       setSelectedAuthors([...selectedAuthors, value]);
     }
-    console.log(selectedAuthors, value)
   };
   return { selectedAuthors, handleAuthors };
 };

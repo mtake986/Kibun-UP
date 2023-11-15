@@ -45,7 +45,8 @@ const Modal = ({
       <DialogContent className="bg-slate-950">
         <form
           className="flex flex-col gap-3"
-          onSubmit={() => {
+          onSubmit={(e) => {
+            e.preventDefault();
             fetchData({ currentPage, selectedTags, selectedAuthors, andOr });
           }}
         >
@@ -60,7 +61,7 @@ const Modal = ({
               <HeadingThree text="By content" />
             </div>
           </div>
-          <button type="submit">Save</button>
+          <button type="submit">Update</button>
         </form>
       </DialogContent>
     </Dialog>

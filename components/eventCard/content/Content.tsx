@@ -33,7 +33,7 @@ const Content = ({ event }: Props) => {
       {event.eventDate && (
         <Info
           icon={<BiTime size={20} className="mr-5" />}
-          text={event.eventDate ? event.eventDate.toDate().toDateString() : 'Error'}
+          text={event.eventDate ? event.eventDate.toDate().toDateString() : ''}
         />
       )}
       {event.description && (

@@ -41,32 +41,30 @@ const ListOfRandom = ({ loginUser }: Props) => {
 
   return (
     <div className="mb-20">
-      {currentRecords?.length > 0 ? (
+      {/* Actions */}
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+        <Modal
+          selectedTags={selectedTags}
+          currentPage={currentPage}
+          selectedAuthors={selectedAuthors}
+          andOr={andOr}
+          handleAndOr={handleAndOr}
+          handleTags={handleTags}
+          fetchData={fetchData}
+        />
+      </div>
+      <div className="flex flex-col gap-3 mb-2 text-gray-400">
+        {totalCount} quotes found
+      </div>
+      {/* {currentRecords?.length > 0 ? ( */}
         <div className="flex flex-col gap-3">
-          {/* Actions */}
-          {/* MODAL */}
-          <div className="flex items-center justify-between">
-            {nPages >= 2 && (
-              <PaginationBtns
-                nPages={nPages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            )}
-            <Modal
-              selectedTags={selectedTags}
-              currentPage={currentPage}
-              selectedAuthors={selectedAuthors}
-              andOr={andOr}
-              handleAndOr={handleAndOr}
-              handleTags={handleTags}
-              fetchData={fetchData}
-            />
-          </div>
-          {/* List */}
-          <div className="flex flex-col gap-3 text-gray-400">
-            {totalCount} quotes found
-          </div>
           {currentRecords.map((doc, i) => (
             <QuoteCard
               key={doc.id}
@@ -76,9 +74,9 @@ const ListOfRandom = ({ loginUser }: Props) => {
             />
           ))}
         </div>
-      ) : (
+      {/* ) : (
         <NoFetchedData text="No quotes found" />
-      )}
+      )} */}
     </div>
   );
 };
