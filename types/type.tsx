@@ -111,18 +111,26 @@ export type TypeAuthorsQuotableAPI = {
   id: string;
   name: string;
   link: string;
-  bio: string,
+  bio: string;
   description: string;
   quoteCount: number;
   slug: string;
 };
 
 export type TypeAndOr = {
-  label: "and" | "or";
+  label: TypeAndOrLabel;
   value: "&" | "|";
-}
+};
+export type TypeAndOrLabel = "and" | "or";
 
 export type TypeSelectedAuthors = {
   label: string;
   slug: string;
-}
+};
+
+export type TypeSortBy = {
+  label: TypeSortByLabel;
+  value: "author" | "content";
+};
+
+export type TypeSortByLabel = "Author" | "Content";

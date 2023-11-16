@@ -77,9 +77,19 @@ export const AND_OR = [
   {
     label: "and",
     value: "&",
-  }, 
+  },
   {
     label: "or",
     value: "|",
-  }
+  },
+];
+export const SORT_BYS = [
+  {
+    label: "Author",
+    value: "author",
+  },
+  {
+    label: "Content",
+    value: "content",
+  },
 ];

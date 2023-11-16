@@ -3,15 +3,24 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
-import { AND_OR, DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
-import { TypeAndOr, TypeQuote, TypeSelectedAuthors } from "@/types/type";
+import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
+import {
+  TypeAndOr,
+  TypeQuote,
+  TypeSelectedAuthors,
+  TypeSortBy,
+} from "@/types/type";
 import useSelectedAuthors from "./useSelectedAuthors";
+import useFetchTags from "./useFetchTags";
+import useAndOr from "./useAndOr";
+import useSortBy from "./useSortBy";
 
 export type PropsFetchData = {
   currentPage: number;
   selectedTags: string[];
   selectedAuthors: TypeSelectedAuthors[];
   andOr: TypeAndOr;
+  sortBy: TypeSortBy;
 };
 
 const useQuotesFromQuotableAPI = () => {
@@ -25,9 +34,10 @@ const useQuotesFromQuotableAPI = () => {
   const [currentRecords, setCurrentRecords] = useState<TypeQuote[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
 
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [andOr, setAndOr] = useState<TypeAndOr>({ label: "or", value: "|" });
   const { selectedAuthors, handleAuthors } = useSelectedAuthors();
+  const { selectedTags, handleTags } = useFetchTags();
+  const { andOr, handleAndOr } = useAndOr();
+  const { sortBy, handleSortBy } = useSortBy();
 
   const fetchData = useCallback(
     async ({
@@ -35,6 +45,7 @@ const useQuotesFromQuotableAPI = () => {
       selectedTags,
       selectedAuthors,
       andOr,
+      sortBy,
     }: PropsFetchData) => {
       const pageNum = `?page=${currentPage}`;
       const limit = `&limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
@@ -42,13 +53,19 @@ const useQuotesFromQuotableAPI = () => {
         selectedTags.length > 0
           ? `&tags=${selectedTags.join(andOr.value)}`
           : "";
-      const sortBy = "&sortBy=author";
-      const listOfAuthors = selectedAuthors.map((author) => author.label);
+      const sortByStr = `&sortBy=${sortBy.value}`;
+      console.log(selectedAuthors);
+      const listOfAuthors = selectedAuthors.map((author) => author.slug);
       const authors =
         listOfAuthors.length > 0 ? `&author=${listOfAuthors.join("|")}` : "";
 
       const url =
-        DEFAULT_URL_FOR_ALL_QUOTES + pageNum + limit + sortBy + tags + authors;
+        DEFAULT_URL_FOR_ALL_QUOTES +
+        pageNum +
+        limit +
+        sortByStr +
+        tags +
+        authors;
 
       console.log(url);
 
@@ -98,29 +115,12 @@ const useQuotesFromQuotableAPI = () => {
   );
 
   useEffect(() => {
-    fetchData({ currentPage, selectedTags, selectedAuthors, andOr });
-  }, [
-    // loginUser?.settings?.apiQuotesPerPage,
-    fetchData,
-  ]);
+    fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
+  }, [fetchData]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [loginUser?.settings?.apiQuotesPerPage]);
-
-  const handleTags = (value: string) => {
-    setSelectedTags(() => {
-      if (selectedTags.includes(value)) {
-        return selectedTags.filter((tag) => tag !== value);
-      } else {
-        return [...selectedTags, value];
-      }
-    });
-  };
-
-  const handleAndOr = (value: string) => {
-    setAndOr(AND_OR.find((ele) => ele.label === value) as TypeAndOr);
-  };
 
   return {
     currentRecords,
@@ -132,13 +132,15 @@ const useQuotesFromQuotableAPI = () => {
     nPages,
     totalCount,
     selectedTags,
-    setSelectedTags,
     handleTags,
     andOr,
     handleAndOr,
     selectedAuthors,
     handleAuthors,
     fetchData,
+
+    sortBy,
+    handleSortBy,
   };
 };
 

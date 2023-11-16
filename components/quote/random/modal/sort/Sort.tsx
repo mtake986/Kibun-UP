@@ -1,15 +1,19 @@
 import React from 'react'
 import SectionTtl from "../SectionTtl";
+import SelectSortBy from "./SelectSortBy";
+import { TypeSortBy, TypeSortByLabel } from "@/types/type";
 
-const Sort = () => {
+type Props = {
+  sortBy: TypeSortBy;
+  handleSortBy: (value: TypeSortByLabel) => void;
+};
+const Sort = ({ sortBy, handleSortBy }: Props) => {
   return (
-    <div>
+    <div className="space-y-3">
       <SectionTtl text="Sort" />
-      <div className="flex flex-col gap-3">
-        by author
-      </div>
+      <SelectSortBy sortBy={sortBy} handleSortBy={handleSortBy} />
     </div>
   );
-}
+};
 
 export default Sort

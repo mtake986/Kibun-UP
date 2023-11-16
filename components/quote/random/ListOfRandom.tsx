@@ -26,6 +26,9 @@ const ListOfRandom = ({ loginUser }: Props) => {
     fetchData,
     andOr,
     handleAndOr,
+
+    sortBy,
+    handleSortBy,
   } = useQuotesFromQuotableAPI();
 
   if (isPending) {
@@ -55,6 +58,8 @@ const ListOfRandom = ({ loginUser }: Props) => {
           handleAuthors={handleAuthors}
           andOr={andOr}
           handleAndOr={handleAndOr}
+          sortBy={sortBy}
+          handleSortBy={handleSortBy}
         />
       </div>
       <div className="mb-2 flex flex-col gap-3 text-gray-400">

@@ -9,15 +9,14 @@ const useSelectedAuthors = () => {
   );
 
   const handleAuthors = (value: TypeSelectedAuthors) => {
-    if (selectedAuthors.includes(value)) {
-      setSelectedAuthors(
-        selectedAuthors.filter(
-          (ele: TypeSelectedAuthors) => ele.label !== value.label
-        )
-      );
-    } else {
-      setSelectedAuthors([...selectedAuthors, value]);
-    }
+    console.log(value);
+    setSelectedAuthors((prev) => {
+      if (prev.some((ele) => ele.label === value.label)) {
+        return prev.filter((ele) => ele.label !== value.label);
+      } else {
+        return [...prev, value];
+      }
+    });
   };
   return { selectedAuthors, handleAuthors };
 };

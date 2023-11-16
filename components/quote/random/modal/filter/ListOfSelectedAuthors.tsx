@@ -9,7 +9,7 @@ type Props = {
 
 const ListOfSelectedAuthors = ({ selectedAuthors, handleAuthors }: Props) => {
   return (
-    <div className="flex flex-wrap gap-5 text-xs">
+    <div className="flex flex-wrap gap-3 text-[10px] max-h-12 overflow-scroll">
       {selectedAuthors.length > 0 ? (
         selectedAuthors.map((author: TypeSelectedAuthors) => (
           <div

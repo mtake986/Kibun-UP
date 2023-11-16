@@ -7,7 +7,7 @@ const useFetchTags = () => {
   const [tags, setTags] = useState<TypeTagsQuotableAPI[]>([]);
   const [error, setError] = useState<string>();
   const [isPending, setIsPending] = useState<boolean>(false);
-
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const url = DEFAULT_URL_TO_FETCH_TAGS;
   const fetchTags = useCallback(() => {
@@ -38,7 +38,17 @@ const useFetchTags = () => {
     fetchTags();
   }, [fetchTags]);
 
-  return { tags, error, isPending };
+  const handleTags = (value: string) => {
+    setSelectedTags((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((tag) => tag !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
+  };
+
+  return { tags, error, isPending, selectedTags, handleTags };
 };
 
 export default useFetchTags;

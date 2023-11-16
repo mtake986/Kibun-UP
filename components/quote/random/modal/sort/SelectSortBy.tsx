@@ -1,4 +1,4 @@
-
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -6,27 +6,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AND_OR } from "@/data/CONSTANTS";
-import { TypeAndOr, TypeAndOrLabel } from "@/types/type";
+import { SORT_BYS } from "@/data/CONSTANTS";
+import { TypeSortBy, TypeSortByLabel } from "@/types/type";
 
 type Props = {
-  andOr: TypeAndOr;
-  handleAndOr: (value: TypeAndOrLabel) => void;
+  sortBy: TypeSortBy;
+  handleSortBy: (value: TypeSortByLabel) => void;
 };
-const SelectAndOr = ({ andOr, handleAndOr }: Props) => {
+const SelectSortBy = ({ sortBy, handleSortBy }: Props) => {
   return (
     <Select
-      onValueChange={(value: TypeAndOrLabel) => {
-        handleAndOr(value);
+      onValueChange={(value: TypeSortByLabel) => {
+        handleSortBy(value);
       }}
-      value={andOr.label}
-      defaultValue={andOr.label}
+      value={sortBy.label}
+      defaultValue={sortBy.label}
     >
       <SelectTrigger className="w-full text-xs xs:max-w-[200px]">
         <SelectValue placeholder="Select And/Or" />
       </SelectTrigger>
       <SelectContent>
-        {AND_OR.map((ele) => (
+        {SORT_BYS.map((ele) => (
           <SelectItem key={ele.label} value={ele.label}>
             {ele.label}
           </SelectItem>
@@ -36,4 +36,4 @@ const SelectAndOr = ({ andOr, handleAndOr }: Props) => {
   );
 };
 
-export default SelectAndOr;
+export default SelectSortBy;

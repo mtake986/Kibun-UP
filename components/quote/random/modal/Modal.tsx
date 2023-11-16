@@ -2,10 +2,8 @@ import { Settings } from "lucide-react";
 import React from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import SelectQuotesPerPage from "../SelectQuotesPerPage";
-import HeadingThree from "@/components/utils/HeadingThree";
-import SectionTtl from "./SectionTtl";
 import { PropsFetchData } from "@/components/hooks/useQuotesFromQuotableAPI";
-import { TypeAndOr, TypeSelectedAuthors } from "@/types/type";
+import { TypeAndOr, TypeAndOrLabel, TypeSelectedAuthors, TypeSortBy, TypeSortByLabel } from "@/types/type";
 import Filter from "./filter/Filter";
 import Sort from "./sort/Sort";
 
@@ -22,7 +20,9 @@ type Props = {
   selectedAuthors: TypeSelectedAuthors[];
   handleAuthors: (value: TypeSelectedAuthors) => void;
   andOr: TypeAndOr;
-  handleAndOr: (value: "and" | "or") => void;
+  handleAndOr: (value: TypeAndOrLabel) => void;
+  sortBy: TypeSortBy;
+  handleSortBy: (value: TypeSortByLabel) => void;
 };
 
 const Modal = ({
@@ -34,6 +34,8 @@ const Modal = ({
   handleAuthors,
   andOr,
   handleAndOr,
+  sortBy,
+  handleSortBy,
 }: Props) => {
   return (
     <Dialog>
@@ -45,7 +47,13 @@ const Modal = ({
           className="flex flex-col gap-3"
           onSubmit={(e) => {
             e.preventDefault();
-            fetchData({ currentPage, selectedTags, selectedAuthors, andOr });
+            fetchData({
+              currentPage,
+              selectedTags,
+              selectedAuthors,
+              andOr,
+              sortBy,
+            });
           }}
         >
           <div className="flex flex-col gap-3">
@@ -58,7 +66,7 @@ const Modal = ({
               andOr={andOr}
               handleAndOr={handleAndOr}
             />
-            <Sort />
+            <Sort sortBy={sortBy} handleSortBy={handleSortBy} />
           </div>
           <button type="submit">Update</button>
         </form>

@@ -4,8 +4,7 @@ import SectionSubTtl from "../SectionSubTtl";
 import SelectAndOr from "./SelectAndOr";
 import SelectTags from "./SelectTags";
 import SectionTtl from "../SectionTtl";
-import { PropsFetchData } from "@/components/hooks/useQuotesFromQuotableAPI";
-import { TypeAndOr, TypeSelectedAuthors } from "@/types/type";
+import { TypeAndOr, TypeAndOrLabel, TypeSelectedAuthors } from "@/types/type";
 
 type Props = {
   selectedTags: string[];
@@ -13,7 +12,7 @@ type Props = {
   selectedAuthors: TypeSelectedAuthors[];
   handleAuthors: (value: TypeSelectedAuthors) => void;
   andOr: TypeAndOr;
-  handleAndOr: (value: "and" | "or") => void;
+  handleAndOr: (value: TypeAndOrLabel) => void;
 };
 
 const Filter = ({
@@ -25,20 +24,20 @@ const Filter = ({
   handleAndOr,
 }: Props) => {
   return (
-    <div>
+    <div className="space-y-3">
       <SectionTtl text="Filter" />
-      <div className="mb-3">
+      <div className="">
         <SectionSubTtl text="Tags" />
         <SelectTags selectedTags={selectedTags} handleTags={handleTags} />
       </div>
-      <div className="mb-3">
+      <div className="">
         <SectionSubTtl text="Authors" />
         <ListOfSelectedAuthors
           selectedAuthors={selectedAuthors}
           handleAuthors={handleAuthors}
         />
       </div>
-      <div className="mb-3">
+      <div className="">
         <SectionSubTtl text="Rule" />
         <SelectAndOr andOr={andOr} handleAndOr={handleAndOr} />
       </div>
