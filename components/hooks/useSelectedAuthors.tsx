@@ -2,8 +2,6 @@ import { TypeSelectedAuthors } from "@/types/type";
 import React, { useState } from "react";
 
 const useSelectedAuthors = () => {
-  const [error, setError] = useState<string>("");
-  const [isPending, setIsPending] = useState<boolean>(false);
   const [selectedAuthors, setSelectedAuthors] = useState<TypeSelectedAuthors[]>(
     []
   );

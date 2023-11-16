@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  text: string;
+  text?: string;
 };
 const SectionSubTtl = ({ text = "Default Title" }: Props) => {
   return (

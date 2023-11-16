@@ -4,6 +4,7 @@ import YouTubeIcon from "../public/icons/youtube.svg";
 import InstagramIcon from "../public/icons/instagram.svg";
 import TwitterIcon from "../public/icons/twitter.svg";
 import GitHubIcon from "../public/icons/github.svg";
+import { TypeAndOr, TypeSortBy } from "@/types/type";
 
 export const builtInEvents = [
   {
@@ -16,20 +17,6 @@ export const builtInEvents = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-];
-
-export const hamburgerMenus = [
-  {
-    name: "Quote",
-    link: "/quote",
-    icon: <BsChatQuoteFill />,
-  },
-  {
-    name: "Event",
-    link: "/event",
-    icon: <BsFlagFill />,
-  },
-  { name: "Login", link: "/login", icon: <LogInIcon /> },
 ];
 
 export const tagColors = ["white", "red", "green", "blue", "violet"];
@@ -73,7 +60,7 @@ export const linkHoverEffect =
 
 export const QUOTES_PER_PAGE = [10, 25, 50, 100]
 
-export const AND_OR = [
+export const AND_OR: TypeAndOr[] = [
   {
     label: "and",
     value: "&",
@@ -83,7 +70,7 @@ export const AND_OR = [
     value: "|",
   },
 ];
-export const SORT_BYS = [
+export const SORT_BYS: TypeSortBy[] = [
   {
     label: "Author",
     value: "author",

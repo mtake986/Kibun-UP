@@ -6,6 +6,7 @@ import { PropsFetchData } from "@/components/hooks/useQuotesFromQuotableAPI";
 import { TypeAndOr, TypeAndOrLabel, TypeSelectedAuthors, TypeSortBy, TypeSortByLabel } from "@/types/type";
 import Filter from "./filter/Filter";
 import Sort from "./sort/Sort";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   currentPage: number;
@@ -47,13 +48,18 @@ const Modal = ({
           className="flex flex-col gap-3"
           onSubmit={(e) => {
             e.preventDefault();
-            fetchData({
-              currentPage,
-              selectedTags,
-              selectedAuthors,
-              andOr,
-              sortBy,
-            });
+            try {
+
+              fetchData({
+                currentPage,
+                selectedTags,
+                selectedAuthors,
+                andOr,
+                sortBy,
+              });
+            } catch (error) {
+              displayErrorToast(error);
+            }
           }}
         >
           <div className="flex flex-col gap-3">

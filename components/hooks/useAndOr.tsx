@@ -5,7 +5,7 @@ import { TypeAndOr } from "@/types/type";
 const useAndOr = () => {
 
 
-  const [andOr, setAndOr] = useState<TypeAndOr>({ label: "or", value: "|" });
+  const [andOr, setAndOr] = useState<TypeAndOr>(AND_OR[1]);
   const handleAndOr = (value: string) => {
     setAndOr(AND_OR.find((ele) => ele.label === value) as TypeAndOr);
   };

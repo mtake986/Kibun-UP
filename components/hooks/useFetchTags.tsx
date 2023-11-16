@@ -32,7 +32,7 @@ const useFetchTags = () => {
         setError(err.message);
         setIsPending(false);
       });
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     fetchTags();

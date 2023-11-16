@@ -5,6 +5,7 @@ import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { useEffect } from "react";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -31,6 +32,9 @@ const ListOfRandom = ({ loginUser }: Props) => {
     handleSortBy,
   } = useQuotesFromQuotableAPI();
 
+  useEffect(() => {
+    fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
+  }, [fetchData]);
   if (isPending) {
     return <LoadingSpinnerM />;
   }
@@ -65,7 +69,6 @@ const ListOfRandom = ({ loginUser }: Props) => {
       <div className="mb-2 flex flex-col gap-3 text-gray-400">
         {totalCount} quotes found
       </div>
-      {/* {currentRecords?.length > 0 ? ( */}
       <div className="flex flex-col gap-3">
         {currentRecords.map((doc, i) => (
           <QuoteCard
@@ -76,9 +79,6 @@ const ListOfRandom = ({ loginUser }: Props) => {
           />
         ))}
       </div>
-      {/* ) : (
-        <NoFetchedData text="No quotes found" />
-      )} */}
     </div>
   );
 };

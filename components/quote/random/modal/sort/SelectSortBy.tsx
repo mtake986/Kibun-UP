@@ -23,7 +23,7 @@ const SelectSortBy = ({ sortBy, handleSortBy }: Props) => {
       defaultValue={sortBy.label}
     >
       <SelectTrigger className="w-full text-xs xs:max-w-[200px]">
-        <SelectValue placeholder="Select And/Or" />
+        <SelectValue placeholder="Select Sort Option" />
       </SelectTrigger>
       <SelectContent>
         {SORT_BYS.map((ele) => (

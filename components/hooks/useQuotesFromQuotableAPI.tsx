@@ -114,9 +114,9 @@ const useQuotesFromQuotableAPI = () => {
     [loginUser, loginUser?.settings?.apiQuotesPerPage]
   );
 
-  useEffect(() => {
-    fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
-  }, [fetchData]);
+  // useEffect(() => {
+  //   fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
+  // }, [fetchData]);
 
   useEffect(() => {
     setCurrentPage(1);
