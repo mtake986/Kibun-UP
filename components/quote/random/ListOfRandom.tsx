@@ -1,14 +1,10 @@
 "use client";
 import { TypeLoginUser } from "@/types/type";
-import { useState } from "react";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import NoFetchedData from "@/components/utils/NoFetchedData";
-import { useQuote } from "@/context/QuoteContext";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
-import { Input } from "@/components/ui/input";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -51,29 +47,30 @@ const ListOfRandom = ({ loginUser }: Props) => {
           />
         )}
         <Modal
-          selectedTags={selectedTags}
           currentPage={currentPage}
+          fetchData={fetchData}
+          selectedTags={selectedTags}
+          handleTags={handleTags}
           selectedAuthors={selectedAuthors}
+          handleAuthors={handleAuthors}
           andOr={andOr}
           handleAndOr={handleAndOr}
-          handleTags={handleTags}
-          fetchData={fetchData}
         />
       </div>
-      <div className="flex flex-col gap-3 mb-2 text-gray-400">
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
         {totalCount} quotes found
       </div>
       {/* {currentRecords?.length > 0 ? ( */}
-        <div className="flex flex-col gap-3">
-          {currentRecords.map((doc, i) => (
-            <QuoteCard
-              key={doc.id}
-              q={doc}
-              selectedAuthors={selectedAuthors}
-              handleAuthors={handleAuthors}
-            />
-          ))}
-        </div>
+      <div className="flex flex-col gap-3">
+        {currentRecords.map((doc, i) => (
+          <QuoteCard
+            key={doc.id}
+            q={doc}
+            selectedAuthors={selectedAuthors}
+            handleAuthors={handleAuthors}
+          />
+        ))}
+      </div>
       {/* ) : (
         <NoFetchedData text="No quotes found" />
       )} */}

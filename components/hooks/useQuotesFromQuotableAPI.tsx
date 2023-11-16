@@ -4,13 +4,13 @@ import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { AND_OR, DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
-import { TypeAndOr, TypeQuote } from "@/types/type";
+import { TypeAndOr, TypeQuote, TypeSelectedAuthors } from "@/types/type";
 import useSelectedAuthors from "./useSelectedAuthors";
 
 export type PropsFetchData = {
   currentPage: number;
   selectedTags: string[];
-  selectedAuthors: string[];
+  selectedAuthors: TypeSelectedAuthors[];
   andOr: TypeAndOr;
 };
 
@@ -43,10 +43,9 @@ const useQuotesFromQuotableAPI = () => {
           ? `&tags=${selectedTags.join(andOr.value)}`
           : "";
       const sortBy = "&sortBy=author";
+      const listOfAuthors = selectedAuthors.map((author) => author.label);
       const authors =
-        selectedAuthors.length > 0
-          ? `&author=${selectedAuthors.join("|")}`
-          : "";
+        listOfAuthors.length > 0 ? `&author=${listOfAuthors.join("|")}` : "";
 
       const url =
         DEFAULT_URL_FOR_ALL_QUOTES + pageNum + limit + sortBy + tags + authors;
@@ -122,6 +121,7 @@ const useQuotesFromQuotableAPI = () => {
   const handleAndOr = (value: string) => {
     setAndOr(AND_OR.find((ele) => ele.label === value) as TypeAndOr);
   };
+
   return {
     currentRecords,
     isPending,

@@ -121,3 +121,8 @@ export type TypeAndOr = {
   label: "and" | "or";
   value: "&" | "|";
 }
+
+export type TypeSelectedAuthors = {
+  label: string;
+  slug: string;
+}

@@ -1,46 +1,44 @@
 import { Settings } from "lucide-react";
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import SelectQuotesPerPage from "../SelectQuotesPerPage";
-import SelectTags from "./SelectTags";
 import HeadingThree from "@/components/utils/HeadingThree";
 import SectionTtl from "./SectionTtl";
-import SelectAndOr from "./SelectAndOr";
 import { PropsFetchData } from "@/components/hooks/useQuotesFromQuotableAPI";
-import { TypeAndOr } from "@/types/type";
+import { TypeAndOr, TypeSelectedAuthors } from "@/types/type";
+import Filter from "./filter/Filter";
+import Sort from "./sort/Sort";
 
 type Props = {
-  selectedTags: string[];
   currentPage: number;
-  selectedAuthors: string[];
-  andOr: TypeAndOr;
-  handleAndOr: (value: 'and' | 'or') => void;
-  handleTags: (value: string) => void;
   fetchData: ({
     currentPage,
     selectedTags,
     selectedAuthors,
     andOr,
   }: PropsFetchData) => void;
+  selectedTags: string[];
+  handleTags: (value: string) => void;
+  selectedAuthors: TypeSelectedAuthors[];
+  handleAuthors: (value: TypeSelectedAuthors) => void;
+  andOr: TypeAndOr;
+  handleAndOr: (value: "and" | "or") => void;
 };
 
 const Modal = ({
-  selectedTags,
   currentPage,
+  fetchData,
+  selectedTags,
+  handleTags,
   selectedAuthors,
+  handleAuthors,
   andOr,
   handleAndOr,
-  handleTags,
-  fetchData,
 }: Props) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Settings className="cursor-pointer p-1 h-6 w-6 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
+        <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
       </DialogTrigger>
       <DialogContent className="bg-slate-950">
         <form
@@ -52,14 +50,15 @@ const Modal = ({
         >
           <div className="flex flex-col gap-3">
             <SelectQuotesPerPage />
-            <SectionTtl text="Filter" />
-            <SelectTags selectedTags={selectedTags} handleTags={handleTags} />
-            <SelectAndOr andOr={andOr} handleAndOr={handleAndOr} />
-            <SectionTtl text="Sort" />
-            <div className="flex flex-col gap-3">
-              <HeadingThree text="By Author" />
-              <HeadingThree text="By content" />
-            </div>
+            <Filter
+              selectedTags={selectedTags}
+              handleTags={handleTags}
+              selectedAuthors={selectedAuthors}
+              handleAuthors={handleAuthors}
+              andOr={andOr}
+              handleAndOr={handleAndOr}
+            />
+            <Sort />
           </div>
           <button type="submit">Update</button>
         </form>

@@ -6,13 +6,13 @@ import {
   BsToggle2Off,
   BsToggle2On,
 } from "react-icons/bs";
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeSelectedAuthors } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   q: TypeQuote;
-  selectedAuthors?: string[];
-  handleAuthors?: (value: string) => void;
+  selectedAuthors?: TypeSelectedAuthors[];
+  handleAuthors?: (value: TypeSelectedAuthors) => void;
 };
 
 const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
@@ -37,9 +37,15 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
           <Checkbox
             id={q.authorSlug}
             onClick={() => {
-              q.authorSlug && handleAuthors(q.authorSlug);
+              if (q.authorSlug) {
+                const payload: TypeSelectedAuthors = {
+                  label: q.author,
+                  slug: q.authorSlug,
+                };
+                handleAuthors(payload);
+              }
             }}
-            checked={selectedAuthors?.includes(q.authorSlug)}
+            checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
           />
         ) : null}
       </div>

@@ -1,4 +1,4 @@
-import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
+import { TypeQuote, TypeQuotesPerPage, TypeSelectedAuthors } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";
@@ -8,8 +8,8 @@ import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
-  selectedAuthors?: string[];
-  handleAuthors?: (value: string) => void;
+  selectedAuthors?: TypeSelectedAuthors[];
+  handleAuthors?: (value: TypeSelectedAuthors) => void;
 };
 
 const QuoteCard = ({ q, selectedAuthors, handleAuthors }: Props) => {
