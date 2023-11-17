@@ -4,7 +4,24 @@ import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
-import { TypeQuote, TypeQuotesPerPage } from "@/types/type";
+import {
+  TypeAndOr,
+  TypeQuote,
+  TypeSelectedAuthors,
+  TypeSortBy,
+} from "@/types/type";
+import useSelectedAuthors from "./useSelectedAuthors";
+import useFetchTags from "./useFetchTags";
+import useAndOr from "./useAndOr";
+import useSortBy from "./useSortBy";
+
+export type PropsFetchData = {
+  currentPage: number;
+  selectedTags: string[];
+  selectedAuthors: TypeSelectedAuthors[];
+  andOr: TypeAndOr;
+  sortBy: TypeSortBy;
+};
 
 const useQuotesFromQuotableAPI = () => {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -15,24 +32,40 @@ const useQuotesFromQuotableAPI = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [nPages, setNPages] = useState<number>(0);
   const [currentRecords, setCurrentRecords] = useState<TypeQuote[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
+
+  const { selectedAuthors, handleAuthors } = useSelectedAuthors();
+  const { selectedTags, handleTags } = useFetchTags();
+  const { andOr, handleAndOr } = useAndOr();
+  const { sortBy, handleSortBy } = useSortBy();
 
   const fetchData = useCallback(
-    async (currentPage: number, selectedTags: string[]) => {
-      const pageNum = `page=${currentPage}`;
-      const limit = `limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
-      const tags = selectedTags ? `tags=${selectedTags.join("|")}` : "";
-      const sortBy = "sortBy=author";
+    async ({
+      currentPage,
+      selectedTags,
+      selectedAuthors,
+      andOr,
+      sortBy,
+    }: PropsFetchData) => {
+      const pageNum = `?page=${currentPage}`;
+      const limit = `&limit=${loginUser?.settings?.apiQuotesPerPage ?? 25}`;
+      const tags =
+        selectedTags.length > 0
+          ? `&tags=${selectedTags.join(andOr.value)}`
+          : "";
+      const sortByStr = `&sortBy=${sortBy.value}`;
+      const listOfAuthors = selectedAuthors.map((author) => author.slug);
+      const authors =
+        listOfAuthors.length > 0 ? `&author=${listOfAuthors.join("|")}` : "";
+
       const url =
         DEFAULT_URL_FOR_ALL_QUOTES +
-        "?" +
         pageNum +
-        "&" +
         limit +
-        "&" +
-        sortBy +
-        "&" +
-        tags;
+        sortByStr +
+        tags +
+        authors;
+
       setIsPending(true);
       if (loginUser) {
         fetch(url)
@@ -46,19 +79,39 @@ const useQuotesFromQuotableAPI = () => {
           })
           .then((result) => {
             setNPages(result.totalPages);
+            setTotalCount(result.totalCount);
 
-            const quotes = result.results.map((quote: any) => ({
-              id: quote._id,
-              author: quote.author,
-              content: quote.content,
-              tags: quote.tags.map((tag: string) => {
-                return { name: tag, color: "white" };
-              }),
-              likedBy: [],
-              bookmarkedBy: [],
-              userInfo: "api",
-              isDraft: false,
-            }));
+            // const quotes: TypeQuote[] = result.results.map((quote: any) => ({
+            //   id: quote._id,
+            //   author: quote.author,
+            //   authorSlug: quote.authorSlug,
+            //   content: quote.content,
+            //   tags: quote.tags.map((tag: string) => {
+            //     return { name: tag, color: "white" };
+            //   }),
+            //   likedBy: [],
+            //   bookmarkedBy: [],
+            //   userInfo: "api",
+            //   isDraft: false,
+            // }));
+            const quotes: TypeQuote[] = result.results.map((quote: any) => {
+              const tags = quote.tags.map((tag: string) => {
+                const tagObject = { name: tag, color: "white" };
+                return tagObject;
+              });
+              const quoteObject: TypeQuote = {
+                id: quote._id,
+                author: quote.author,
+                authorSlug: quote.authorSlug,
+                content: quote.content,
+                tags: tags,
+                likedBy: [],
+                bookmarkedBy: [],
+                userInfo: "api",
+                isDraft: false,
+              };
+              return quoteObject;
+            });
             setCurrentRecords(quotes);
             setIsPending(false);
           })
@@ -77,27 +130,9 @@ const useQuotesFromQuotableAPI = () => {
   );
 
   useEffect(() => {
-    fetchData(currentPage, selectedTags);
-  }, [
-    currentPage,
-    loginUser?.settings?.apiQuotesPerPage,
-    selectedTags,
-    fetchData,
-  ]);
-
-  useEffect(() => {
     setCurrentPage(1);
   }, [loginUser?.settings?.apiQuotesPerPage]);
 
-  const handleTags = (value: string) => {
-    setSelectedTags(() => {
-      if (selectedTags.includes(value)) {
-        return selectedTags.filter((tag) => tag !== value);
-      } else {
-        return [...selectedTags, value];
-      }
-    });
-  };
   return {
     currentRecords,
     isPending,
@@ -106,10 +141,17 @@ const useQuotesFromQuotableAPI = () => {
     setCurrentPage,
     currentPage,
     nPages,
-    setNPages,
+    totalCount,
     selectedTags,
-    setSelectedTags,
     handleTags,
+    andOr,
+    handleAndOr,
+    selectedAuthors,
+    handleAuthors,
+    fetchData,
+
+    sortBy,
+    handleSortBy,
   };
 };
 

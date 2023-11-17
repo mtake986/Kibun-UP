@@ -1,13 +1,11 @@
 "use client";
 import { TypeLoginUser } from "@/types/type";
-import { useState } from "react";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import NoFetchedData from "@/components/utils/NoFetchedData";
-import { useQuote } from "@/context/QuoteContext";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { useEffect } from "react";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -20,11 +18,23 @@ const ListOfRandom = ({ loginUser }: Props) => {
     error,
     nPages,
     currentPage,
+    totalCount,
     setCurrentPage,
     selectedTags,
     handleTags,
+    selectedAuthors,
+    handleAuthors,
+    fetchData,
+    andOr,
+    handleAndOr,
+
+    sortBy,
+    handleSortBy,
   } = useQuotesFromQuotableAPI();
 
+  useEffect(() => {
+    fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
+  }, [fetchData]);
   if (isPending) {
     return <LoadingSpinnerM />;
   }
@@ -34,28 +44,41 @@ const ListOfRandom = ({ loginUser }: Props) => {
 
   return (
     <div className="mb-20">
-      {currentRecords?.length > 0 ? (
-        <div className="flex flex-col gap-3">
-          {/* Actions */}
-          {/* MODAL */}
-          <div className="flex items-center justify-between">
-            {nPages >= 2 && (
-              <PaginationBtns
-                nPages={nPages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            )}
-            <Modal selectedTags={selectedTags} handleTags={handleTags} />
-          </div>
-          {/* List */}
-          {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} />
-          ))}
-        </div>
-      ) : (
-        <NoFetchedData text="No quotes found" />
-      )}
+      {/* Actions */}
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+        <Modal
+          currentPage={currentPage}
+          fetchData={fetchData}
+          selectedTags={selectedTags}
+          handleTags={handleTags}
+          selectedAuthors={selectedAuthors}
+          handleAuthors={handleAuthors}
+          andOr={andOr}
+          handleAndOr={handleAndOr}
+          sortBy={sortBy}
+          handleSortBy={handleSortBy}
+        />
+      </div>
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
+        {totalCount} quotes found
+      </div>
+      <div className="flex flex-col gap-3">
+        {currentRecords.map((doc, i) => (
+          <QuoteCard
+            key={doc.id}
+            q={doc}
+            selectedAuthors={selectedAuthors}
+            handleAuthors={handleAuthors}
+          />
+        ))}
+      </div>
     </div>
   );
 };

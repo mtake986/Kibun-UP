@@ -20,6 +20,7 @@ export type TypeQuote = {
   bookmarkedBy: string[];
   userInfo: IUserInfo | "api";
   isDraft: boolean;
+  authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
   qid?: string;
@@ -105,3 +106,31 @@ export type ProfileTabs = {
 export type TypeTabNamesOfQuotes = "all" | "mine" | "api";
 
 export type TypeQuotesPerPage = 10 | 25 | 50 | 100;
+
+export type TypeAuthorsQuotableAPI = {
+  id: string;
+  name: string;
+  link: string;
+  bio: string;
+  description: string;
+  quoteCount: number;
+  slug: string;
+};
+
+export type TypeAndOr = {
+  label: TypeAndOrLabel;
+  value: "&" | "|";
+};
+export type TypeAndOrLabel = "and" | "or";
+
+export type TypeSelectedAuthors = {
+  label: string;
+  slug: string;
+};
+
+export type TypeSortBy = {
+  label: TypeSortByLabel;
+  value: "author" | "content";
+};
+
+export type TypeSortByLabel = "Author" | "Content";

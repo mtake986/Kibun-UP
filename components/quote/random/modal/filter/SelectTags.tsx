@@ -20,7 +20,7 @@ const SelectTags = ({ selectedTags, handleTags }: Props) => {
       {/* <p className="mb-1">
         {selectedTags.length} of {tags.length} selected
       </p> */}
-      <div className="flex h-36 flex-wrap gap-3 overflow-scroll">
+      <div className="flex h-24 flex-wrap gap-3 overflow-scroll">
         {tags.map((tag: TypeTagsQuotableAPI) => (
           <div key={tag.name} className="flex items-center space-x-2">
             <Checkbox
@@ -35,7 +35,7 @@ const SelectTags = ({ selectedTags, handleTags }: Props) => {
                 htmlFor={tag.name}
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                {tag.quoteCount} of {tag.name}
+                {tag.name} ({tag.quoteCount})
               </label>
             </div>
           </div>

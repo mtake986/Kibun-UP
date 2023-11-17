@@ -6,38 +6,61 @@ import {
   BsToggle2Off,
   BsToggle2On,
 } from "react-icons/bs";
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeSelectedAuthors } from "@/types/type";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   q: TypeQuote;
+  selectedAuthors?: TypeSelectedAuthors[];
+  handleAuthors?: (value: TypeSelectedAuthors) => void;
 };
-const Content = ({ q }: Props) => {
+
+const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 text-sm">
       <div className="flex items-center">
         <div className="flex w-10">
-          <BsChatLeftText size={20} className="mr-5" />
+          <BsChatLeftText size={16} className="mr-5" />
         </div>
         <p className="">{q.content}</p>
       </div>
-      <div className="flex items-center">
-        <div className="flex w-10">
-          <BsFillPersonFill size={20} className="mr-5" />
+      <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center">
+          <div className="flex w-10">
+            <BsFillPersonFill size={16} className="mr-5" />
+          </div>
+          <label htmlFor={q.authorSlug} className="">
+            {q.author}
+          </label>
         </div>
-        <p className="">{q.author}</p>
+        {q?.authorSlug && handleAuthors ? (
+          <Checkbox
+            id={q.authorSlug}
+            onClick={() => {
+              if (q.authorSlug) {
+                const payload: TypeSelectedAuthors = {
+                  label: q.author,
+                  slug: q.authorSlug,
+                };
+                handleAuthors(payload);
+              }
+            }}
+            checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
+          />
+        ) : null}
       </div>
       <div className="flex items-center">
         {q.isDraft ? (
           <>
             <div className="flex w-10">
-              <BsToggle2Off size={20} className="mr-5" />
+              <BsToggle2Off size={16} className="mr-5" />
             </div>
             <p>Draft</p>
           </>
         ) : (
           <>
             <div className="flex w-10">
-              <BsToggle2On size={20} className="mr-5" />
+              <BsToggle2On size={16} className="mr-5" />
             </div>
             <p>Public</p>
           </>
