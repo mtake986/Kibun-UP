@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SORT_BYS } from "@/data/CONSTANTS";
 import { TypeSortBy } from "@/types/type";
 

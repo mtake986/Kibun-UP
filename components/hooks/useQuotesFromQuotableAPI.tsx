@@ -54,7 +54,6 @@ const useQuotesFromQuotableAPI = () => {
           ? `&tags=${selectedTags.join(andOr.value)}`
           : "";
       const sortByStr = `&sortBy=${sortBy.value}`;
-      console.log(selectedAuthors);
       const listOfAuthors = selectedAuthors.map((author) => author.slug);
       const authors =
         listOfAuthors.length > 0 ? `&author=${listOfAuthors.join("|")}` : "";
@@ -66,8 +65,6 @@ const useQuotesFromQuotableAPI = () => {
         sortByStr +
         tags +
         authors;
-
-      console.log(url);
 
       setIsPending(true);
       if (loginUser) {
@@ -84,19 +81,37 @@ const useQuotesFromQuotableAPI = () => {
             setNPages(result.totalPages);
             setTotalCount(result.totalCount);
 
-            const quotes: TypeQuote[] = result.results.map((quote: any) => ({
-              id: quote._id,
-              author: quote.author,
-              authorSlug: quote.authorSlug,
-              content: quote.content,
-              tags: quote.tags.map((tag: string) => {
-                return { name: tag, color: "white" };
-              }),
-              likedBy: [],
-              bookmarkedBy: [],
-              userInfo: "api",
-              isDraft: false,
-            }));
+            // const quotes: TypeQuote[] = result.results.map((quote: any) => ({
+            //   id: quote._id,
+            //   author: quote.author,
+            //   authorSlug: quote.authorSlug,
+            //   content: quote.content,
+            //   tags: quote.tags.map((tag: string) => {
+            //     return { name: tag, color: "white" };
+            //   }),
+            //   likedBy: [],
+            //   bookmarkedBy: [],
+            //   userInfo: "api",
+            //   isDraft: false,
+            // }));
+            const quotes: TypeQuote[] = result.results.map((quote: any) => {
+              const tags = quote.tags.map((tag: string) => {
+                const tagObject = { name: tag, color: "white" };
+                return tagObject;
+              });
+              const quoteObject: TypeQuote = {
+                id: quote._id,
+                author: quote.author,
+                authorSlug: quote.authorSlug,
+                content: quote.content,
+                tags: tags,
+                likedBy: [],
+                bookmarkedBy: [],
+                userInfo: "api",
+                isDraft: false,
+              };
+              return quoteObject;
+            });
             setCurrentRecords(quotes);
             setIsPending(false);
           })
@@ -113,10 +128,6 @@ const useQuotesFromQuotableAPI = () => {
     },
     [loginUser, loginUser?.settings?.apiQuotesPerPage]
   );
-
-  // useEffect(() => {
-  //   fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
-  // }, [fetchData]);
 
   useEffect(() => {
     setCurrentPage(1);
