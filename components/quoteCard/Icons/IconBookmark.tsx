@@ -11,12 +11,18 @@ type Props = {
 };
 
 const IconBookmark = ({ q, loginUser }: Props) => {
-  const { storeBookmark, removeBookmark } = useQuote();
+  const { storeBookmark, removeBookmark, allQuotes } = useQuote();
 
-  const isBookmarked = useMemo(
-    () => q.bookmarkedBy.some((id) => id === loginUser.uid),
-    [q.bookmarkedBy, loginUser.uid]
-  );
+  let numOfBookmarks = 0;
+  const isBookmarked = allQuotes.some((ele) => {
+    if (
+      ele.id === q.id &&
+      ele.bookmarkedBy.some((id) => id === loginUser.uid)
+    ) {
+      numOfBookmarks = ele.bookmarkedBy.length;
+      return true;
+    }
+  });
 
   return (
     <span
@@ -34,12 +40,12 @@ const IconBookmark = ({ q, loginUser }: Props) => {
       {isBookmarked ? (
         <>
           <BsBookmarkFill size={12} className="text-green-500" />
-          <span className={`text-green-500`}>{q.bookmarkedBy.length}</span>
+          <span className={`text-green-500`}>{numOfBookmarks}</span>
         </>
       ) : (
         <>
           <BsBookmark size={12} />
-          <span>{q.bookmarkedBy.length}</span>
+          <span>{numOfBookmarks}</span>
         </>
       )}
     </span>

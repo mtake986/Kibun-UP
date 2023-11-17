@@ -10,32 +10,40 @@ type Props = {
 };
 
 const IconLike = ({ q, loginUser }: Props) => {
-  const { storeFav, removeFav } = useQuote();
-  const isLiked = q.likedBy.some((id) => id === loginUser.uid);
+  const { storeFav, removeFav, allQuotes } = useQuote();
+
+  let numOfLikes = 0;
+  const isLiked = allQuotes.some((ele) => {
+    if (ele.id === q.id && ele.likedBy.some((id) => id === loginUser.uid)) {
+      numOfLikes = ele.likedBy.length;
+      return true;
+    };
+  });
+  // const isLiked = q.likedBy.some((id) => id === loginUser.uid);
   const heartFill = isLiked ? "red" : undefined;
 
   return (
     <span
       onClick={async () => {
-            try {
-              isLiked
-                ? await removeFav(loginUser.uid, q)
-                : await storeFav(loginUser.uid, q);
-            } catch (error) {
-              displayErrorToast(error);
-            }
+        try {
+          isLiked
+            ? await removeFav(loginUser.uid, q)
+            : await storeFav(loginUser.uid, q);
+        } catch (error) {
+          displayErrorToast(error);
+        }
       }}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >
       {isLiked ? (
         <>
           <Heart size={14} className="text-red-500" fill={heartFill} />
-          <span className={`text-red-500`}>{q.likedBy.length}</span>
+          <span className={`text-red-500`}>{numOfLikes}</span>
         </>
       ) : (
         <>
           <Heart size={14} />
-          <span>{q.likedBy.length}</span>
+          <span>{numOfLikes}</span>
         </>
       )}
     </span>

@@ -19,8 +19,6 @@ const List = ({ quotes }: Props) => {
 
   const {
     sortFilterAreaForMineShown,
-    sortFilterByForMine,
-    sortAndFilterMyQuotes,
   } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
