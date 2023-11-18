@@ -27,6 +27,9 @@ const Quote = () => {
     getQuotesNotMine,
     fetchAllQuotes,
     allQuotes,
+
+    apiQuotesFromFirestore,
+    fetchApiQutoesFromFirestore,
   } = useQuote();
 
   useEffect(() => {
@@ -38,6 +41,7 @@ const Quote = () => {
         if (!lockedQuote) getLockedQuote();
         if (!quotesNotMine || quotesNotMine.length === 0) getQuotesNotMine();
         if (allQuotes.length === 0) fetchAllQuotes();
+        if (apiQuotesFromFirestore.length === 0) fetchApiQutoesFromFirestore();
       };
       try {
         if (loginUser) {

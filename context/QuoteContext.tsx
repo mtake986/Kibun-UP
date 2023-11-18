@@ -123,6 +123,11 @@ type QuoteContext = {
 
   fetchAllQuotes: () => void;
   allQuotes: TypeQuote[];
+
+  apiQuotesFromFirestore: TypeQuote[];
+  fetchApiQutoesFromFirestore: () => void;
+  handleLikeApiQuote: (uid: string, q: TypeQuote) => void;
+  handleBookmarkApiQuote: (uid: string, q: TypeQuote) => void;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -138,9 +143,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
   const [allQuotes, setAllQuotes] = useState<TypeQuote[]>([]);
+  const [apiQuotesFromFirestore, setApiQuotesFromFirestore] = useState<
+    TypeQuote[]
+  >([]);
 
   const quotesCollectionRef = collection(db, "quotes");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
+  const apiQuotesFromFirestoreCollectionRef = collection(db, "apiQuotes");
 
   const [user] = useAuthState(auth);
 
@@ -840,6 +849,86 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortFilterByForMineDefaultValue(true);
   };
 
+  // API Quotes from Firestore
+  const fetchApiQutoesFromFirestore = () => {
+    const q = query(
+      apiQuotesFromFirestoreCollectionRef,
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      setApiQuotesFromFirestore(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+      );
+    });
+  };
+
+  const handleLikeApiQuote = async (uid: string, data: TypeQuote) => {
+    const quoteDocRef = doc(db, "apiQuotes", data.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      if (quoteDocSnap.data().likedBy.includes(uid)) {
+        console.log("need to remvoe");
+        await updateDoc(quoteDocRef, {
+          likedBy: arrayRemove(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      } else {
+        console.log("need to add");
+        await updateDoc(quoteDocRef, {
+          likedBy: arrayUnion(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      }
+    } else {
+      console.log("create a quote in model");
+      await setDoc(doc(db, "apiQuotes", data.id), {
+        ...data,
+        likedBy: [uid],
+        createdAt: serverTimestamp(),
+      });
+    }
+  };
+
+  const handleBookmarkApiQuote = async (uid: string, data: TypeQuote) => {
+    const quoteDocRef = doc(db, "apiQuotes", data.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      if (quoteDocSnap.data().bookmarkedBy.includes(uid)) {
+        console.log("need to remvoe");
+        await updateDoc(quoteDocRef, {
+          bookmarkedBy: arrayRemove(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      } else {
+        console.log("need to add");
+        await updateDoc(quoteDocRef, {
+          bookmarkedBy: arrayUnion(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      }
+    } else {
+      console.log("create a quote in model");
+      await setDoc(doc(db, "apiQuotes", data.id), {
+        ...data,
+        bookmarkedBy: [uid],
+        createdAt: serverTimestamp(),
+      });
+    }
+  };
+
+
   return (
     <QuoteContext.Provider
       value={{
@@ -910,6 +999,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchAllQuotes,
         allQuotes,
+
+        apiQuotesFromFirestore,
+        fetchApiQutoesFromFirestore,
+        handleLikeApiQuote,
+        handleBookmarkApiQuote,
       }}
     >
       {children}

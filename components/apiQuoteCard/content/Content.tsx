@@ -6,13 +6,16 @@ import {
   BsToggle2Off,
   BsToggle2On,
 } from "react-icons/bs";
-import { TypeQuote } from "@/types/type";
+import { TypeQuote, TypeSelectedAuthors } from "@/types/type";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   q: TypeQuote;
+  selectedAuthors?: TypeSelectedAuthors[];
+  handleAuthors?: (value: TypeSelectedAuthors) => void;
 };
 
-const Content = ({ q }: Props) => {
+const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
   return (
     <div className="flex flex-col gap-3 text-sm">
       <div className="flex items-center">
@@ -30,6 +33,21 @@ const Content = ({ q }: Props) => {
             {q.author}
           </label>
         </div>
+        {q?.authorSlug && handleAuthors ? (
+          <Checkbox
+            id={q.authorSlug}
+            onClick={() => {
+              if (q.authorSlug) {
+                const payload: TypeSelectedAuthors = {
+                  label: q.author,
+                  slug: q.authorSlug,
+                };
+                handleAuthors(payload);
+              }
+            }}
+            checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
+          />
+        ) : null}
       </div>
       <div className="flex items-center">
         {q.isDraft ? (

@@ -1,6 +1,5 @@
-import {
-  TypeQuote,
-} from "@/types/type";
+import { TypeQuote, TypeQuotesPerPage, TypeSelectedAuthors } from "@/types/type";
+
 import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
@@ -9,9 +8,11 @@ import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
 type Props = {
   q: TypeQuote;
+  selectedAuthors: TypeSelectedAuthors[];
+  handleAuthors: (value: TypeSelectedAuthors) => void;
 };
 
-const QuoteCard = ({ q }: Props) => {
+const ApiQuoteCard = ({ q, selectedAuthors, handleAuthors }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [isCardLoading, setIsCardLoading] = useState(false);
 
@@ -28,7 +29,11 @@ const QuoteCard = ({ q }: Props) => {
               setIsCardLoading={setIsCardLoading}
             />
           ) : (
-            <Content q={q} />
+            <Content
+              q={q}
+              selectedAuthors={selectedAuthors}
+              handleAuthors={handleAuthors}
+            />
           )}
           <Icons
             q={q}
@@ -41,4 +46,4 @@ const QuoteCard = ({ q }: Props) => {
   );
 };
 
-export default QuoteCard;
+export default ApiQuoteCard;
