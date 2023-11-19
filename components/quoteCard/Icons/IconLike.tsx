@@ -12,13 +12,8 @@ type Props = {
 const IconLike = ({ q, loginUser }: Props) => {
   const { storeFav, removeFav, allQuotes } = useQuote();
 
-  const numOfLikes = allQuotes.reduce((acc, ele) => {
-    return ele.id === q.id ? ele.likedBy.length : acc;
-  }, 0);
-  const isLiked = allQuotes.some(
-    (ele) => ele.id === q.id && ele.likedBy.includes(loginUser.uid)
-  );
-  // const isLiked = q.likedBy.some((id) => id === loginUser.uid);
+  const numOfLikes = q.likedBy.length;
+  const isLiked = q.likedBy.includes(loginUser.uid);
   const heartFill = isLiked ? "red" : undefined;
 
   return (

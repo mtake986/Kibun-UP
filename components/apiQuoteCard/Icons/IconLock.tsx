@@ -50,8 +50,9 @@ const IconLock = ({ q, loginUser }: Props) => {
     } catch (error) {
       console.error(error);
       displayErrorToast(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

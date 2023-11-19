@@ -13,15 +13,13 @@ type Props = {
 const IconLike = ({ q, loginUser }: Props) => {
   const { handleLikeApiQuote, apiQuotesFromFirestore } = useQuote();
 
-
-  const { numOfLikes, isLiked } = useMemo(() => {
+  const { numOfLikes, isLiked, heartFill } = useMemo(() => {
     const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
     const isLiked = quote?.likedBy.includes(loginUser.uid) ?? false;
+    const heartFill = isLiked ? "red" : undefined;
     const numOfLikes = quote?.likedBy.length ?? 0;
-    return { numOfLikes, isLiked };
+    return { numOfLikes, isLiked, heartFill };
   }, [apiQuotesFromFirestore, q.id, loginUser.uid]);
-  // const isLiked = q.likedBy.some((id) => id === loginUser.uid);
-  const heartFill = isLiked ? "red" : undefined;
 
   return (
     <span

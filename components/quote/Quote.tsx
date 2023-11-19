@@ -57,7 +57,9 @@ const Quote = () => {
           }
         }
       } catch (error) {
-        displayErrorToast(error);
+        displayErrorToast(
+          `An unexpected error occurred. Please try again later. Error: ${error}`
+        );
       }
     };
     fetchData();

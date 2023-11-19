@@ -29,9 +29,9 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
           <div className="flex w-10">
             <BsFillPersonFill size={16} className="mr-5" />
           </div>
-          <label htmlFor={q.authorSlug} className="">
+          <p className="">
             {q.author}
-          </label>
+          </p>
         </div>
         <Checkbox
           id={q.authorSlug}
@@ -42,25 +42,8 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
             };
             handleAuthors(payload);
           }}
-          checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
+          checked={selectedAuthors.some((a) => a.label === q.author) ?? false}
         />
-      </div>
-      <div className="flex items-center">
-        {q.isDraft ? (
-          <>
-            <div className="flex w-10">
-              <BsToggle2Off size={16} className="mr-5" />
-            </div>
-            <p>Draft</p>
-          </>
-        ) : (
-          <>
-            <div className="flex w-10">
-              <BsToggle2On size={16} className="mr-5" />
-            </div>
-            <p>Public</p>
-          </>
-        )}
       </div>
       {q.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">
