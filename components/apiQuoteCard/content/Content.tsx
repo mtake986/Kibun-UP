@@ -6,13 +6,13 @@ import {
   BsToggle2Off,
   BsToggle2On,
 } from "react-icons/bs";
-import { TypeQuote, TypeSelectedAuthors } from "@/types/type";
+import { TypeAPIQuote, TypeSelectedAuthors } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
-  q: TypeQuote;
-  selectedAuthors?: TypeSelectedAuthors[];
-  handleAuthors?: (value: TypeSelectedAuthors) => void;
+  q: TypeAPIQuote;
+  selectedAuthors: TypeSelectedAuthors[];
+  handleAuthors: (value: TypeSelectedAuthors) => void;
 };
 
 const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
@@ -33,21 +33,17 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
             {q.author}
           </label>
         </div>
-        {q?.authorSlug && handleAuthors ? (
-          <Checkbox
-            id={q.authorSlug}
-            onClick={() => {
-              if (q.authorSlug) {
-                const payload: TypeSelectedAuthors = {
-                  label: q.author,
-                  slug: q.authorSlug,
-                };
-                handleAuthors(payload);
-              }
-            }}
-            checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
-          />
-        ) : null}
+        <Checkbox
+          id={q.authorSlug}
+          onClick={() => {
+            const payload: TypeSelectedAuthors = {
+              label: q.author,
+              slug: q.authorSlug,
+            };
+            handleAuthors(payload);
+          }}
+          checked={selectedAuthors?.some((a) => a.label === q.author) ?? false}
+        />
       </div>
       <div className="flex items-center">
         {q.isDraft ? (

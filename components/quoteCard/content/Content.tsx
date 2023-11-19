@@ -26,9 +26,6 @@ const Content = ({ q }: Props) => {
           <div className="flex w-10">
             <BsFillPersonFill size={16} className="mr-5" />
           </div>
-          <label htmlFor={q.authorSlug} className="">
-            {q.author}
-          </label>
         </div>
       </div>
       <div className="flex items-center">

@@ -20,12 +20,16 @@ export type TypeQuote = {
   bookmarkedBy: string[];
   userInfo: IUserInfo | "api";
   isDraft: boolean;
-  authorSlug?: string;
+  // authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
   qid?: string;
   uid?: string;
 };
+
+export type TypeAPIQuote = TypeQuote & {
+  authorSlug: string;
+}
 
 export interface TypeEventInputValues {
   eventTitle: string;

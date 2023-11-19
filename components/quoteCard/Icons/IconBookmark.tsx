@@ -13,28 +13,29 @@ type Props = {
 const IconBookmark = ({ q, loginUser }: Props) => {
   const { storeBookmark, removeBookmark, allQuotes } = useQuote();
 
-  let numOfBookmarks = 0;
-  const isBookmarked = allQuotes.some((ele) => {
-    if (
-      ele.id === q.id &&
-      ele.bookmarkedBy.some((id) => id === loginUser.uid)
-    ) {
-      numOfBookmarks = ele.bookmarkedBy.length;
-      return true;
-    }
-  });
+const numOfBookmarks = useMemo(() => {
+  const quote = allQuotes.find((ele) => ele.id === q.id);
+  return quote ? quote.bookmarkedBy.length : 0;
+}, [allQuotes, q.id]);
+const isBookmarked = useMemo(() => {
+  return allQuotes.some(
+    (ele) => ele.id === q.id && ele.bookmarkedBy.includes(loginUser.uid)
+  );
+}, [allQuotes, q.id, loginUser.uid]);
+
+const handleClick = useCallback(() => {
+  try {
+    isBookmarked
+      ? removeBookmark(loginUser.uid, q)
+      : storeBookmark(loginUser.uid, q);
+  } catch (e) {
+    displayErrorToast(e);
+  }
+}, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, q]);
 
   return (
     <span
-      onClick={useCallback(() => {
-        try {
-          isBookmarked
-            ? removeBookmark(loginUser.uid, q)
-            : storeBookmark(loginUser.uid, q);
-        } catch (e) {
-          displayErrorToast(e);
-        }
-      }, [isBookmarked, removeBookmark, storeBookmark, loginUser.uid, q])}
+      onClick={handleClick}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >
       {isBookmarked ? (

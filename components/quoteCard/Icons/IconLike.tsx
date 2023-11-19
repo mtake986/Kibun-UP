@@ -12,13 +12,12 @@ type Props = {
 const IconLike = ({ q, loginUser }: Props) => {
   const { storeFav, removeFav, allQuotes } = useQuote();
 
-  let numOfLikes = 0;
-  const isLiked = allQuotes.some((ele) => {
-    if (ele.id === q.id && ele.likedBy.some((id) => id === loginUser.uid)) {
-      numOfLikes = ele.likedBy.length;
-      return true;
-    };
-  });
+  const numOfLikes = allQuotes.reduce((acc, ele) => {
+    return ele.id === q.id ? ele.likedBy.length : acc;
+  }, 0);
+  const isLiked = allQuotes.some(
+    (ele) => ele.id === q.id && ele.likedBy.includes(loginUser.uid)
+  );
   // const isLiked = q.likedBy.some((id) => id === loginUser.uid);
   const heartFill = isLiked ? "red" : undefined;
 

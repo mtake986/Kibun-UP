@@ -26,6 +26,7 @@ import {
   ITag,
   TypeLoginUser,
   TypeTabNamesOfQuotes,
+  TypeAPIQuote,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -42,7 +43,7 @@ type QuoteContext = {
   loginUserQuotes: TypeQuote[] | [];
   getLoginUserQuotes: () => void;
   handleCancelUpdate: () => void;
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string) => Promise<void>;
 
   randomQuote: TypeQuote | undefined;
 
@@ -124,10 +125,10 @@ type QuoteContext = {
   fetchAllQuotes: () => void;
   allQuotes: TypeQuote[];
 
-  apiQuotesFromFirestore: TypeQuote[];
-  fetchApiQutoesFromFirestore: () => void;
-  handleLikeApiQuote: (uid: string, q: TypeQuote) => void;
-  handleBookmarkApiQuote: (uid: string, q: TypeQuote) => void;
+  apiQuotesFromFirestore: TypeAPIQuote[];
+  fetchApiQuotesFromFirestore: () => void;
+  handleLikeApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
+  handleBookmarkApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -144,7 +145,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
   const [allQuotes, setAllQuotes] = useState<TypeQuote[]>([]);
   const [apiQuotesFromFirestore, setApiQuotesFromFirestore] = useState<
-    TypeQuote[]
+    TypeAPIQuote[]
   >([]);
 
   const quotesCollectionRef = collection(db, "quotes");
@@ -850,24 +851,25 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   // API Quotes from Firestore
-  const fetchApiQutoesFromFirestore = () => {
+  const fetchApiQuotesFromFirestore = () => {
     const q = query(
       apiQuotesFromFirestoreCollectionRef,
       orderBy("createdAt", "desc")
     );
     onSnapshot(q, (snapshot) => {
       setApiQuotesFromFirestore(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeAPIQuote)
+        )
       );
     });
   };
 
-  const handleLikeApiQuote = async (uid: string, data: TypeQuote) => {
+  const handleLikeApiQuote = async (uid: string, data: TypeAPIQuote) => {
     const quoteDocRef = doc(db, "apiQuotes", data.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
     if (quoteDocSnap.exists()) {
       if (quoteDocSnap.data().likedBy.includes(uid)) {
-        console.log("need to remvoe");
         await updateDoc(quoteDocRef, {
           likedBy: arrayRemove(uid),
         }).catch((e) => {
@@ -876,7 +878,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           });
         });
       } else {
-        console.log("need to add");
         await updateDoc(quoteDocRef, {
           likedBy: arrayUnion(uid),
         }).catch((e) => {
@@ -886,7 +887,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       }
     } else {
-      console.log("create a quote in model");
       await setDoc(doc(db, "apiQuotes", data.id), {
         ...data,
         likedBy: [uid],
@@ -895,12 +895,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const handleBookmarkApiQuote = async (uid: string, data: TypeQuote) => {
+  const handleBookmarkApiQuote = async (uid: string, data: TypeAPIQuote) => {
     const quoteDocRef = doc(db, "apiQuotes", data.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
     if (quoteDocSnap.exists()) {
       if (quoteDocSnap.data().bookmarkedBy.includes(uid)) {
-        console.log("need to remvoe");
         await updateDoc(quoteDocRef, {
           bookmarkedBy: arrayRemove(uid),
         }).catch((e) => {
@@ -909,7 +908,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           });
         });
       } else {
-        console.log("need to add");
         await updateDoc(quoteDocRef, {
           bookmarkedBy: arrayUnion(uid),
         }).catch((e) => {
@@ -919,7 +917,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       }
     } else {
-      console.log("create a quote in model");
       await setDoc(doc(db, "apiQuotes", data.id), {
         ...data,
         bookmarkedBy: [uid],
@@ -927,7 +924,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     }
   };
-
 
   return (
     <QuoteContext.Provider
@@ -1001,7 +997,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         allQuotes,
 
         apiQuotesFromFirestore,
-        fetchApiQutoesFromFirestore,
+        fetchApiQuotesFromFirestore,
         handleLikeApiQuote,
         handleBookmarkApiQuote,
       }}

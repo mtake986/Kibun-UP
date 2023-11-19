@@ -1,31 +1,25 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeAPIQuote, TypeLoginUser } from "@/types/type";
 import { Heart } from "lucide-react";
+import { useMemo } from "react";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeAPIQuote;
   loginUser: TypeLoginUser;
 };
 
 const IconLike = ({ q, loginUser }: Props) => {
-  const { handleLikeApiQuote, apiQuotesFromFirestore } =
-    useQuote();
+  const { handleLikeApiQuote, apiQuotesFromFirestore } = useQuote();
 
-  let numOfLikes = 0;
-  const isLiked =
-    apiQuotesFromFirestore.length === 0
-      ? false
-      : apiQuotesFromFirestore.some((ele) => {
-          if (
-            ele.id === q.id &&
-            ele.likedBy.some((id) => id === loginUser.uid)
-          ) {
-            numOfLikes = ele.likedBy.length;
-            return true;
-          }
-        });
+
+  const { numOfLikes, isLiked } = useMemo(() => {
+    const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
+    const isLiked = quote?.likedBy.includes(loginUser.uid) ?? false;
+    const numOfLikes = quote?.likedBy.length ?? 0;
+    return { numOfLikes, isLiked };
+  }, [apiQuotesFromFirestore, q.id, loginUser.uid]);
   // const isLiked = q.likedBy.some((id) => id === loginUser.uid);
   const heartFill = isLiked ? "red" : undefined;
 

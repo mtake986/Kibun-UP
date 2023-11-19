@@ -29,7 +29,7 @@ const Quote = () => {
     allQuotes,
 
     apiQuotesFromFirestore,
-    fetchApiQutoesFromFirestore,
+    fetchApiQuotesFromFirestore,
   } = useQuote();
 
   useEffect(() => {
@@ -38,10 +38,12 @@ const Quote = () => {
         if (!loginUserQuotes || loginUserQuotes.length === 0) {
           getLoginUserQuotes();
         }
-        if (!lockedQuote) getLockedQuote();
-        if (!quotesNotMine || quotesNotMine.length === 0) getQuotesNotMine();
-        if (allQuotes.length === 0) fetchAllQuotes();
-        if (apiQuotesFromFirestore.length === 0) fetchApiQutoesFromFirestore();
+        if (!lockedQuote) await getLockedQuote();
+        if (!quotesNotMine || quotesNotMine.length === 0)
+          await getQuotesNotMine();
+        if (allQuotes.length === 0) await fetchAllQuotes();
+        if (apiQuotesFromFirestore.length === 0)
+          await fetchApiQuotesFromFirestore();
       };
       try {
         if (loginUser) {
@@ -51,7 +53,7 @@ const Quote = () => {
             fetchLoginUser(auth.currentUser);
           } else {
             // Handle the case where auth.currentUser is null
-            displayErrorToast('no auth.currentUser');
+            displayErrorToast("no auth.currentUser");
           }
         }
       } catch (error) {

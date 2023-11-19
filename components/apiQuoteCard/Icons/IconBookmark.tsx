@@ -1,38 +1,36 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeAPIQuote, TypeLoginUser } from "@/types/type";
 import { useCallback, useMemo } from "react";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeAPIQuote;
   loginUser: TypeLoginUser;
 };
 
 const IconBookmark = ({ q, loginUser }: Props) => {
   const { apiQuotesFromFirestore, handleBookmarkApiQuote } = useQuote();
 
-  let numOfBookmarks = 0;
-  const isBookmarked = apiQuotesFromFirestore.some((ele) => {
-    if (
-      ele.id === q.id &&
-      ele.bookmarkedBy.some((id) => id === loginUser.uid)
-    ) {
-      numOfBookmarks = ele.bookmarkedBy.length;
-      return true;
+  const { numOfBookmarks, isBookmarked } = useMemo(() => {
+    const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
+    const isBookmarked = quote?.bookmarkedBy.includes(loginUser.uid) ?? false;
+    const numOfBookmarks = quote?.bookmarkedBy.length ?? 0;
+    return { numOfBookmarks, isBookmarked };
+  }, [apiQuotesFromFirestore, q.id, loginUser.uid]);
+
+  const handleBookmarkClick = useCallback(() => {
+    try {
+      handleBookmarkApiQuote(loginUser.uid, q);
+    } catch (e) {
+      displayErrorToast(e);
     }
-  });
+  }, [loginUser.uid, q, handleBookmarkApiQuote]);
 
   return (
     <span
-      onClick={useCallback(() => {
-        try {
-          handleBookmarkApiQuote(loginUser.uid, q);
-        } catch (e) {
-          displayErrorToast(e);
-        }
-      }, [loginUser.uid, q, handleBookmarkApiQuote])}
+      onClick={handleBookmarkClick}
       className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
     >
       {isBookmarked ? (
