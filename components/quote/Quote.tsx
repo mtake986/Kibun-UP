@@ -58,7 +58,7 @@ const Quote = () => {
         }
       } catch (error) {
         displayErrorToast(
-          `An unexpected error occurred. Please try again later. Error: ${error}`
+          `An unexpected error occurred. Please try again later.`
         );
       }
     };
