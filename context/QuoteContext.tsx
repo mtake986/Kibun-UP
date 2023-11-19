@@ -26,6 +26,7 @@ import {
   ITag,
   TypeLoginUser,
   TypeTabNamesOfQuotes,
+  TypeAPIQuote,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -42,7 +43,7 @@ type QuoteContext = {
   loginUserQuotes: TypeQuote[] | [];
   getLoginUserQuotes: () => void;
   handleCancelUpdate: () => void;
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string) => Promise<void>;
 
   randomQuote: TypeQuote | undefined;
 
@@ -123,6 +124,11 @@ type QuoteContext = {
 
   fetchAllQuotes: () => void;
   allQuotes: TypeQuote[];
+
+  apiQuotesFromFirestore: TypeAPIQuote[];
+  fetchApiQuotesFromFirestore: () => void;
+  handleLikeApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
+  handleBookmarkApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
 };
 
 const QuoteContext = createContext({} as QuoteContext);
@@ -138,9 +144,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const [quotesNotMine, setQuotesNotMine] = useState<TypeQuote[]>([]);
   const [allQuotes, setAllQuotes] = useState<TypeQuote[]>([]);
+  const [apiQuotesFromFirestore, setApiQuotesFromFirestore] = useState<
+    TypeAPIQuote[]
+  >([]);
 
   const quotesCollectionRef = collection(db, "quotes");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
+  const apiQuotesFromFirestoreCollectionRef = collection(db, "apiQuotes");
 
   const [user] = useAuthState(auth);
 
@@ -840,6 +850,81 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortFilterByForMineDefaultValue(true);
   };
 
+  // API Quotes from Firestore
+  const fetchApiQuotesFromFirestore = () => {
+    const q = query(
+      apiQuotesFromFirestoreCollectionRef,
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      setApiQuotesFromFirestore(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeAPIQuote)
+        )
+      );
+    });
+  };
+
+  const handleLikeApiQuote = async (uid: string, data: TypeAPIQuote) => {
+    const quoteDocRef = doc(db, "apiQuotes", data.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      if (quoteDocSnap.data().likedBy.includes(uid)) {
+        await updateDoc(quoteDocRef, {
+          likedBy: arrayRemove(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      } else {
+        await updateDoc(quoteDocRef, {
+          likedBy: arrayUnion(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      }
+    } else {
+      await setDoc(doc(db, "apiQuotes", data.id), {
+        ...data,
+        likedBy: [uid],
+        createdAt: serverTimestamp(),
+      });
+    }
+  };
+
+  const handleBookmarkApiQuote = async (uid: string, data: TypeAPIQuote) => {
+    const quoteDocRef = doc(db, "apiQuotes", data.id);
+    const quoteDocSnap = await getDoc(quoteDocRef);
+    if (quoteDocSnap.exists()) {
+      if (quoteDocSnap.data().bookmarkedBy.includes(uid)) {
+        await updateDoc(quoteDocRef, {
+          bookmarkedBy: arrayRemove(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      } else {
+        await updateDoc(quoteDocRef, {
+          bookmarkedBy: arrayUnion(uid),
+        }).catch((e) => {
+          displayErrorToast({
+            e,
+          });
+        });
+      }
+    } else {
+      await setDoc(doc(db, "apiQuotes", data.id), {
+        ...data,
+        bookmarkedBy: [uid],
+        createdAt: serverTimestamp(),
+      });
+    }
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -910,6 +995,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchAllQuotes,
         allQuotes,
+
+        apiQuotesFromFirestore,
+        fetchApiQuotesFromFirestore,
+        handleLikeApiQuote,
+        handleBookmarkApiQuote,
       }}
     >
       {children}

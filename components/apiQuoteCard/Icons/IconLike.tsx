@@ -1,28 +1,31 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeAPIQuote, TypeLoginUser } from "@/types/type";
 import { Heart } from "lucide-react";
+import { useMemo } from "react";
 
 type Props = {
-  q: TypeQuote;
+  q: TypeAPIQuote;
   loginUser: TypeLoginUser;
 };
 
 const IconLike = ({ q, loginUser }: Props) => {
-  const { storeFav, removeFav, allQuotes } = useQuote();
+  const { handleLikeApiQuote, apiQuotesFromFirestore } = useQuote();
 
-  const numOfLikes = q.likedBy.length;
-  const isLiked = q.likedBy.includes(loginUser.uid);
-  const heartFill = isLiked ? "red" : undefined;
+  const { numOfLikes, isLiked, heartFill } = useMemo(() => {
+    const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
+    const isLiked = quote?.likedBy.includes(loginUser.uid) ?? false;
+    const heartFill = isLiked ? "red" : undefined;
+    const numOfLikes = quote?.likedBy.length ?? 0;
+    return { numOfLikes, isLiked, heartFill };
+  }, [apiQuotesFromFirestore, q.id, loginUser.uid]);
 
   return (
     <span
       onClick={async () => {
         try {
-          isLiked
-            ? await removeFav(loginUser.uid, q)
-            : await storeFav(loginUser.uid, q);
+          handleLikeApiQuote(loginUser.uid, q);
         } catch (error) {
           displayErrorToast(error);
         }

@@ -1,11 +1,11 @@
 "use client";
 import { TypeLoginUser } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
-import QuoteCard from "@/components/quoteCard/QuoteCard";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 import { useEffect } from "react";
+import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -71,7 +71,7 @@ const ListOfRandom = ({ loginUser }: Props) => {
       </div>
       <div className="flex flex-col gap-3">
         {currentRecords.map((doc, i) => (
-          <QuoteCard
+          <ApiQuoteCard
             key={doc.id}
             q={doc}
             selectedAuthors={selectedAuthors}

@@ -18,12 +18,12 @@ const Radio = ({
   loginUserQuotes,
 }: Props) => {
   return (
-    <div className="">
+    <div>
       <div className="flex items-center space-x-2">
         <RadioGroupItem
           value={radio.id}
           id={radio.id}
-          className={`text-gray-600 border-gray-300 dark:text-white  `}
+          className={`border-gray-300 text-gray-600 dark:text-white  `}
           onClick={(e) => updateQuoteTypeForHome(radio.id)}
           disabled={!loginUserQuotes}
         />

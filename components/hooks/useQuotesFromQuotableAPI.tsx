@@ -5,6 +5,7 @@ import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
 import {
+  TypeAPIQuote,
   TypeAndOr,
   TypeQuote,
   TypeSelectedAuthors,
@@ -31,7 +32,7 @@ const useQuotesFromQuotableAPI = () => {
   // todo: pagination | need some states for current page, total pages, and different quotes-per-page
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [nPages, setNPages] = useState<number>(0);
-  const [currentRecords, setCurrentRecords] = useState<TypeQuote[]>([]);
+  const [currentRecords, setCurrentRecords] = useState<TypeAPIQuote[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const { selectedAuthors, handleAuthors } = useSelectedAuthors();
@@ -94,12 +95,12 @@ const useQuotesFromQuotableAPI = () => {
             //   userInfo: "api",
             //   isDraft: false,
             // }));
-            const quotes: TypeQuote[] = result.results.map((quote: any) => {
+            const quotes: TypeAPIQuote[] = result.results.map((quote: any) => {
               const tags = quote.tags.map((tag: string) => {
                 const tagObject = { name: tag, color: "white" };
                 return tagObject;
               });
-              const quoteObject: TypeQuote = {
+              const quoteObject: TypeAPIQuote = {
                 id: quote._id,
                 author: quote.author,
                 authorSlug: quote.authorSlug,

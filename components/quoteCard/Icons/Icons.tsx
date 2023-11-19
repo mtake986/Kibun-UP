@@ -14,7 +14,6 @@ type Props = {
 const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
   const { loginUser } = useAuth();
 
-
   if (!loginUser) {
     return null; // or return some default UI
   }
