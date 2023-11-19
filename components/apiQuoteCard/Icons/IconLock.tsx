@@ -44,6 +44,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           text: "Needs to be Public.",
           color: "red",
         });
+        return;
       } else {
         await lockThisQuote(loginUser?.uid, q);
       }
@@ -64,7 +65,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           className="cursor-pointer text-red-500"
         />
       ) : (
-        <BiLockOpen size={16} onClick={handleLock} className="" />
+        <BiLockOpen size={16} onClick={handleLock} />
       )}
     </span>
   );

@@ -26,18 +26,18 @@ const Filter = ({
   return (
     <div className="space-y-3">
       <SectionTtl text="Filter" />
-      <div className="">
+      <div>
         <SectionSubTtl text="Tags" />
         <SelectTags selectedTags={selectedTags} handleTags={handleTags} />
       </div>
-      <div className="">
+      <div>
         <SectionSubTtl text="Authors" />
         <ListOfSelectedAuthors
           selectedAuthors={selectedAuthors}
           handleAuthors={handleAuthors}
         />
       </div>
-      <div className="">
+      <div>
         <SectionSubTtl text="Rule" />
         <SelectAndOr andOr={andOr} handleAndOr={handleAndOr} />
       </div>

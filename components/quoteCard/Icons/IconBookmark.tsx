@@ -12,9 +12,12 @@ type Props = {
 
 const IconBookmark = ({ q, loginUser }: Props) => {
   const { storeBookmark, removeBookmark, allQuotes } = useQuote();
-
-const numOfBookmarks = q.bookmarkedBy.length;
-const isBookmarked = q.bookmarkedBy.includes(loginUser.uid);
+  
+const numOfBookmarks = useMemo(() => q.bookmarkedBy.length, [q.bookmarkedBy]);
+const isBookmarked = useMemo(
+  () => q.bookmarkedBy.includes(loginUser.uid),
+  [q.bookmarkedBy, loginUser.uid]
+);
 
 const handleClick = useCallback(() => {
   try {

@@ -19,7 +19,7 @@ const Content = ({ q }: Props) => {
         <div className="flex w-10">
           <BsChatLeftText size={16} className="mr-5" />
         </div>
-        <p className="">{q.content}</p>
+        <p>{q.content}</p>
       </div>
       <div className="flex items-center justify-between gap-5">
         <div className="flex items-center">

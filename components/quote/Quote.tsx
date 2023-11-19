@@ -53,7 +53,7 @@ const Quote = () => {
             fetchLoginUser(auth.currentUser);
           } else {
             // Handle the case where auth.currentUser is null
-            displayErrorToast("no auth.currentUser");
+            displayErrorToast("Please log in.");
           }
         }
       } catch (error) {

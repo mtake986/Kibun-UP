@@ -22,16 +22,14 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
         <div className="flex w-10">
           <BsChatLeftText size={16} className="mr-5" />
         </div>
-        <p className="">{q.content}</p>
+        <p>{q.content}</p>
       </div>
       <div className="flex items-center justify-between gap-5">
         <div className="flex items-center">
           <div className="flex w-10">
             <BsFillPersonFill size={16} className="mr-5" />
           </div>
-          <p className="">
-            {q.author}
-          </p>
+          <p>{q.author}</p>
         </div>
         <Checkbox
           id={q.authorSlug}
@@ -42,7 +40,7 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
             };
             handleAuthors(payload);
           }}
-          checked={selectedAuthors.some((a) => a.label === q.author) ?? false}
+          checked={selectedAuthors.some((a) => a.label === q.author)}
         />
       </div>
       {q.tags && q.tags?.length >= 1 && (
