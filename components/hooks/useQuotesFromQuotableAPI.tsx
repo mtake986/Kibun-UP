@@ -109,7 +109,7 @@ const useQuotesFromQuotableAPI = () => {
                 likedBy: [],
                 bookmarkedBy: [],
                 userInfo: "api",
-                draftStatus: false,
+                draftStatus: "Public",
               };
               return quoteObject;
             });

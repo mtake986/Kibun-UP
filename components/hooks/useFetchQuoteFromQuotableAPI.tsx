@@ -36,7 +36,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           likedBy: [],
           bookmarkedBy: [],
           userInfo: "api",
-          draftStatus: "false",
+          draftStatus: "Public",
           authorSlug: res[0].authorSlug,
         });
         setIsPending(false);
