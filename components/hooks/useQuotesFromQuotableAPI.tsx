@@ -73,7 +73,7 @@ const useQuotesFromQuotableAPI = () => {
           .then((response) => {
             if (!response.ok) {
               throw Error(
-                `Something went wrong!! draftStatus: ${response.draftStatus}, ${response.draftStatusText}`
+                `Something went wrong!! status: ${response.status} ${response.statusText}`
               );
             }
             return response.json();
