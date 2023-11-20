@@ -17,7 +17,7 @@ const IconLock = ({ q, loginUser }: Props) => {
     return (
       <div
         className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-current border-t-transparent text-slate-600"
-        role="draftStatus"
+        role="status"
         aria-label="loading"
       >
         <span className="sr-only">Loading...</span>

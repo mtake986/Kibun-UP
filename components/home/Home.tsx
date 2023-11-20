@@ -13,8 +13,6 @@ import { useAuth } from "@/context/AuthContext";
 import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { fetchLoginUser } = useAuth();
   const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent } =
     useEvent();
@@ -30,7 +28,6 @@ const Home = () => {
     setIsEventLoading(true);
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
-      // setIsLoading(true);
       if (user && !lockedEvent) await getLockedEvent();
       if (user && !randomEvent) await getRandomEvent();
     };
@@ -53,8 +50,6 @@ const Home = () => {
       } finally {
         console.log(auth.currentUser);
       }
-    } else {
-      // setIsLoading(true);
     }
   }, [user]);
 

@@ -97,6 +97,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         displayName,
         photoURL,
         createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
         settings: {
           itemsPerPage: 10,
           quoteTypeForHome: "appChoice",
@@ -107,6 +108,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const fetchLoginUser = async (user: User | null) => {
     if (user) {
+      console.log(user)
       const q = query(collection(db, "users"), where("uid", "==", user.uid));
       onSnapshot(q, (snapshot) => {
         setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);

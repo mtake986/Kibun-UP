@@ -13,6 +13,7 @@ import {
   orderBy,
   setDoc,
   addDoc,
+  getDocs,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -77,19 +78,20 @@ export function EventProvider({ children }: EventProviderProps) {
   const [user] = useAuthState(auth);
   const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
 
-  const registerEvent = async (
-    values: TypeEventInputValues,
-    uid: string
-  ) => {
-    await addDoc(eventCollectionRef, {
-      ...values,
-      uid,
-      createdAt: serverTimestamp(),
-    }).then(() => {
+  const registerEvent = async (values: TypeEventInputValues, uid: string) => {
+    try {
+      await addDoc(eventCollectionRef, {
+        ...values,
+        uid,
+        createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
+      });
       displaySuccessToast({
         text: "Created",
       });
-    });
+    } catch (error) {
+      displayErrorToast(error);
+    }
   };
 
   const handleUpdate = async (
@@ -132,9 +134,11 @@ export function EventProvider({ children }: EventProviderProps) {
       const q = query(
         eventCollectionRef,
         where("uid", "==", user?.uid),
-        orderBy("createdAt", "asc")
+        // orderBy("createdAt", "asc")
       );
+      console.log(user)
       onSnapshot(q, (snapshot) => {
+        console.log(snapshot.docs);
         setLoginUserEvents(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
@@ -191,13 +195,14 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getRandomEvent = async () => {
     if (user) {
-      const q = query(eventCollectionRef, where("uid", "==", user.uid));
-      onSnapshot(q, (snapshot) => {
-        const randomNum = getRandomNum(snapshot.docs.length);
-        const doc = snapshot.docs[randomNum];
-        console.log(snapshot, doc)
-        if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as TypeEvent);
-      });
+      //   const q = query(eventCollectionRef, where("uid", "==", user.uid));
+      //   onSnapshot(q, (snapshot) => {
+      const randomNum = getRandomNum(loginUserEvents.length);
+      const e: TypeEvent = loginUserEvents[randomNum];
+      setRandomEvent(e);
+      //     console.log(snapshot, doc);
+      //     if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as TypeEvent);
+      //   });
     }
   };
 

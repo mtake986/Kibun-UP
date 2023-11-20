@@ -25,11 +25,6 @@ const Radios = () => {
     useAuth();
   const { loginUserQuotes } = useQuote();
 
-  useEffect(() => {
-    // if (!loginUserQuotes) getLoginUserQuotes();
-  }, [loginUserQuotes]);
-
-
   if (loginUser) {
     return (
       <RadioGroup

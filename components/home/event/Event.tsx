@@ -6,8 +6,6 @@ import NoEventAvailable from "./NoEventAvailable";
 const Event = () => {
   const { randomEvent, lockedEvent } = useEvent();
 
-  // todo: no need to refetch if exists
-
   if (!lockedEvent && !randomEvent) {
     return <NoEventAvailable />;
   } else if (lockedEvent) {

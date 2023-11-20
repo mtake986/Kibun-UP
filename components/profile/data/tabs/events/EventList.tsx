@@ -19,7 +19,10 @@ const EventList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = usePagination(currentPage, loginUserEvents);
+  const { nPages, currentRecords } = usePagination(
+    currentPage,
+    loginUserEvents
+  );
 
   return (
     <div className="mb-20">

@@ -174,6 +174,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       likedBy: [],
       bookmarkedBy: [],
       createdAt: serverTimestamp(),
+      updateAt: serverTimestamp(),
     }).then(() => {
       displaySuccessToast({
         text: "Success: Created",
@@ -185,18 +186,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user) {
       const q = query(
         quotesCollectionRef,
-        // where("uid", "!=", user.uid),
+        where("uid", "!=", user.uid),
         orderBy("createdAt", "desc")
       );
 
       onSnapshot(q, (snapshot) => {
-        let qs = snapshot.docs.filter((doc) => {
-          if (doc.data().uid !== user.uid) {
-            return true;
-          }
-        });
         setQuotesNotMine(
-          qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
         );
       });
     }
@@ -300,6 +296,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...q,
         likedBy: [uid],
         createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
       });
     }
   };
@@ -343,6 +340,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...q,
         bookmarkedBy: [uid],
         createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
       });
     }
   };
@@ -443,6 +441,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortFilterByForMineDefaultValue(false);
   };
 
+  // todo: Refactor, comment int should be fine
   const sortAndFilterNotMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
@@ -457,7 +456,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForNotMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'uid' and so you must also use 'uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
             // where("uid", "!=", user?.uid),
             orderBy("quote", "asc")
           );
@@ -535,7 +533,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortFilterByForMineDefaultValue(false);
   };
 
-  const onlySortMyQuotes = () => {
+  const onlySortMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
       where("uid", "==", user?.uid),
@@ -584,7 +582,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           );
       }
 
-      onSnapshot(q, (snapshot) => {
+      await onSnapshot(q, (snapshot) => {
         setLoginUserQuotes(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
@@ -885,6 +883,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...data,
         likedBy: [uid],
         createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
       });
     }
   };
@@ -915,6 +914,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...data,
         bookmarkedBy: [uid],
         createdAt: serverTimestamp(),
+        updateAt: serverTimestamp(),
       });
     }
   };

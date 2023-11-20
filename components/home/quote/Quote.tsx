@@ -4,7 +4,7 @@ import QuoteCard from "./QuoteCard";
 import { createProperUrl } from "@/functions/createProperUrl";
 import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
 import LoadingIndicator from "../LoadingIndicator";
-import { TypeQuote } from "@/types/type";
+import { TypeAPIQuote, TypeQuote } from "@/types/type";
 
 const Quote = () => {
   const { loginUser } = useAuth();
@@ -16,7 +16,7 @@ const Quote = () => {
 
   if (!loginUser) return <div>No Login User</div>;
   const renderQuoteCard = (
-    quote: TypeQuote,
+    quote: TypeQuote | TypeAPIQuote,
     type: "locked" | "appChoice" | "notAppChoice",
     refetch?: () => Promise<void>
   ) => (

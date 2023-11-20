@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { VALIDATION_draftStatus, tagColors } from "@/data/CONSTANTS";
+import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "./TagErrors";
@@ -65,7 +65,7 @@ export default function EditModeOn({
         message: "Maximum 5 tags",
       };
       setTagErrors({ ...tagErrors, over5tags: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -78,7 +78,7 @@ export default function EditModeOn({
         message: "Tag name is required",
       };
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       // delete tagErrors["undefOrNoChars"];
       setTagErrors((prevErrors) => {
@@ -92,7 +92,7 @@ export default function EditModeOn({
         message: "Max. 20 characters",
       };
       setTagErrors({ ...tagErrors, over20chars: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -105,7 +105,7 @@ export default function EditModeOn({
         message: "Not Allowed The Same Tag",
       };
       setTagErrors({ ...tagErrors, sameTagName: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -113,7 +113,7 @@ export default function EditModeOn({
         return newErrors;
       });
     }
-    return VALIDATION_draftStatus.PASS;
+    return VALIDATION_STATUS.PASS;
   };
 
   const addTag = () => {

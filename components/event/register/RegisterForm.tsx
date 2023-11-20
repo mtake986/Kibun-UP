@@ -32,11 +32,14 @@ import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 export default function RegisterForm() {
   const { loginUser, fetchLoginUser } = useAuth();
   const { getLoginUserEvents, registerEvent } = useEvent();
-
+  useEffect(() => {
+    if (!loginUser) fetchLoginUser(auth.currentUser);
+  }, [auth.currentUser]);
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -67,6 +70,7 @@ export default function RegisterForm() {
   }
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+      {loginUser ? <div>exists</div> : <div>not exists</div>}
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

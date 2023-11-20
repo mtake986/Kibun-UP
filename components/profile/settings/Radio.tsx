@@ -23,10 +23,10 @@ const Radio = ({
     <div>
       <div className="flex items-center space-x-2">
         <RadioGroupItem
-          checked={loginUser.settings.quoteTypeForHome === radio.id}
+          checked={loginUser?.settings?.quoteTypeForHome === radio.id}
           value={radio.id}
           id={radio.id}
-          className={`border-gray-300 text-gray-600 dark:text-white  `}
+          className="border-gray-300 text-gray-600 dark:text-white"
           onClick={(e) => updateQuoteTypeForHome(radio.id)}
           disabled={!loginUserQuotes}
         />

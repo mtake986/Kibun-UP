@@ -1,7 +1,7 @@
 "use client";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,11 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
-import { IUserInfo, TypeTagErrors, ITag, TypeTagError } from "@/types/type";
+import { TypeTagErrors, ITag, TypeTagError, TypeLoginUser } from "@/types/type";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
@@ -28,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { VALIDATION_draftStatus, tagColors } from "@/data/CONSTANTS";
+import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
@@ -37,6 +35,8 @@ import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "@/components/quoteCard/content/TagErrors";
 import { useAuth } from "@/context/AuthContext";
 import { displayErrorToast } from "@/functions/displayToast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 export default function RegisterForm() {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -63,7 +63,7 @@ export default function RegisterForm() {
         message: "Maximum 5 tags",
       };
       setTagErrors({ ...tagErrors, over5tags: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -76,7 +76,7 @@ export default function RegisterForm() {
         message: "Tag name is required",
       };
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       // delete tagErrors["undefOrNoChars"];
       setTagErrors((prevErrors) => {
@@ -90,7 +90,7 @@ export default function RegisterForm() {
         message: "Max. 20 characters",
       };
       setTagErrors({ ...tagErrors, over20chars: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -103,7 +103,7 @@ export default function RegisterForm() {
         message: "Not Allowed The Same Tag",
       };
       setTagErrors({ ...tagErrors, sameTagName: error });
-      return VALIDATION_draftStatus.FAIL;
+      return VALIDATION_STATUS.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -111,7 +111,7 @@ export default function RegisterForm() {
         return newErrors;
       });
     }
-    return VALIDATION_draftStatus.PASS;
+    return VALIDATION_STATUS.PASS;
   };
 
   const addTag = () => {
@@ -313,12 +313,17 @@ export default function RegisterForm() {
             <Button
               className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
               type="submit"
+              disabled={form.formState.isSubmitting || !loginUser}
             >
               Submit
             </Button>
             <UrlLink
               clickOn={
-                <CloseBtn toggleRegisterFormOpen={toggleRegisterFormOpen} />
+                <CloseBtn
+                  toggleRegisterFormOpen={toggleRegisterFormOpen}
+                  form={form}
+                  loginUser={loginUser}
+                />
               }
               href="/quote"
               target="_self"
@@ -332,13 +337,30 @@ export default function RegisterForm() {
 
 const CloseBtn = ({
   toggleRegisterFormOpen,
+  form,
+  loginUser,
 }: {
   toggleRegisterFormOpen: () => void;
+  form: UseFormReturn<
+    {
+      content: string;
+      author: string;
+      draftStatus: string;
+      tags: {
+        color: string;
+        name: string;
+      }[];
+    },
+    any,
+    undefined
+  >;
+  loginUser: TypeLoginUser | undefined;
 }) => {
   return (
     <Button
       onClick={toggleRegisterFormOpen}
       className="w-full bg-red-50 text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
+      disabled={form.formState.isSubmitting || !loginUser}
     >
       Close
     </Button>
