@@ -17,10 +17,13 @@ const Radio = ({
   loginUser,
   loginUserQuotes,
 }: Props) => {
+
+
   return (
     <div>
       <div className="flex items-center space-x-2">
         <RadioGroupItem
+          checked={loginUser.settings.quoteTypeForHome === radio.id}
           value={radio.id}
           id={radio.id}
           className={`border-gray-300 text-gray-600 dark:text-white  `}

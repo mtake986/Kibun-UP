@@ -15,45 +15,42 @@ import LoadingIndicator from "./LoadingIndicator";
 const Home = () => {
   // const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { loginUser, fetchLoginUser } = useAuth();
+  const { fetchLoginUser } = useAuth();
   const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent } =
     useEvent();
 
   const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
     useQuote();
 
+  const [isEventLoading, setIsEventLoading] = useState<boolean>(false);
+  const [isQuoteLoading, setIsQuoteLoading] = useState<boolean>(false);
+
   const [user] = useAuthState(auth);
   useEffect(() => {
-    const fetchEvents = () => {
+    setIsEventLoading(true);
+    setIsQuoteLoading(true);
+    const fetchEvents = async () => {
       // setIsLoading(true);
-      if (user && !lockedEvent) getLockedEvent();
-      if (user && !randomEvent) getRandomEvent();
+      if (user && !lockedEvent) await getLockedEvent();
+      if (user && !randomEvent) await getRandomEvent();
     };
     const fetchQuotes = async () => {
-      if (user && !lockedQuote) getLockedQuote();
-      if (user && !randomQuote) updateRandomQuote();
+      if (user && !lockedQuote) await getLockedQuote();
+      if (user && !randomQuote) await updateRandomQuote();
     };
 
     if (user) {
       try {
         fetchLoginUser(auth.currentUser);
-        // if (!(lockedEvent || randomEvent) && !lockedEvent && !randomEvent) {
-        if (!lockedEvent && !randomEvent) {
-          fetchEvents();
-        }
-        // if (!(lockedQuote || randomQuote) && !lockedQuote && !randomQuote) {
-        if (!lockedQuote && !randomQuote) {
-          console.log("randomQuote: ", randomQuote);
-          fetchQuotes().then(() => {
-            // setIsLoading(false);
-          });
-        }
+        fetchEvents().then(() => {
+          setIsEventLoading(false);
+        });
+        fetchQuotes().then(() => {
+          setIsQuoteLoading(false);
+        });
       } catch (error) {
         displayErrorToast(error);
       } finally {
-        // setTimeout(() => {
-        //   setIsLoading(false);
-        // }, 500);
         console.log(auth.currentUser);
       }
     } else {
@@ -61,26 +58,23 @@ const Home = () => {
     }
   }, [user]);
 
-  // if (isLoading) {
-  //   return <LoadingIndicator text={"Loading contents..."} />;
-  // } else {
-    if (!auth.currentUser) {
-      return <GoogleLoginBtn />;
-    } else {
-      return (
-        <>
-          {!lockedEvent && !randomEvent ? (
-            <LoadingIndicator text={"Loading an Event..."} />
-          ) : (
-            <Event />
-          )}
-          {!lockedQuote && !randomQuote ? (
-            <LoadingIndicator text={"Loading a Quote..."} />
-          ) : (
-            <Quote />
-          )}
-        </>
-      );
+  if (!auth.currentUser) {
+    return <GoogleLoginBtn />;
+  } else {
+    return (
+      <>
+        {isEventLoading ? (
+          <LoadingIndicator text={"Loading an Event..."} />
+        ) : (
+          <Event />
+        )}
+        {isQuoteLoading ? (
+          <LoadingIndicator text={"Loading a Quote..."} />
+        ) : (
+          <Quote />
+        )}
+      </>
+    );
     // }
   }
 };

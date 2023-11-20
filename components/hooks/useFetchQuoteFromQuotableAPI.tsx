@@ -12,7 +12,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
   const [data, setData] = useState<TypeQuote>();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<string | Error | null>(null);
-  
+
   const fetchData = useCallback(async () => {
     setIsPending(true);
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -20,7 +20,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
       .then((response) => {
         if (!response.ok) {
           throw Error(
-            `Something went wrong!! status: ${response.status} ${response.statusText}`
+            `Something went wrong!! draftStatus: ${response.draftStatus} ${response.draftStatusText}`
           );
         }
         return response.json();
@@ -36,7 +36,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           likedBy: [],
           bookmarkedBy: [],
           userInfo: "api",
-          isDraft: false,
+          draftStatus: false,
         });
         setIsPending(false);
       })

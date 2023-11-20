@@ -23,7 +23,7 @@ const radios = [
 const Radios = () => {
   const { updateQuoteTypeForHome, loginUser } =
     useAuth();
-  const { getLoginUserQuotes, loginUserQuotes } = useQuote();
+  const { loginUserQuotes } = useQuote();
 
   useEffect(() => {
     // if (!loginUserQuotes) getLoginUserQuotes();

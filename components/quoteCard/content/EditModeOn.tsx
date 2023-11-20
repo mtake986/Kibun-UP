@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
+import { VALIDATION_draftStatus, tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "./TagErrors";
@@ -65,7 +65,7 @@ export default function EditModeOn({
         message: "Maximum 5 tags",
       };
       setTagErrors({ ...tagErrors, over5tags: error });
-      return VALIDATION_STATUS.FAIL;
+      return VALIDATION_draftStatus.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -78,7 +78,7 @@ export default function EditModeOn({
         message: "Tag name is required",
       };
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
-      return VALIDATION_STATUS.FAIL;
+      return VALIDATION_draftStatus.FAIL;
     } else {
       // delete tagErrors["undefOrNoChars"];
       setTagErrors((prevErrors) => {
@@ -92,7 +92,7 @@ export default function EditModeOn({
         message: "Max. 20 characters",
       };
       setTagErrors({ ...tagErrors, over20chars: error });
-      return VALIDATION_STATUS.FAIL;
+      return VALIDATION_draftStatus.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -105,7 +105,7 @@ export default function EditModeOn({
         message: "Not Allowed The Same Tag",
       };
       setTagErrors({ ...tagErrors, sameTagName: error });
-      return VALIDATION_STATUS.FAIL;
+      return VALIDATION_draftStatus.FAIL;
     } else {
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
@@ -113,7 +113,7 @@ export default function EditModeOn({
         return newErrors;
       });
     }
-    return VALIDATION_STATUS.PASS;
+    return VALIDATION_draftStatus.PASS;
   };
 
   const addTag = () => {
@@ -136,7 +136,7 @@ export default function EditModeOn({
     defaultValues: {
       author: q.author,
       content: q.content,
-      isDraft: q.isDraft,
+      draftStatus: q.draftStatus,
       tags: [],
     },
   });
@@ -154,7 +154,7 @@ export default function EditModeOn({
     reset({
       author: "",
       content: "",
-      isDraft: false,
+      draftStatus: false,
     });
     form.reset();
   }
@@ -197,19 +197,25 @@ export default function EditModeOn({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="isDraft"
+          name="draftStatus"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
-              <FormLabel className="text-base">Draft</FormLabel>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="text-red-600 dark:bg-slate-300"
-                />
-              </FormControl>
+            <FormItem>
+              <FormLabel>Draft Status</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={"Public"}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Draft">Draft</SelectItem>
+                  <SelectItem value="Public">Public</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
@@ -271,7 +277,7 @@ export default function EditModeOn({
                 }}
                 className={`${
                   isAddBtnDisabled
-                    ? "cursor-not-allowed cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
+                    ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
                     : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
                 } `}
               >

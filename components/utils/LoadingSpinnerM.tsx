@@ -1,12 +1,11 @@
 import React from "react";
 
 const LoadingSpinnerM = () => {
-
   return (
-    <div className="flex items-center justify-center h-40">
+    <div className="flex h-40 items-center justify-center">
       <div
         className={`inline-block h-8 w-8 animate-spin rounded-full border-[3px] border-current border-t-transparent text-slate-600`}
-        role="status"
+        role="draftStatus"
         aria-label="loading"
       >
         <span className="sr-only">Loading...</span>

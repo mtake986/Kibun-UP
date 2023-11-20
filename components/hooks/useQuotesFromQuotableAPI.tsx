@@ -73,7 +73,7 @@ const useQuotesFromQuotableAPI = () => {
           .then((response) => {
             if (!response.ok) {
               throw Error(
-                `Something went wrong!! status: ${response.status}, ${response.statusText}`
+                `Something went wrong!! draftStatus: ${response.draftStatus}, ${response.draftStatusText}`
               );
             }
             return response.json();
@@ -93,7 +93,7 @@ const useQuotesFromQuotableAPI = () => {
             //   likedBy: [],
             //   bookmarkedBy: [],
             //   userInfo: "api",
-            //   isDraft: false,
+            //   draftStatus: false,
             // }));
             const quotes: TypeAPIQuote[] = result.results.map((quote: any) => {
               const tags = quote.tags.map((tag: string) => {
@@ -109,7 +109,7 @@ const useQuotesFromQuotableAPI = () => {
                 likedBy: [],
                 bookmarkedBy: [],
                 userInfo: "api",
-                isDraft: false,
+                draftStatus: false,
               };
               return quoteObject;
             });

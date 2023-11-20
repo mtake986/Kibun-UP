@@ -18,7 +18,7 @@ import { quoteSchema } from "@/form/schema";
 import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
 import { IUserInfo, TypeTagErrors, ITag, TypeTagError } from "@/types/type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
 import {
@@ -28,60 +28,90 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/data/CONSTANTS";
+import { VALIDATION_draftStatus, tagColors } from "@/data/CONSTANTS";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "@/components/quoteCard/content/TagErrors";
+import { useAuth } from "@/context/AuthContext";
+import { displayErrorToast } from "@/functions/displayToast";
 
 export default function RegisterForm() {
-  const [user] = useAuthState(auth);
+  const { loginUser, fetchLoginUser } = useAuth();
   const { registerQuote, toggleRegisterFormOpen } = useQuote();
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
   const [inputTags, setInputTags] = useState<ITag[]>([]);
   const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
+  const isAddBtnDisabled =
+    inputTagName.length <= 0 ||
+    inputTagName.length > 20 ||
+    inputTags.length >= 5 ||
+    inputTags.some((tag) => tag.name === inputTagName);
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      if (!loginUser) fetchLoginUser(auth.currentUser);
+    }
+  }, [auth.currentUser]);
 
   const validateInputTags = (): string => {
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return VALIDATION_draftStatus.FAIL;
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over5tags"];
+        return newErrors;
+      });
+    }
     if (!inputTagName || inputTagName.length <= 0) {
       const error: TypeTagError = {
         message: "Tag name is required",
       };
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
-      return "fail";
+      return VALIDATION_draftStatus.FAIL;
     } else {
-      delete tagErrors["undefOrNoChars"];
+      // delete tagErrors["undefOrNoChars"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["undefOrNoChars"];
+        return newErrors;
+      });
     }
     if (inputTagName.length > 20) {
       const error: TypeTagError = {
         message: "Max. 20 characters",
       };
       setTagErrors({ ...tagErrors, over20chars: error });
-      return "fail";
+      return VALIDATION_draftStatus.FAIL;
     } else {
-      delete tagErrors["over20chars"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over20chars"];
+        return newErrors;
+      });
     }
     if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
       const error: TypeTagError = {
         message: "Not Allowed The Same Tag",
       };
       setTagErrors({ ...tagErrors, sameTagName: error });
-      return "fail";
+      return VALIDATION_draftStatus.FAIL;
     } else {
-      delete tagErrors["sameTagName"];
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["sameTagName"];
+        return newErrors;
+      });
     }
-    if (inputTags.length === 5) {
-      const error: TypeTagError = {
-        message: "Maximum 5 tags",
-      };
-      setTagErrors({ ...tagErrors, over5tags: error });
-      return "fail";
-    } else {
-      delete tagErrors["over5tags"];
-    }
-    return "fine";
+    return VALIDATION_draftStatus.PASS;
   };
 
   const addTag = () => {
@@ -104,30 +134,29 @@ export default function RegisterForm() {
     defaultValues: {
       author: "",
       content: "",
-      isDraft: false,
+      draftStatus: "Public",
       tags: [],
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    const userInfo: IUserInfo = {
-      uid: user?.uid,
-      displayName: user?.displayName,
-      photoUrl: user?.photoURL,
-    };
-    values.tags = inputTags;
-    registerQuote(values, userInfo);
-
-    reset({
-      author: "",
-      content: "",
-      isDraft: false,
-      tags: [],
-    });
-    form.reset();
-    setInputTags([]);
+    if (loginUser) {
+      values.tags = inputTags;
+      registerQuote(values, loginUser.uid);
+      reset({
+        author: "",
+        content: "",
+        draftStatus: "Public",
+        tags: [],
+      });
+      form.reset();
+      setInputTags([]);
+    } else {
+      displayErrorToast("Please log in.");
+    }
   }
+
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>
@@ -148,7 +177,7 @@ export default function RegisterForm() {
                     // defaultValue={field.value}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -164,23 +193,29 @@ export default function RegisterForm() {
                 <FormControl>
                   <Input placeholder="Ex.) NIKE" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="isDraft"
+            name="draftStatus"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <FormLabel className="text-base">Draft</FormLabel>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
+              <FormItem>
+                <FormLabel>Draft Status</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={"Public"}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Draft">Draft</SelectItem>
+                    <SelectItem value="Public">Public</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -235,9 +270,14 @@ export default function RegisterForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    if (validateInputTags() === "fine") addTag();
+                    if (validateInputTags() === "pass") addTag();
                   }}
-                  className="cursor-pointer items-center bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
+                  disabled={isAddBtnDisabled}
+                  className={`${
+                    isAddBtnDisabled
+                      ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
+                      : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
+                  } `}
                 >
                   Add
                 </Button>
@@ -271,7 +311,7 @@ export default function RegisterForm() {
 
           <div className="flex items-center gap-3">
             <Button
-              className="w-full bg-violet-100 text-violet-500 duration-200 hover:bg-violet-200"
+              className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
               type="submit"
             >
               Submit
@@ -298,7 +338,7 @@ const CloseBtn = ({
   return (
     <Button
       onClick={toggleRegisterFormOpen}
-      className="w-full bg-red-100 text-red-500 duration-200 hover:bg-red-200"
+      className="w-full bg-red-50 text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
     >
       Close
     </Button>

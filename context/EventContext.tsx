@@ -5,7 +5,6 @@ import {
   collection,
   query,
   where,
-  getDocs,
   onSnapshot,
   deleteDoc,
   doc,
@@ -13,13 +12,12 @@ import {
   serverTimestamp,
   orderBy,
   setDoc,
-  getDoc,
   addDoc,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
 };
-import { TypeEvent, TypeEventInputValues, IUserInfo } from "@/types/type";
+import { TypeEvent, TypeEventInputValues } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "@/functions/functions";
 import {
@@ -52,7 +50,7 @@ type EventContextType = {
   setRandomEvent: (event: TypeEvent | undefined) => void;
   setLockedEvent: (event: TypeEvent | undefined) => void;
 
-  registerEvent: (values: TypeEventInputValues, userInfo: IUserInfo) => void;
+  registerEvent: (values: TypeEventInputValues, uid: string) => void;
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
@@ -81,11 +79,11 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const registerEvent = async (
     values: TypeEventInputValues,
-    userInfo: IUserInfo
+    uid: string
   ) => {
     await addDoc(eventCollectionRef, {
       ...values,
-      userInfo,
+      uid,
       createdAt: serverTimestamp(),
     }).then(() => {
       displaySuccessToast({
@@ -133,7 +131,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (user?.uid) {
       const q = query(
         eventCollectionRef,
-        where("userInfo.uid", "==", user?.uid),
+        where("uid", "==", user?.uid),
         orderBy("createdAt", "asc")
       );
       onSnapshot(q, (snapshot) => {
@@ -184,10 +182,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getLockedEvent = async () => {
     if (user?.uid) {
-      const q = query(
-        lockedEventsCollectionRef,
-        where("userInfo.uid", "==", user?.uid)
-      );
+      const q = query(lockedEventsCollectionRef, where("uid", "==", user?.uid));
       onSnapshot(q, (snapshot) => {
         setLockedEvent(snapshot.docs[0]?.data() as TypeEvent);
       });
@@ -196,13 +191,11 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getRandomEvent = async () => {
     if (user) {
-      const q = query(
-        eventCollectionRef,
-        where("userInfo.uid", "==", user.uid)
-      );
+      const q = query(eventCollectionRef, where("uid", "==", user.uid));
       onSnapshot(q, (snapshot) => {
         const randomNum = getRandomNum(snapshot.docs.length);
         const doc = snapshot.docs[randomNum];
+        console.log(snapshot, doc)
         if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as TypeEvent);
       });
     }
@@ -210,10 +203,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getEventsNotMine = async () => {
     if (user) {
-      const q = query(
-        eventCollectionRef,
-        where("userInfo.uid", "!=", user?.uid)
-      );
+      const q = query(eventCollectionRef, where("uid", "!=", user?.uid));
       onSnapshot(q, (snapshot) => {
         setEventsNotMine(
           snapshot.docs.map(
