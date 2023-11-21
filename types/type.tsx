@@ -6,7 +6,7 @@ export interface TypeEvent {
   place?: string;
   description?: string;
   eventDate: Timestamp;
-  uid: string;
+  createdBy: string;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -19,8 +19,9 @@ export type TypeQuote = {
   draftStatus: string;
   likedBy: string[];
   bookmarkedBy: string[];
-  userInfo?: IUserInfo | "api";
-  uid?: string;
+  createdBy: string;
+  // isAPI: boolean;
+  // uid?: string;
   // authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -43,12 +44,6 @@ export interface TypeQuoteInputValues {
   content: string;
   draftStatus: string;
   tags: ITag[];
-}
-
-export interface IUserInfo {
-  uid: string | undefined;
-  displayName: string | null | undefined;
-  photoUrl: string | null | undefined;
 }
 
 export interface ITag {

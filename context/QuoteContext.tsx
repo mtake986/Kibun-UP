@@ -21,7 +21,6 @@ import {
 import {
   TypeQuote,
   TypeQuoteInputValues,
-  IUserInfo,
   ISortFilterBy,
   ITag,
   TypeLoginUser,
@@ -168,13 +167,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const [quotesForHomePage, setQuotesForHomePage] = useState<TypeQuote[]>([]);
 
   const registerQuote = async (values: TypeQuoteInputValues, uid: string) => {
+    const currTime = serverTimestamp();
     await addDoc(quotesCollectionRef, {
       ...values,
-      uid,
+      createdBy: uid,
       likedBy: [],
       bookmarkedBy: [],
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
+      createdAt: currTime,
+      updatedAt: currTime,
     }).then(() => {
       displaySuccessToast({
         text: "Success: Created",
@@ -185,11 +185,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const getQuotesNotMine = async () => {
     if (!user) return;
 
-    const q = query(
-      quotesCollectionRef,
-      where("uid", "!=", user.uid),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(quotesCollectionRef, where("createdBy", "!=", user.uid));
 
     onSnapshot(q, (snapshot) => {
       setQuotesNotMine(
@@ -200,7 +196,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getLoginUserQuotes = async () => {
     if (!user?.uid) return;
-    const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
+    const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
     onSnapshot(q, (snapshot) => {
       console.log(snapshot.docs);
       setLoginUserQuotes(
@@ -231,15 +227,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setLockedQuote(undefined);
   };
 
-  const getLockedQuote = () => {
-    const q = query(lockedQuotesCollectionRef, where("uid", "==", user?.uid));
-    onSnapshot(q, (snapshot) => {
-      if (snapshot.docs[0]) {
-        setLockedQuote(snapshot.docs[0]?.data() as TypeQuote);
-      } else {
-        // Handle the case when snapshot.docs[0] is undefined
-      }
-    });
+  const getLockedQuote = async () => {
+    const docRef = doc(db, "cities", "SF");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      setLockedQuote(docSnap.data() as TypeQuote);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
   };
 
   const handleUpdate = async (
@@ -345,10 +342,11 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  // todo: not allowed to use a different value from where()
   const sortAndFilterMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
-      where("uid", "==", user?.uid),
+      where("createdBy", "==", user?.uid),
       orderBy("createdAt", "desc")
     );
 
@@ -358,39 +356,39 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("quote", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("quote", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "author") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("author", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("author", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "createdAt") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("createdAt", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("createdAt", "desc")
           );
       }
@@ -433,51 +431,51 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const sortAndFilterNotMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
-      // where("uid", "!=", user?.uid),
+      // where("createdBy", "!=", user?.uid),
       orderBy("createdAt", "desc")
     );
 
     let qs;
 
     if (!user?.uid) return;
-    
+
     if (sortFilterByForNotMine.sortByElement === "quote") {
       if (sortFilterByForNotMine.order === "asc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("quote", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("quote", "desc")
         );
     } else if (sortFilterByForNotMine.sortByElement === "author") {
       if (sortFilterByForNotMine.order === "asc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("author", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("author", "desc")
         );
     } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
       if (sortFilterByForNotMine.order === "asc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("createdAt", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("createdAt", "desc")
         );
     }
@@ -524,7 +522,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const onlySortMyQuotes = async () => {
     let q = query(
       quotesCollectionRef,
-      where("uid", "==", user?.uid),
+      where("createdBy", "==", user?.uid),
       orderBy("createdAt", "desc")
     );
 
@@ -533,39 +531,39 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("quote", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("quote", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "author") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("author", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("author", "desc")
           );
       } else if (sortFilterByForMine.sortByElement === "createdAt") {
         if (sortFilterByForMine.order === "asc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("createdAt", "asc")
           );
         else if (sortFilterByForMine.order === "desc")
           q = query(
             quotesCollectionRef,
-            where("uid", "==", user?.uid),
+            where("createdBy", "==", user?.uid),
             orderBy("createdAt", "desc")
           );
       }
@@ -584,7 +582,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const onlySortNotMyQuotes = () => {
     let q = query(
       quotesCollectionRef,
-      // where("uid", "!=", user?.uid),
+      // where("createdBy", "!=", user?.uid),
       orderBy("createdAt", "desc")
     );
 
@@ -595,39 +593,39 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         q = query(
           quotesCollectionRef,
           // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'uid' and so you must also use 'uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("quote", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("quote", "desc")
         );
     } else if (sortFilterByForNotMine.sortByElement === "author") {
       if (sortFilterByForNotMine.order === "asc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("author", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("author", "desc")
         );
     } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
       if (sortFilterByForNotMine.order === "asc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("createdAt", "asc")
         );
       else if (sortFilterByForNotMine.order === "desc")
         q = query(
           quotesCollectionRef,
-          // where("uid", "!=", user?.uid),
+          // where("createdBy", "!=", user?.uid),
           orderBy("createdAt", "desc")
         );
     }
@@ -704,7 +702,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       if (lu && lu.settings.quoteTypeForHome === "mine") {
         setRandomQuote({} as TypeQuote);
         qs = loginUserQuotes;
-        const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
+        const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
         onSnapshot(q, (snapshot) => {
           const randomNum = getRandomNum(snapshot.docs.length);
           const doc = snapshot.docs[randomNum];
@@ -714,7 +712,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         // setRandomQuote({} as TypeQuote);
         // const q = query(
         //   myBookmarksCollectionRef,
-        //   where("uid", "==", user?.uid)
+        //   where("createdBy", "==", user?.uid)
         // );
         // onSnapshot(q, (snapshot) => {
         //   const bookmarkedQuotes = snapshot.docs[0].data().quotes;
@@ -865,9 +863,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       }
     } else {
+      const currTime = serverTimestamp();
       await setDoc(doc(db, "apiQuotes", data.id), {
         ...data,
         likedBy: [uid],
+        bookmarkedBy: [],
+        createdBy: "api",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
@@ -899,6 +900,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       const currTime = serverTimestamp();
       await setDoc(doc(db, "apiQuotes", data.id), {
         ...data,
+        createdBy: "api",
+        likedBy: [],
         bookmarkedBy: [uid],
         createdAt: currTime,
         updatedAt: currTime,

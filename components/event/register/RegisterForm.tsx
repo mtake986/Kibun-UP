@@ -32,15 +32,26 @@ import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
 import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
+  const [isSubmitBtnDisabled, setIsSubmitBtnDisabled] = useState<boolean>(true);
+
   const { loginUser, fetchLoginUser } = useAuth();
   const { getLoginUserEvents, registerEvent } = useEvent();
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
   }, [auth.currentUser]);
   const { reset } = useForm();
+
+  const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
+    if (isSubmitBtnDisabled) {
+      return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
+    } else {
+      return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
+    }
+  };
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
@@ -70,7 +81,6 @@ export default function RegisterForm() {
   }
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
-      {loginUser ? <div>exists</div> : <div>not exists</div>}
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -90,7 +100,7 @@ export default function RegisterForm() {
                       // defaultValue={field.value}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -106,7 +116,7 @@ export default function RegisterForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -127,7 +137,7 @@ export default function RegisterForm() {
                     // defaultValue={field.value}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -143,7 +153,7 @@ export default function RegisterForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -176,7 +186,7 @@ export default function RegisterForm() {
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="w-auto p-0 dark:bg-slate-800 dark:text-white"
+                    className="w-auto bg-white p-0 dark:bg-slate-800 dark:text-white"
                     align="start"
                   >
                     <Calendar
@@ -191,7 +201,7 @@ export default function RegisterForm() {
                 {/* <FormDescription>
                 Your date of birth is used to calculate your age.
               </FormDescription> */}
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -208,15 +218,27 @@ export default function RegisterForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
 
           <div className="flex items-center gap-3">
             <button
-              className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
+              className={
+                form.formState.isSubmitting ||
+                form.getValues().eventTitle === "" ||
+                form.getValues().eventDate === undefined ? 
+                "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500"
+                : "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
+
+              }
               type="submit"
+              disabled={
+                form.formState.isSubmitting ||
+                form.getValues().eventTitle === "" ||
+                form.getValues().eventDate === undefined
+              }
             >
               Submit
             </button>

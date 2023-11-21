@@ -35,7 +35,7 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           }),
           likedBy: [],
           bookmarkedBy: [],
-          userInfo: "api",
+          createdBy: "api",
           draftStatus: "Public",
           authorSlug: res[0].authorSlug,
         });

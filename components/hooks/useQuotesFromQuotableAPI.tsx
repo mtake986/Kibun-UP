@@ -94,7 +94,7 @@ const useQuotesFromQuotableAPI = () => {
                 tags: tags,
                 likedBy: [],
                 bookmarkedBy: [],
-                userInfo: "api",
+                createdBy: "api",
                 draftStatus: "Public",
               };
               return quoteObject;
