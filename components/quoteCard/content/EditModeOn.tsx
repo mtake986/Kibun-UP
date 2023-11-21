@@ -130,6 +130,16 @@ export default function EditModeOn({
     setInputTags(inputTags.filter((tag) => tag.name !== tagName));
   };
 
+  const getButtonClasses = (isDisabled: boolean) => {
+    const baseClasses =
+      "cursor-pointer rounded-md px-3 py-2 text-sm duration-300 ease-in";
+    const enabledClasses =
+      "bg-blue-50 text-blue-500 hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
+    const disabledClasses =
+      "cursor-not-allowed bg-blue-50 text-blue-500 opacity-30 dark:bg-blue-700 dark:text-white";
+    return `${baseClasses} ${isDisabled ? disabledClasses : enabledClasses}`;
+  };
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
@@ -137,7 +147,7 @@ export default function EditModeOn({
       author: q.author,
       content: q.content,
       draftStatus: q.draftStatus,
-      tags: [],
+      tags: q.tags,
     },
   });
 
@@ -154,8 +164,12 @@ export default function EditModeOn({
     reset({
       author: "",
       content: "",
-      draftStatus: false,
+      draftStatus: "Public",
     });
+    setInputTags([]);
+    setInputTagName("");
+    setInputTagColor("");
+    setTagErrors({});
     form.reset();
   }
 
@@ -275,11 +289,7 @@ export default function EditModeOn({
                 onClick={() => {
                   if (validateInputTags() === "pass") addTag();
                 }}
-                className={`${
-                  isAddBtnDisabled
-                    ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
-                    : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
-                } `}
+                className={getButtonClasses(isAddBtnDisabled)}
               >
                 Add
               </button>

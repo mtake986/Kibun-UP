@@ -55,7 +55,7 @@ export default function RegisterForm() {
     if (auth.currentUser) {
       if (!loginUser) fetchLoginUser(auth.currentUser);
     }
-  }, [auth.currentUser]);
+  }, [auth.currentUser, loginUser, fetchLoginUser]);
 
   const validateInputTags = (): string => {
     if (inputTags.length === 5) {
@@ -78,7 +78,6 @@ export default function RegisterForm() {
       setTagErrors({ ...tagErrors, undefOrNoChars: error });
       return VALIDATION_STATUS.FAIL;
     } else {
-      // delete tagErrors["undefOrNoChars"];
       setTagErrors((prevErrors) => {
         const newErrors = { ...prevErrors };
         delete newErrors["undefOrNoChars"];
@@ -126,6 +125,11 @@ export default function RegisterForm() {
   const removeTag = (inputTagName: string) => {
     setInputTags(inputTags.filter((tag) => tag.name !== inputTagName));
   };
+  const getAddButtonClass = (isDisabled: boolean) => {
+    return isDisabled
+      ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
+      : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
+  };
 
   const { reset } = useForm();
   // 1. Define your form.
@@ -152,6 +156,9 @@ export default function RegisterForm() {
       });
       form.reset();
       setInputTags([]);
+      setInputTagName("");
+      setInputTagColor("");
+      setTagErrors({});
     } else {
       displayErrorToast("Please log in.");
     }
@@ -273,11 +280,7 @@ export default function RegisterForm() {
                     if (validateInputTags() === "pass") addTag();
                   }}
                   disabled={isAddBtnDisabled}
-                  className={`${
-                    isAddBtnDisabled
-                      ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
-                      : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
-                  } `}
+                  className={getAddButtonClass(isAddBtnDisabled)}
                 >
                   Add
                 </Button>
@@ -313,7 +316,7 @@ export default function RegisterForm() {
             <Button
               className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
               type="submit"
-              disabled={form.formState.isSubmitting || !loginUser}
+              disabled={form.formState.isSubmitting}
             >
               Submit
             </Button>
@@ -360,7 +363,7 @@ const CloseBtn = ({
     <Button
       onClick={toggleRegisterFormOpen}
       className="w-full bg-red-50 text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
-      disabled={form.formState.isSubmitting || !loginUser}
+      disabled={form.formState.isSubmitting}
     >
       Close
     </Button>

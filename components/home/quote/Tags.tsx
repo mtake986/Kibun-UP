@@ -13,7 +13,7 @@ const Tags = ({ tags }: Props) => {
     <ul className="flex flex-wrap items-center gap-1 text-[10px]">
       {tags?.map((tag, i) => (
         <Badge
-          key={i}
+          key={tag.name}
           className={cn(
             `whitespace-nowrap font-light hover:opacity-70`,
             changeTagColor(tag.color)

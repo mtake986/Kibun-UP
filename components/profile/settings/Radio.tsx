@@ -17,8 +17,6 @@ const Radio = ({
   loginUser,
   loginUserQuotes,
 }: Props) => {
-
-
   return (
     <div>
       <div className="flex items-center space-x-2">
@@ -28,15 +26,11 @@ const Radio = ({
           id={radio.id}
           className="border-gray-300 text-gray-600 dark:text-white"
           onClick={(e) => updateQuoteTypeForHome(radio.id)}
-          disabled={!loginUserQuotes}
+          disabled={!loginUserQuotes || loginUserQuotes.length === 0}
         />
         <Label htmlFor={radio.id} className="text-md">
           {radio.label}
         </Label>
-        {/* {loginUser.settings.quoteTypeForHome === radio.id &&
-        !loginUserQuotes ? (
-          <p className="ml-3 text-xs text-violet-500">No quotes available</p>
-        ) : null} */}
       </div>
       {radio.id === "appChoice" ? <TagList loginUser={loginUser} /> : null}
     </div>

@@ -80,11 +80,12 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
+      const currTime = serverTimestamp();
       await addDoc(eventCollectionRef, {
         ...values,
         uid,
-        createdAt: serverTimestamp(),
-        updateAt: serverTimestamp(),
+        createdAt: currTime,
+        updatedAt: currTime,
       });
       displaySuccessToast({
         text: "Created",
@@ -133,10 +134,10 @@ export function EventProvider({ children }: EventProviderProps) {
     if (user?.uid) {
       const q = query(
         eventCollectionRef,
-        where("uid", "==", user?.uid),
+        where("uid", "==", user?.uid)
         // orderBy("createdAt", "asc")
       );
-      console.log(user)
+      console.log(user);
       onSnapshot(q, (snapshot) => {
         console.log(snapshot.docs);
         setLoginUserEvents(
@@ -193,17 +194,10 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const getRandomEvent = async () => {
-    if (user) {
-      //   const q = query(eventCollectionRef, where("uid", "==", user.uid));
-      //   onSnapshot(q, (snapshot) => {
-      const randomNum = getRandomNum(loginUserEvents.length);
-      const e: TypeEvent = loginUserEvents[randomNum];
-      setRandomEvent(e);
-      //     console.log(snapshot, doc);
-      //     if (doc) setRandomEvent({ ...doc.data(), id: doc.id } as TypeEvent);
-      //   });
-    }
+  const getRandomEvent = () => {
+    const randomNum = getRandomNum(loginUserEvents.length);
+    const e: TypeEvent = loginUserEvents[randomNum];
+    setRandomEvent(e);
   };
 
   const getEventsNotMine = async () => {

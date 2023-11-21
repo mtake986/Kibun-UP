@@ -174,7 +174,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       likedBy: [],
       bookmarkedBy: [],
       createdAt: serverTimestamp(),
-      updateAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     }).then(() => {
       displaySuccessToast({
         text: "Success: Created",
@@ -183,37 +183,30 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
-    if (user) {
-      const q = query(
-        quotesCollectionRef,
-        where("uid", "!=", user.uid),
-        orderBy("createdAt", "desc")
-      );
+    if (!user) return;
 
-      onSnapshot(q, (snapshot) => {
-        setQuotesNotMine(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-        );
-      });
-    }
+    const q = query(
+      quotesCollectionRef,
+      where("uid", "!=", user.uid),
+      orderBy("createdAt", "desc")
+    );
+
+    onSnapshot(q, (snapshot) => {
+      setQuotesNotMine(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+      );
+    });
   };
 
   const getLoginUserQuotes = async () => {
-    if (user?.uid) {
-      const q = query(
-        quotesCollectionRef,
-        where("uid", "==", user?.uid), 
+    if (!user?.uid) return;
+    const q = query(quotesCollectionRef, where("uid", "==", user?.uid));
+    onSnapshot(q, (snapshot) => {
+      console.log(snapshot.docs);
+      setLoginUserQuotes(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
       );
-
-      onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs);
-        setLoginUserQuotes(
-          snapshot.docs.map(
-            (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
-          )
-        );
-      });
-    }
+    });
   };
 
   const handleCancelUpdate = () => {
@@ -261,18 +254,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       ...values,
       updatedAt: serverTimestamp(),
     }).then((res) => {
-      if (lockedQuote?.id === qid && values.draftStatus) {
+      if (lockedQuote?.id === qid && values.draftStatus === "Draft") {
         if (uid) removeLockFromThisQuote(uid);
-        displaySuccessToast({
-          text: "Updated",
-        });
       }
-      setTimeout(() => {
-        setIsLoading(false);
-        displaySuccessToast({
-          text: "Updated",
-        });
-      }, 500);
+      setIsLoading(false);
+      displaySuccessToast({
+        text: "Updated",
+      });
     });
   };
 
@@ -296,7 +284,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...q,
         likedBy: [uid],
         createdAt: serverTimestamp(),
-        updateAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
     }
   };
@@ -340,7 +328,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...q,
         bookmarkedBy: [uid],
         createdAt: serverTimestamp(),
-        updateAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
     }
   };
@@ -451,85 +439,85 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
     let qs;
 
-    if (user?.uid) {
-      if (sortFilterByForNotMine.sortByElement === "quote") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("quote", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("quote", "desc")
-          );
-      } else if (sortFilterByForNotMine.sortByElement === "author") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("author", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("author", "desc")
-          );
-      } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("createdAt", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("createdAt", "desc")
-          );
-      }
-
-      if (sortFilterByForNotMine.searchTag) {
-        onSnapshot(q, (snapshot) => {
-          qs = snapshot.docs.filter((doc) => {
-            if (doc.data().uid !== user?.uid) {
-              if (doc.data().tags) {
-                return (
-                  doc
-                    .data()
-                    // below return true or false
-                    .tags.some(
-                      (tag: ITag) =>
-                        tag.name === sortFilterByForNotMine.searchTag
-                    )
-                );
-              }
-            }
-          });
-          setQuotesNotMine(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-          );
-        });
-      } else {
-        onSnapshot(q, (snapshot) => {
-          qs = snapshot.docs.filter((doc) => {
-            if (doc.data().uid !== user?.uid) {
-              if (doc.data().tags?.length === 0 || !doc.data().tags) {
-                return true;
-              }
-            }
-          });
-
-          setQuotesNotMine(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-          );
-        });
-      }
+    if (!user?.uid) return;
+    
+    if (sortFilterByForNotMine.sortByElement === "quote") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("quote", "asc")
+        );
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("quote", "desc")
+        );
+    } else if (sortFilterByForNotMine.sortByElement === "author") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("author", "asc")
+        );
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("author", "desc")
+        );
+    } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("createdAt", "asc")
+        );
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("createdAt", "desc")
+        );
     }
+
+    if (sortFilterByForNotMine.searchTag) {
+      onSnapshot(q, (snapshot) => {
+        qs = snapshot.docs.filter((doc) => {
+          if (doc.data().uid !== user?.uid) {
+            if (doc.data().tags) {
+              return (
+                doc
+                  .data()
+                  // below return true or false
+                  .tags.some(
+                    (tag: ITag) => tag.name === sortFilterByForNotMine.searchTag
+                  )
+              );
+            }
+          }
+        });
+        setQuotesNotMine(
+          qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+        );
+      });
+    } else {
+      onSnapshot(q, (snapshot) => {
+        qs = snapshot.docs.filter((doc) => {
+          if (doc.data().uid !== user?.uid) {
+            if (doc.data().tags?.length === 0 || !doc.data().tags) {
+              return true;
+            }
+          }
+        });
+
+        setQuotesNotMine(
+          qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+        );
+      });
+    }
+
     setIsSortFilterByForMineDefaultValue(false);
   };
 
@@ -600,57 +588,55 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       orderBy("createdAt", "desc")
     );
 
-    if (user?.uid) {
-      if (sortFilterByForNotMine.sortByElement === "quote") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'uid' and so you must also use 'uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
-            // where("uid", "!=", user?.uid),
-            orderBy("quote", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("quote", "desc")
-          );
-      } else if (sortFilterByForNotMine.sortByElement === "author") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("author", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("author", "desc")
-          );
-      } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
-        if (sortFilterByForNotMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("createdAt", "asc")
-          );
-        else if (sortFilterByForNotMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            // where("uid", "!=", user?.uid),
-            orderBy("createdAt", "desc")
-          );
-      }
+    if (!user?.uid) return;
 
-      onSnapshot(q, (snapshot) => {
-        setQuotesNotMine(
-          snapshot.docs.map(
-            (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
-          )
+    if (sortFilterByForNotMine.sortByElement === "quote") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'uid' and so you must also use 'uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
+          // where("uid", "!=", user?.uid),
+          orderBy("quote", "asc")
         );
-      });
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("quote", "desc")
+        );
+    } else if (sortFilterByForNotMine.sortByElement === "author") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("author", "asc")
+        );
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("author", "desc")
+        );
+    } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
+      if (sortFilterByForNotMine.order === "asc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("createdAt", "asc")
+        );
+      else if (sortFilterByForNotMine.order === "desc")
+        q = query(
+          quotesCollectionRef,
+          // where("uid", "!=", user?.uid),
+          orderBy("createdAt", "desc")
+        );
     }
+
+    onSnapshot(q, (snapshot) => {
+      setQuotesNotMine(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
+      );
+    });
   };
 
   const updateSortFilterByForMine = (which: string, ele: string) => {
@@ -883,7 +869,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         ...data,
         likedBy: [uid],
         createdAt: serverTimestamp(),
-        updateAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
     }
   };
@@ -910,11 +896,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         });
       }
     } else {
+      const currTime = serverTimestamp();
       await setDoc(doc(db, "apiQuotes", data.id), {
         ...data,
         bookmarkedBy: [uid],
-        createdAt: serverTimestamp(),
-        updateAt: serverTimestamp(),
+        createdAt: currTime,
+        updatedAt: currTime,
       });
     }
   };

@@ -1,5 +1,4 @@
-import { fontMerriweather, fontRaleway } from "@/components/utils/fonts";
-import { TypeAPIQuote, TypeQuote } from "@/types/type";
+import { fontMerriweather } from "@/components/utils/fonts";
 import React from "react";
 
 type Props = {
