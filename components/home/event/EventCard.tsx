@@ -1,6 +1,4 @@
 import { TypeEvent } from "@/types/type";
-import React from "react";
-
 import OccuringDate from "./OccuringDate";
 import DescriptionToggleBtn from "./DescriptionToggleBtn";
 import LeftDays from "./LeftDays";

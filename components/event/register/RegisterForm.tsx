@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,19 +23,23 @@ import { format } from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { collection } from "firebase/firestore";
-import { auth, db } from "@/config/Firebase";
+import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { eventSchema } from "@/form/schema";
-import { IUserInfo } from "@/types/type";
+
 import { useEvent } from "@/context/EventContext";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
+import { displayErrorToast } from "@/functions/displayToast";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 export default function RegisterForm() {
-  const [user] = useAuthState(auth);
+  const { loginUser, fetchLoginUser } = useAuth();
   const { getLoginUserEvents, registerEvent } = useEvent();
-
+  useEffect(() => {
+    if (!loginUser) fetchLoginUser(auth.currentUser);
+  }, [auth.currentUser]);
   const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -53,24 +54,23 @@ export default function RegisterForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof eventSchema>) {
-    const collectionRef = collection(db, "events");
-    const userInfo: IUserInfo = {
-      uid: user?.uid,
-      displayName: user?.displayName,
-      photoUrl: user?.photoURL,
-    };
-    registerEvent(values, userInfo);
-    reset({
-      eventTitle: "",
-      place: "",
-      description: "",
-      eventDate: new Date(),
-    });
-    form.reset();
-    getLoginUserEvents();
+    if (loginUser) {
+      registerEvent(values, loginUser.uid);
+      reset({
+        eventTitle: "",
+        place: "",
+        description: "",
+        eventDate: new Date(),
+      });
+      form.reset();
+      getLoginUserEvents();
+    } else {
+      displayErrorToast("Please log in.");
+    }
   }
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+      {loginUser ? <div>exists</div> : <div>not exists</div>}
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

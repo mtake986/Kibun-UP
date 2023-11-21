@@ -1,19 +1,19 @@
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
 import { cn } from "@/lib/utils";
-import { TypeQuote } from "@/types/type";
+import { ITag, TypeQuote } from "@/types/type";
 import React from "react";
 
 type Props = {
-  quote: TypeQuote;
+  tags: ITag[];
 };
 
-const Tags = ({ quote }: Props) => {
+const Tags = ({ tags }: Props) => {
   return (
     <ul className="flex flex-wrap items-center gap-1 text-[10px]">
-      {quote.tags?.map((tag, i) => (
+      {tags?.map((tag, i) => (
         <Badge
-          key={i}
+          key={tag.name}
           className={cn(
             `whitespace-nowrap font-light hover:opacity-70`,
             changeTagColor(tag.color)

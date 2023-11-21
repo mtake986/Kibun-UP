@@ -1,21 +1,17 @@
 import {
-  fontDancingScript,
   fontMerriweather,
-  fontRaleway,
-  fontRoboto,
 } from "@/components/utils/fonts";
-import { TypeQuote } from "@/types/type";
 import React from "react";
 
 type Props = {
-  quote: TypeQuote;
+  author: string;
 };
-const AuthorText = ({ quote }: Props) => {
+const AuthorText = ({ author }: Props) => {
   return (
     <div>
       <span className="text-xs">by </span>
       <span className={`text-sm ${fontMerriweather.className}`}>
-        {quote.author}
+        {author}
       </span>
     </div>
   );

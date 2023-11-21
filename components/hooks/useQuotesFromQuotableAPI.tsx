@@ -73,7 +73,7 @@ const useQuotesFromQuotableAPI = () => {
           .then((response) => {
             if (!response.ok) {
               throw Error(
-                `Something went wrong!! status: ${response.status}, ${response.statusText}`
+                `Something went wrong!! status: ${response.status} ${response.statusText || 'No status text available.'}`
               );
             }
             return response.json();
@@ -81,20 +81,6 @@ const useQuotesFromQuotableAPI = () => {
           .then((result) => {
             setNPages(result.totalPages);
             setTotalCount(result.totalCount);
-
-            // const quotes: TypeQuote[] = result.results.map((quote: any) => ({
-            //   id: quote._id,
-            //   author: quote.author,
-            //   authorSlug: quote.authorSlug,
-            //   content: quote.content,
-            //   tags: quote.tags.map((tag: string) => {
-            //     return { name: tag, color: "white" };
-            //   }),
-            //   likedBy: [],
-            //   bookmarkedBy: [],
-            //   userInfo: "api",
-            //   isDraft: false,
-            // }));
             const quotes: TypeAPIQuote[] = result.results.map((quote: any) => {
               const tags = quote.tags.map((tag: string) => {
                 const tagObject = { name: tag, color: "white" };
@@ -109,7 +95,7 @@ const useQuotesFromQuotableAPI = () => {
                 likedBy: [],
                 bookmarkedBy: [],
                 userInfo: "api",
-                isDraft: false,
+                draftStatus: "Public",
               };
               return quoteObject;
             });

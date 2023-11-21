@@ -14,22 +14,8 @@ type Props = {
   loginUser: TypeLoginUser;
 };
 const Icons = ({ quote, type, refetch, loginUser }: Props) => {
-  const {
-    removeLockFromThisQuote,
-    lockThisQuote,
-    updateRandomQuote,
-    storeFav,
-    removeFav,
-    storeBookmark,
-    removeBookmark,
-  } = useQuote();
-  const pathname = usePathname();
-
-  const isLiked = quote.likedBy?.some((id) => id === loginUser.uid);
-  const isBookmarked = quote.bookmarkedBy?.some((id) => id === loginUser.uid);
-
-  const heartFill = isLiked ? "red" : undefined;
-  const bookmarkFill = isBookmarked ? "green" : undefined;
+  const { removeLockFromThisQuote, lockThisQuote, updateRandomQuote } =
+    useQuote();
 
   return (
     <div className="flex cursor-pointer items-center justify-end gap-3">
@@ -75,73 +61,6 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
           className="cursor-pointer duration-300 hover:opacity-50"
         />
       )}
-
-      {/* Not allowed to like and bookmark from Home */}
-      {/* {!pathname.includes("home") ? (
-        <>
-          <span
-            onClick={() => {
-              isLiked
-                ? removeFav(loginUser.uid, quote)
-                : storeFav(loginUser.uid, quote);
-            }}
-            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
-          >
-            {isLiked ? (
-              <>
-                <Heart size={14} className="text-red-500" fill={heartFill} />
-                <span className={`text-red-500`}>{quote.likedBy?.length}</span>
-              </>
-            ) : (
-              <>
-                <Heart size={14} />
-                <span>{quote.likedBy?.length || 0}</span>
-              </>
-            )}
-          </span>
-
-          <span
-            onClick={() => {
-              try {
-                if (isBookmarked) {
-                  removeBookmark(loginUser.uid, quote);
-                  console.log(
-                    "remove bookmark",
-                    quote.id,
-                    quote.bookmarkedBy,
-                    loginUser.uid
-                  );
-                } else {
-                  storeBookmark(loginUser.uid, quote);
-                  console.log(
-                    "store bookmark",
-                    quote.id,
-                    quote.bookmarkedBy,
-                    loginUser.uid
-                  );
-                }
-              } catch (e) {
-                displayErrorToast(e);
-              }
-            }}
-            className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
-          >
-            {isBookmarked ? (
-              <>
-                <BsBookmarkFill size={12} className="text-green-500" />
-                <span className={`text-green-500`}>
-                  {quote.bookmarkedBy?.length || 0}
-                </span>
-              </>
-            ) : (
-              <>
-                <BsBookmark size={12} />
-                <span>{quote.bookmarkedBy?.length}</span>
-              </>
-            )}
-          </span>
-        </>
-      ) : null} */}
     </div>
   );
 };

@@ -16,7 +16,7 @@ const useFetchTags = () => {
       .then((response) => {
         if (!response.ok) {
           throw Error(
-            `Something went wrong!! status: ${response.status}, ${response.statusText} ${response.statusText}`
+            `Something went wrong!! status: ${response.status} ${response.statusText}`
           );
         }
         return response.json();

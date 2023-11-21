@@ -7,6 +7,7 @@ import {
   BsToggle2On,
 } from "react-icons/bs";
 import { TypeQuote } from "@/types/type";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 type Props = {
   q: TypeQuote;
@@ -21,29 +22,17 @@ const Content = ({ q }: Props) => {
         </div>
         <p>{q.content}</p>
       </div>
-      <div className="flex items-center justify-between gap-5">
-        <div className="flex items-center">
-          <div className="flex w-10">
-            <BsFillPersonFill size={16} className="mr-5" />
-          </div>
+      <div className="flex items-center">
+        <div className="flex w-10">
+          <BsFillPersonFill size={16} className="mr-5" />
         </div>
+        <p>{q.author}</p>
       </div>
       <div className="flex items-center">
-        {q.isDraft ? (
-          <>
-            <div className="flex w-10">
-              <BsToggle2Off size={16} className="mr-5" />
-            </div>
-            <p>Draft</p>
-          </>
-        ) : (
-          <>
-            <div className="flex w-10">
-              <BsToggle2On size={16} className="mr-5" />
-            </div>
-            <p>Public</p>
-          </>
-        )}
+        <div className="flex w-10">
+          <EyeIcon size={16} className="mr-5" />
+        </div>
+        <p>{q.draftStatus}</p>
       </div>
       {q.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">

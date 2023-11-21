@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { MoonStar, SunDim, SunMoon } from "lucide-react";
+import { MoonStar, SunDim } from "lucide-react";
 
 export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -20,7 +20,7 @@ export const ThemeSwitcher = () => {
       aria-label="Toggle Dark Mode"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
-      {theme === "light" ? <MoonStar /> : <SunDim />}
+      {theme === "light" ? <MoonStar size={24} /> : <SunDim size={24} />}
     </button>
   );
 };

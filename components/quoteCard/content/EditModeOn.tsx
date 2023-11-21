@@ -130,14 +130,24 @@ export default function EditModeOn({
     setInputTags(inputTags.filter((tag) => tag.name !== tagName));
   };
 
+  const getButtonClasses = (isDisabled: boolean) => {
+    const baseClasses =
+      "cursor-pointer rounded-md px-3 py-2 text-sm duration-300 ease-in";
+    const enabledClasses =
+      "bg-blue-50 text-blue-500 hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
+    const disabledClasses =
+      "cursor-not-allowed bg-blue-50 text-blue-500 opacity-30 dark:bg-blue-700 dark:text-white";
+    return `${baseClasses} ${isDisabled ? disabledClasses : enabledClasses}`;
+  };
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
     defaultValues: {
       author: q.author,
       content: q.content,
-      isDraft: q.isDraft,
-      tags: [],
+      draftStatus: q.draftStatus,
+      tags: q.tags,
     },
   });
 
@@ -154,8 +164,12 @@ export default function EditModeOn({
     reset({
       author: "",
       content: "",
-      isDraft: false,
+      draftStatus: "Public",
     });
+    setInputTags([]);
+    setInputTagName("");
+    setInputTagColor("");
+    setTagErrors({});
     form.reset();
   }
 
@@ -197,19 +211,25 @@ export default function EditModeOn({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="isDraft"
+          name="draftStatus"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
-              <FormLabel className="text-base">Draft</FormLabel>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="text-red-600 dark:bg-slate-300"
-                />
-              </FormControl>
+            <FormItem>
+              <FormLabel>Draft Status</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={"Public"}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Draft">Draft</SelectItem>
+                  <SelectItem value="Public">Public</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
@@ -269,11 +289,7 @@ export default function EditModeOn({
                 onClick={() => {
                   if (validateInputTags() === "pass") addTag();
                 }}
-                className={`${
-                  isAddBtnDisabled
-                    ? "cursor-not-allowed cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
-                    : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white  dark:hover:bg-blue-600"
-                } `}
+                className={getButtonClasses(isAddBtnDisabled)}
               >
                 Add
               </button>

@@ -50,16 +50,17 @@ export default function Header() {
           />
           <UrlLink
             href="/contact"
-            className={getLinkStyle('/contact')}
+            className={getLinkStyle("/contact")}
             target="_self"
             clickOn="Contact"
           />
         </div>
-        <div className="hidden items-center justify-between sm:flex gap-1">
+        <div className="hidden items-center justify-between gap-3 sm:flex">
           <ThemeSwitcher />
           <ProfilePic />
         </div>
-        <div className="sm:hidden">
+        <div className="sm:hidden flex items-center gap-3">
+          <ThemeSwitcher />
           <MenuBtn />
         </div>
       </nav>

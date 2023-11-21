@@ -1,7 +1,6 @@
 import React from "react";
 
 const LoadingSpinnerS = () => {
-
   return (
     <div className="flex items-center justify-center p-2">
       <div

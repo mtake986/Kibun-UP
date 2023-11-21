@@ -50,7 +50,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           onClick={() => {
             setIsLoading(true);
             try {
-              if (q.isDraft) {
+              if (q.draftStatus === "Draft") {
                 displayToast({
                   text: "Needs to be Public.",
                   color: "red",

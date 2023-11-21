@@ -4,15 +4,15 @@ import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast } from "@/functions/displayToast";
 import { DEFAULT_URL_FOR_RANDOM_QUOTE } from "@/data/CONSTANTS";
-import { TypeQuote } from "@/types/type";
+import { TypeAPIQuote, TypeQuote } from "@/types/type";
 import useSelectedAuthors from "./useSelectedAuthors";
 
 const useFetchQuoteFromQuotableAPI = (url: string) => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const [data, setData] = useState<TypeQuote>();
+  const [data, setData] = useState<TypeAPIQuote>();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<string | Error | null>(null);
-  
+
   const fetchData = useCallback(async () => {
     setIsPending(true);
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -36,7 +36,8 @@ const useFetchQuoteFromQuotableAPI = (url: string) => {
           likedBy: [],
           bookmarkedBy: [],
           userInfo: "api",
-          isDraft: false,
+          draftStatus: "Public",
+          authorSlug: res[0].authorSlug,
         });
         setIsPending(false);
       })

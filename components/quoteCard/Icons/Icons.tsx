@@ -18,7 +18,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
     return null; // or return some default UI
   }
 
-  const mine = q.userInfo !== "api" && loginUser.uid === q.userInfo.uid;
+  const mine = q.userInfo !== "api" && loginUser.uid === q.uid;
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">

@@ -4,7 +4,7 @@ export interface TypeEvent {
   id: string;
   eventTitle: string;
   place?: string;
-  description: string;
+  description?: string;
   eventDate: Timestamp;
   uid: string;
   createdAt: Date;
@@ -16,20 +16,20 @@ export type TypeQuote = {
   author: string;
   content: string;
   tags: ITag[];
+  draftStatus: string;
   likedBy: string[];
   bookmarkedBy: string[];
-  userInfo: IUserInfo | "api";
-  isDraft: boolean;
+  userInfo?: IUserInfo | "api";
+  uid?: string;
   // authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
   qid?: string;
-  uid?: string;
 };
 
 export type TypeAPIQuote = TypeQuote & {
   authorSlug: string;
-}
+};
 
 export interface TypeEventInputValues {
   eventTitle: string;
@@ -41,7 +41,7 @@ export interface TypeEventInputValues {
 export interface TypeQuoteInputValues {
   author: string;
   content: string;
-  isDraft: boolean;
+  draftStatus: string;
   tags: ITag[];
 }
 

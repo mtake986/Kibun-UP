@@ -1,15 +1,10 @@
 "use client";
 import { useEvent } from "@/context/EventContext";
-import { auth } from "@/config/Firebase";
 import EventCard from "./EventCard";
 import NoEventAvailable from "./NoEventAvailable";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 const Event = () => {
-  const [user] = useAuthState(auth);
   const { randomEvent, lockedEvent } = useEvent();
-
-  // todo: no need to refetch if exists
 
   if (!lockedEvent && !randomEvent) {
     return <NoEventAvailable />;

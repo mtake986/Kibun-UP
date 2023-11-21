@@ -27,7 +27,7 @@ const Tabs = ({ loginUser }: Props) => {
     {
       name: "likes",
       length: lengths.likes,
-    },
+    },  
     { name: "events", length: loginUserEvents.length },
   ];
 
@@ -43,8 +43,7 @@ const Tabs = ({ loginUser }: Props) => {
           }`}
           onClick={() => handleProfileWhichTab(tab.name)}
         >
-          {tab.name}
-          <span>{tab.length}</span>
+          {tab.name} {tab.length}
         </span>
       ))}
     </div>

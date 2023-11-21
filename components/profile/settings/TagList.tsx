@@ -42,7 +42,7 @@ const TagList = ({ loginUser }: Props) => {
           id="tags"
           className={`w-full max-w-[200px] focus:outline-none focus:ring-transparent focus-visible:ring-transparent`}
         >
-          <SelectValue placeholder="Ex.) Select a Quote Tag" />
+          <SelectValue placeholder="Select a Quote Tag" />
         </SelectTrigger>
         <SelectContent className="h-48">
           <SelectItem disabled={true} key="top" value="top">

@@ -13,7 +13,7 @@ export const eventSchema = z.object({
 export const quoteSchema = z.object({
   author: z.string().min(2).max(100),
   content: z.string().min(2).max(1000),
-  isDraft: z.boolean(),
+  draftStatus: z.string(),
   // tags: z.tuple([z.string()]),
   tags: z.array(
     z.object({
