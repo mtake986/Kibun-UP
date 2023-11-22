@@ -194,7 +194,7 @@ export function EventProvider({ children }: EventProviderProps) {
       onSnapshot(q, (snapshot) => {
         setLockedEvent({
           ...snapshot.docs[0]?.data(),
-          id: snapshot.docs[0]?.data().id,
+          id: snapshot.docs[0]?.id,
         } as TypeEvent);
       });
     }

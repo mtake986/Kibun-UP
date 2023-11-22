@@ -35,8 +35,6 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
-  const [isSubmitBtnDisabled, setIsSubmitBtnDisabled] = useState<boolean>(true);
-
   const { loginUser, fetchLoginUser } = useAuth();
   const { getLoginUserEvents, registerEvent } = useEvent();
   useEffect(() => {
@@ -50,6 +48,14 @@ export default function RegisterForm() {
     } else {
       return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
     }
+  };
+
+  const isSubmitBtnDisabled = () => {
+    return form.formState.isSubmitting ||
+      form.getValues().eventTitle === "" ||
+      form.getValues().eventDate === undefined
+      ? true
+      : false;
   };
 
   // 1. Define your form.
@@ -226,19 +232,12 @@ export default function RegisterForm() {
           <div className="flex items-center gap-3">
             <button
               className={
-                form.formState.isSubmitting ||
-                form.getValues().eventTitle === "" ||
-                form.getValues().eventDate === undefined ? 
-                "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500"
-                : "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
-
+                isSubmitBtnDisabled()
+                  ? "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500"
+                  : "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
               }
+              disabled={isSubmitBtnDisabled()}
               type="submit"
-              disabled={
-                form.formState.isSubmitting ||
-                form.getValues().eventTitle === "" ||
-                form.getValues().eventDate === undefined
-              }
             >
               Submit
             </button>

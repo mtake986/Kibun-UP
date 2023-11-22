@@ -8,7 +8,7 @@ import IconTrash from "./IconTrash";
 import Image from "next/image";
 import { useQuote } from "@/context/QuoteContext";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 
 type Props = {
@@ -23,27 +23,30 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
 
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isMine, setIsMine] = useState<boolean>(false);
+  const [isAPI, setIsAPI] = useState<boolean>(false);
+
+  const fetchProfilePhoto = useCallback(async () => {
+    const photo = await getCreatorPhoto(q.createdBy);
+    setProfilePhoto(photo);
+  }, [q.createdBy, getCreatorPhoto]);
+
   useEffect(() => {
     setIsLoading(true);
-    const fetchProfilePhoto = async () => {
-      const photo = await getCreatorPhoto(q.createdBy);
-      setProfilePhoto(photo);
-    };
-
+    setIsMine(q.createdBy === loginUser?.uid);
+    setIsAPI(q.createdBy === "api");
     fetchProfilePhoto().then(() => setIsLoading(false));
-  }, [q.createdBy]);
+  }, [fetchProfilePhoto]);
+
 
   if (!loginUser) {
     return null; // or return some default UI
   }
-  const mine = q.createdBy === loginUser.uid ? true : false;
-  const isApi = q.createdBy === "api" ? true : false;
 
-  const pic = getCreatorPhoto(q.createdBy);
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">
-        {mine && setIsUpdateMode ? (
+        {isMine && setIsUpdateMode ? (
           <IconEdit
             setIsUpdateMode={setIsUpdateMode}
             isUpdateMode={isUpdateMode}
@@ -53,11 +56,9 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
         <IconLike q={q} loginUser={loginUser} />
         <IconBookmark q={q} loginUser={loginUser} />
       </div>
-      {mine ? (
+      {isMine ? (
         <IconTrash q={q} />
-      ) : isApi ? (
-        null
-      ) : isLoading ? (
+      ) : isAPI ? null : isLoading ? (
         <LoadingSpinnerS />
       ) : (
         <Image

@@ -40,7 +40,7 @@ type QuoteProviderProps = {
 
 type TypeQuoteContext = {
   loginUserQuotes: TypeQuote[] | [];
-  getLoginUserQuotes: () => void;
+  getLoginUserQuotes: () => Promise<void>;
   handleCancelUpdate: () => void;
   handleDelete: (id: string) => Promise<void>;
 
@@ -200,7 +200,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     if (user?.uid) {
       const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
       onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs);
         setLoginUserQuotes(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
@@ -241,7 +240,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       onSnapshot(q, (snapshot) => {
         setLockedQuote({
           ...snapshot.docs[0]?.data(),
-          id: snapshot.docs[0]?.data().id,
+          id: snapshot.docs[0]?.id,
         } as TypeQuote);
       });
     }

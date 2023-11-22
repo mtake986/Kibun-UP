@@ -147,7 +147,6 @@ export default function RegisterForm() {
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     if (loginUser) {
       values.tags = inputTags;
-      console.log(values)
       registerQuote(values, loginUser.uid);
       reset({
         author: "",

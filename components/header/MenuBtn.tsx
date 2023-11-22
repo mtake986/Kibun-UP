@@ -11,6 +11,8 @@ import LogOutBtn from "./LogOutBtn";
 import { Button } from "../ui/button";
 import { AiOutlineContacts } from "react-icons/ai";
 import { usePathname } from "next/navigation";
+import { capitalize } from "@mui/material";
+import { IconType } from "react-icons";
 
 type Anchor = "right";
 
@@ -30,128 +32,52 @@ export default function MenuBtn() {
       return "flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70";
     }
   };
-  const HomeListItem = (
-    <button
-      disabled={isBtnDisabled(pathname, "/home")}
-      className={`${btnStyle(pathname, "/home")}`}
-    >
-      <BsHouse />
-            <span
-        className={`${
-          isBtnDisabled(pathname, "/home")
-            ? "font-semibold underline underline-offset-2"
-            : null
-        }`}
-      >Home</span>
-    </button>
-  );
 
-  const QuoteListItem = (
-    <button
-      disabled={isBtnDisabled(pathname, "/quote")}
-      className={`${btnStyle(pathname, "/quote")}`}
-    >
-      <BsChatQuote />
-      <span
-        className={`${
-          isBtnDisabled(pathname, "/quote")
-            ? "font-semibold underline underline-offset-2"
-            : null
-        }`}
+  const item = (link: string, icon: React.JSX.Element) => {
+    return (
+      <button
+        disabled={isBtnDisabled(pathname, `/${link}`)}
+        className={`${btnStyle(pathname, `/${link}`)}`}
       >
-        Quote
-      </span>
-    </button>
-  );
-
-  const EventListItem = (
-    <button
-      disabled={isBtnDisabled(pathname, "/event")}
-      className={`${btnStyle(pathname, "/event")}`}
-    >
-      <BsFlag />
-      <span
-        className={`${
-          isBtnDisabled(pathname, "/event")
-            ? "font-semibold underline underline-offset-2"
-            : null
-        }`}
-      >
-        Event
-      </span>
-    </button>
-  );
-
-  const ProfileListItem = (
-    <button
-      disabled={isBtnDisabled(pathname, "/profile")}
-      className={`${btnStyle(pathname, "/profile")}`}
-    >
-      <BsPerson />
-      <span
-        className={`${
-          isBtnDisabled(pathname, "/profile")
-            ? "font-semibold underline underline-offset-2"
-            : null
-        }`}
-      >
-        Profile
-      </span>
-    </button>
-  );
-
-  const ContactListItem = (
-    <button
-      disabled={isBtnDisabled(pathname, "/contact")}
-      className={`${btnStyle(pathname, "/contact")}`}
-    >
-      <AiOutlineContacts />
-      <span
-        className={`${
-          isBtnDisabled(pathname, "/contact")
-            ? "font-semibold underline underline-offset-2"
-            : null
-        }`}
-      >
-        Contact
-      </span>
-    </button>
-  );
+        {icon}
+        <span
+          className={`text-sm ${
+            isBtnDisabled(pathname, `/${link}`)
+              ? "font-semibold underline underline-offset-2"
+              : null
+          }`}
+        >
+          {capitalize(link)}
+        </span>
+      </button>
+    );
+  };
 
   const headerListItems = [
     {
       href: "/home",
       target: "_self",
-      clickOn: HomeListItem,
+      clickOn: item("home", <BsHouse />),
     },
     {
       href: "/quote",
       target: "_self",
-      clickOn: QuoteListItem,
+      clickOn: item("quote", <BsChatQuote />),
     },
     {
       href: "/event",
-      className: `flex items-center gap-3 ${
-        pathname === "/event" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: EventListItem,
+      clickOn: item("event", <BsFlag />),
     },
     {
       href: `/user/profile/${user?.uid}`,
-      className: `flex items-center gap-3 ${
-        pathname === "/profile" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: ProfileListItem,
+      clickOn: item("profile", <BsPerson />),
     },
     {
       href: `/contact`,
-      className: `flex items-center gap-3 ${
-        pathname === "/contact" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: ContactListItem,
+      clickOn: item("contact", <AiOutlineContacts />),
     },
   ];
 
@@ -185,7 +111,6 @@ export default function MenuBtn() {
           <UrlLink
             key={item.href}
             href={item.href}
-            className={item.className}
             target={item.target}
             clickOn={item.clickOn}
           />
