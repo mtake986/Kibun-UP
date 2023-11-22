@@ -42,20 +42,6 @@ export default function RegisterForm() {
   }, [auth.currentUser]);
   const { reset } = useForm();
 
-  const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
-    if (isSubmitBtnDisabled) {
-      return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
-    } else {
-      return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
-    }
-  };
-
-  const isSubmitBtnDisabled = () => {
-    return form.formState.isSubmitting ||
-      form.getValues().eventTitle === "" ||
-      form.getValues().eventDate === undefined
-  };
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
@@ -83,6 +69,22 @@ export default function RegisterForm() {
       displayErrorToast("Please log in.");
     }
   }
+
+  const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
+    if (isSubmitBtnDisabled) {
+      return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
+    } else {
+      return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
+    }
+  };
+
+  const isSubmitBtnDisabled = () => {
+    return (
+      form.formState.isSubmitting ||
+      form.getValues().eventTitle === "" ||
+      form.getValues().eventDate === undefined
+    );
+  };
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>

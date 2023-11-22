@@ -9,6 +9,7 @@ import usePagination from "@/components/hooks/usePagination";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
+import UrlLink from "@/components/utils/UrlLink";
 
 type Props = {
   events: TypeEvent[];
@@ -37,7 +38,15 @@ const List = ({ events }: Props) => {
           )}
         </div>
       ) : (
-        <NoFetchedData text="No events found" />
+        <div>
+          <NoFetchedData text="No events found" />
+          <UrlLink
+            href="/event/register"
+            target="_self"
+            clickOn="Create an event"
+            className="text-xs text-sky-500 underline-offset-2 hover:underline sm:text-sm"
+          />
+        </div>
       )}
     </div>
   );
