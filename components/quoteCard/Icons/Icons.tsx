@@ -5,6 +5,12 @@ import IconLock from "./IconLock";
 import IconLike from "./IconLike";
 import IconBookmark from "./IconBookmark";
 import IconTrash from "./IconTrash";
+import Image from "next/image";
+import { useQuote } from "@/context/QuoteContext";
+import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
+import { useEffect, useState } from "react";
+import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
+
 type Props = {
   q: TypeQuote;
   setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,13 +19,27 @@ type Props = {
 
 const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
   const { loginUser } = useAuth();
+  const { getCreatorPhoto } = useQuote();
+
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchProfilePhoto = async () => {
+      const photo = await getCreatorPhoto(q.createdBy);
+      setProfilePhoto(photo);
+    };
+
+    fetchProfilePhoto().then(() => setIsLoading(false));
+  }, [q.createdBy]);
 
   if (!loginUser) {
     return null; // or return some default UI
   }
-
   const mine = q.createdBy === loginUser.uid ? true : false;
-  
+  const isApi = q.createdBy === "api" ? true : false;
+
+  const pic = getCreatorPhoto(q.createdBy);
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">
@@ -33,7 +53,21 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
         <IconLike q={q} loginUser={loginUser} />
         <IconBookmark q={q} loginUser={loginUser} />
       </div>
-      {mine ? <IconTrash q={q} /> : null}
+      {mine ? (
+        <IconTrash q={q} />
+      ) : isApi ? (
+        null
+      ) : isLoading ? (
+        <LoadingSpinnerS />
+      ) : (
+        <Image
+          src={profilePhoto ?? defaultProfilePhoto}
+          alt="profile photo"
+          width={20}
+          height={20}
+          className="rounded-full"
+        />
+      )}
     </div>
   );
 };

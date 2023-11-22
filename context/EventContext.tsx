@@ -187,9 +187,15 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getLockedEvent = async () => {
     if (user?.uid) {
-      const q = query(lockedEventsCollectionRef, where("createdBy", "==", user?.uid));
+      const q = query(
+        lockedEventsCollectionRef,
+        where("createdBy", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
-        setLockedEvent(snapshot.docs[0]?.data() as TypeEvent);
+        setLockedEvent({
+          ...snapshot.docs[0]?.data(),
+          id: snapshot.docs[0]?.data().id,
+        } as TypeEvent);
       });
     }
   };

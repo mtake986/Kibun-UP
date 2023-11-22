@@ -9,6 +9,7 @@ import NoFetchedData from "@/components/utils/NoFetchedData";
 import SortFilterMine from "./sort/SortFilterMine";
 import usePagination from "@/components/hooks/usePagination";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
+import Image from "next/image";
 
 type Props = {
   quotes: TypeQuote[];
@@ -17,9 +18,7 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const {
-    sortFilterAreaForMineShown,
-  } = useQuote();
+  const { sortFilterAreaForMineShown, getCreatorPhoto } = useQuote();
 
   const [currentPage, setCurrentPage] = useState(1);
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
@@ -32,7 +31,7 @@ const List = ({ quotes }: Props) => {
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} />
+            <QuoteCard q={doc} key={doc.id} />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

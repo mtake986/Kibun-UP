@@ -38,7 +38,7 @@ type QuoteProviderProps = {
   children: ReactNode;
 };
 
-type QuoteContext = {
+type TypeQuoteContext = {
   loginUserQuotes: TypeQuote[] | [];
   getLoginUserQuotes: () => void;
   handleCancelUpdate: () => void;
@@ -128,9 +128,10 @@ type QuoteContext = {
   fetchApiQuotesFromFirestore: () => void;
   handleLikeApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
   handleBookmarkApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
+  getCreatorPhoto: (uid: string) => Promise<string>;
 };
 
-const QuoteContext = createContext({} as QuoteContext);
+const QuoteContext = createContext({} as TypeQuoteContext);
 
 export function useQuote() {
   return useContext(QuoteContext);
@@ -183,6 +184,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
+    setLoginUserQuotes([]);
     if (!user) return;
 
     const q = query(quotesCollectionRef, where("createdBy", "!=", user.uid));
@@ -195,14 +197,17 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLoginUserQuotes = async () => {
-    if (!user?.uid) return;
-    const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
-    onSnapshot(q, (snapshot) => {
-      console.log(snapshot.docs);
-      setLoginUserQuotes(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-      );
-    });
+    if (user?.uid) {
+      const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
+      onSnapshot(q, (snapshot) => {
+        console.log(snapshot.docs);
+        setLoginUserQuotes(
+          snapshot.docs.map(
+            (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
+          )
+        );
+      });
+    }
   };
 
   const handleCancelUpdate = () => {
@@ -228,14 +233,17 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLockedQuote = async () => {
-    const docRef = doc(db, "cities", "SF");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      setLockedQuote(docSnap.data() as TypeQuote);
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
+    if (user?.uid) {
+      const q = query(
+        lockedQuotesCollectionRef,
+        where("createdBy", "==", user?.uid)
+      );
+      onSnapshot(q, (snapshot) => {
+        setLockedQuote({
+          ...snapshot.docs[0]?.data(),
+          id: snapshot.docs[0]?.data().id,
+        } as TypeQuote);
+      });
     }
   };
 
@@ -702,7 +710,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       if (lu && lu.settings.quoteTypeForHome === "mine") {
         setRandomQuote({} as TypeQuote);
         qs = loginUserQuotes;
-        const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
+        const q = query(
+          quotesCollectionRef,
+          where("createdBy", "==", user?.uid)
+        );
         onSnapshot(q, (snapshot) => {
           const randomNum = getRandomNum(snapshot.docs.length);
           const doc = snapshot.docs[randomNum];
@@ -909,6 +920,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
+  const getCreatorPhoto = async (uid: string): Promise<string> => {
+    const userDocRef = doc(db, "users", uid);
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data()?.photoURL;
+    }
+    return "";
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -984,6 +1005,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         fetchApiQuotesFromFirestore,
         handleLikeApiQuote,
         handleBookmarkApiQuote,
+        getCreatorPhoto,
       }}
     >
       {children}
