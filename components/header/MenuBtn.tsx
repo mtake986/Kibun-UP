@@ -8,11 +8,9 @@ import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
-import { Button } from "../ui/button";
 import { AiOutlineContacts } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 import { capitalize } from "@mui/material";
-import { IconType } from "react-icons";
 
 type Anchor = "right";
 

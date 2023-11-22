@@ -35,9 +35,13 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
     setIsLoading(true);
     setIsMine(q.createdBy === loginUser?.uid);
     setIsAPI(q.createdBy === "api");
-    fetchProfilePhoto().then(() => setIsLoading(false));
+    fetchProfilePhoto()
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }, [fetchProfilePhoto]);
-
 
   if (!loginUser) {
     return null; // or return some default UI
@@ -46,7 +50,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">
-        {isMine && setIsUpdateMode ? (
+        {isMine ? (
           <IconEdit
             setIsUpdateMode={setIsUpdateMode}
             isUpdateMode={isUpdateMode}

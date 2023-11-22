@@ -54,8 +54,6 @@ export default function RegisterForm() {
     return form.formState.isSubmitting ||
       form.getValues().eventTitle === "" ||
       form.getValues().eventDate === undefined
-      ? true
-      : false;
   };
 
   // 1. Define your form.
@@ -231,11 +229,7 @@ export default function RegisterForm() {
 
           <div className="flex items-center gap-3">
             <button
-              className={
-                isSubmitBtnDisabled()
-                  ? "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500"
-                  : "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
-              }
+              className={getSubmitBtnClassName(isSubmitBtnDisabled())}
               disabled={isSubmitBtnDisabled()}
               type="submit"
             >
