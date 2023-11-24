@@ -25,9 +25,9 @@ export default function MenuBtn() {
 
   const btnStyle = (pathname: string, link: string) => {
     if (isBtnDisabled(pathname, link)) {
-      return "flex items-center gap-3 text-violet-500";
+      return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
     } else {
-      return "flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70";
+      return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
     }
   };
 
