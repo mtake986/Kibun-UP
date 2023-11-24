@@ -1,11 +1,6 @@
 import { useQuote } from "@/context/QuoteContext";
-import { displayErrorToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
-import { Heart } from "lucide-react";
-import { useCallback } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { usePathname } from "next/navigation";
 
 type Props = {
   quote: TypeQuote;

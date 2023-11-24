@@ -9,14 +9,14 @@ type Props = {
   className?: string;
 };
 
-const UrlLink = (props: Props) => {
+const UrlLink = ({href, target, clickOn, className}: Props) => {
   return (
     <Link
-      href={props.href}
-      target={props.target}
-      className={`${props.className} cursor-pointer`}
+      href={href}
+      target={target}
+      className={`${className} cursor-pointer`}
     >
-      {props.clickOn}
+      {clickOn}
     </Link>
   );
 };

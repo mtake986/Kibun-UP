@@ -8,9 +8,9 @@ import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import UrlLink from "../utils/UrlLink";
 import LogOutBtn from "./LogOutBtn";
-import { Button } from "../ui/button";
 import { AiOutlineContacts } from "react-icons/ai";
 import { usePathname } from "next/navigation";
+import { capitalize } from "@mui/material";
 
 type Anchor = "right";
 
@@ -18,48 +18,64 @@ export default function MenuBtn() {
   const [user] = useAuthState(auth);
   const pathname = usePathname();
 
+  const isBtnDisabled = (pathname: string, link: string) => {
+    if (pathname === link) return true;
+    else return false;
+  };
+
+  const btnStyle = (pathname: string, link: string) => {
+    if (isBtnDisabled(pathname, link)) {
+      return "flex items-center gap-3 text-violet-500";
+    } else {
+      return "flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70";
+    }
+  };
+
+  const item = (link: string, icon: React.JSX.Element) => {
+    return (
+      <button
+        disabled={isBtnDisabled(pathname, `/${link}`)}
+        className={`${btnStyle(pathname, `/${link}`)}`}
+      >
+        {icon}
+        <span
+          className={`text-sm ${
+            isBtnDisabled(pathname, `/${link}`)
+              ? "font-semibold underline underline-offset-2"
+              : null
+          }`}
+        >
+          {capitalize(link)}
+        </span>
+      </button>
+    );
+  };
+
   const headerListItems = [
     {
-      href: "/",
-      className: `flex items-center gap-3 ${
-        pathname === "/home" &&
-        "font-semibold underline underline-offset-2"
-      }`,
+      href: "/home",
       target: "_self",
-      clickOn: HomeListItem,
+      clickOn: item("home", <BsHouse />),
     },
     {
       href: "/quote",
-      className: `flex items-center gap-3 ${
-        pathname === "/quote" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: QuoteListItem,
+      clickOn: item("quote", <BsChatQuote />),
     },
     {
       href: "/event",
-      className: `flex items-center gap-3 ${
-        pathname === "/event" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: EventListItem,
+      clickOn: item("event", <BsFlag />),
     },
     {
       href: `/user/profile/${user?.uid}`,
-      className: `flex items-center gap-3 ${
-        pathname === "/profile" &&
-        "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: ProfileListItem,
+      clickOn: item("profile", <BsPerson />),
     },
     {
       href: `/contact`,
-      className: `flex items-center gap-3 ${
-        pathname === "/contact" && "font-semibold underline underline-offset-2"
-      }`,
       target: "_self",
-      clickOn: ContactListItem,
+      clickOn: item("contact", <AiOutlineContacts />),
     },
   ];
 
@@ -87,31 +103,26 @@ export default function MenuBtn() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="flex min-h-screen flex-col justify-start gap-2 p-5 dark:bg-slate-900">
+      <ul className="flex min-h-screen flex-col items-center gap-5 py-10 dark:bg-slate-900">
         {/* <div className="flex flex-col gap-3"> */}
         {headerListItems.map((item, i) => (
-          <Button
-            key={i}
-            className="flex items-center justify-center bg-white p-1 text-black duration-300 hover:bg-white hover:opacity-50 dark:bg-slate-900 dark:text-white"
-          >
-            <UrlLink
-              href={item.href}
-              className={item.className}
-              target={item.target}
-              clickOn={item.clickOn}
-            />
-          </Button>
+          <UrlLink
+            key={item.href}
+            href={item.href}
+            target={item.target}
+            clickOn={item.clickOn}
+          />
         ))}
         {/* </div> */}
         {user ? <LogOutBtn /> : <GoogleLoginBtn />}
-      </div>
+      </ul>
     </Box>
   );
 
   return (
     <div>
       <MenuIcon
-        className="cursor-pointer text-violet-500 dark:text-white duration-300 hover:opacity-70"
+        className="cursor-pointer text-violet-500 duration-300 hover:opacity-70 dark:text-white"
         onClick={toggleDrawer("right", true)}
       />
       <Drawer
@@ -124,38 +135,3 @@ export default function MenuBtn() {
     </div>
   );
 }
-
-const HomeListItem = (
-  <>
-    <BsHouse />
-    <span className="text-sm ">Home</span>
-  </>
-);
-
-const QuoteListItem = (
-  <>
-    <BsChatQuote />
-    <span className="text-sm">Quote</span>
-  </>
-);
-
-const EventListItem = (
-  <>
-    <BsFlag />
-    <span className="text-sm">Event</span>
-  </>
-);
-
-const ProfileListItem = (
-  <>
-    <BsPerson />
-    <span className="text-sm">Profile</span>
-  </>
-);
-
-const ContactListItem = (
-  <>
-    <AiOutlineContacts />
-    <span className="text-sm">Contact</span>
-  </>
-);

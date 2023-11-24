@@ -51,7 +51,7 @@ type EventContextType = {
   setRandomEvent: (event: TypeEvent | undefined) => void;
   setLockedEvent: (event: TypeEvent | undefined) => void;
 
-  registerEvent: (values: TypeEventInputValues, uid: string) => void;
+  registerEvent: (values: TypeEventInputValues, uid: string) => Promise<void>;
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
@@ -83,7 +83,7 @@ export function EventProvider({ children }: EventProviderProps) {
       const currTime = serverTimestamp();
       await addDoc(eventCollectionRef, {
         ...values,
-        uid,
+        createdBy: uid,
         createdAt: currTime,
         updatedAt: currTime,
       });
@@ -134,7 +134,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (user?.uid) {
       const q = query(
         eventCollectionRef,
-        where("uid", "==", user?.uid)
+        where("createdBy", "==", user?.uid)
         // orderBy("createdAt", "asc")
       );
       console.log(user);
@@ -156,7 +156,7 @@ export function EventProvider({ children }: EventProviderProps) {
     // if (user?.uid) {
     //   const q = query(
     //     collectionRef,
-    //     where("uid", "==", user?.uid),
+    //     where("createdBy", "==", user?.uid),
     //     orderBy("eventTitle", "asc")
     //   );
     //   onSnapshot(q, (snapshot) => {
@@ -187,9 +187,15 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getLockedEvent = async () => {
     if (user?.uid) {
-      const q = query(lockedEventsCollectionRef, where("uid", "==", user?.uid));
+      const q = query(
+        lockedEventsCollectionRef,
+        where("createdBy", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
-        setLockedEvent(snapshot.docs[0]?.data() as TypeEvent);
+        setLockedEvent({
+          ...snapshot.docs[0]?.data(),
+          id: snapshot.docs[0]?.id,
+        } as TypeEvent);
       });
     }
   };
@@ -202,7 +208,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getEventsNotMine = async () => {
     if (user) {
-      const q = query(eventCollectionRef, where("uid", "!=", user?.uid));
+      const q = query(eventCollectionRef, where("createdBy", "!=", user?.uid));
       onSnapshot(q, (snapshot) => {
         setEventsNotMine(
           snapshot.docs.map(

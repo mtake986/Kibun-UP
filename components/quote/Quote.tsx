@@ -38,6 +38,7 @@ const Quote = () => {
         if (!loginUserQuotes || loginUserQuotes.length === 0) {
           getLoginUserQuotes();
         }
+        console.log(lockedQuote);
         if (!lockedQuote) await getLockedQuote();
         if (!quotesNotMine || quotesNotMine.length === 0)
           await getQuotesNotMine();

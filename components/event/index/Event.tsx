@@ -68,7 +68,6 @@ const Event = () => {
         <div className="relative">
           <HeadingTwo text="Events" />
           {!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null}
-
           <Tabs />
         </div>
       </div>

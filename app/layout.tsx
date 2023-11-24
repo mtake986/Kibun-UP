@@ -1,14 +1,13 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { AuthProvider, useAuth } from "../context/AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { QuoteProvider } from "../context/QuoteContext";
 import { EventProvider } from "../context/EventContext";
 import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
-import { fontRaleway, fontRoboto } from "@/components/utils/fonts";
+import { fontRaleway } from "@/components/utils/fonts";
 import { ThemeProvider } from "./theme-provider";
-import { ThemeSwitcher } from "@/components/header/ThemeSwitcher";
 
 // const inter = Inter({ subsets: ["latin"] });
 

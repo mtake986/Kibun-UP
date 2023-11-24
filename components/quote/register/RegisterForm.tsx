@@ -127,7 +127,7 @@ export default function RegisterForm() {
   };
   const getAddButtonClass = (isDisabled: boolean) => {
     return isDisabled
-      ? "cursor-not-allowed rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 opacity-30 duration-300 ease-in dark:bg-blue-700 dark:text-white"
+      ? "cursor-not-allowed rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-500 dark:bg-gray-700 dark:text-white"
       : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
   };
 
@@ -246,7 +246,6 @@ export default function RegisterForm() {
                   onValueChange={(color) => {
                     setInputTagColor(color);
                   }}
-                  value={inputTagColor}
                   disabled={inputTagName.length === 0}
                   defaultValue="white"
                 >
