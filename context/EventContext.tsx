@@ -51,7 +51,7 @@ type EventContextType = {
   setRandomEvent: (event: TypeEvent | undefined) => void;
   setLockedEvent: (event: TypeEvent | undefined) => void;
 
-  registerEvent: (values: TypeEventInputValues, uid: string) => void;
+  registerEvent: (values: TypeEventInputValues, uid: string) => Promise<void>;
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;

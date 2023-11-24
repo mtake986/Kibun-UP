@@ -83,15 +83,16 @@ export default function RegisterForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof eventSchema>) {
     if (loginUser) {
-      registerEvent(values, loginUser.uid);
-      reset({
-        eventTitle: "",
-        place: "",
-        description: "",
-        eventDate: new Date(),
+      registerEvent(values, loginUser.uid).then(() => {
+        reset({
+          eventTitle: "",
+          place: "",
+          description: "",
+          eventDate: new Date(),
+        });
+        form.reset();
+        // getLoginUserEvents();
       });
-      form.reset();
-      // getLoginUserEvents();
     } else {
       displayErrorToast("Please log in.");
     }
