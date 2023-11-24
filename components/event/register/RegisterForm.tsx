@@ -1,7 +1,7 @@
 "use client";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -33,6 +33,33 @@ import UrlLink from "@/components/utils/UrlLink";
 import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
+
+const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
+  if (isSubmitBtnDisabled) {
+    return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
+  } else {
+    return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
+  }
+};
+
+const isSubmitBtnDisabled = (
+  form: UseFormReturn<
+    {
+      eventTitle: string;
+      place: string;
+      description: string;
+      eventDate: Date;
+    },
+    any,
+    undefined
+  >
+) => {
+  return (
+    form.formState.isSubmitting ||
+    form.getValues().eventTitle === "" ||
+    form.getValues().eventDate === undefined
+  );
+};
 
 export default function RegisterForm() {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -70,21 +97,6 @@ export default function RegisterForm() {
     }
   }
 
-  const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
-    if (isSubmitBtnDisabled) {
-      return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
-    } else {
-      return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
-    }
-  };
-
-  const isSubmitBtnDisabled = () => {
-    return (
-      form.formState.isSubmitting ||
-      form.getValues().eventTitle === "" ||
-      form.getValues().eventDate === undefined
-    );
-  };
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>
@@ -231,8 +243,8 @@ export default function RegisterForm() {
 
           <div className="flex items-center gap-3">
             <button
-              className={getSubmitBtnClassName(isSubmitBtnDisabled())}
-              disabled={isSubmitBtnDisabled()}
+              className={getSubmitBtnClassName(isSubmitBtnDisabled(form))}
+              disabled={isSubmitBtnDisabled(form)}
               type="submit"
             >
               Submit
