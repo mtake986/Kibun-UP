@@ -217,7 +217,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-
   // todo: store qid when no api, when api, store data
   const lockThisQuote = async (uid: string, data: TypeQuote) => {
     await setDoc(doc(db, "lockedQuotes", uid), {

@@ -27,7 +27,7 @@ const IconTrash = ({ q }: Props) => {
 
   const { loginUser } = useAuth();
 
-  const handlClick = (q: TypeQuote) => {
+  const handleClick = (q: TypeQuote) => {
     try {
       handleDelete(q.id);
       if (loginUser && lockedQuote?.id === q.id)
@@ -58,7 +58,7 @@ const IconTrash = ({ q }: Props) => {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => handlClick(q)}
+            onClick={() => handleClick(q)}
             className="flex items-center gap-3 text-red-500"
           >
             <Trash size={14} />

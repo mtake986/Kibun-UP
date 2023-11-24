@@ -28,7 +28,7 @@ const IconTrash = ({ event }: Props) => {
     handleDelete(event.id);
     if (loginUser && lockedEvent?.id === event.id) unlockThisEvent();
   };
-  
+
   return (
     <AlertDialog>
       <AlertDialogTrigger>
