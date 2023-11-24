@@ -217,6 +217,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
+  // todo: store qid when no api, when api, store data
   const lockThisQuote = async (uid: string, data: TypeQuote) => {
     await setDoc(doc(db, "lockedQuotes", uid), {
       ...data,
@@ -231,17 +232,20 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setLockedQuote(undefined);
   };
 
+  // todo: fetch by id
   const getLockedQuote = async () => {
     if (user?.uid) {
-      const q = query(
-        lockedQuotesCollectionRef,
-        where("createdBy", "==", user?.uid)
-      );
+      const q = query(lockedQuotesCollectionRef);
       onSnapshot(q, (snapshot) => {
-        setLockedQuote({
-          ...snapshot.docs[0]?.data(),
-          id: snapshot.docs[0]?.id,
-        } as TypeQuote);
+        const lockedQuoteDoc = snapshot.docs.find(
+          (doc) => doc.id === user?.uid
+        );
+        if (lockedQuoteDoc) {
+          setLockedQuote({
+            ...lockedQuoteDoc.data(),
+            id: lockedQuoteDoc.id,
+          } as TypeQuote);
+        }
       });
     }
   };
