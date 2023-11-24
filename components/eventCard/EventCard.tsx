@@ -4,7 +4,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
-import LoadingSpinnerS from "../utils/LoadingSpinnerS";
+import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
 type Props = {
   event: TypeEvent;
@@ -17,22 +17,26 @@ const EventCard = ({ event }: Props) => {
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isLoading ? (
-        <LoadingSpinnerS />
-      ) : isUpdateMode ? (
-        <EditModeOn
-          event={event}
-          setIsUpdateMode={setIsUpdateMode}
-          setIsLoading={setIsLoading}
-        />
+        <LoadingSpinnerL />
       ) : (
-        <Content event={event} />
-      )}
+        <>
+          {isUpdateMode ? (
+            <EditModeOn
+              event={event}
+              setIsUpdateMode={setIsUpdateMode}
+              setIsLoading={setIsLoading}
+            />
+          ) : (
+            <Content event={event} />
+          )}
 
-      <Icons
-        event={event}
-        setIsUpdateMode={setIsUpdateMode}
-        isUpdateMode={isUpdateMode}
-      />
+          <Icons
+            event={event}
+            setIsUpdateMode={setIsUpdateMode}
+            isUpdateMode={isUpdateMode}
+          />
+        </>
+      )}
     </div>
   );
 };

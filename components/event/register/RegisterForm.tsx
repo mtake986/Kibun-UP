@@ -64,7 +64,7 @@ export default function RegisterForm() {
         eventDate: new Date(),
       });
       form.reset();
-      getLoginUserEvents();
+      // getLoginUserEvents();
     } else {
       displayErrorToast("Please log in.");
     }
