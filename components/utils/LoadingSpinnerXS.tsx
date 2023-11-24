@@ -10,7 +10,7 @@ const LoadingSpinnerXS = ({num}: Props) => {
     return `w-${num} h-${num}`;
   }
 
-  const cls = `inline-block ${makeWidthHeight(num)} animate-spin rounded-full border-[1px] border-current border-t-transparent text-gray-400`
+  const cls = `inline-block ${makeWidthHeight(num) ?? 'w-3 h-3'} animate-spin rounded-full border-[1px] border-current border-t-transparent text-gray-400`
 
   return (
     <div
