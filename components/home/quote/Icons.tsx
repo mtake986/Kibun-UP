@@ -39,7 +39,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
               if (type === "locked") {
                 removeLockFromThisQuote(loginUser.uid);
               } else {
-                lockThisQuote(loginUser.uid, quote as any);
+                lockThisQuote(loginUser.uid, quote);
               }
             }
           }}
@@ -50,7 +50,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
           size={16}
           onClick={() => {
             if (loginUser) {
-              lockThisQuote(loginUser.uid, quote as any);
+              lockThisQuote(loginUser.uid, quote);
             }
           }}
           className="cursor-pointer duration-300 hover:opacity-50"

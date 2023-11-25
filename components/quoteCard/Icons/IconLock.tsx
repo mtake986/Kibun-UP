@@ -1,3 +1,4 @@
+import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast, displayToast } from "@/functions/displayToast";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
@@ -15,13 +16,7 @@ const IconLock = ({ q, loginUser }: Props) => {
 
   if (isLoading) {
     return (
-      <div
-        className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-current border-t-transparent text-slate-600"
-        role="status"
-        aria-label="loading"
-      >
-        <span className="sr-only">Loading...</span>
-      </div>
+      <LoadingSpinnerXS num={4}/>
     );
   }
 

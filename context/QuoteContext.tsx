@@ -46,8 +46,8 @@ type TypeQuoteContext = {
 
   randomQuote: TypeQuote | undefined;
 
-  lockThisQuote: (uid: string, data: TypeQuote) => void;
-  lockedQuote: TypeQuote | undefined;
+  lockThisQuote: (uid: string, q: TypeQuote | TypeAPIQuote) => void;
+  lockedQuote: TypeQuote | TypeAPIQuote | undefined;
 
   removeLockFromThisQuote: (uid: string) => void;
   getLockedQuote: () => void;
@@ -217,14 +217,12 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     await deleteDoc(doc(db, "quotes", id));
   };
 
-  // todo: store qid when no api, when api, store data
-  const lockThisQuote = async (uid: string, data: TypeQuote) => {
+  const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
     await setDoc(doc(db, "lockedQuotes", uid), {
-      ...data,
-      qid: data.id,
-      uid: uid,
+      qid: q.id,
+      createdBy: q.createdBy,
     });
-    setLockedQuote(data);
+    // setLockedQuote(data);
   };
 
   const removeLockFromThisQuote = async (uid: string) => {
@@ -234,6 +232,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   // todo: fetch by id
   const getLockedQuote = async () => {
+    let tempLockedQuote: {createdBy: string, qid: string, id: string};
     if (user?.uid) {
       const q = query(lockedQuotesCollectionRef);
       onSnapshot(q, (snapshot) => {
@@ -241,15 +240,43 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           (doc) => doc.id === user?.uid
         );
         if (lockedQuoteDoc) {
-          setLockedQuote({
+          tempLockedQuote = {
             ...lockedQuoteDoc.data(),
             id: lockedQuoteDoc.id,
-          } as TypeQuote);
+          } as { createdBy: string; qid: string; id: string };
+        }
+
+        const isAPI = tempLockedQuote.createdBy === "api";
+        if (isAPI) {
+          const q = query(apiQuotesFromFirestoreCollectionRef);
+          onSnapshot(q, (snapshot) => {
+            const apiQuoteDoc = snapshot.docs.find(
+              (doc) => doc.id === tempLockedQuote.qid
+            );
+            if (apiQuoteDoc) {
+              setLockedQuote({
+                ...apiQuoteDoc.data(),
+                id: apiQuoteDoc.id,
+              } as TypeAPIQuote);
+            }
+          });
+        } else {
+          const q = query(quotesCollectionRef);
+          onSnapshot(q, (snapshot) => {
+            const quoteDoc = snapshot.docs.find(
+              (doc) => doc.id === tempLockedQuote.qid
+            );
+            if (quoteDoc) {
+              setLockedQuote({
+                ...quoteDoc.data(),
+                id: quoteDoc.id,
+              } as TypeQuote);
+            }
+          });
         }
       });
     }
   };
-
   const handleUpdate = async (
     values: TypeQuoteInputValues,
     qid: string,

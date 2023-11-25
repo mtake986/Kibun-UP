@@ -10,6 +10,7 @@ import { useQuote } from "@/context/QuoteContext";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
+import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 
 type Props = {
   q: TypeQuote;
@@ -62,7 +63,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
       {isMine ? (
         <IconTrash q={q} />
       ) : isAPI ? null : isLoading ? (
-        <LoadingSpinnerS />
+        <LoadingSpinnerXS num={3} />
       ) : (
         <Image
           src={profilePhoto ?? defaultProfilePhoto}

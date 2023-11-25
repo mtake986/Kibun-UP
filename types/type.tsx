@@ -25,7 +25,6 @@ export type TypeQuote = {
   // authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  qid?: string;
 };
 
 export type TypeAPIQuote = TypeQuote & {
