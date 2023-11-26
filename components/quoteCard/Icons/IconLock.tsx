@@ -28,7 +28,7 @@ const IconLock = ({ q, loginUser }: Props) => {
           onClick={() => {
             setIsLoading(true);
             try {
-              removeLockFromThisQuote(loginUser?.uid);
+              removeLockFromThisQuote(loginUser.uid);
             } catch (error) {
               console.error(error);
               displayErrorToast(error);
@@ -51,7 +51,7 @@ const IconLock = ({ q, loginUser }: Props) => {
                   color: "red",
                 });
               } else {
-                lockThisQuote(loginUser?.uid, q);
+                lockThisQuote(loginUser.uid, q);
               }
             } catch (error) {
               console.error(error);

@@ -244,7 +244,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           } as { createdBy: string; qid: string; id: string };
         }
 
-        const isAPI = tempLockedQuote.createdBy === "api";
+        // todo: TypeError
+        const isAPI = tempLockedQuote?.createdBy === "api";
         if (isAPI) {
           const q = query(apiQuotesFromFirestoreCollectionRef);
           onSnapshot(q, (snapshot) => {

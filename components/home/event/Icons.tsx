@@ -1,4 +1,5 @@
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
+import { useAuth } from "@/context/AuthContext";
 import { useEvent } from "@/context/EventContext";
 import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
@@ -11,6 +12,8 @@ type Props = {
 };
 const Icons = ({ event, type }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { loginUser } = useAuth();
 
   const { getRandomEvent, lockThisEvent, unlockThisEvent } = useEvent();
 
@@ -40,8 +43,11 @@ const Icons = ({ event, type }: Props) => {
 
       <Target
         onClick={() => {
-          if (type === "locked") unlockThisEvent();
-          else lockThisEvent(event);
+          if (type === "locked") {
+            if (loginUser) unlockThisEvent(loginUser.uid);
+          } else {
+            if (loginUser) lockThisEvent(loginUser.uid, event);
+          }
         }}
         className={`${
           type === "locked"

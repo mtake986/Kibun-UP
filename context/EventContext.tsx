@@ -37,8 +37,8 @@ type EventContextType = {
   getLoginUserEvents: () => void;
   loginUserEvents: TypeEvent[] | [];
 
-  lockThisEvent: (data: TypeEvent) => void;
-  unlockThisEvent: () => void;
+  lockThisEvent: (uid: string, data: TypeEvent) => void;
+  unlockThisEvent: (uid: string) => void;
   getLockedEvent: () => void;
 
   lockedEvent: TypeEvent | undefined;
@@ -137,9 +137,7 @@ export function EventProvider({ children }: EventProviderProps) {
         where("createdBy", "==", user?.uid)
         // orderBy("createdAt", "asc")
       );
-      console.log(user);
       onSnapshot(q, (snapshot) => {
-        console.log(snapshot.docs);
         setLoginUserEvents(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
@@ -167,31 +165,27 @@ export function EventProvider({ children }: EventProviderProps) {
     // }
   };
 
-  const lockThisEvent = async (data: TypeEvent) => {
+  const lockThisEvent = async (uid: string, data: TypeEvent) => {
     try {
-      if (user) {
-        await setDoc(doc(db, "lockedEvents", user.uid), {
-          eid: data.id,
-        });
-      }
+      await setDoc(doc(db, "lockedEvents", uid), {
+        eid: data.id,
+      });
     } catch (error) {
       displayErrorToast(error);
     }
   };
 
-  const unlockThisEvent = async () => {
+  const unlockThisEvent = async (uid: string) => {
     try {
-      if (user) {
-        await deleteDoc(doc(db, "lockedEvents", user.uid));
-        setLockedEvent(undefined);
-      }
+      await deleteDoc(doc(db, "lockedEvents", uid));
+      setLockedEvent(undefined);
     } catch (error) {
       displayErrorToast(error);
     }
   };
 
   const getLockedEvent = async () => {
-    type TypeTempLockedEvent = { id: string; eid: string; };
+    type TypeTempLockedEvent = { id: string; eid: string };
     let tempLockedEvent: TypeTempLockedEvent;
     if (user?.uid) {
       const q = query(lockedEventsCollectionRef);
@@ -205,11 +199,9 @@ export function EventProvider({ children }: EventProviderProps) {
         }
         const q = query(eventsCollectionRef);
         onSnapshot(q, (snapshot) => {
-          const eventDoc = snapshot.docs.find(
-            (doc) => {
-              return doc.id === tempLockedEvent?.eid
-            }
-          );
+          const eventDoc = snapshot.docs.find((doc) => {
+            return doc.id === tempLockedEvent?.eid;
+          });
           if (eventDoc) {
             setLockedEvent({
               ...eventDoc.data(),
@@ -222,9 +214,19 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const getRandomEvent = () => {
-    const randomNum = getRandomNum(loginUserEvents.length);
-    const e: TypeEvent = loginUserEvents[randomNum];
-    setRandomEvent(e);
+    let events: TypeEvent[] = [];
+    if (user?.uid) {
+      const q = query(eventsCollectionRef, where("createdBy", "==", user?.uid));
+      onSnapshot(q, (snapshot) => {
+        events = snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
+        );
+        const randomNum = getRandomNum(events.length);
+        const e: TypeEvent = events[randomNum];
+        console.log(events, randomNum, e)
+        setRandomEvent(e);
+      });
+    }
   };
 
   const getEventsNotMine = async () => {

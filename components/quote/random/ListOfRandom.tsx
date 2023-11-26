@@ -7,11 +7,7 @@ import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 import { useEffect } from "react";
 import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
 
-type Props = {
-  loginUser: TypeLoginUser;
-};
-
-const ListOfRandom = ({ loginUser }: Props) => {
+const ListOfRandom = () => {
   const {
     currentRecords,
     isPending,

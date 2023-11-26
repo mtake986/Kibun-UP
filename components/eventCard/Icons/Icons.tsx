@@ -36,7 +36,7 @@ const Icons = ({
           setIsUpdateMode={setIsUpdateMode}
           isUpdateMode={isUpdateMode}
         />
-        <IconLock event={event} />
+        <IconLock event={event} loginUser={loginUser} />
       </div>
       <IconTrash event={event} />
     </div>

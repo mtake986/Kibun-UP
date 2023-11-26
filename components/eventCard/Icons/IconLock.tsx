@@ -2,15 +2,16 @@ import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeEvent } from "@/types/type";
+import { TypeEvent, TypeLoginUser } from "@/types/type";
 import { Target } from "lucide-react";
 import React, { useState } from "react";
 
 type Props = {
   event: TypeEvent;
+  loginUser: TypeLoginUser;
 };
 
-const IconLock = ({ event }: Props) => {
+const IconLock = ({ event, loginUser }: Props) => {
   const { lockThisEvent, lockedEvent, unlockThisEvent } = useEvent();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -21,7 +22,7 @@ const IconLock = ({ event }: Props) => {
   const handleLock = async () => {
     setIsLoading(true);
     try {
-      await lockThisEvent(event);
+      await lockThisEvent(loginUser.uid, event);
     } catch (error) {
       console.error(error);
       displayErrorToast(error);
@@ -33,7 +34,7 @@ const IconLock = ({ event }: Props) => {
   const handleUnlock = async () => {
     setIsLoading(true);
     try {
-      await unlockThisEvent();
+      await unlockThisEvent(loginUser.uid);
     } catch (error) {
       console.error(error);
       displayErrorToast(error);
