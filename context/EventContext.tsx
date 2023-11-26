@@ -73,7 +73,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
 
-  const eventCollectionRef = collection(db, "events");
+  const eventsCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
   const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
@@ -81,7 +81,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
       const currTime = serverTimestamp();
-      await addDoc(eventCollectionRef, {
+      await addDoc(eventsCollectionRef, {
         ...values,
         createdBy: uid,
         createdAt: currTime,
@@ -133,7 +133,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const getLoginUserEvents = async () => {
     if (user?.uid) {
       const q = query(
-        eventCollectionRef,
+        eventsCollectionRef,
         where("createdBy", "==", user?.uid)
         // orderBy("createdAt", "asc")
       );
@@ -169,33 +169,72 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const lockThisEvent = async (data: TypeEvent) => {
     try {
-      user && (await setDoc(doc(db, "lockedEvents", user?.uid), data));
-      setLockedEvent(data);
+      if (user) {
+        await setDoc(doc(db, "lockedEvents", user.uid), {
+          eid: data.id,
+        });
+      }
     } catch (error) {
       displayErrorToast(error);
     }
+    console.log('lockthisevent')
   };
 
   const unlockThisEvent = async () => {
     try {
-      user && (await deleteDoc(doc(db, "lockedEvents", user?.uid)));
-      setLockedEvent(undefined);
+      if (user) {
+        await deleteDoc(doc(db, "lockedEvents", user.uid));
+        setLockedEvent(undefined);
+      }
     } catch (error) {
       displayErrorToast(error);
     }
+    console.log("unlock this event");
+
   };
 
+  // const getLockedEvent = async () => {
+  //   if (user?.uid) {
+  //     const q = query(
+  //       lockedEventsCollectionRef,
+  //       where("createdBy", "==", user?.uid)
+  //     );
+  //     onSnapshot(q, (snapshot) => {
+  //       setLockedEvent({
+  //         ...snapshot.docs[0]?.data(),
+  //         id: snapshot.docs[0]?.id,
+  //       } as TypeEvent);
+  //     });
+  //   }
+  // };
+
   const getLockedEvent = async () => {
+    type TypeTempLockedEvent = { id: string; eid: string; };
+    let tempLockedEvent: TypeTempLockedEvent;
     if (user?.uid) {
-      const q = query(
-        lockedEventsCollectionRef,
-        where("createdBy", "==", user?.uid)
-      );
+      const q = query(lockedEventsCollectionRef);
       onSnapshot(q, (snapshot) => {
-        setLockedEvent({
-          ...snapshot.docs[0]?.data(),
-          id: snapshot.docs[0]?.id,
-        } as TypeEvent);
+        const lockedEventDoc = snapshot.docs.find((doc) => doc.id === user.uid);
+        if (lockedEventDoc) {
+          tempLockedEvent = {
+            ...lockedEventDoc.data(),
+            id: lockedEventDoc.id,
+          } as TypeTempLockedEvent;
+        }
+        const q = query(eventsCollectionRef);
+        onSnapshot(q, (snapshot) => {
+          const eventDoc = snapshot.docs.find(
+            (doc) => {
+              return doc.id === tempLockedEvent?.eid
+            }
+          );
+          if (eventDoc) {
+            setLockedEvent({
+              ...eventDoc.data(),
+              id: eventDoc.id,
+            } as TypeEvent);
+          }
+        });
       });
     }
   };
@@ -208,7 +247,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const getEventsNotMine = async () => {
     if (user) {
-      const q = query(eventCollectionRef, where("createdBy", "!=", user?.uid));
+      const q = query(eventsCollectionRef, where("createdBy", "!=", user?.uid));
       onSnapshot(q, (snapshot) => {
         setEventsNotMine(
           snapshot.docs.map(

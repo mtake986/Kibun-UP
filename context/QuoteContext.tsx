@@ -222,7 +222,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       qid: q.id,
       createdBy: q.createdBy,
     });
-    // setLockedQuote(data);
   };
 
   const removeLockFromThisQuote = async (uid: string) => {
@@ -230,14 +229,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setLockedQuote(undefined);
   };
 
-  // todo: fetch by id
   const getLockedQuote = async () => {
     let tempLockedQuote: {createdBy: string, qid: string, id: string};
     if (user?.uid) {
       const q = query(lockedQuotesCollectionRef);
       onSnapshot(q, (snapshot) => {
         const lockedQuoteDoc = snapshot.docs.find(
-          (doc) => doc.id === user?.uid
+          (doc) => doc.id === user.uid
         );
         if (lockedQuoteDoc) {
           tempLockedQuote = {
@@ -277,6 +275,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     }
   };
+
   const handleUpdate = async (
     values: TypeQuoteInputValues,
     qid: string,
