@@ -25,7 +25,6 @@ const Event = () => {
     getLockedEvent,
     loginUserEvents,
     getLoginUserEvents,
-    getEventsNotMine,
   } = useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);

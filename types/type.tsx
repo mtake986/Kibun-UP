@@ -25,7 +25,6 @@ export type TypeQuote = {
   // authorSlug?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  qid?: string;
 };
 
 export type TypeAPIQuote = TypeQuote & {
@@ -133,3 +132,5 @@ export type TypeSortBy = {
 };
 
 export type TypeSortByLabel = "Author" | "Content";
+
+export type TypeTempLockedQuote = { createdBy: string; qid: string; id: string } 

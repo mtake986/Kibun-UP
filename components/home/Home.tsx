@@ -14,7 +14,7 @@ import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
   const { fetchLoginUser } = useAuth();
-  const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent } =
+  const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent, getLoginUserEvents, loginUserEvents } =
     useEvent();
 
   const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
@@ -29,6 +29,7 @@ const Home = () => {
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
       if (user && !lockedEvent) await getLockedEvent();
+      if (user && loginUserEvents.length === 0) await getLoginUserEvents();
       if (user && !randomEvent) await getRandomEvent();
     };
     const fetchQuotes = async () => {

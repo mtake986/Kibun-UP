@@ -26,7 +26,7 @@ const IconTrash = ({ event }: Props) => {
 
   const handleClick = (event: TypeEvent) => {
     handleDelete(event.id);
-    if (loginUser && lockedEvent?.id === event.id) unlockThisEvent();
+    if (loginUser && lockedEvent?.id === event.id) unlockThisEvent(loginUser.uid);
   };
 
   return (
