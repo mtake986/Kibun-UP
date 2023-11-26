@@ -1,7 +1,7 @@
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
 import List from "./mine/List";
-import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
+import { TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 
 const SwitchTab = () => {

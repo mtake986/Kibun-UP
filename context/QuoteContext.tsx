@@ -26,6 +26,7 @@ import {
   TypeLoginUser,
   TypeTabNamesOfQuotes,
   TypeAPIQuote,
+  TypeTempLockedQuote,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -230,7 +231,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLockedQuote = async () => {
-    let tempLockedQuote: {createdBy: string, qid: string, id: string};
+    let tempLockedQuote: TypeTempLockedQuote = { createdBy: "", qid: "", id: "" };
+
     if (user?.uid) {
       const q = query(lockedQuotesCollectionRef);
       onSnapshot(q, (snapshot) => {
@@ -241,7 +243,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
           tempLockedQuote = {
             ...lockedQuoteDoc.data(),
             id: lockedQuoteDoc.id,
-          } as { createdBy: string; qid: string; id: string };
+          } as TypeTempLockedQuote;
         }
 
         // todo: TypeError
