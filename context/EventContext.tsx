@@ -177,7 +177,6 @@ export function EventProvider({ children }: EventProviderProps) {
     } catch (error) {
       displayErrorToast(error);
     }
-    console.log('lockthisevent')
   };
 
   const unlockThisEvent = async () => {
@@ -189,24 +188,7 @@ export function EventProvider({ children }: EventProviderProps) {
     } catch (error) {
       displayErrorToast(error);
     }
-    console.log("unlock this event");
-
   };
-
-  // const getLockedEvent = async () => {
-  //   if (user?.uid) {
-  //     const q = query(
-  //       lockedEventsCollectionRef,
-  //       where("createdBy", "==", user?.uid)
-  //     );
-  //     onSnapshot(q, (snapshot) => {
-  //       setLockedEvent({
-  //         ...snapshot.docs[0]?.data(),
-  //         id: snapshot.docs[0]?.id,
-  //       } as TypeEvent);
-  //     });
-  //   }
-  // };
 
   const getLockedEvent = async () => {
     type TypeTempLockedEvent = { id: string; eid: string; };
