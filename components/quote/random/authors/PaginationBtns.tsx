@@ -37,7 +37,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       >
         {"<"}
       </button>
-
       <div className="flex items-center gap-1">
         <button
           key={1}

@@ -1,26 +1,30 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { TypeAuthorsOfAPI } from "@/types/type";
+import { TypeAPIQuote, TypeAuthorOfAPI } from "@/types/type";
+import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
+import { displayErrorToast } from "@/functions/displayToast";
+import Icons from "@/components/apiQuoteCard/Icons/Icons";
+import AuthorAccordionContent from "./AuthorAccordionContent";
 
 type Props = {
-  author: TypeAuthorsOfAPI;
+  author: TypeAuthorOfAPI;
+};
+
+export type PropsFetchData = {
+  currentPage: number;
 };
 
 const AuthorAccordionItem = ({ author }: Props) => {
   return (
     <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
+      <AccordionItem value={`${author.slug}`}>
         <AccordionTrigger>{author.name}</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-1">
-          <strong className="">{author.description}</strong>
-          <p className="text-xs">{author.bio}</p>
-          <strong>{author.quoteCount} quotes found</strong>
-        </AccordionContent>
+        <AuthorAccordionContent author={author} />
       </AccordionItem>
     </Accordion>
   );

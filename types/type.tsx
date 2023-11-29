@@ -139,7 +139,7 @@ export type TypeTempLockedQuote = {
   id: string;
 };
 
-export type TypeAuthorsOfAPI = {
+export type TypeAuthorOfAPI = {
   _id: string;
   name: string;
   bio: string;
