@@ -17,8 +17,6 @@ const AuthorAccordionContent = ({ author }: Props) => {
 
   const fetchQuotes = useCallback(async (slug: string) => {
     const url = DEFAULT_URL_FOR_ALL_QUOTES + `?author=${slug}&limit=150`;
-    console.log("url: " + url);
-
     setIsPending(true);
     fetch(url)
       .then((response) => {
@@ -53,24 +51,21 @@ const AuthorAccordionContent = ({ author }: Props) => {
         setQuotes(qs);
         setIsPending(false);
       })
-      .catch((e) => {
+      .catch((e: Error) => {
         displayErrorToast(
           `Failed to fetch quotes. Please try again later. Error: ${e.message}`
         );
-        setError(e.message);
+        setError(e);
         setIsPending(false);
       });
   }, []);
 
-  const memoizedFetchQuotes = useMemo(() => fetchQuotes, [fetchQuotes]);
-
-  if (error) return <div>{error.message}</div>;
-
   const displayQuotes = () => {
+    if (error) return <div>{error.message}</div>;
     if (isPending) {
       return <div>Loading...</div>;
     }
-    if (quotes && quotes.length > 0 && isQuotesShown) {
+    if (quotes.length > 0 && isQuotesShown) {
       return quotes.map((quote: TypeAPIQuote) => {
         if (quote.authorSlug !== author.slug) return null;
         return (
@@ -101,7 +96,7 @@ const AuthorAccordionContent = ({ author }: Props) => {
       return (
         <span
           onClick={() => setIsQuotesShown(false)}
-          className="font-semibold cursor-pointer transition duration-300 hover:opacity-70"
+          className="cursor-pointer font-semibold transition duration-300 hover:opacity-70"
         >
           Hide {author.quoteCount} quotes
         </span>
@@ -111,10 +106,10 @@ const AuthorAccordionContent = ({ author }: Props) => {
         <span
           onClick={() => {
             setIsQuotesShown(true);
-            console.log(quotes)
-            memoizedFetchQuotes(author.slug);
+            console.log(quotes);
+            fetchQuotes(author.slug);
           }}
-          className="font-semibold cursor-pointer hover:opacity-70 transition duration-300"
+          className="cursor-pointer font-semibold transition duration-300 hover:opacity-70"
         >
           Show {author.quoteCount} quotes
         </span>

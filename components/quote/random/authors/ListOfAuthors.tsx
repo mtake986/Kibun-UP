@@ -15,7 +15,6 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     currentAuthors,
     error,
     isPending,
-    nPages,
     currentPage,
     setCurrentPage,
   } = useAuthorsOfAPI();
@@ -37,7 +36,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     <div className="relative mb-20">
       {/* Actions */}
       <div className="flex items-center justify-between">
-        {nPages >= 2 && (
+        {currentAuthors.length >= 2 && (
           <PaginationBtns
             nPages={currentAuthors.length}
             currentPage={currentPage}

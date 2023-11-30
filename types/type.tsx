@@ -145,6 +145,6 @@ export type TypeAuthorOfAPI = {
   bio: string;
   description: string;
   link: string;
-  quoteCount: 0;
+  quoteCount: number;
   slug: string;
 };

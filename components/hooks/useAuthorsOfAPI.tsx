@@ -1,6 +1,5 @@
 import { DEFAULT_URL_TO_FETCH_AUTHORS, alphabetArrs } from "@/data/CONSTANTS";
-import { removeDuplicates } from "@/functions/functions";
-import { TypeAuthorOfAPI, TypeTagsQuotableAPI } from "@/types/type";
+import { TypeAuthorOfAPI } from "@/types/type";
 import React, { useState, useEffect, useCallback } from "react";
 
 const useAuthorsOfAPI = () => {
@@ -10,7 +9,6 @@ const useAuthorsOfAPI = () => {
 
   // todo: pagination | need some states for current page, total pages, and different quotes-per-page
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [nPages, setNPages] = useState<number>(5);
   const [currentAuthors, setCurrentAuthors] = useState<TypeAuthorOfAPI[][]>([
     [],
     [],
@@ -66,7 +64,7 @@ const useAuthorsOfAPI = () => {
   }, []);
 
   const fetchAuthors = useCallback(
-    (url: string, i: number) => {
+    (url: string) => {
       setIsPending(true);
       fetch(url)
         .then((response) => {
@@ -94,7 +92,7 @@ const useAuthorsOfAPI = () => {
     fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS).then(() => {
       if (totalPages !== 0) {
         for (let i = 1; i <= totalPages; i++) {
-          fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`, i);
+          fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
         }
       }
     });
@@ -104,7 +102,6 @@ const useAuthorsOfAPI = () => {
     currentAuthors,
     error,
     isPending,
-    nPages,
     currentPage,
     setCurrentPage,
   };

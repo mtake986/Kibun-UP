@@ -9,6 +9,7 @@ import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
 import { BsPersonAdd, BsPersonCheck } from "react-icons/bs";
 import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
 import ListOfAuthors from "./authors/ListOfAuthors";
+import NoFetchedData from "@/components/utils/NoFetchedData";
 
 const ListOfRandom = () => {
   const [isListOfAuthors, setIsListOfAuthors] = useState(false);
@@ -45,14 +46,18 @@ const ListOfRandom = () => {
     }
     return (
       <div className="flex flex-col gap-3">
-        {currentRecords.map((doc, i) => (
-          <ApiQuoteCard
-            key={doc.id}
-            q={doc}
-            selectedAuthors={selectedAuthors}
-            handleAuthors={handleAuthors}
-          />
-        ))}
+        {currentRecords.length > 0
+          ? currentRecords.map((doc, i) => (
+              <ApiQuoteCard
+                key={doc.id}
+                q={doc}
+                selectedAuthors={selectedAuthors}
+                handleAuthors={handleAuthors}
+              />
+            ))
+          : (
+            <NoFetchedData text="No quotes found" />
+          )}
       </div>
     );
   };

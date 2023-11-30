@@ -4,12 +4,11 @@ import React from "react";
 const ScreenToTopBtn = () => {
   return (
     <div
-      className={`absolute right-10 sm:right-5`}
+      aria-label="Scroll to top"
+      className="absolute right-10 sm:right-5"
       onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}
     >
-      <ArrowUp
-        className="fixed w-10 h-10 bottom-0 z-20 mb-20 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:bg-violet-500"
-      />
+      <ArrowUp className="fixed bottom-0 z-20 mb-20 h-10 w-10 cursor-pointer rounded-full bg-violet-50 p-2 text-violet-500 duration-300" />
     </div>
   );
 };

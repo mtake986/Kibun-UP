@@ -8,7 +8,6 @@ type Props = {
 };
 
 const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
-  const pageNumbers = Array.from({ length: nPages }, (_, index) => index + 1);
 
   const nextPage = () => {
     if (currentPage !== nPages) setCurrentPage(currentPage + 1);
@@ -39,7 +38,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       </button>
       <div className="flex items-center gap-1">
         <button
-          key={1}
           className={isFirstPage ? clsNameFocused : clsNameNotFocused}
           onClick={() => setCurrentPage(1)}
         >
@@ -49,7 +47,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         {/* currentPage Btn is always shown */}
         {!isFirstPage && !isLastPage ? (
           <button
-            key={currentPage}
             className={clsNameFocused}
             onClick={() => setCurrentPage(currentPage)}
           >
@@ -58,7 +55,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         ) : null}
         {nPages - 2 >= currentPage && <span>...</span>}
         <button
-          key={nPages}
           className={isLastPage ? clsNameFocused : clsNameNotFocused}
           onClick={() => setCurrentPage(nPages)}
         >

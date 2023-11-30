@@ -26,79 +26,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === nPages;
 
-  const displaybuttons = () => {
-    if (isFirstPage) {
-      return (
-        <div className="flex items-center gap-1">
-          <button
-            key={1}
-            className={clsNameFocused}
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </button>
-          <span>...</span>
-          <button
-            key={nPages}
-            className={clsNameNotFocused}
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </button>
-        </div>
-      );
-    } else if (isLastPage) {
-      return (
-        <div className="flex items-center gap-1">
-          <button
-            key={1}
-            className={clsNameNotFocused}
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </button>
-          <span>...</span>
-          <button
-            key={nPages}
-            className={clsNameFocused}
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="flex items-center gap-1">
-          <button
-            key={1}
-            className={clsNameNotFocused}
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </button>
-          {1 + 2 <= currentPage && <span>...</span>}
-          {/* currentPage Btn is always shown */}
-          <button
-            key={currentPage}
-            className={clsNameFocused}
-            onClick={() => setCurrentPage(currentPage)}
-          >
-            {currentPage}
-          </button>
-          {nPages - 2 >= currentPage && <span>...</span>}
-          <button
-            key={nPages}
-            className={clsNameNotFocused}
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </button>
-        </div>
-      );
-    }
-  };
-
   return (
     <nav className="flex gap-1">
       <button
@@ -106,29 +33,45 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           isFirstPage && "opacity-30"
         }`}
         onClick={prevPage}
-        disabled={isFirstPage && true}
+        disabled={isFirstPage}
       >
         {"<"}
       </button>
-      {pageNumbers.length <= 3
-        ? pageNumbers.map((pageNumber) => (
-            <button
-              key={pageNumber}
-              className={
-                pageNumber === currentPage ? clsNameFocused : clsNameNotFocused
-              }
-              onClick={() => setCurrentPage(pageNumber)}
-            >
-              {pageNumber}
-            </button>
-          ))
-        : displaybuttons()}
+      <div className="flex items-center gap-1">
+        <button
+          key={1}
+          className={isFirstPage ? clsNameFocused : clsNameNotFocused}
+          onClick={() => setCurrentPage(1)}
+        >
+          1
+        </button>
+
+        {nPages > 3 && currentPage >= 3 && <span>...</span>}
+        {/* currentPage Btn is always shown */}
+        {!isFirstPage && !isLastPage ? (
+          <button
+            className={clsNameFocused}
+            onClick={() => setCurrentPage(currentPage)}
+          >
+            {currentPage}
+          </button>
+        ) : null}
+        {nPages - 2 >= currentPage && <span>...</span>}
+
+        <button
+          key={nPages}
+          className={isLastPage ? clsNameFocused : clsNameNotFocused}
+          onClick={() => setCurrentPage(nPages)}
+        >
+          {nPages}
+        </button>
+      </div>
       <button
         className={`cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white ${
           isLastPage && "opacity-30"
         }`}
         onClick={nextPage}
-        disabled={isLastPage && true}
+        disabled={isLastPage}
       >
         {">"}
       </button>
