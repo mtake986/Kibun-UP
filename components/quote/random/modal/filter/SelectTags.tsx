@@ -22,7 +22,7 @@ const SelectTags = ({ selectedTags, handleTags }: Props) => {
       </p> */}
       <div className="flex h-24 flex-wrap gap-3 overflow-scroll">
         {tags.map((tag: TypeTagsQuotableAPI) => (
-          <div key={tag.name} className="flex items-center space-x-2">
+          <div key={tag.name} className="flex items-center space-x-2 mr-2">
             <Checkbox
               id={tag.name}
               onClick={() => {

@@ -133,4 +133,18 @@ export type TypeSortBy = {
 
 export type TypeSortByLabel = "Author" | "Content";
 
-export type TypeTempLockedQuote = { createdBy: string; qid: string; id: string } 
+export type TypeTempLockedQuote = {
+  createdBy: string;
+  qid: string;
+  id: string;
+};
+
+export type TypeAuthorOfAPI = {
+  _id: string;
+  name: string;
+  bio: string;
+  description: string;
+  link: string;
+  quoteCount: number;
+  slug: string;
+};

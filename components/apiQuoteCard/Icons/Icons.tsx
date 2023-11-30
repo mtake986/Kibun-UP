@@ -12,7 +12,7 @@ const Icons = ({ q }: Props) => {
   const { loginUser } = useAuth();
 
   return (
-    <div className="mt-5 flex items-center justify-start gap-5">
+    <div className="mt-3 flex items-center justify-start gap-5">
       {loginUser ? (
         <>
           <IconLock q={q} loginUser={loginUser} />

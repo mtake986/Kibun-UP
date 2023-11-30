@@ -26,6 +26,7 @@ const List = ({ quotes }: Props) => {
   return (
     <div className="mb-20">
       {/* todo: move to dialog */}
+      
       {sortFilterAreaForMineShown ? <SortFilterMine /> : null}
 
       {currentRecords && currentRecords.length >= 1 ? (

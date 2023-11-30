@@ -48,7 +48,8 @@ export const DEFAULT_URL_FOR_RANDOM_QUOTE =
   "https://api.quotable.io/quotes/random";
 export const DEFAULT_URL_FOR_ALL_QUOTES = "https://api.quotable.io/quotes";
 export const DEFAULT_URL_TO_FETCH_TAGS = "https://api.quotable.io/tags";
-export const DEFAULT_URL_TO_FETCH_AUTHORS = "https://api.quotable.io/authors";
+export const DEFAULT_URL_TO_FETCH_AUTHORS =
+  "https://api.quotable.io/authors?sortBy=name&order=asc&limit=150";
 export const VALIDATION_STATUS = {
   FAIL: "fail",
   PASS: "pass",
@@ -79,3 +80,15 @@ export const SORT_BYS: TypeSortBy[] = [
     value: "content",
   },
 ];
+
+
+export const alphabetArrs = [
+    "ABC".split(""),
+    "DEF".split(""),
+    "GHI".split(""),
+    "JKL".split(""),
+    "MNO".split(""),
+    "PQRS".split(""),
+    "TUV".split(""),
+    "WXYZ".split(""),
+  ];

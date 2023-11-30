@@ -43,13 +43,12 @@ const Modal = ({
       <DialogTrigger>
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
       </DialogTrigger>
-      <DialogContent className="bg-slate-950">
+      <DialogContent className="dark:bg-slate-950 bg-white">
         <form
           className="flex flex-col gap-3"
           onSubmit={(e) => {
             e.preventDefault();
             try {
-
               fetchData({
                 currentPage,
                 selectedTags,

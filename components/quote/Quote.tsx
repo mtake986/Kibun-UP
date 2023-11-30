@@ -13,6 +13,7 @@ import MobileSortFilterForMineOpenBtn from "./mine/MobileSortFilterForMineOpenBt
 import MobileSortFilterForNotMineOpenBtn from "./notMine/MobileSortFilterForNotMineOpenBtn";
 import { displayErrorToast } from "@/functions/displayToast";
 import LoadingIndicator from "../home/LoadingIndicator";
+import ScreenToTopBtn from "./ScreenToTopBtn";
 
 const Quote = () => {
   const [user] = useAuthState(auth);
@@ -78,6 +79,7 @@ const Quote = () => {
         <div className="relative">
           <HeadingTwo text="Quotes" />
           <RegisterFormToggleBtn />
+          <ScreenToTopBtn />
           {whichList === "mine" ? (
             <MobileSortFilterForMineOpenBtn />
           ) : whichList === "all" ? (

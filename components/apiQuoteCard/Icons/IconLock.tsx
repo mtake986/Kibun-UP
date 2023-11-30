@@ -16,7 +16,7 @@ const IconLock = ({ q, loginUser }: Props) => {
   if (isLoading) {
     return (
       <div
-        className="inline-block h-4 w-4 animate-spin rounded-full border-[3px] border-current border-t-transparent text-slate-600"
+        className="inline-block h-4 w-4 animate-spin rounded-full border-[1px] border-current border-t-transparent text-slate-600"
         role="status"
         aria-label="loading"
       >
@@ -33,7 +33,7 @@ const IconLock = ({ q, loginUser }: Props) => {
       console.error(error);
       displayErrorToast(error);
     }
-    setIsLoading(false);
+    setIsLoading(false)
   };
 
   const handleLock = async () => {
