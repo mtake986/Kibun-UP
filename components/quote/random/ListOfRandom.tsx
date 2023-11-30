@@ -34,13 +34,28 @@ const ListOfRandom = () => {
 
   useEffect(() => {
     fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
-  }, [fetchData]);
-  if (isPending) {
-    return <LoadingSpinnerM />;
-  }
-  if (error) {
-    return <div>Error</div>;
-  }
+  }, [fetchData, currentPage]);
+
+  const displayCards = () => {
+    if (isPending) {
+      return <LoadingSpinnerM />;
+    }
+    if (error) {
+      return <div>Error</div>;
+    }
+    return (
+      <div className="flex flex-col gap-3">
+        {currentRecords.map((doc, i) => (
+          <ApiQuoteCard
+            key={doc.id}
+            q={doc}
+            selectedAuthors={selectedAuthors}
+            handleAuthors={handleAuthors}
+          />
+        ))}
+      </div>
+    );
+  };
 
   if (isListOfAuthors) {
     return <ListOfAuthors setIsListOfAuthors={setIsListOfAuthors} />;
@@ -80,16 +95,7 @@ const ListOfRandom = () => {
         <div className="mb-2 flex flex-col gap-3 text-gray-400">
           {totalCount} quotes found
         </div>
-        <div className="flex flex-col gap-3">
-          {currentRecords.map((doc, i) => (
-            <ApiQuoteCard
-              key={doc.id}
-              q={doc}
-              selectedAuthors={selectedAuthors}
-              handleAuthors={handleAuthors}
-            />
-          ))}
-        </div>
+        {displayCards()}
       </div>
     );
   }

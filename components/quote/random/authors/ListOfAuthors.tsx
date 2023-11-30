@@ -4,6 +4,8 @@ import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
 import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
+import { ArrowUp } from "lucide-react";
+import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,8 +20,21 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     setCurrentPage,
   } = useAuthorsOfAPI();
 
+  const displayCards = () => {
+    if (error) {
+      return <div>Error</div>;
+    }
+    return (
+      <div className="flex flex-col gap-3">
+        {currentAuthors[currentPage - 1].map((author, i) => (
+          <AuthorAccordionItem key={i} author={author} />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="mb-20">
+    <div className="relative mb-20">
       {/* Actions */}
       <div className="flex items-center justify-between">
         {nPages >= 2 && (
@@ -30,6 +45,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
           />
         )}
         <BsChatQuote
+          className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:opacity-70"
           size={16}
           onClick={() => {
             setIsListOfAuthors((prev) => !prev);
@@ -40,11 +56,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
         {currentAuthors[currentPage - 1].length} of{" "}
         {currentAuthors.reduce((acc, curr) => acc + curr.length, 0)} authors
       </div>
-      <div className="flex flex-col gap-3">
-        {currentAuthors[currentPage - 1].map((author, i) => (
-          <AuthorAccordionItem key={i} author={author} />
-        ))}
-      </div>
+      {displayCards()}
     </div>
   );
 };

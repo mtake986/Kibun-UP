@@ -99,21 +99,25 @@ const AuthorAccordionContent = ({ author }: Props) => {
   const displayQuotesToggleBtn = () => {
     if (isQuotesShown) {
       return (
-        <strong onClick={() => setIsQuotesShown(false)}>
+        <span
+          onClick={() => setIsQuotesShown(false)}
+          className="font-semibold cursor-pointer transition duration-300 hover:opacity-70"
+        >
           Hide {author.quoteCount} quotes
-        </strong>
+        </span>
       );
     } else {
       return (
-        <strong
+        <span
           onClick={() => {
             setIsQuotesShown(true);
             console.log(quotes)
             memoizedFetchQuotes(author.slug);
           }}
+          className="font-semibold cursor-pointer hover:opacity-70 transition duration-300"
         >
           Show {author.quoteCount} quotes
-        </strong>
+        </span>
       );
     }
   };
