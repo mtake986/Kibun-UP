@@ -15,50 +15,51 @@ const AuthorAccordionContent = ({ author }: Props) => {
 
   const [quotes, setQuotes] = useState<TypeAPIQuote[]>([]);
 
-  const fetchQuotes = useCallback(async (slug: string) => {
-    const url = DEFAULT_URL_FOR_ALL_QUOTES + `?author=${slug}&limit=150`;
-    setIsPending(true);
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(
-            `Something went wrong!! status: ${response.status} ${
-              response.statusText || "No status text available."
-            }`
-          );
-        }
-        return response.json();
-      })
-      .then((result) => {
-        const qs: TypeAPIQuote[] = result.results.map((quote: any) => {
-          const tags = quote.tags.map((tag: string) => {
-            const tagObject = { name: tag, color: "white" };
-            return tagObject;
-          });
-          const quoteObject: TypeAPIQuote = {
-            id: quote._id,
-            author: quote.author,
-            authorSlug: quote.authorSlug,
-            content: quote.content,
-            tags: tags,
-            likedBy: [],
-            bookmarkedBy: [],
-            createdBy: "api",
-            draftStatus: "Public",
-          };
-          return quoteObject;
+const fetchQuotes = useCallback(async (slug: string) => {
+  const url = DEFAULT_URL_FOR_ALL_QUOTES + `?author=${slug}&limit=150`;
+  setIsPending(true);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw Error(
+        `Something went wrong!! status: ${response.status} ${
+          response.statusText || "No status text available."
+        }`
+      );
+    }
+    const result = await response.json();
+    if (Array.isArray(result.results)) {
+      const qs: TypeAPIQuote[] = result.results.map((quote: any) => {
+        const tags = quote.tags.map((tag: string) => {
+          const tagObject = { name: tag, color: "white" };
+          return tagObject;
         });
-        setQuotes(qs);
-        setIsPending(false);
-      })
-      .catch((e: Error) => {
-        displayErrorToast(
-          `Failed to fetch quotes. Please try again later. Error: ${e.message}`
-        );
-        setError(e);
-        setIsPending(false);
+        const quoteObject: TypeAPIQuote = {
+          id: quote._id,
+          author: quote.author,
+          authorSlug: quote.authorSlug,
+          content: quote.content,
+          tags: tags,
+          likedBy: [],
+          bookmarkedBy: [],
+          createdBy: "api",
+          draftStatus: "Public",
+        };
+        return quoteObject;
       });
-  }, []);
+      setQuotes(qs);
+    } else {
+      // Handle the case where result.results is not an array
+    }
+  } catch (e: any) {
+    displayErrorToast(
+      `Failed to fetch quotes. Please try again later. Error: ${e.message}`
+    );
+    setError(e);
+  } finally {
+    setIsPending(false);
+  }
+}, []);
 
   const displayQuotes = () => {
     if (error) return <div>{error.message}</div>;
@@ -106,7 +107,6 @@ const AuthorAccordionContent = ({ author }: Props) => {
         <span
           onClick={() => {
             setIsQuotesShown(true);
-            console.log(quotes);
             fetchQuotes(author.slug);
           }}
           className="cursor-pointer font-semibold transition duration-300 hover:opacity-70"
