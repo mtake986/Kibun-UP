@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import { MenuIcon } from "lucide-react";
-import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
+import { BsActivity, BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
@@ -53,29 +53,9 @@ export default function MenuBtn() {
 
   const headerListItems = [
     {
-      href: "/home",
+      href: `/user/profile/${user?.uid}/activity`,
       target: "_self",
-      clickOn: item("home", <BsHouse />),
-    },
-    {
-      href: "/quote",
-      target: "_self",
-      clickOn: item("quote", <BsChatQuote />),
-    },
-    {
-      href: "/event",
-      target: "_self",
-      clickOn: item("event", <BsFlag />),
-    },
-    {
-      href: `/user/profile/${user?.uid}`,
-      target: "_self",
-      clickOn: item("profile", <BsPerson />),
-    },
-    {
-      href: `/contact`,
-      target: "_self",
-      clickOn: item("contact", <AiOutlineContacts />),
+      clickOn: item("activity", <BsActivity />),
     },
   ];
 

@@ -23,7 +23,6 @@ export default function Header() {
     }`;
   }
 
-
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
@@ -55,13 +54,9 @@ export default function Header() {
             clickOn="Contact"
           />
         </div>
-        <div className="hidden items-center justify-between gap-3 sm:flex">
+        <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          <ProfilePic />
-        </div>
-        <div className="sm:hidden flex items-center gap-3">
-          <ThemeSwitcher />
-          <MenuBtn />
+          {pathname.includes("/user/profile/") ? <MenuBtn /> : <ProfilePic />}
         </div>
       </nav>
     </header>
