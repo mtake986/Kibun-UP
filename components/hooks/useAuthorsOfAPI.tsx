@@ -1,7 +1,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { alphabetArrs } from "@/data/CONSTANTS";
-import { TypeAuthorOfAPI, TypeLikedAuthorsOfAPI } from "@/types/type";
+import { TypeAuthorOfAPI } from "@/types/type";
 
 import React, { useState, useCallback } from "react";
 
@@ -23,9 +23,6 @@ const useAuthorsOfAPI = () => {
     [],
     [],
   ]);
-
-  const [likedAuthorsOfAPI, setLikedAuthorsOfAPI] =
-    useState<TypeLikedAuthorsOfAPI>();
 
   const putAuthorIntoArray = (author: any) => {
     const { _id, name, bio, description, link, quoteCount, slug } = author;
@@ -101,7 +98,6 @@ const useAuthorsOfAPI = () => {
     fetchTotalPages,
     totalPages,
     fetchAuthors,
-    likedAuthorsOfAPI,
   };
 };
 

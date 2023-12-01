@@ -1,7 +1,5 @@
 import {
   TypeAPIQuote,
-  TypeLikedAuthorsOfAPI,
-  TypeLoginUser,
   TypeSelectedAuthors,
 } from "@/types/type";
 

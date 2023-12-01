@@ -6,8 +6,6 @@ import {
 } from "react-icons/bs";
 import {
   TypeAPIQuote,
-  TypeLikedAuthorsOfAPI,
-  TypeLoginUser,
   TypeSelectedAuthors,
 } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
