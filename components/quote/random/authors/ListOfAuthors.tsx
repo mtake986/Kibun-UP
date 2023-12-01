@@ -3,9 +3,6 @@ import React, { useEffect } from "react";
 import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
-import { ArrowUp } from "lucide-react";
-import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
 
 type Props = {

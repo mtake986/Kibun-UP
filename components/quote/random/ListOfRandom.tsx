@@ -6,11 +6,9 @@ import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 import { useEffect, useState } from "react";
 import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
-import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
 import ListOfAuthors from "./authors/ListOfAuthors";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import { MdOutlinePerson } from "react-icons/md";
-import { Heart } from "lucide-react";
 
 type Props = {
   loginUser: TypeLoginUser;
