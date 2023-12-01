@@ -1,8 +1,27 @@
+import { db } from "@/config/Firebase";
+import { useAuth } from "@/context/AuthContext";
 import { DEFAULT_URL_TO_FETCH_AUTHORS, alphabetArrs } from "@/data/CONSTANTS";
-import { TypeAuthorOfAPI } from "@/types/type";
+import { displayErrorToast } from "@/functions/displayToast";
+import { TypeAuthorOfAPI, TypeLikedAuthorsOfAPI } from "@/types/type";
+import {
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import React, { useState, useEffect, useCallback } from "react";
 
 const useAuthorsOfAPI = () => {
+  const { loginUser } = useAuth();
+
   const [totalPages, setTotalPages] = useState<number>(0);
   const [error, setError] = useState<Error | null>();
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -19,6 +38,9 @@ const useAuthorsOfAPI = () => {
     [],
     [],
   ]);
+
+  const [likedAuthorsOfAPI, setLikedAuthorsOfAPI] =
+    useState<TypeLikedAuthorsOfAPI>();
 
   const putAuthorIntoArray = (author: any) => {
     const { _id, name, bio, description, link, quoteCount, slug } = author;
@@ -43,26 +65,6 @@ const useAuthorsOfAPI = () => {
     }
   };
 
-  // const fetchTotalPages = useCallback(async (url: string) => {
-  //   setIsPending(true);
-  //   fetch(url)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw Error(
-  //           `Something went wrong while fetching authors!! status: ${response.status} ${response.statusText}`
-  //         );
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(async (res) => {
-  //       if (totalPages === 0) await setTotalPages(res.totalPages);
-  //     })
-  //     .catch((err) => {
-  //       setError(err.message);
-  //       setIsPending(false);
-  //     });
-  // }, []);
-
   const fetchTotalPages = useCallback(async (url: string) => {
     setIsPending(true);
     try {
@@ -80,6 +82,7 @@ const useAuthorsOfAPI = () => {
       setIsPending(false);
     }
   }, []);
+
   const fetchAuthors = useCallback(
     async (url: string) => {
       setIsPending(true);
@@ -102,15 +105,50 @@ const useAuthorsOfAPI = () => {
     },
     [currentAuthors]
   );
-  useEffect(() => {
-    fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS).then(async () => {
-      if (totalPages !== 0) {
-        for (let i = 1; i <= totalPages; i++) {
-          await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
-        }
-      }
+
+  const likeAuthor = async (uid: string, slug: string) => {
+    const authorDocRef = doc(db, "likedAuthorsOfAPI", uid);
+    const authorDocSnap = await getDoc(authorDocRef);
+    if (authorDocSnap.exists()) {
+      await updateDoc(authorDocRef, {
+        likedAuthors: arrayUnion(slug),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
+      });
+    } else {
+      await setDoc(doc(db, "likedAuthorsOfAPI", uid), {
+        uid,
+        likedAuthors: [slug],
+        createdAt: serverTimestamp(),
+      });
+    }
+  };
+
+  const removeLikeFromAuthor = async (uid: string, slug: string) => {
+    const authorDocRef = doc(db, "likedAuthorsOfAPI", uid);
+    const authorDocSnap = await getDoc(authorDocRef);
+    if (authorDocSnap.exists()) {
+      await updateDoc(authorDocRef, {
+        likedAuthors: arrayRemove(slug),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
+      });
+    }
+  };
+
+  const fetchAuthorsOfAPIFromFirestore = (uid: string) => {
+    const q = query(
+      collection(db, "likedAuthorsOfAPI"),
+      where("uid", "==", uid)
+    );
+    onSnapshot(q, (snapshot) => {
+      setLikedAuthorsOfAPI(snapshot.docs[0]?.data() as TypeLikedAuthorsOfAPI);
     });
-  }, []);
+  };
 
   return {
     currentAuthors,
@@ -118,6 +156,13 @@ const useAuthorsOfAPI = () => {
     isPending,
     currentPage,
     setCurrentPage,
+    likeAuthor,
+    removeLikeFromAuthor,
+    fetchTotalPages,
+    totalPages,
+    fetchAuthors,
+    fetchAuthorsOfAPIFromFirestore,
+    likedAuthorsOfAPI,
   };
 };
 

@@ -148,3 +148,9 @@ export type TypeAuthorOfAPI = {
   quoteCount: number;
   slug: string;
 };
+
+export type TypeLikedAuthorsOfAPI = {
+  likedAuthors: string[];
+  uid: string;
+  createdAt: Date;
+};

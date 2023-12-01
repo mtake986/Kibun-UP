@@ -1,21 +1,26 @@
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
 import List from "./mine/List";
-import { TypeTabNamesOfQuotes } from "@/types/type";
+import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 
-const SwitchTab = () => {
+type Props = {
+  loginUser: TypeLoginUser;
+};
+
+const SwitchTab = ({loginUser}: Props) => {
   const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
     useQuote();
 
   const displayList = () => {
     switch (whichList) {
       case "mine":
-        return <List quotes={loginUserQuotes} />;
+        // return <List quotes={loginUserQuotes} />;
+        return <ListOfRandom loginUser={loginUser} />;
       case "all":
         return <ListNotMine quotes={quotesNotMine} />;
       case "api":
-        return <ListOfRandom />;
+        return <ListOfRandom loginUser={loginUser} />;
       default:
         return <div>error</div>;
     }

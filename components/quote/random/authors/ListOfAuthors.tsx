@@ -1,11 +1,12 @@
 import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
-import React from "react";
+import React, { useEffect } from "react";
 import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
 import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 import { ArrowUp } from "lucide-react";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +18,21 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     isPending,
     currentPage,
     setCurrentPage,
+    fetchTotalPages,
+    totalPages,
+    fetchAuthors,
   } = useAuthorsOfAPI();
+
+
+  useEffect(() => {
+    fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS).then(async () => {
+      if (totalPages !== 0) {
+        for (let i = 1; i <= totalPages; i++) {
+          await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
+        }
+      }
+    });
+  }, [totalPages]);
 
   const displayCards = () => {
     if (error) {
