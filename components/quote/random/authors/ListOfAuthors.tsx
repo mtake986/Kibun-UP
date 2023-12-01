@@ -45,7 +45,7 @@ useEffect(() => {
 }, []);
   const displayCards = () => {
     if (error) {
-      return <div>Error</div>;
+      return <div>Application Error</div>;
     }
     return (
       <div className="flex flex-col gap-3">
