@@ -3,10 +3,11 @@ import { changeTagColor } from "@/functions/functions";
 import {
   BsChatLeftText,
   BsFillPersonFill,
-  BsToggle2Off,
-  BsToggle2On,
 } from "react-icons/bs";
-import { TypeAPIQuote, TypeSelectedAuthors } from "@/types/type";
+import {
+  TypeAPIQuote,
+  TypeSelectedAuthors,
+} from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
@@ -15,7 +16,12 @@ type Props = {
   handleAuthors: (value: TypeSelectedAuthors) => void;
 };
 
-const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
+const Content = ({
+  q,
+  selectedAuthors,
+  handleAuthors,
+}: Props) => {
+
   return (
     <div className="flex flex-col gap-3 text-sm">
       <div className="flex items-center">
@@ -31,17 +37,19 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
           </div>
           <p>{q.author}</p>
         </div>
-        <Checkbox
-          id={q.authorSlug}
-          onClick={() => {
-            const payload: TypeSelectedAuthors = {
-              label: q.author,
-              slug: q.authorSlug,
-            };
-            handleAuthors(payload);
-          }}
-          checked={selectedAuthors.some((a) => a.label === q.author)}
-        />
+        <div className="flex items-center gap-3">
+          <Checkbox
+            id={q.authorSlug}
+            onClick={() => {
+              const payload: TypeSelectedAuthors = {
+                label: q.author,
+                slug: q.authorSlug,
+              };
+              handleAuthors(payload);
+            }}
+            checked={selectedAuthors.some((a) => a.label === q.author)}
+          />
+        </div>
       </div>
       {q.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">

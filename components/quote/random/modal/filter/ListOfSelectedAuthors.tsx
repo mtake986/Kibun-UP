@@ -14,7 +14,7 @@ const ListOfSelectedAuthors = ({ selectedAuthors, handleAuthors }: Props) => {
         selectedAuthors.map((author: TypeSelectedAuthors) => (
           <div
             key={author.label}
-            className="flex items-center gap-2 rounded-md bg-slate-900 px-2 py-1"
+            className="flex items-center gap-2 rounded-md bg-slate-50 dark:bg-slate-900 px-2 py-1"
           >
             <span>{author.label}</span>
             <BiTrash

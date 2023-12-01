@@ -12,7 +12,11 @@ type Props = {
   handleAuthors: (value: TypeSelectedAuthors) => void;
 };
 
-const ApiQuoteCard = ({ q, selectedAuthors, handleAuthors }: Props) => {
+const ApiQuoteCard = ({
+  q,
+  selectedAuthors,
+  handleAuthors,
+}: Props) => {
   return (
     <div className="relative rounded-md border px-4 py-6 dark:border-white sm:p-6">
       <Content

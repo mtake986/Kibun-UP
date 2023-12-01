@@ -6,12 +6,15 @@ import Modal from "./modal/Modal";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 import { useEffect, useState } from "react";
 import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
-import { BsPersonAdd, BsPersonCheck } from "react-icons/bs";
-import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
 import ListOfAuthors from "./authors/ListOfAuthors";
 import NoFetchedData from "@/components/utils/NoFetchedData";
+import { MdOutlinePerson } from "react-icons/md";
 
-const ListOfRandom = () => {
+type Props = {
+  loginUser: TypeLoginUser;
+};
+
+const ListOfRandom = ({ loginUser }: Props) => {
   const [isListOfAuthors, setIsListOfAuthors] = useState(false);
 
   const {
@@ -32,6 +35,7 @@ const ListOfRandom = () => {
     sortBy,
     handleSortBy,
   } = useQuotesFromQuotableAPI();
+  
 
   useEffect(() => {
     fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
@@ -46,18 +50,18 @@ const ListOfRandom = () => {
     }
     return (
       <div className="flex flex-col gap-3">
-        {currentRecords.length > 0
-          ? currentRecords.map((doc, i) => (
-              <ApiQuoteCard
-                key={doc.id}
-                q={doc}
-                selectedAuthors={selectedAuthors}
-                handleAuthors={handleAuthors}
-              />
-            ))
-          : (
-            <NoFetchedData text="No quotes found" />
-          )}
+        {currentRecords.length > 0 ? (
+          currentRecords.map((doc, i) => (
+            <ApiQuoteCard
+              key={doc.id}
+              q={doc}
+              selectedAuthors={selectedAuthors}
+              handleAuthors={handleAuthors}
+            />
+          ))
+        ) : (
+          <NoFetchedData text="No quotes found" />
+        )}
       </div>
     );
   };
@@ -77,12 +81,13 @@ const ListOfRandom = () => {
             />
           )}
           <div className="flex items-center gap-1">
-            <BsPersonCheck
+            <MdOutlinePerson
               className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:opacity-70"
               onClick={() => {
                 setIsListOfAuthors((prev) => !prev);
               }}
             />
+
             <Modal
               currentPage={currentPage}
               fetchData={fetchData}

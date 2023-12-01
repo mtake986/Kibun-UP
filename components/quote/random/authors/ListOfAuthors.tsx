@@ -1,11 +1,9 @@
 import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
-import React from "react";
+import React, { useEffect } from "react";
 import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
-import { ArrowUp } from "lucide-react";
-import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,11 +15,37 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     isPending,
     currentPage,
     setCurrentPage,
+    fetchTotalPages,
+    totalPages,
+    fetchAuthors,
   } = useAuthorsOfAPI();
 
+useEffect(() => {
+  let isCancelled = false;
+
+  const fetchAllAuthors = async () => {
+    try {
+      const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
+      if (!isCancelled && totalPages !== 0) {
+        for (let i = 1; i <= totalPages; i++) {
+          await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
+        }
+      }
+    } catch (error) {
+      // エラーハンドリングのロジックをここに実装します。
+      console.error("Authors fetching failed:", error);
+    }
+  };
+
+  fetchAllAuthors();
+
+  return () => {
+    isCancelled = true;
+  };
+}, []);
   const displayCards = () => {
     if (error) {
-      return <div>Error</div>;
+      return <div>Application Error</div>;
     }
     return (
       <div className="flex flex-col gap-3">

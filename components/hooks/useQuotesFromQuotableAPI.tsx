@@ -115,11 +115,6 @@ const useQuotesFromQuotableAPI = () => {
     },
     [loginUser, loginUser?.settings?.apiQuotesPerPage]
   );
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [loginUser?.settings?.apiQuotesPerPage]);
-
   return {
     currentRecords,
     isPending,
