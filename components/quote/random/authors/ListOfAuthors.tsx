@@ -20,17 +20,29 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     fetchAuthors,
   } = useAuthorsOfAPI();
 
+useEffect(() => {
+  let isCancelled = false;
 
-  useEffect(() => {
-    fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS).then(async () => {
-      if (totalPages !== 0) {
+  const fetchAllAuthors = async () => {
+    try {
+      const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
+      if (!isCancelled && totalPages !== 0) {
         for (let i = 1; i <= totalPages; i++) {
           await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
         }
       }
-    });
-  }, [totalPages]);
+    } catch (error) {
+      // エラーハンドリングのロジックをここに実装します。
+      console.error("Authors fetching failed:", error);
+    }
+  };
 
+  fetchAllAuthors();
+
+  return () => {
+    isCancelled = true;
+  };
+}, []);
   const displayCards = () => {
     if (error) {
       return <div>Error</div>;

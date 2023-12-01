@@ -61,6 +61,7 @@ const useAuthorsOfAPI = () => {
       }
       const res = await response.json();
       if (totalPages === 0) setTotalPages(res.totalPages);
+      return res.totalPages;
     } catch (err: any) {
       setError(err);
     } finally {
