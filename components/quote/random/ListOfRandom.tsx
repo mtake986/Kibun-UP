@@ -10,6 +10,7 @@ import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
 import ListOfAuthors from "./authors/ListOfAuthors";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import { MdOutlinePerson } from "react-icons/md";
+import { Heart } from "lucide-react";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -37,12 +38,9 @@ const ListOfRandom = ({ loginUser }: Props) => {
     handleSortBy,
   } = useQuotesFromQuotableAPI();
   
-  const { fetchAuthorsOfAPIFromFirestore, likedAuthorsOfAPI } =
-    useAuthorsOfAPI();
 
   useEffect(() => {
     fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });
-    fetchAuthorsOfAPIFromFirestore(loginUser.uid);
   }, [fetchData, currentPage]);
 
   const displayCards = () => {
@@ -61,8 +59,6 @@ const ListOfRandom = ({ loginUser }: Props) => {
               q={doc}
               selectedAuthors={selectedAuthors}
               handleAuthors={handleAuthors}
-              likedAuthorsOfAPI={likedAuthorsOfAPI}
-              loginUser={loginUser}
             />
           ))
         ) : (

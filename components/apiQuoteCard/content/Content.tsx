@@ -11,30 +11,18 @@ import {
   TypeSelectedAuthors,
 } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart } from "lucide-react";
-import useAuthorsOfAPI from "@/components/hooks/useAuthorsOfAPI";
-
 
 type Props = {
   q: TypeAPIQuote;
   selectedAuthors: TypeSelectedAuthors[];
   handleAuthors: (value: TypeSelectedAuthors) => void;
-  likedAuthorsOfAPI: TypeLikedAuthorsOfAPI | undefined;
-  loginUser: TypeLoginUser;
 };
 
 const Content = ({
   q,
   selectedAuthors,
   handleAuthors,
-  likedAuthorsOfAPI,
-  loginUser,
 }: Props) => {
-  const { likeAuthor, removeLikeFromAuthor } = useAuthorsOfAPI();
-
-  const isAuthorLiked =
-    loginUser &&
-    likedAuthorsOfAPI?.likedAuthors.includes(q.authorSlug)
 
   return (
     <div className="flex flex-col gap-3 text-sm">
@@ -52,30 +40,6 @@ const Content = ({
           <p>{q.author}</p>
         </div>
         <div className="flex items-center gap-3">
-          {isAuthorLiked ? (
-            <>
-              <Heart
-                size={14}
-                className="cursor-pointer text-red-500 ease-in hover:opacity-70"
-                fill={"red"}
-                onClick={() => {
-                  removeLikeFromAuthor(loginUser.uid, q.authorSlug);
-                }}
-              />
-              {/* <span className={`text-red-500`}>{numOfLikes}</span> */}
-            </>
-          ) : (
-            <>
-              <Heart
-                size={14}
-                onClick={() => {
-                  likeAuthor(loginUser.uid, q.authorSlug);
-                }}
-                className="cursor-pointer ease-in hover:opacity-70"
-              />
-              {/* <span>{numOfLikes}</span> */}
-            </>
-          )}
           <Checkbox
             id={q.authorSlug}
             onClick={() => {
