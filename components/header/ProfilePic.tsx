@@ -10,11 +10,16 @@ import { usePathname } from "next/navigation";
 const ProfilePic = () => {
   const [user] = useAuthState(auth);
 
-  const pathname = usePathname();
   const [signInWithGoogle, loading, error] = useSignInWithGoogle(auth);
 
-  const isProfilePage = pathname.includes("/user/profile");
-
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  
+  if (error) {
+    return <div>Authentication Error</div>;
+  }
+  
   if (!user) {
     return (
       <div

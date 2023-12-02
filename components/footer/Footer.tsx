@@ -9,19 +9,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 
 const Footer = () => {
-  const [today, setToday] = useState<number>(new Date().getFullYear());
+  const today = new Date().getFullYear();
   const pathname = usePathname();
   const [user] = useAuthState(auth);
 
-  const isBtnDisabled = (pathname: string, link: string) => pathname.includes(link);
+  const isBtnDisabled = (pathname: string, link: string) =>
+    pathname.includes(link);
 
-  const btnStyle = (pathname: string, link: string) => {
-    if (isBtnDisabled(pathname, link)) {
-      return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
-    } else {
-      return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
-    }
-  };
+  // const btnStyle = (pathname: string, link: string) => {
+  //   if (isBtnDisabled(pathname, link)) {
+  //     return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
+  //   } else {
+  //     return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
+  //   }
+  // };
+
+  const btnStyle = (pathname: string, link: string) =>
+    `flex items-center gap-3 text-violet-500 dark:text-white ${
+      isBtnDisabled(pathname, link)
+        ? "font-bold"
+        : "transition duration-300 ease-in hover:opacity-70"
+    }`;
 
   const item = (link: string, icon: React.JSX.Element) => {
     return (
@@ -64,6 +72,7 @@ const Footer = () => {
 
   return (
     <>
+      {/* over mobile */}
       <footer className="bottom-0 z-10 m-auto mt-10 hidden w-full bg-slate-50 py-1 text-center text-xs text-slate-400 dark:bg-slate-900 sm:text-sm md:fixed">
         &copy; Copyright <span>{today}</span>{" "}
         <UrlLink
@@ -74,8 +83,9 @@ const Footer = () => {
         />
       </footer>
 
-      <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 sm:hidden">
-        <div className="flex w-full items-center justify-center gap-5">
+      {/* mobile */}
+      <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
+        <div className="flex w-full items-center justify-between gap-5 px-10">
           {footerListItems.map((item, i) => (
             <UrlLink
               key={item.href}
