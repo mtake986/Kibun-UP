@@ -47,7 +47,6 @@ type AuthContextType = {
   loginUser: TypeLoginUser | undefined;
   updateQuoteTypeForHome: (text: string) => void;
   fetchLoginUser: (user: any) => void;
-  isFetchingUser: boolean;
   updateTagForQuotableApi: (text: string) => void;
   updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
 };
@@ -64,9 +63,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [loginUser, setLoginUser] = useState<TypeLoginUser>();
 
-  const usersCollectionRef = collection(db, "users");
-
-  const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       if (auth.currentUser) {
@@ -223,7 +219,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loginUser,
         updateQuoteTypeForHome,
         fetchLoginUser,
-        isFetchingUser,
         updateTagForQuotableApi,
         updateQuotesPerPage,
       }}
