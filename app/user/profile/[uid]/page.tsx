@@ -3,7 +3,7 @@ import Quote from "@/components/quote/Quote";
 import React from "react";
 
 export const metadata = {
-  title: "Quote",
+  title: "Kibun UP",
 };
 const LoginUserProfilePage = () => {
   return <LoginUserProfile />;
