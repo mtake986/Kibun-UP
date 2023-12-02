@@ -32,7 +32,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
       } catch (error) {
         if (!isCancelled) {
           // エラー処理もコンポーネントがマウントされている場合にのみ実行
-          console.error("Authors fetching failed:", error);
+          displayErrorToast("Authors fetching failed");
         }
       }
     };
