@@ -25,20 +25,22 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     const fetchAllAuthors = async () => {
       try {
         const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
-        if (!isCancelled && totalPages !== 0) {
-          for (let i = 1; i <= totalPages; i++) {
-            await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
-          }
+        for (let i = 1; i <= totalPages; i++) {
+          if (isCancelled) return; // コンポーネントがアンマウントされたかをチェック
+          await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
         }
       } catch (error) {
-        displayErrorToast("Authors fetching failed");
+        if (!isCancelled) {
+          // エラー処理もコンポーネントがマウントされている場合にのみ実行
+          console.error("Authors fetching failed:", error);
+        }
       }
     };
 
     fetchAllAuthors();
 
     return () => {
-      isCancelled = true;
+      isCancelled = true; // コンポーネントのクリーンアップ時にフラグを設定
     };
   }, []);
 
