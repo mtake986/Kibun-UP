@@ -1,4 +1,5 @@
-import UserActivity from "@/components/profile/activity/UserActivity";
+
+import UserActivityLikes from "@/components/profile/activity/likes/UserActivityLikes";
 import React from "react";
 
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
 };
 
 const UserActivityPage = () => {
-  return <UserActivity />;
+  return <UserActivityLikes />;
 };
 
 export default UserActivityPage;
