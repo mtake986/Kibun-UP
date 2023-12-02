@@ -4,6 +4,7 @@ import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
 import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,8 +31,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
           }
         }
       } catch (error) {
-        // エラーハンドリングのロジックをここに実装します。
-        console.error("Authors fetching failed:", error);
+        displayErrorToast("Authors fetching failed");
       }
     };
 
@@ -41,7 +41,7 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
       isCancelled = true;
     };
   }, []);
-  
+
   const displayCards = () => {
     if (error) {
       return <div>Application Error</div>;
