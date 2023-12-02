@@ -12,37 +12,36 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
   const {
     currentAuthors,
     error,
-    isPending,
     currentPage,
     setCurrentPage,
     fetchTotalPages,
-    totalPages,
     fetchAuthors,
   } = useAuthorsOfAPI();
 
-useEffect(() => {
-  let isCancelled = false;
+  useEffect(() => {
+    let isCancelled = false;
 
-  const fetchAllAuthors = async () => {
-    try {
-      const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
-      if (!isCancelled && totalPages !== 0) {
-        for (let i = 1; i <= totalPages; i++) {
-          await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
+    const fetchAllAuthors = async () => {
+      try {
+        const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
+        if (!isCancelled && totalPages !== 0) {
+          for (let i = 1; i <= totalPages; i++) {
+            await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
+          }
         }
+      } catch (error) {
+        // エラーハンドリングのロジックをここに実装します。
+        console.error("Authors fetching failed:", error);
       }
-    } catch (error) {
-      // エラーハンドリングのロジックをここに実装します。
-      console.error("Authors fetching failed:", error);
-    }
-  };
+    };
 
-  fetchAllAuthors();
+    fetchAllAuthors();
 
-  return () => {
-    isCancelled = true;
-  };
-}, []);
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+  
   const displayCards = () => {
     if (error) {
       return <div>Application Error</div>;

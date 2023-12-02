@@ -30,7 +30,7 @@ const Btn = () => {
       onClick={toggleRegisterFormOpen}
     >
       <Plus
-        className="fixed w-10 h-10 bottom-0 z-20 mb-6 rotate-0 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:rotate-90 hover:bg-violet-500"
+        className="fixed w-10 h-10 bottom-0 z-20 mb-10 rotate-0 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:rotate-90 hover:bg-violet-500"
       />
     </div>
   );
