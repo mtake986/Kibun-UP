@@ -72,7 +72,7 @@ const fetchQuotes = useCallback(async (slug: string) => {
         return (
           <div
             key={quote.id}
-            className="flex flex-col rounded-md bg-slate-50 p-3"
+            className="flex flex-col rounded-md bg-slate-50 p-3 dark:bg-slate-900"
           >
             <p className="mb-1 text-sm">{quote.content}</p>
             <div className="flex flex-row flex-wrap gap-1">

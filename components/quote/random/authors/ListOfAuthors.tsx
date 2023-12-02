@@ -4,6 +4,7 @@ import AuthorAccordionItem from "./AuthorAccordionItem";
 import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
 import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,37 +13,37 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
   const {
     currentAuthors,
     error,
-    isPending,
     currentPage,
     setCurrentPage,
     fetchTotalPages,
-    totalPages,
     fetchAuthors,
   } = useAuthorsOfAPI();
 
-useEffect(() => {
-  let isCancelled = false;
+  useEffect(() => {
+    let isCancelled = false;
 
-  const fetchAllAuthors = async () => {
-    try {
-      const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
-      if (!isCancelled && totalPages !== 0) {
+    const fetchAllAuthors = async () => {
+      try {
+        const totalPages = await fetchTotalPages(DEFAULT_URL_TO_FETCH_AUTHORS);
         for (let i = 1; i <= totalPages; i++) {
+          if (isCancelled) return; // コンポーネントがアンマウントされたかをチェック
           await fetchAuthors(`${DEFAULT_URL_TO_FETCH_AUTHORS}&page=${i}`);
         }
+      } catch (error) {
+        if (!isCancelled) {
+          // エラー処理もコンポーネントがマウントされている場合にのみ実行
+          displayErrorToast("Authors fetching failed");
+        }
       }
-    } catch (error) {
-      // エラーハンドリングのロジックをここに実装します。
-      console.error("Authors fetching failed:", error);
-    }
-  };
+    };
 
-  fetchAllAuthors();
+    fetchAllAuthors();
 
-  return () => {
-    isCancelled = true;
-  };
-}, []);
+    return () => {
+      isCancelled = true; // コンポーネントのクリーンアップ時にフラグを設定
+    };
+  }, []);
+
   const displayCards = () => {
     if (error) {
       return <div>Application Error</div>;

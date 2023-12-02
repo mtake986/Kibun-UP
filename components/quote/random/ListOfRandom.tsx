@@ -10,11 +10,8 @@ import ListOfAuthors from "./authors/ListOfAuthors";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import { MdOutlinePerson } from "react-icons/md";
 
-type Props = {
-  loginUser: TypeLoginUser;
-};
 
-const ListOfRandom = ({ loginUser }: Props) => {
+const ListOfRandom = () => {
   const [isListOfAuthors, setIsListOfAuthors] = useState(false);
 
   const {
