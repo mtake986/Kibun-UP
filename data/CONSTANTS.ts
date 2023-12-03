@@ -81,14 +81,23 @@ export const SORT_BYS: TypeSortBy[] = [
   },
 ];
 
-
 export const alphabetArrs = [
-    "ABC".split(""),
-    "DEF".split(""),
-    "GHI".split(""),
-    "JKL".split(""),
-    "MNO".split(""),
-    "PQRS".split(""),
-    "TUV".split(""),
-    "WXYZ".split(""),
-  ];
+  "ABC".split(""),
+  "DEF".split(""),
+  "GHI".split(""),
+  "JKL".split(""),
+  "MNO".split(""),
+  "PQRS".split(""),
+  "TUV".split(""),
+  "WXYZ".split(""),
+];
+
+export const insertFromLeft = {
+  hidden: { opacity: 0, x: -200, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
+};
+
+export const insertFromRight = {
+  hidden: { opacity: 0, x: 200, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
+};

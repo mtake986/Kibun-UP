@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
@@ -9,7 +10,8 @@ type Props = {
   className?: string;
 };
 
-const UrlLink = ({href, target, clickOn, className}: Props) => {
+const UrlLink = ({ href, target, clickOn, className }: Props) => {
+
   return (
     <Link
       href={href}
