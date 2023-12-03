@@ -9,29 +9,19 @@ import { AiOutlineContacts } from "react-icons/ai";
 import { auth } from "@/config/Firebase";
 import { Bookmark, Heart } from "lucide-react";
 import { MdArrowForwardIos } from "react-icons/md";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const UserActivity = () => {
   const { loginUser, fetchLoginUser } = useAuth();
   const pathname = usePathname();
-
+  const [user] = useAuthState(auth);
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
-  }, [auth.currentUser]);
+  }, [user]);
 
   if (!loginUser) {
     return null;
   }
-
-  const isBtnDisabled = (pathname: string, link: string) =>
-    pathname.includes(link);
-
-  // const btnStyle = (pathname: string, link: string) => {
-  //   if (isBtnDisabled(pathname, link)) {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
-  //   } else {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
-  //   }
-  // };
 
   const item = (text: string, icon: React.JSX.Element) => {
     return (

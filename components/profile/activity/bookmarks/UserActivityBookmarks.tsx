@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect } from "react";
 import UserActivityHeader from "../UserActivityHeader";
-import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -10,12 +9,11 @@ import { motion } from "framer-motion";
 
 const UserActivityBookmarks = () => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const pathname = usePathname();
   const [user] = useAuthState(auth);
 
   useEffect(() => {
     if (!loginUser) fetchLoginUser(user);
-  }, [user]);
+  }, [user, fetchLoginUser]);
 
   if (!loginUser) {
     return null;
