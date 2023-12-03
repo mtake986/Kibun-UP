@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
 import UserActivityHeader from "../UserActivityHeader";
-import { usePathname } from "next/navigation";
+
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
+import { motion } from "framer-motion";
+import { insertFromRight } from "@/data/CONSTANTS";
 
 const UserActivityLikes = () => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const pathname = usePathname();
 
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -17,12 +18,17 @@ const UserActivityLikes = () => {
     return null;
   }
   return (
-    <div className="mt-5 px-3">
+    <motion.div
+      variants={insertFromRight}
+      initial="hidden"
+      animate="enter"
+      transition={{ type: "linear" }}
+      className="mt-5 px-3"
+    >
       <UserActivityHeader
-        linkTo={`/user/profile/${loginUser?.uid}/activity`}
         text="Likes"
       />
-    </div>
+    </motion.div>
   );
 };
 

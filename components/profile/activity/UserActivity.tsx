@@ -59,7 +59,7 @@ const UserActivity = () => {
 
   return (
     <div className="mt-5 px-3">
-      <UserActivityHeader linkTo={`/user/profile/${loginUser?.uid}`} text="Your Activity" />
+      <UserActivityHeader text="Your Activity" />
       <h4 className="text-left text-gray-500 mb-1">Interactions</h4>
       <div className="flex w-full flex-col items-center justify-between gap-3 px-10">
         {footerListItems.map((item, i) => (
