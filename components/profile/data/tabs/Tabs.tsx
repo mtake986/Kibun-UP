@@ -10,24 +10,12 @@ type Props = {
 };
 
 const Tabs = ({ loginUser }: Props) => {
-  const { profileWhichTab, handleProfileWhichTab, allQuotes, loginUserQuotes } =
+  const { profileWhichTab, handleProfileWhichTab, loginUserQuotes } =
     useQuote();
   const { loginUserEvents } = useEvent();
 
-  const lengths = {
-    bookmarks: useQuotesBookmarkedByLoginUser(allQuotes, loginUser).length,
-    likes: useQuotesLikedByLoginUser(allQuotes, loginUser).length,
-  };
   const tabs: ProfileTabs[] = [
     { name: "quotes", length: loginUserQuotes.length },
-    {
-      name: "bookmarks",
-      length: lengths.bookmarks,
-    },
-    {
-      name: "likes",
-      length: lengths.likes,
-    },  
     { name: "events", length: loginUserEvents.length },
   ];
 
