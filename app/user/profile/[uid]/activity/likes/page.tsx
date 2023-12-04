@@ -1,5 +1,4 @@
-
-import UserActivityLikes from "@/components/profile/activity/likes/UserActivityLikes";
+import UserActivityLikes from "@/components/activity/likes/UserActivityLikes";
 import React from "react";
 
 export const metadata = {

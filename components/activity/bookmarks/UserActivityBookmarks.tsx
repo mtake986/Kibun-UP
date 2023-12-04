@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import UserActivityHeader from "../UserActivityHeader";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { insertFromRight } from "@/data/CONSTANTS";
 import { motion } from "framer-motion";
 import { useQuote } from "@/context/QuoteContext";
