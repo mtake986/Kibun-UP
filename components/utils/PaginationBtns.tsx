@@ -7,7 +7,6 @@ type Props = {
 };
 
 const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
-  const pageNumbers = Array.from({ length: nPages }, (_, index) => index + 1);
 
   const nextPage = () => {
     if (currentPage !== nPages) setCurrentPage(currentPage + 1);
@@ -17,7 +16,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   };
 
   const clsNameFocused =
-    "cursor-pointer rounded-md bg-blue-500 px-2 py-1 text-xs text-blue-50 duration-300 ease-in hover:bg-blue-600 dark:bg-slate-800 dark:hover:bg-slate-800 dark:hover:opacity-70";
+    "rounded-md bg-blue-500 px-2 py-1 text-xs text-blue-50 dark:bg-slate-800";
 
   const clsNameNotFocused =
     "cursor-pointer rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:opacity-70";
@@ -29,8 +28,8 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   return (
     <nav className="flex gap-1">
       <button
-        className={`cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white ${
-          isFirstPage && "opacity-30"
+        className={`px-2 py-1 text-xs text-blue-500 dark:text-white ${
+          isFirstPage ? "cursor-default opacity-30" : "cursor-pointer"
         }`}
         onClick={prevPage}
         disabled={isFirstPage}
@@ -40,6 +39,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       <div className="flex items-center gap-1">
         <button
           key={1}
+          disabled={isFirstPage}
           className={isFirstPage ? clsNameFocused : clsNameNotFocused}
           onClick={() => setCurrentPage(1)}
         >
@@ -52,6 +52,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           <button
             className={clsNameFocused}
             onClick={() => setCurrentPage(currentPage)}
+            disabled={true}
           >
             {currentPage}
           </button>
@@ -62,13 +63,14 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           key={nPages}
           className={isLastPage ? clsNameFocused : clsNameNotFocused}
           onClick={() => setCurrentPage(nPages)}
+          disabled={isLastPage}
         >
           {nPages}
         </button>
       </div>
       <button
-        className={`cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white ${
-          isLastPage && "opacity-30"
+        className={`px-2 py-1 text-xs text-blue-500 dark:text-white ${
+          isLastPage ? "cursor-default opacity-30" : "cursor-pointer"
         }`}
         onClick={nextPage}
         disabled={isLastPage}

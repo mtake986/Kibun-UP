@@ -1,26 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import { TypeLoginUser, TypeQuote } from "@/types/type";
-import usePagination from "@/components/hooks/usePagination";
-
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 import { useQuotesBookmarkedByLoginUser } from "@/components/hooks/useQuotesBookmarkedByLoginUser";
+import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
 
 type Props = {
-  quotes: TypeQuote[];
+  loginUserQuotes: TypeQuote[];
   loginUser: TypeLoginUser;
 };
 
-const ListOfBookmarks = ({ quotes, loginUser }: Props) => {
+const ListOfBookmarks = ({ loginUserQuotes, loginUser }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const quotesBookmarkedByLoginUser = useQuotesBookmarkedByLoginUser(
-    quotes,
+    loginUserQuotes,
     loginUser
   );
-  const { nPages, currentRecords } = usePagination(
+  const { nPages, currentRecords } = usePaginationTenItems(
     currentPage,
     quotesBookmarkedByLoginUser
   );

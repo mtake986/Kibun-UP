@@ -6,14 +6,16 @@ import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { insertFromRight } from "@/data/CONSTANTS";
 import { motion } from "framer-motion";
+import { useQuote } from "@/context/QuoteContext";
+import ListOfBookmarks from "./ListOfBookmarks";
 
 const UserActivityBookmarks = () => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const [user] = useAuthState(auth);
-
+  const { fetchAllQuotes, allQuotes } = useQuote();
   useEffect(() => {
-    if (!loginUser) fetchLoginUser(user);
-  }, [user, fetchLoginUser]);
+    if (!loginUser) fetchLoginUser(auth.currentUser);
+    if (allQuotes.length === 0) fetchAllQuotes();
+  }, [auth.currentUser]);
 
   if (!loginUser) {
     return null;
@@ -28,6 +30,7 @@ const UserActivityBookmarks = () => {
       className="mt-5 px-3"
     >
       <UserActivityHeader text="Bookmarks" />
+      <ListOfBookmarks loginUserQuotes={allQuotes} loginUser={loginUser} />
     </motion.div>
   );
 };
