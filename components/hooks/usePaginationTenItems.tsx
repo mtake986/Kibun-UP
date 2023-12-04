@@ -1,4 +1,3 @@
-import { useAuth } from "@/context/AuthContext";
 
 export const usePaginationTenItems = (currentPage: number, lis: Array<any>) => {
   // User is currently on this page
