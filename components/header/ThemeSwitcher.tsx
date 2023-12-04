@@ -20,7 +20,7 @@ export const ThemeSwitcher = () => {
       aria-label="Toggle Dark Mode"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
-      {theme === "light" ? <MoonStar size={24} /> : <SunDim size={24} />}
+      {theme === "light" ? <MoonStar size={20} /> : <SunDim size={20} />}
     </button>
   );
 };
