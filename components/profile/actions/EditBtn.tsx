@@ -1,4 +1,3 @@
-import { Edit } from "lucide-react";
 
 type Props = {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,10 +9,10 @@ const EditBtn = ({ setIsEditMode }: Props) => {
 
   return (
     <div
-      className="hover:opacity-70 cursor-pointer flex-grow gap-2 bg-slate-50 px-3 py-1 dark:bg-slate-900 text-sm"
+      className="flex-grow cursor-pointer gap-2 bg-slate-50 px-3 py-1 text-sm hover:opacity-70 dark:bg-slate-900"
       onClick={toggleEditMode}
     >
-      <span>Edit</span>
+      <span className="text-xs">Edit</span>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { LogOut } from "lucide-react";
 import React from "react";
 
 const LogOutBtn = () => {
@@ -17,7 +16,7 @@ const LogOutBtn = () => {
         }
       }}
     >
-      <span>Log out</span>
+      <span className="text-xs text-red-500">Log out</span>
     </div>
   );
 };

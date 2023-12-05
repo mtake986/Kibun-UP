@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { TypeLoginUser } from "@/types/type";
+import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 
 type Props = {
   loginUser: TypeLoginUser;
@@ -28,7 +29,7 @@ const UserInfoCard = ({ loginUser, numOfQuotes, numOfEvents }: Props) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-10">
         <Image
-          src={loginUser.photoURL!}
+          src={loginUser.photoURL || defaultProfilePhoto}
           alt="loginUser photo / default loginUser photo"
           width={100}
           height={100}
