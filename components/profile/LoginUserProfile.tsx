@@ -14,12 +14,13 @@ import { displayErrorToast } from "@/functions/displayToast";
 import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 import Actions from "./actions/Actions";
-
-export const metadata = {
-  title: "Login User Profile",
-};
+import { useSearchParams } from "next/navigation";
 
 const LoginUserProfile = () => {
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("uid");
+
   const [user] = useAuthState(auth);
   const {
     getLockedQuote,
@@ -64,6 +65,7 @@ const LoginUserProfile = () => {
 
   return (
     <div className="mb-32 p-5 sm:p-0">
+      <div>pathname: {search}</div>
       {isEditMode ? (
         <div className="mb-5 flex flex-col items-center gap-5 px-5">
           <EditMode setIsEditMode={setIsEditMode} />
