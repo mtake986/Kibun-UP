@@ -5,14 +5,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import EditMode from "@/components/profile/EditMode";
-import UserInfoCard from "@/components/profile/UserInfoCard";
-import EditBtn from "@/components/profile/EditBtn";
+import UserInfoCard from "@/components/profile/userInfoCard/UserInfoCard";
+import EditBtn from "@/components/profile/actions/EditBtn";
 import Settings from "./settings/Settings";
 import { useQuote } from "@/context/QuoteContext";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
+import Actions from "./actions/Actions";
 
 export const metadata = {
   title: "Login User Profile",
@@ -63,16 +64,21 @@ const LoginUserProfile = () => {
 
   return (
     <div className="mb-32 p-5 sm:p-0">
-      <div className="relative my-10 flex flex-col items-center gap-5 px-5">
-        {isEditMode ? (
+      {isEditMode ? (
+        <div className="mb-5 flex flex-col items-center gap-5 px-5">
           <EditMode setIsEditMode={setIsEditMode} />
-        ) : (
-          <>
-            <UserInfoCard loginUser={loginUser} />
-            <EditBtn isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
-          </>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="mb-5 flex flex-col items-start gap-2">
+          <UserInfoCard
+            loginUser={loginUser}
+            numOfQuotes={loginUserQuotes.length}
+            numOfEvents={loginUserEvents.length}
+          />
+          <Actions setIsEditMode={setIsEditMode} />
+        </div>
+      )}
+
       <Data loginUser={loginUser} />
       <Settings />
     </div>

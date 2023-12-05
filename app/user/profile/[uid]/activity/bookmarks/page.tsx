@@ -1,4 +1,4 @@
-import UserActivityBookmarks from "@/components/profile/activity/bookmarks/UserActivityBookmarks";
+import UserActivityBookmarks from "@/components/activity/bookmarks/UserActivityBookmarks";
 import React from "react";
 
 export const metadata = {

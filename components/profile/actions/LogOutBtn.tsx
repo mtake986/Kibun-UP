@@ -1,17 +1,13 @@
 import { useAuth } from "@/context/AuthContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { LogOut } from "lucide-react";
 import React from "react";
 
 const LogOutBtn = () => {
   const { handleLogout } = useAuth();
 
-  const buttonStyle =
-    "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:opacity-70 dark:text-red-500";
-
   return (
-    <button
-      className={buttonStyle}
+    <div
+      className="hover:opacity-70 cursor-pointer grow gap-2 bg-slate-50 px-3 py-1 text-sm dark:bg-slate-900"
       onClick={async () => {
         try {
           await handleLogout();
@@ -20,9 +16,8 @@ const LogOutBtn = () => {
         }
       }}
     >
-      <LogOut size={14} />
-      <span>Logout</span>
-    </button>
+      <span className="text-xs text-red-500">Log out</span>
+    </div>
   );
 };
 
