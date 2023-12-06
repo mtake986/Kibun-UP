@@ -37,14 +37,14 @@ const UserInfoCard = ({
       <div className="flex items-center justify-between gap-6 xs:hidden">
         <Image
           src={profileUser.photoURL || defaultProfilePhoto}
-          alt="loginUser photo / default loginUser photo"
+          alt="Profile User photo / default profile photo"
           width={100}
           height={100}
           className="h-24 w-24 rounded-full object-cover object-center text-left"
         />
         <div className="flex flex-col gap-1">
           <p className="text-lg font-semibold">{profileUser.displayName}</p>
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-start gap-3">
             {items.map((item: { label: string; value: number }) =>
               item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
                 <div key={item.label} className="flex flex-col items-center">
@@ -68,7 +68,7 @@ const UserInfoCard = ({
         />
         <div className="flex flex-col gap-3">
           <p className="text-lg font-semibold">{profileUser.displayName}</p>
-          <div className="flex justify-between gap-3">
+          <div className="flex justify-start gap-3">
             {items.map((item: { label: string; value: number }) =>
               item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
                 <div key={item.label} className="flex flex-col items-center">

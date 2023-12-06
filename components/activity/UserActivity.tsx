@@ -3,9 +3,6 @@ import { useAuth } from "@/context/AuthContext";
 import React, { useEffect } from "react";
 import UserActivityHeader from "./UserActivityHeader";
 import UrlLink from "@/components/utils/UrlLink";
-import { usePathname } from "next/navigation";
-import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
-import { AiOutlineContacts } from "react-icons/ai";
 import { auth } from "@/config/Firebase";
 import { Bookmark, Heart } from "lucide-react";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -13,7 +10,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const UserActivity = () => {
   const { loginUser, fetchLoginUser } = useAuth();
-  const pathname = usePathname();
   const [user] = useAuthState(auth);
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -36,12 +32,12 @@ const UserActivity = () => {
 
   const footerListItems = [
     {
-      href: `/profile?uid=${loginUser?.uid}/activity/likes`,
+      href: `/profile/${loginUser?.uid}/activity/likes`,
       target: "_self",
       clickOn: item("Likes", <Heart size={16} />),
     },
     {
-      href: `/profile?uid=${loginUser?.uid}/activity/bookmarks`,
+      href: `/profile/${loginUser?.uid}/activity/bookmarks`,
       target: "_self",
       clickOn: item("Bookmarks", <Bookmark size={16} />),
     },

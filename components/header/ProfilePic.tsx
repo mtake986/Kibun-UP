@@ -36,7 +36,7 @@ const ProfilePic = () => {
       target="_self"
       clickOn={<User2 size={24} />}
       className="hidden p-1 text-violet-500 duration-300 hover:opacity-50 dark:text-white sm:inline"
-      href={`/profile?uid=${user?.uid}`}
+      href={`/profile/${user?.uid}`}
     />
   );
 };

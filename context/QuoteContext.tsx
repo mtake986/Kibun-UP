@@ -28,7 +28,6 @@ import {
   TypeTabNamesOfQuotes,
   TypeAPIQuote,
   TypeTempLockedQuote,
-  TypeEvent,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";

@@ -34,7 +34,7 @@
     "app/profile/[uid]",
     "data/CONSTANTS.ts",
     "components/hooks/useSelectedTag.tsx",
-    "app/profile/activity"
+    "app/profile/[uid]/activity"
   ],
   "exclude": ["node_modules"]
 }

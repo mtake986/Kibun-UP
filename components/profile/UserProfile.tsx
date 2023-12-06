@@ -11,12 +11,15 @@ import { useQuote } from "@/context/QuoteContext";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import Actions from "./actions/Actions";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
-const LoginUserProfile = () => {
-  const searchParams = useSearchParams();
-  const uid = searchParams.get("uid");
+const UserProfile = () => {
+  // const searchParams = useSearchParams();
+  // const uid = searchParams.get("uid");
 
+  const pathname = usePathname();
+  const uid = pathname.substring(pathname.lastIndexOf("/") + 1);
+  
   const [user] = useAuthState(auth);
 
   const { getLockedQuote, fetchProfileUserQuotes, profileUserQuotes } =
@@ -82,4 +85,4 @@ const LoginUserProfile = () => {
   );
 };
 
-export default LoginUserProfile;
+export default UserProfile;

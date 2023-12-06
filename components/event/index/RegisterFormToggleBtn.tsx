@@ -5,15 +5,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 
 const RegisterFormToggleBtn = () => {
-  return (
-    <UrlLink
-      clickOn={
-        <Btn />
-      }
-      href="/event/register"
-      target="_self"
-    />
-  );
+  return <UrlLink clickOn={<Btn />} href="/event/register" target="_self" />;
 };
 
 export default RegisterFormToggleBtn;
@@ -23,12 +15,10 @@ const Btn = () => {
 
   return (
     <div
-      className={`absolute right-10 sm:right-5 `}
+      className={`absolute right-4 sm:-right-2`}
       onClick={toggleRegisterFormOpen}
     >
-      <Plus
-        className="fixed w-10 h-10 bottom-0 z-20 mb-6 rotate-0 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:rotate-90 hover:bg-violet-500"
-      />
+      <Plus className="fixed bottom-0 z-20 mb-6 h-8 w-8 rotate-0 cursor-pointer rounded-full bg-violet-500 p-2 text-white duration-300 hover:rotate-90 hover:bg-violet-500 sm:h-9 sm:w-9" />
     </div>
   );
 };
