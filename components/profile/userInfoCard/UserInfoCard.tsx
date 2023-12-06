@@ -32,31 +32,55 @@ const UserInfoCard = ({
   ];
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-10">
+    <>
+      {/* mobile */}
+      <div className="flex items-center justify-between gap-6 xs:hidden">
         <Image
           src={profileUser.photoURL || defaultProfilePhoto}
           alt="loginUser photo / default loginUser photo"
           width={100}
           height={100}
-          className="h-20 w-20 rounded-full object-cover object-center text-left xs:h-36 xs:w-36 sm:h-48 sm:w-48"
+          className="h-24 w-24 rounded-full object-cover object-center text-left"
         />
-        <div className="flex justify-between gap-3">
-          {items.map((item: { label: string; value: number }) =>
-            item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
-              <div key={item.label} className="flex flex-col items-center">
-                <span className="text-lg">{item.value}</span>
-                <p className="text-xs">{item.label}</p>
-              </div>
-            )
-          )}
+        <div className="flex flex-col gap-1">
+          <p className="text-lg font-semibold">{profileUser.displayName}</p>
+          <div className="flex justify-between gap-3">
+            {items.map((item: { label: string; value: number }) =>
+              item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
+                <div key={item.label} className="flex flex-col items-center">
+                  <span className="text-lg">{item.value}</span>
+                  <p className="text-xs">{item.label}</p>
+                </div>
+              )
+            )}
+          </div>
         </div>
       </div>
 
-      <div>
-        <p className="text-xs font-semibold">{profileUser.displayName}</p>
+      {/* more than tablet */}
+      <div className="hidden items-center gap-10 xs:flex">
+        <Image
+          src={profileUser.photoURL || defaultProfilePhoto}
+          alt="loginUser photo / default loginUser photo"
+          width={100}
+          height={100}
+          className="rounded-full object-cover object-center text-left xs:h-32 xs:w-32"
+        />
+        <div className="flex flex-col gap-3">
+          <p className="text-lg font-semibold">{profileUser.displayName}</p>
+          <div className="flex justify-between gap-3">
+            {items.map((item: { label: string; value: number }) =>
+              item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
+                <div key={item.label} className="flex flex-col items-center">
+                  <span className="text-lg">{item.value}</span>
+                  <p className="text-xs">{item.label}</p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

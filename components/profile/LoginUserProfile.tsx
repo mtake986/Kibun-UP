@@ -19,11 +19,8 @@ const LoginUserProfile = () => {
 
   const [user] = useAuthState(auth);
 
-  const {
-    getLockedQuote,
-    fetchProfileUserQuotes,
-    profileUserQuotes,
-  } = useQuote();
+  const { getLockedQuote, fetchProfileUserQuotes, profileUserQuotes } =
+    useQuote();
   const { profileUserEvents, fetchProfileUserEvents } = useEvent();
   const { loginUser, fetchLoginUser, fetchUser, profileUser } = useAuth();
 
@@ -79,7 +76,6 @@ const LoginUserProfile = () => {
           />
         </div>
       )}
-
       <Data />
       {isPathnameSameAsLoginUser ? <Settings /> : null}
     </div>
