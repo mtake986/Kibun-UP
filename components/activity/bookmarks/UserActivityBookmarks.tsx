@@ -15,7 +15,7 @@ import NotAccessiblePage from "@/components/utils/NotAccessiblePage";
 const UserActivityBookmarks = () => {
   const { loginUser, fetchLoginUser } = useAuth();
   const { fetchAllQuotes, allQuotes } = useQuote();
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const pathname = usePathname();
   const profileUserUid = extractUidFromPath(pathname);
@@ -28,9 +28,10 @@ const UserActivityBookmarks = () => {
     try {
       setIsLoading(true);
       fetchDocs();
-    } catch (error) {}
-    finally{
-      setIsLoading(false)
+    } catch (error) {
+      console.error("An error occurred while fetching documents:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, [auth.currentUser]);
 
@@ -44,7 +45,7 @@ const UserActivityBookmarks = () => {
 
   const isProfileUserDifferentFromLoginUser = profileUserUid !== loginUser?.uid;
 
-  if (!isProfileUserDifferentFromLoginUser) {
+  if (isProfileUserDifferentFromLoginUser) {
     return <NotAccessiblePage />;
   }
 

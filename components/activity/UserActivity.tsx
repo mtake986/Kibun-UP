@@ -62,7 +62,7 @@ const UserActivity = () => {
 
   const isProfileUserDifferentFromLoginUser = profileUserUid !== loginUser?.uid;
 
-  if (!isProfileUserDifferentFromLoginUser) {
+  if (isProfileUserDifferentFromLoginUser) {
     return <NotAccessiblePage />;
   }
 
