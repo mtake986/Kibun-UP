@@ -1,4 +1,4 @@
-import UrlLink from "@/components/utils/UrlLink";
+
 import { useRouter } from "next/navigation";
 import React from "react";
 import { MdArrowBackIosNew } from "react-icons/md";

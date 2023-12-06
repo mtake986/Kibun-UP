@@ -4,8 +4,8 @@ import React from "react";
 export const metadata = {
   title: "Kibun UP",
 };
-const LoginUserProfilePage = () => {
+const UserProfilePage = () => {
   return <UserProfile />;
 };
 
-export default LoginUserProfilePage;
+export default UserProfilePage;

@@ -12,13 +12,11 @@ import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import Actions from "./actions/Actions";
 import { usePathname, useSearchParams } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 const UserProfile = () => {
-  // const searchParams = useSearchParams();
-  // const uid = searchParams.get("uid");
-
   const pathname = usePathname();
-  const uid = pathname.substring(pathname.lastIndexOf("/") + 1);
+  const uid = extractUidFromPath(pathname);
   
   const [user] = useAuthState(auth);
 

@@ -61,7 +61,7 @@ const UserInfoCard = ({
       <div className="hidden items-center gap-10 xs:flex">
         <Image
           src={profileUser.photoURL || defaultProfilePhoto}
-          alt="loginUser photo / default loginUser photo"
+          alt="Profile User photo / default profile photo"
           width={100}
           height={100}
           className="rounded-full object-cover object-center text-left xs:h-32 xs:w-32"
