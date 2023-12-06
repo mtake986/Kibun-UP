@@ -6,28 +6,24 @@ import { TypeLoginUser } from "@/types/type";
 import Tabs from "./tabs/Tabs";
 import SectionTitle from "../SectionTitle";
 
-type Props = {
-  loginUser: TypeLoginUser;
-};
-const Data = ({ loginUser }: Props) => {
+const Data = () => {
   const {
-    loginUserQuotes,
     profileWhichTab,
-    allQuotes,
   } = useQuote();
 
+  // todo: populate it with the profile user
   return (
     <div className="relative mt-10">
-      <SectionTitle title="Your Data" />
+      <SectionTitle title="Data" />
 
       {profileWhichTab === "quotes" ? (
         <MobileSortFilterForQuotesOpenBtn />
       ) : null}
 
-      <Tabs loginUser={loginUser} />
+      <Tabs />
 
       {profileWhichTab === "quotes" ? (
-        <QuoteList quotes={loginUserQuotes} />
+        <QuoteList />
       ) : (
         <EventList />
       )}

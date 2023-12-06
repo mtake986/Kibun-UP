@@ -36,12 +36,12 @@ const UserActivity = () => {
 
   const footerListItems = [
     {
-      href: `/user/profile/${loginUser?.uid}/activity/likes`,
+      href: `/profile?uid=${loginUser?.uid}/activity/likes`,
       target: "_self",
       clickOn: item("Likes", <Heart size={16} />),
     },
     {
-      href: `/user/profile/${loginUser?.uid}/activity/bookmarks`,
+      href: `/profile?uid=${loginUser?.uid}/activity/bookmarks`,
       target: "_self",
       clickOn: item("Bookmarks", <Bookmark size={16} />),
     },

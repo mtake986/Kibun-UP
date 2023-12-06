@@ -56,7 +56,7 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          {pathname.includes("/user/profile/") ? <MenuBtn /> : <ProfilePic />}
+          {pathname.includes("/profile/") ? <MenuBtn /> : <ProfilePic />}
         </div>
       </nav>
     </header>

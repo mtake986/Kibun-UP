@@ -53,7 +53,7 @@ export default function MenuBtn() {
 
   const headerListItems = [
     {
-      href: `/user/profile/${user?.uid}/activity`,
+      href: `/profile/${user?.uid}/activity`,
       target: "_self",
       clickOn: item("activity", <BsActivity />),
     },

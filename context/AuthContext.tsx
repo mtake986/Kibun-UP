@@ -33,7 +33,7 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-type AuthContextType = {
+type TypeAuthContext = {
   signInWithGoogle: () => void;
   handleLogout: () => void;
   uploadImage: (
@@ -49,9 +49,11 @@ type AuthContextType = {
   fetchLoginUser: (user: any) => void;
   updateTagForQuotableApi: (text: string) => void;
   updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
+  fetchUser: (uid: string) => void;
+  profileUser: TypeLoginUser | null;
 };
 
-const AuthContext = createContext({} as AuthContextType);
+const AuthContext = createContext({} as TypeAuthContext);
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -61,6 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
+  const [profileUser, setProfileUser] = useState < TypeLoginUser | null>(null);
   const [loginUser, setLoginUser] = useState<TypeLoginUser>();
 
   function signInWithGoogle() {
@@ -104,7 +107,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const fetchLoginUser = async (user: User | null) => {
     if (user) {
-      console.log(user);
       const q = query(collection(db, "users"), where("uid", "==", user.uid));
       onSnapshot(q, (snapshot) => {
         setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
@@ -210,6 +212,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const fetchUser = async (uid: string) => {
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      setProfileUser(docSnap.data() as TypeLoginUser);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -221,6 +236,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         fetchLoginUser,
         updateTagForQuotableApi,
         updateQuotesPerPage,
+        fetchUser,
+        profileUser,
       }}
     >
       {children}

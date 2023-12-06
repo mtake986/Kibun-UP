@@ -59,7 +59,7 @@ const Footer = () => {
       clickOn: item("event", <BsFlag />),
     },
     {
-      href: `/user/profile/${user?.uid}`,
+      href: `/profile?uid=${user?.uid}`,
       target: "_self",
       clickOn: item("profile", <BsPerson />),
     },

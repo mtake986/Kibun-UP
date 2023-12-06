@@ -14,6 +14,7 @@ import {
   setDoc,
   addDoc,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -57,6 +58,8 @@ type EventContextType = {
   toggleRegisterFormOpen: () => void;
 
   isUpdateLoading: boolean;
+  fetchProfileUserEvents: (uid: string) => Promise<void>;
+  profileUserEvents: TypeEvent[] | [];
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -67,12 +70,12 @@ export function useEvent() {
 
 export function EventProvider({ children }: EventProviderProps) {
   const [loginUserEvents, setLoginUserEvents] = useState<TypeEvent[]>([]);
-
   const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
   const [randomEvent, setRandomEvent] = useState<TypeEvent>();
-
   const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
 
+  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
+  const [profileUserEvents, setProfileUserEvents] = useState<TypeEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
@@ -223,7 +226,7 @@ export function EventProvider({ children }: EventProviderProps) {
         );
         const randomNum = getRandomNum(events.length);
         const e: TypeEvent = events[randomNum];
-        console.log(events, randomNum, e)
+        console.log(events, randomNum, e);
         setRandomEvent(e);
       });
     }
@@ -242,10 +245,23 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const toggleRegisterFormOpen = () => {
     setIsRegisterFormOpen((prev) => !prev);
   };
+
+  const fetchProfileUserEvents = async (uid: string) => {
+    const q = query(eventsCollectionRef, where("createdBy", "==", uid));
+
+    const querySnapshot = await getDocs(q);
+    let es: TypeEvent[] = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      es.push({ ...doc.data(), id: doc.id } as TypeEvent);
+    });
+
+    setProfileUserEvents(es);
+  }
+
 
   return (
     <EventContext.Provider
@@ -270,6 +286,8 @@ export function EventProvider({ children }: EventProviderProps) {
         toggleRegisterFormOpen,
 
         isUpdateLoading,
+        fetchProfileUserEvents,
+        profileUserEvents,
       }}
     >
       {children}

@@ -78,7 +78,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
         <LoadingSpinnerXS num={3} />
       ) : (
         <UrlLink
-          href={`/user/profile?uid=${q.createdBy}`}
+          href={`/profile?uid=${q.createdBy}`}
           target={"_self"}
           clickOn={creatorImg()}
           className="hover:opacity-70"

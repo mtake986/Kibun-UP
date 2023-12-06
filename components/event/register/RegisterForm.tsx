@@ -36,7 +36,7 @@ import { useEffect, useState } from "react";
 
 const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
   if (isSubmitBtnDisabled) {
-    return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500";
+    return "w-full cursor-not-allowed rounded-md bg-gray-50 px-3 py-2.5 text-sm text-gray-500 dark:bg-slate-900";
   } else {
     return "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600";
   }

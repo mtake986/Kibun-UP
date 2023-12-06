@@ -10,18 +10,14 @@ import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
 
 const EventList = () => {
-  const [user] = useAuthState(auth);
 
-  const { loginUserEvents, getLoginUserEvents } = useEvent();
-  useEffect(() => {
-    getLoginUserEvents();
-  }, []);
+  const { profileUserEvents } = useEvent();
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = usePagination(
     currentPage,
-    loginUserEvents
+    profileUserEvents
   );
 
   return (
