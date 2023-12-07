@@ -3,7 +3,7 @@
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeEvent, TypeLoginUser } from "@/types/type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
 
 import PaginationBtns from "@/components/utils/PaginationBtns";
@@ -21,6 +21,12 @@ const List = ({ events }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = usePagination(currentPage, events);
+
+    useEffect(() => {
+      if (currentPage > nPages && currentRecords.length === 0)
+        setCurrentPage((prev) => prev - 1);
+      // setCurrentPage(prev => prev-1);
+    }, [currentRecords]);
 
   return (
     <div className="mb-20">

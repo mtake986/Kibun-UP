@@ -27,9 +27,9 @@ const IconTrash = ({ event }: Props) => {
 
   const { loginUser } = useAuth();
 
-  const handleClick = (event: TypeEvent) => {
-    handleDelete(event.id);
-    if (loginUser && lockedEvent?.id === event.id)
+  const handleClick = (clickedEvent: TypeEvent) => {
+    handleDelete(clickedEvent.id);
+    if (loginUser && lockedEvent?.id === clickedEvent.id)
       unlockThisEvent(loginUser.uid);
     if (loginUser && pathname.includes("profile")) {
       fetchProfileUserEvents(loginUser?.uid);
