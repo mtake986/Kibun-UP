@@ -15,6 +15,7 @@ import { displayErrorToast } from "@/functions/displayToast";
 import LoadingIndicator from "../home/LoadingIndicator";
 import ScrollToTopBtn from "./ScrollToTopBtn";
 
+
 const Quote = () => {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
@@ -78,8 +79,8 @@ const Quote = () => {
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
         <div className="relative">
           <HeadingTwo text="Quotes" />
-          <RegisterFormToggleBtn />
           <ScrollToTopBtn />
+          <RegisterFormToggleBtn />
           {whichList === "mine" ? (
             <MobileSortFilterForMineOpenBtn />
           ) : whichList === "all" ? (
