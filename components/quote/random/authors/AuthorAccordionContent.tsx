@@ -1,67 +1,80 @@
 import Icons from "@/components/apiQuoteCard/Icons/Icons";
 import { AccordionContent } from "@/components/ui/accordion";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeAPIQuote, TypeAuthorOfAPI } from "@/types/type";
+import {
+  TypeAPIQuote,
+  TypeAuthorOfAPI,
+  TypeSelectedAuthors,
+} from "@/types/type";
 import React, { useCallback, useMemo, useState } from "react";
-
 type Props = {
   author: TypeAuthorOfAPI;
+  selectedAuthors: TypeSelectedAuthors[];
+  handleAuthors: (value: TypeSelectedAuthors) => void;
 };
-const AuthorAccordionContent = ({ author }: Props) => {
+const AuthorAccordionContent = ({
+  author,
+  selectedAuthors,
+  handleAuthors,
+}: Props) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [isQuotesShown, setIsQuotesShown] = useState<boolean>(false);
 
   const [quotes, setQuotes] = useState<TypeAPIQuote[]>([]);
 
-const fetchQuotes = useCallback(async (slug: string) => {
-  const url = DEFAULT_URL_FOR_ALL_QUOTES + `?author=${slug}&limit=150`;
-  setIsPending(true);
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw Error(
-        `Something went wrong!! status: ${response.status} ${
-          response.statusText || "No status text available."
-        }`
-      );
-    }
-    const result = await response.json();
-    if (Array.isArray(result.results)) {
-      const qs: TypeAPIQuote[] = result.results.map((quote: any) => {
-        const tags = quote.tags.map((tag: string) => {
-          const tagObject = { name: tag, color: "white" };
-          return tagObject;
+  const fetchQuotes = useCallback(async (slug: string) => {
+    const url = DEFAULT_URL_FOR_ALL_QUOTES + `?author=${slug}&limit=150`;
+    setIsPending(true);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw Error(
+          `Something went wrong!! status: ${response.status} ${
+            response.statusText || "No status text available."
+          }`
+        );
+      }
+      const result = await response.json();
+      if (Array.isArray(result.results)) {
+        const qs: TypeAPIQuote[] = result.results.map((quote: any) => {
+          const tags = quote.tags.map((tag: string) => {
+            const tagObject = { name: tag, color: "white" };
+            return tagObject;
+          });
+          const quoteObject: TypeAPIQuote = {
+            id: quote._id,
+            author: quote.author,
+            authorSlug: quote.authorSlug,
+            content: quote.content,
+            tags: tags,
+            likedBy: [],
+            bookmarkedBy: [],
+            createdBy: "api",
+            draftStatus: "Public",
+          };
+          return quoteObject;
         });
-        const quoteObject: TypeAPIQuote = {
-          id: quote._id,
-          author: quote.author,
-          authorSlug: quote.authorSlug,
-          content: quote.content,
-          tags: tags,
-          likedBy: [],
-          bookmarkedBy: [],
-          createdBy: "api",
-          draftStatus: "Public",
-        };
-        return quoteObject;
-      });
-      setQuotes(qs);
-    } else {
-      // Handle the case where result.results is not an array
+        setQuotes(qs);
+      } else {
+        // Handle the case where result.results is not an array
+        displayErrorToast(
+          `Failed to fetch quotes. Please try again later.`
+        );
+      }
+    } catch (e: any) {
+      displayErrorToast(
+        `Failed to fetch quotes. Please try again later. Error: ${e.message}`
+      );
+      setError(e);
+    } finally {
+      setIsPending(false);
     }
-  } catch (e: any) {
-    displayErrorToast(
-      `Failed to fetch quotes. Please try again later. Error: ${e.message}`
-    );
-    setError(e);
-  } finally {
-    setIsPending(false);
-  }
-}, []);
+  }, []);
 
-  const displayQuotes = () => {
+  const displayQuotes = useCallback(() => {
     if (error) return <div>{error.message}</div>;
     if (isPending) {
       return <div>Loading...</div>;
@@ -90,9 +103,9 @@ const fetchQuotes = useCallback(async (slug: string) => {
         );
       });
     }
-  };
+  }, [error, isPending, quotes, isQuotesShown, author]);
 
-  const displayQuotesToggleBtn = () => {
+  const displayQuotesToggleBtn = useCallback(() => {
     if (isQuotesShown) {
       return (
         <span
@@ -115,11 +128,24 @@ const fetchQuotes = useCallback(async (slug: string) => {
         </span>
       );
     }
-  };
+  }, [isQuotesShown, author]);
 
   return (
     <AccordionContent className="flex flex-col gap-1">
-      <strong className="">{author.description}</strong>
+      <div className="flex justify-between">
+        <strong className="">{author.description}</strong>
+        <Checkbox
+          id={author.slug}
+          onClick={() => {
+            const payload: TypeSelectedAuthors = {
+              label: author.name,
+              slug: author.slug,
+            };
+            handleAuthors(payload);
+          }}
+          checked={selectedAuthors.some((a) => a.label === author.name)}
+        />
+      </div>
       <p className="text-xs">{author.bio}</p>
       {displayQuotesToggleBtn()}
       {displayQuotes()}
