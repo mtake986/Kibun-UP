@@ -3,13 +3,21 @@ import ListNotMine from "./notMine/ListNotMine";
 import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 import List from "./mine/List";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SwitchTab = () => {
   const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
     useQuote();
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
+
+
+  // functions =====
   const displayList = () => {
-    switch (whichList) {
+    switch (currTab) {
       case "mine":
         return <List quotes={loginUserQuotes} />;
       case "all":
@@ -21,6 +29,10 @@ const SwitchTab = () => {
     }
   };
 
+  const handleClick = (val: string) => {
+    router.push(pathname + `?tab=${val}`);
+  }
+
   return (
     <div>
       <div className="mb-3 flex items-stretch">
@@ -28,11 +40,11 @@ const SwitchTab = () => {
           <span
             key={tab.name}
             className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
-              whichList === tab.name
+              currTab === tab.name
                 ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
                 : ""
             }`}
-            onClick={() => handleWhichList(tab.name)}
+            onClick={() => handleClick(tab.name)}
           >
             {tab.label}
           </span>
