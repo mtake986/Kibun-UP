@@ -3,14 +3,22 @@ import { AccordionContent } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DEFAULT_URL_FOR_ALL_QUOTES } from "@/data/CONSTANTS";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeAPIQuote, TypeAuthorOfAPI, TypeSelectedAuthors } from "@/types/type";
+import {
+  TypeAPIQuote,
+  TypeAuthorOfAPI,
+  TypeSelectedAuthors,
+} from "@/types/type";
 import React, { useCallback, useMemo, useState } from "react";
 type Props = {
   author: TypeAuthorOfAPI;
   selectedAuthors: TypeSelectedAuthors[];
   handleAuthors: (value: TypeSelectedAuthors) => void;
 };
-const AuthorAccordionContent = ({ author, selectedAuthors, handleAuthors }: Props) => {
+const AuthorAccordionContent = ({
+  author,
+  selectedAuthors,
+  handleAuthors,
+}: Props) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [isQuotesShown, setIsQuotesShown] = useState<boolean>(false);
@@ -121,19 +129,21 @@ const AuthorAccordionContent = ({ author, selectedAuthors, handleAuthors }: Prop
 
   return (
     <AccordionContent className="flex flex-col gap-1">
-      <strong className="">{author.description}</strong>
+      <div className="flex justify-between">
+        <strong className="">{author.description}</strong>
+        <Checkbox
+          id={author.slug}
+          onClick={() => {
+            const payload: TypeSelectedAuthors = {
+              label: author.name,
+              slug: author.slug,
+            };
+            handleAuthors(payload);
+          }}
+          checked={selectedAuthors.some((a) => a.label === author.name)}
+        />
+      </div>
       <p className="text-xs">{author.bio}</p>
-      <Checkbox
-        id={author.slug}
-        onClick={() => {
-          const payload: TypeSelectedAuthors = {
-            label: author.name,
-            slug: author.slug,
-          };
-          handleAuthors(payload);
-        }}
-        checked={selectedAuthors.some((a) => a.label === author.name)}
-      />
       {displayQuotesToggleBtn()}
       {displayQuotes()}
     </AccordionContent>
