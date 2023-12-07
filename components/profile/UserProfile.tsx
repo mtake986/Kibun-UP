@@ -11,13 +11,13 @@ import { useQuote } from "@/context/QuoteContext";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import Actions from "./actions/Actions";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 const UserProfile = () => {
   const pathname = usePathname();
   const uid = extractUidFromPath(pathname);
-  
+
   const [user] = useAuthState(auth);
 
   const { getLockedQuote, fetchProfileUserQuotes, profileUserQuotes } =

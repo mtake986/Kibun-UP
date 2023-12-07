@@ -92,8 +92,6 @@ type TypeQuoteContext = {
   ) => void;
   quotesForHomePage: TypeQuote[];
 
-  whichList: TypeTabNamesOfQuotes;
-  handleWhichList: (value: TypeTabNamesOfQuotes) => void;
   sortFilterAreaForMineShown: boolean;
   handleSortFilterAreaForMineShown: () => void;
   sortFilterAreaForNotMineShown: boolean;
@@ -794,11 +792,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const [whichList, setWhichList] = useState<TypeTabNamesOfQuotes>("mine");
-  const handleWhichList = (value: TypeTabNamesOfQuotes) => {
-    setWhichList(value);
-  };
-
   const [sortFilterAreaForMineShown, setSortFilterAreaForMineShown] =
     useState(false);
   const handleSortFilterAreaForMineShown = () => {
@@ -1021,9 +1014,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchQuotesForHomePage,
         quotesForHomePage,
-
-        whichList,
-        handleWhichList,
+        
         sortFilterAreaForMineShown,
         handleSortFilterAreaForMineShown,
         sortFilterAreaForNotMineShown,

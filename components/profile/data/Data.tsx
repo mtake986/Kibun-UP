@@ -1,32 +1,26 @@
-import { useQuote } from "@/context/QuoteContext";
 import QuoteList from "./tabs/quotes/QuoteList";
 import EventList from "./tabs/events/EventList";
 import MobileSortFilterForQuotesOpenBtn from "./tabs/quotes/MobileSortFilterForQuotesOpenBtn";
-import { TypeLoginUser } from "@/types/type";
 import Tabs from "./tabs/Tabs";
 import SectionTitle from "../SectionTitle";
+import { useSearchParams } from "next/navigation";
 
 const Data = () => {
-  const {
-    profileWhichTab,
-  } = useQuote();
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
 
   // todo: populate it with the profile user
   return (
     <div className="relative mt-10">
       <SectionTitle title="Data" />
 
-      {profileWhichTab === "quotes" ? (
+      {currTab === "quotes" || currTab === null ? (
         <MobileSortFilterForQuotesOpenBtn />
       ) : null}
 
       <Tabs />
 
-      {profileWhichTab === "quotes" ? (
-        <QuoteList />
-      ) : (
-        <EventList />
-      )}
+      {currTab === "quotes" || currTab === null ? <QuoteList /> : <EventList />}
     </div>
   );
 };

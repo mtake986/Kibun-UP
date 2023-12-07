@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../config/Firebase";
 import RegisterFormToggleBtn from "./RegisterFormToggleBtn";
@@ -14,6 +14,8 @@ import MobileSortFilterForNotMineOpenBtn from "./notMine/MobileSortFilterForNotM
 import { displayErrorToast } from "@/functions/displayToast";
 import LoadingIndicator from "../home/LoadingIndicator";
 import ScrollToTopBtn from "./ScrollToTopBtn";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const Quote = () => {
   const [user] = useAuthState(auth);
@@ -23,7 +25,6 @@ const Quote = () => {
     getLoginUserQuotes,
     quotesNotMine,
     getLockedQuote,
-    whichList,
     lockedQuote,
     getQuotesNotMine,
     fetchAllQuotes,
@@ -32,6 +33,9 @@ const Quote = () => {
     apiQuotesFromFirestore,
     fetchApiQuotesFromFirestore,
   } = useQuote();
+
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,11 +82,11 @@ const Quote = () => {
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
         <div className="relative">
           <HeadingTwo text="Quotes" />
-          <RegisterFormToggleBtn />
           <ScrollToTopBtn />
-          {whichList === "mine" ? (
+          <RegisterFormToggleBtn />
+          {currTab === "mine" || currTab === null ? (
             <MobileSortFilterForMineOpenBtn />
-          ) : whichList === "all" ? (
+          ) : currTab === "all" ? (
             <MobileSortFilterForNotMineOpenBtn />
           ) : null}
           <Tabs />
