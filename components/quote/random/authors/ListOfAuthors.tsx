@@ -5,11 +5,19 @@ import { BsChatQuote } from "react-icons/bs";
 import PaginationBtns from "./PaginationBtns";
 import { DEFAULT_URL_TO_FETCH_AUTHORS } from "@/data/CONSTANTS";
 import { displayErrorToast } from "@/functions/displayToast";
+import { TypeSelectedAuthors } from "@/types/type";
 
 type Props = {
   setIsListOfAuthors: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedAuthors: TypeSelectedAuthors[];
+  handleAuthors: (value: TypeSelectedAuthors) => void;
 };
-const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
+
+const ListOfAuthors = ({
+  setIsListOfAuthors,
+  selectedAuthors,
+  handleAuthors,
+}: Props) => {
   const {
     currentAuthors,
     error,
@@ -51,7 +59,13 @@ const ListOfAuthors = ({ setIsListOfAuthors }: Props) => {
     return (
       <div className="flex flex-col gap-3">
         {currentAuthors[currentPage - 1].map((author, i) => (
-          <AuthorAccordionItem key={i} author={author} />
+          // todo: add props and functions inside card component
+          <AuthorAccordionItem
+            key={i}
+            author={author}
+            selectedAuthors={selectedAuthors}
+            handleAuthors={handleAuthors}
+          />
         ))}
       </div>
     );

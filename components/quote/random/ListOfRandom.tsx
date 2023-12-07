@@ -64,7 +64,13 @@ const ListOfRandom = () => {
   };
 
   if (isListOfAuthors) {
-    return <ListOfAuthors setIsListOfAuthors={setIsListOfAuthors} />;
+    return (
+      <ListOfAuthors
+        setIsListOfAuthors={setIsListOfAuthors}
+        selectedAuthors={selectedAuthors}
+        handleAuthors={handleAuthors}
+      />
+    );
   } else {
     return (
       <div className="mb-20">
