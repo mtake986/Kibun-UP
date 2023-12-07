@@ -42,7 +42,7 @@ const UserActivity = () => {
     );
   };
 
-  const footerListItems = [
+  const listItems = [
     {
       href: `/profile/${loginUser?.uid}/activity/likes`,
       target: "_self",
@@ -77,7 +77,7 @@ const UserActivity = () => {
       <UserActivityHeader text="Your Activity" />
       <h4 className="mb-1 text-left text-gray-500">Interactions</h4>
       <div className="flex w-full flex-col items-center justify-between gap-3 px-10">
-        {footerListItems.map((item, i) => (
+        {listItems.map((item, i) => (
           <div
             className="flex w-full cursor-pointer items-center justify-between hover:opacity-70"
             key={item.href}

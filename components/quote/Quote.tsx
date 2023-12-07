@@ -25,7 +25,6 @@ const Quote = () => {
     getLoginUserQuotes,
     quotesNotMine,
     getLockedQuote,
-    whichList,
     lockedQuote,
     getQuotesNotMine,
     fetchAllQuotes,

@@ -14,7 +14,7 @@ const UserActivityHeader = ({ text }: Props) => {
     return (
       <button
         onClick={() => router.back()}
-        className="m-1 flex items-center gap-2 rounded-md duration-200 hover:opacity-70"
+        className="m-1 absolute top-0 left-0 flex items-center gap-2 rounded-md duration-200 hover:opacity-70"
       >
         <MdArrowBackIosNew size={20} />
       </button>

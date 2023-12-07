@@ -5,27 +5,29 @@ import MobileSortFilterForQuotesOpenBtn from "./tabs/quotes/MobileSortFilterForQ
 import { TypeLoginUser } from "@/types/type";
 import Tabs from "./tabs/Tabs";
 import SectionTitle from "../SectionTitle";
+import { useSearchParams } from "next/navigation";
 
 const Data = () => {
-  const {
-    profileWhichTab,
-  } = useQuote();
+
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
+
 
   // todo: populate it with the profile user
   return (
     <div className="relative mt-10">
       <SectionTitle title="Data" />
 
-      {profileWhichTab === "quotes" ? (
+      {currTab === "quotes" ? (
         <MobileSortFilterForQuotesOpenBtn />
       ) : null}
 
       <Tabs />
 
-      {profileWhichTab === "quotes" ? (
-        <QuoteList />
-      ) : (
+      {currTab === "events" ? (
         <EventList />
+        ) : (
+        <QuoteList />
       )}
     </div>
   );

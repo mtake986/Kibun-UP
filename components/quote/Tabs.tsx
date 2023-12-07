@@ -1,19 +1,17 @@
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
-import { TypeLoginUser, TypeTabNamesOfQuotes } from "@/types/type";
+import { TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 import List from "./mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SwitchTab = () => {
-  const { loginUserQuotes, quotesNotMine, whichList, handleWhichList } =
-    useQuote();
+  const { loginUserQuotes, quotesNotMine } = useQuote();
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
-
 
   // functions =====
   const displayList = () => {
@@ -25,13 +23,13 @@ const SwitchTab = () => {
       case "api":
         return <ListOfRandom />;
       default:
-        return <div>error</div>;
+        return <List quotes={loginUserQuotes} />;
     }
   };
 
   const handleClick = (val: string) => {
     router.push(pathname + `?tab=${val}`);
-  }
+  };
 
   return (
     <div>
@@ -40,7 +38,7 @@ const SwitchTab = () => {
           <span
             key={tab.name}
             className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
-              currTab === tab.name
+              currTab === tab.name || (currTab === null && tab.name === "mine")
                 ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
                 : ""
             }`}
