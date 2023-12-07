@@ -4,9 +4,10 @@ import { TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 import List from "./mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const SwitchTab = () => {
-  const { loginUserQuotes, quotesNotMine } = useQuote();
+  const { loginUserQuotes, quotesNotMine, getLoginUserQuotes } = useQuote();
 
   const router = useRouter();
   const pathname = usePathname();

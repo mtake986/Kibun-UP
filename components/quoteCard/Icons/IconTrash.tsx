@@ -17,13 +17,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { MdCancel, MdOutlineCancel } from "react-icons/md";
+import { usePathname } from "next/navigation";
 
 type Props = {
   q: TypeQuote;
 };
 
 const IconTrash = ({ q }: Props) => {
-  const { lockedQuote, handleDelete, removeLockFromThisQuote } = useQuote();
+  const { lockedQuote, handleDelete, removeLockFromThisQuote, fetchProfileUserQuotes } = useQuote();
+  const pathname = usePathname();
 
   const { loginUser } = useAuth();
 
@@ -32,6 +34,9 @@ const IconTrash = ({ q }: Props) => {
       handleDelete(q.id);
       if (loginUser && lockedQuote?.id === q.id)
         removeLockFromThisQuote(loginUser?.uid);
+      if (loginUser && pathname.includes("profile")) {
+        fetchProfileUserQuotes(loginUser?.uid);
+      }
     } catch (e) {
       displayErrorToast(e);
     }

@@ -46,18 +46,19 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
           1
         </button>
 
-        {nPages > 3 && currentPage >= 3 && <span>...</span>}
+        {nPages >= 3 && currentPage >= 3 && <span>...</span>}
         {/* currentPage Btn is always shown */}
         {!isFirstPage && !isLastPage ? (
           <button
-            className={clsNameFocused}
+          className={clsNameFocused}
             onClick={() => setCurrentPage(currentPage)}
             disabled={true}
-          >
+            >
             {currentPage}
           </button>
         ) : null}
         {nPages - 2 >= currentPage && <span>...</span>}
+
 
         <button
           key={nPages}

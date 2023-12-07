@@ -5,6 +5,7 @@ export const usePagination = (currentPage: number, lis: Array<any>) => {
   // const [currentPage, setCurrentPage] = useState(1);
   // Number of Records to be displayed on each page
 
+  console.log('lis: ', lis.length)
   const { loginUser } = useAuth();
   let RECORDS_PER_PAGE = 10;
   if (loginUser) {
