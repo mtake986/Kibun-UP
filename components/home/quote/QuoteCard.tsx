@@ -10,6 +10,7 @@ type Props = {
   refetch?: () => void;
   loginUser: TypeLoginUser;
 };
+
 const QuoteCard = ({ quote, type, refetch, loginUser }: Props) => {
   return (
     <div className="mb-20 p-6 flex flex-col gap-1 rounded-none sm:rounded-lg sm:p-12 sm:shadow">

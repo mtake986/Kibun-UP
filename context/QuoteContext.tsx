@@ -16,6 +16,7 @@ import {
   arrayUnion,
   arrayRemove,
   orderBy,
+  getDocs,
 } from "firebase/firestore";
 
 import {
@@ -130,6 +131,9 @@ type TypeQuoteContext = {
   handleLikeApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
   handleBookmarkApiQuote: (uid: string, q: TypeAPIQuote) => Promise<void>;
   getCreatorPhoto: (uid: string) => Promise<string>;
+
+  fetchProfileUserQuotes: (uid: string) => void;
+  profileUserQuotes: TypeQuote[];
 };
 
 const QuoteContext = createContext({} as TypeQuoteContext);
@@ -231,14 +235,16 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getLockedQuote = async () => {
-    let tempLockedQuote: TypeTempLockedQuote = { createdBy: "", qid: "", id: "" };
+    let tempLockedQuote: TypeTempLockedQuote = {
+      createdBy: "",
+      qid: "",
+      id: "",
+    };
 
     if (user?.uid) {
       const q = query(lockedQuotesCollectionRef);
       onSnapshot(q, (snapshot) => {
-        const lockedQuoteDoc = snapshot.docs.find(
-          (doc) => doc.id === user.uid
-        );
+        const lockedQuoteDoc = snapshot.docs.find((doc) => doc.id === user.uid);
         if (lockedQuoteDoc) {
           tempLockedQuote = {
             ...lockedQuoteDoc.data(),
@@ -962,6 +968,20 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     return "";
   };
 
+  const [profileUserQuotes, setProfileUserQuotes] = useState<TypeQuote[]>([]);
+  const fetchProfileUserQuotes = async (uid: string) => {
+    const q = query(collection(db, "quotes"), where("createdBy", "==", uid));
+
+    const querySnapshot = await getDocs(q);
+    let qs: TypeQuote[] = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      qs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+    });
+
+    setProfileUserQuotes(qs);
+  };
+
   return (
     <QuoteContext.Provider
       value={{
@@ -1038,6 +1058,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         handleLikeApiQuote,
         handleBookmarkApiQuote,
         getCreatorPhoto,
+
+        fetchProfileUserQuotes,
+        profileUserQuotes,
       }}
     >
       {children}

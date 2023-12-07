@@ -10,6 +10,7 @@ import { useQuote } from "@/context/QuoteContext";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
+import UrlLink from "@/components/utils/UrlLink";
 
 type Props = {
   q: TypeQuote;
@@ -40,11 +41,23 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
       .catch((error) => {
         setIsLoading(false);
       });
-  }, [fetchProfilePhoto]);
+  }, []);
 
   if (!loginUser) {
     return null; // or return some default UI
   }
+
+  const creatorImg = () => {
+    return (
+      <Image
+        src={profilePhoto ?? defaultProfilePhoto}
+        alt="profile photo"
+        width={20}
+        height={20}
+        className="rounded-full"
+      />
+    );
+  };
 
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
@@ -64,12 +77,11 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
       ) : isAPI ? null : isLoading ? (
         <LoadingSpinnerXS num={3} />
       ) : (
-        <Image
-          src={profilePhoto ?? defaultProfilePhoto}
-          alt="profile photo"
-          width={20}
-          height={20}
-          className="rounded-full"
+        <UrlLink
+          href={`/profile/${q.createdBy}`}
+          target={"_self"}
+          clickOn={creatorImg()}
+          className="hover:opacity-70"
         />
       )}
     </div>

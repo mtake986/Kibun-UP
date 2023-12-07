@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserActivityHeader from "../UserActivityHeader";
 
 import { useAuth } from "@/context/AuthContext";
@@ -8,10 +8,20 @@ import { motion } from "framer-motion";
 import { insertFromRight } from "@/data/CONSTANTS";
 import ListOfLikes from "./ListOfLikes";
 import { useQuote } from "@/context/QuoteContext";
+import { usePathname } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
+import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
+import NotAccessiblePage from "@/components/utils/NotAccessiblePage";
 
 const UserActivityLikes = () => {
   const { loginUser, fetchLoginUser } = useAuth();
   const { allQuotes, fetchAllQuotes } = useQuote();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const pathname = usePathname();
+  const profileUserUid = extractUidFromPath(pathname);
+
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
     if (allQuotes.length === 0) fetchAllQuotes();
@@ -20,6 +30,17 @@ const UserActivityLikes = () => {
   if (!loginUser) {
     return null;
   }
+
+  if (isLoading) {
+    return <LoadingSpinnerL />;
+  }
+
+  const isProfileUserDifferentFromLoginUser = profileUserUid !== loginUser?.uid;
+
+  if (isProfileUserDifferentFromLoginUser) {
+    return <NotAccessiblePage />;
+  }
+
   
   return (
     <motion.div

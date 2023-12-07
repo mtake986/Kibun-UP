@@ -1,19 +1,27 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserActivityHeader from "./UserActivityHeader";
 import UrlLink from "@/components/utils/UrlLink";
-import { usePathname } from "next/navigation";
-import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
-import { AiOutlineContacts } from "react-icons/ai";
 import { auth } from "@/config/Firebase";
 import { Bookmark, Heart } from "lucide-react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+import { motion } from "framer-motion";
+import { insertFromBottom, insertFromRight } from "@/data/CONSTANTS";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
+import { usePathname } from "next/navigation";
+import LoadingSpinnerL from "../utils/LoadingSpinnerL";
+import NotAccessiblePage from "../utils/NotAccessiblePage";
+
 const UserActivity = () => {
   const { loginUser, fetchLoginUser } = useAuth();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const pathname = usePathname();
+  const profileUserUid = extractUidFromPath(pathname);
+
   const [user] = useAuthState(auth);
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
@@ -36,37 +44,73 @@ const UserActivity = () => {
 
   const footerListItems = [
     {
-      href: `/user/profile/${loginUser?.uid}/activity/likes`,
+      href: `/profile/${loginUser?.uid}/activity/likes`,
       target: "_self",
       clickOn: item("Likes", <Heart size={16} />),
     },
     {
-      href: `/user/profile/${loginUser?.uid}/activity/bookmarks`,
+      href: `/profile/${loginUser?.uid}/activity/bookmarks`,
       target: "_self",
       clickOn: item("Bookmarks", <Bookmark size={16} />),
     },
   ];
 
+
+  if (isLoading) {
+    return <LoadingSpinnerL />;
+  }
+
+  const isProfileUserDifferentFromLoginUser = profileUserUid !== loginUser?.uid;
+
+  if (isProfileUserDifferentFromLoginUser) {
+    return <NotAccessiblePage />;
+  }
+
   return (
-    <div className="mt-5 px-3">
+    <motion.div
+      variants={insertFromBottom}
+      initial="hidden"
+      animate="enter"
+      transition={{ type: "linear" }}
+      className="mt-5 px-3"
+    >
       <UserActivityHeader text="Your Activity" />
-      <h4 className="text-left text-gray-500 mb-1">Interactions</h4>
+      <h4 className="mb-1 text-left text-gray-500">Interactions</h4>
       <div className="flex w-full flex-col items-center justify-between gap-3 px-10">
         {footerListItems.map((item, i) => (
-          <div className="flex justify-between items-center w-full hover:opacity-70 cursor-pointer" key={item.href}>
+          <div
+            className="flex w-full cursor-pointer items-center justify-between hover:opacity-70"
+            key={item.href}
+          >
             <UrlLink
               href={item.href}
               target={item.target}
               clickOn={item.clickOn}
             />
-            <MdArrowForwardIos
-              size={16}
-              className="text-gray-500"
-            />
+            <MdArrowForwardIos size={16} className="text-gray-500" />
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
+    // <div className="mt-5 px-3">
+    //   <UserActivityHeader text="Your Activity" />
+    //   <h4 className="text-left text-gray-500 mb-1">Interactions</h4>
+    //   <div className="flex w-full flex-col items-center justify-between gap-3 px-10">
+    //     {footerListItems.map((item, i) => (
+    //       <div className="flex justify-between items-center w-full hover:opacity-70 cursor-pointer" key={item.href}>
+    //         <UrlLink
+    //           href={item.href}
+    //           target={item.target}
+    //           clickOn={item.clickOn}
+    //         />
+    //         <MdArrowForwardIos
+    //           size={16}
+    //           className="text-gray-500"
+    //         />
+    //       </div>
+    //     ))}
+    //   </div>
+    // </div>
   );
 };
 

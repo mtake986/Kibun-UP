@@ -59,7 +59,7 @@ const Footer = () => {
       clickOn: item("event", <BsFlag />),
     },
     {
-      href: `/user/profile/${user?.uid}`,
+      href: `/profile/${user?.uid}`,
       target: "_self",
       clickOn: item("profile", <BsPerson />),
     },
@@ -85,7 +85,7 @@ const Footer = () => {
 
       {/* mobile */}
       <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
-        <div className="flex w-full items-center justify-between gap-5 px-10">
+        <div className="flex w-full max-w-[150px] items-center m-auto justify-around gap-10 px-20">
           {footerListItems.map((item, i) => (
             <UrlLink
               key={item.href}
