@@ -60,6 +60,9 @@ const AuthorAccordionContent = ({
         setQuotes(qs);
       } else {
         // Handle the case where result.results is not an array
+        displayErrorToast(
+          `Failed to fetch quotes. Please try again later.`
+        );
       }
     } catch (e: any) {
       displayErrorToast(
@@ -71,7 +74,7 @@ const AuthorAccordionContent = ({
     }
   }, []);
 
-  const displayQuotes = () => {
+  const displayQuotes = useCallback(() => {
     if (error) return <div>{error.message}</div>;
     if (isPending) {
       return <div>Loading...</div>;
@@ -100,9 +103,9 @@ const AuthorAccordionContent = ({
         );
       });
     }
-  };
+  }, [error, isPending, quotes, isQuotesShown, author]);
 
-  const displayQuotesToggleBtn = () => {
+  const displayQuotesToggleBtn = useCallback(() => {
     if (isQuotesShown) {
       return (
         <span
@@ -125,7 +128,7 @@ const AuthorAccordionContent = ({
         </span>
       );
     }
-  };
+  }, [isQuotesShown, author]);
 
   return (
     <AccordionContent className="flex flex-col gap-1">
