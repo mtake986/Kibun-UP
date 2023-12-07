@@ -11,7 +11,7 @@ const RegisterFormToggleBtn = () => {
 export default RegisterFormToggleBtn;
 
 const Btn = () => {
-  const { isRegisterFormOpen, toggleRegisterFormOpen } = useQuote();
+  const { toggleRegisterFormOpen } = useQuote();
   return (
     <div
       className={`absolute right-4 sm:-right-2`}

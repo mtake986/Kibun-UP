@@ -66,7 +66,7 @@ const Event = () => {
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
         <div className="relative">
           <HeadingTwo text="Events" />
-          {!isRegisterFormOpen ? <RegisterFormToggleBtn /> : null}
+          <RegisterFormToggleBtn />
           <Tabs />
         </div>
       </div>
