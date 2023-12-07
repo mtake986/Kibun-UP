@@ -84,7 +84,7 @@ const Quote = () => {
           <HeadingTwo text="Quotes" />
           <ScrollToTopBtn />
           <RegisterFormToggleBtn />
-          {currTab === "mine" ? (
+          {currTab === "mine" || currTab === null ? (
             <MobileSortFilterForMineOpenBtn />
           ) : currTab === "all" ? (
             <MobileSortFilterForNotMineOpenBtn />

@@ -6,27 +6,21 @@ import SectionTitle from "../SectionTitle";
 import { useSearchParams } from "next/navigation";
 
 const Data = () => {
-
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
-
 
   // todo: populate it with the profile user
   return (
     <div className="relative mt-10">
       <SectionTitle title="Data" />
 
-      {currTab === "quotes" ? (
+      {currTab === "quotes" || currTab === null ? (
         <MobileSortFilterForQuotesOpenBtn />
       ) : null}
 
       <Tabs />
 
-      {currTab === "events" ? (
-        <EventList />
-        ) : (
-        <QuoteList />
-      )}
+      {currTab === "quotes" || currTab === null ? <QuoteList /> : <EventList />}
     </div>
   );
 };
