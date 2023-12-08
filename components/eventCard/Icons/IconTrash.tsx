@@ -14,19 +14,28 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { MdOutlineCancel } from "react-icons/md";
+import { usePathname } from "next/navigation";
 
 type Props = {
   event: TypeEvent;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const IconTrash = ({ event }: Props) => {
-  const { lockedEvent, handleDelete, unlockThisEvent } = useEvent();
+const IconTrash = ({ event, goPrevAsNoCurrentRecords }: Props) => {
+  const { lockedEvent, handleDelete, unlockThisEvent, fetchProfileUserEvents } =
+    useEvent();
+  const pathname = usePathname();
 
   const { loginUser } = useAuth();
 
-  const handleClick = (event: TypeEvent) => {
-    handleDelete(event.id);
-    if (loginUser && lockedEvent?.id === event.id) unlockThisEvent(loginUser.uid);
+  const handleClick = (clickedEvent: TypeEvent) => {
+    handleDelete(clickedEvent.id);
+    if (loginUser && lockedEvent?.id === clickedEvent.id)
+      unlockThisEvent(loginUser.uid);
+    if (loginUser && pathname.includes("profile")) {
+      fetchProfileUserEvents(loginUser?.uid);
+    }
+    goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
   };
 
   return (

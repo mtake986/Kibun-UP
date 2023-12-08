@@ -9,9 +9,10 @@ import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
 type Props = {
   q: TypeQuote;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const QuoteCard = ({ q }: Props) => {
+const QuoteCard = ({ q, goPrevAsNoCurrentRecords }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [isCardLoading, setIsCardLoading] = useState(false);
 
@@ -34,6 +35,7 @@ const QuoteCard = ({ q }: Props) => {
             q={q}
             setIsUpdateMode={setIsUpdateMode}
             isUpdateMode={isUpdateMode}
+            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
         </>
       )}

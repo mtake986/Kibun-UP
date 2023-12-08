@@ -94,6 +94,8 @@ const EditMode = ({ setIsEditMode }: Props) => {
           onChange={(e) => {
             setNewItemsPerPage(Number(e.target.value));
           }}
+          min={1}
+          // minLength={1}
           id="itemsPerPage"
           type="number"
           defaultValue={String(loginUser?.settings.itemsPerPage)}

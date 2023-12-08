@@ -16,9 +16,15 @@ type Props = {
   q: TypeQuote;
   setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
   isUpdateMode: boolean;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
+const Icons = ({
+  q,
+  setIsUpdateMode,
+  isUpdateMode,
+  goPrevAsNoCurrentRecords,
+}: Props) => {
   const { loginUser } = useAuth();
   const { getCreatorPhoto } = useQuote();
 
@@ -73,7 +79,7 @@ const Icons = ({ q, setIsUpdateMode, isUpdateMode }: Props) => {
         <IconBookmark q={q} loginUser={loginUser} />
       </div>
       {isMine ? (
-        <IconTrash q={q} />
+        <IconTrash q={q} goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords} />
       ) : isAPI ? null : isLoading ? (
         <LoadingSpinnerXS num={3} />
       ) : (

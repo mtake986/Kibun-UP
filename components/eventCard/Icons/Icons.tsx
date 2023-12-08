@@ -11,12 +11,14 @@ type Props = {
   event: TypeEvent;
   setIsUpdateMode: (boo: boolean) => void;
   isUpdateMode: boolean;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
 const Icons = ({
   event,
   setIsUpdateMode,
   isUpdateMode,
+  goPrevAsNoCurrentRecords,
 }: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
 
@@ -38,7 +40,7 @@ const Icons = ({
         />
         <IconLock event={event} loginUser={loginUser} />
       </div>
-      <IconTrash event={event} />
+      <IconTrash event={event} goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords} />
     </div>
   );
 };
