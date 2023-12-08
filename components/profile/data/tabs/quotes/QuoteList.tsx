@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useQuote } from "@/context/QuoteContext";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import { TypeQuote } from "@/types/type";
 import SortFilterQuotes from "./Sort/SortFilterQuotes";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 
@@ -30,6 +29,17 @@ const QuoteList = () => {
       </div>
     );
   }
+
+  const goPrevAsNoCurrentRecords = () => {
+    if (
+      currentPage === nPages &&
+      currentRecords.length === 1 &&
+      currentPage > 1
+    ) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
     <div className="mb-20">
@@ -39,7 +49,11 @@ const QuoteList = () => {
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc) => (
-            <QuoteCard key={doc.id} q={doc} />
+            <QuoteCard
+              key={doc.id}
+              q={doc}
+              goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+            />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

@@ -18,9 +18,10 @@ import { usePathname } from "next/navigation";
 
 type Props = {
   event: TypeEvent;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const IconTrash = ({ event }: Props) => {
+const IconTrash = ({ event, goPrevAsNoCurrentRecords }: Props) => {
   const { lockedEvent, handleDelete, unlockThisEvent, fetchProfileUserEvents } =
     useEvent();
   const pathname = usePathname();
@@ -34,6 +35,7 @@ const IconTrash = ({ event }: Props) => {
     if (loginUser && pathname.includes("profile")) {
       fetchProfileUserEvents(loginUser?.uid);
     }
+    goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
   };
 
   return (

@@ -21,7 +21,6 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   const clsNameNotFocused =
     "cursor-pointer rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:opacity-70";
 
-
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === nPages;
 

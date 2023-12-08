@@ -21,10 +21,16 @@ import { usePathname } from "next/navigation";
 
 type Props = {
   q: TypeQuote;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const IconTrash = ({ q }: Props) => {
-  const { lockedQuote, handleDelete, removeLockFromThisQuote, fetchProfileUserQuotes } = useQuote();
+const IconTrash = ({ q, goPrevAsNoCurrentRecords }: Props) => {
+  const {
+    lockedQuote,
+    handleDelete,
+    removeLockFromThisQuote,
+    fetchProfileUserQuotes,
+  } = useQuote();
   const pathname = usePathname();
 
   const { loginUser } = useAuth();
@@ -37,6 +43,7 @@ const IconTrash = ({ q }: Props) => {
       if (loginUser && pathname.includes("profile")) {
         fetchProfileUserQuotes(loginUser?.uid);
       }
+      goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
     } catch (e) {
       displayErrorToast(e);
     }

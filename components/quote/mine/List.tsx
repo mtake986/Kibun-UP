@@ -18,18 +18,21 @@ type Props = {
 const List = ({ quotes }: Props) => {
   const [user] = useAuthState(auth);
 
-  const {
-    sortFilterAreaForMineShown,
-  } = useQuote();
+  const { sortFilterAreaForMineShown } = useQuote();
 
+  console.log(quotes, quotes.length);
   const [currentPage, setCurrentPage] = useState(1);
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
-  useEffect(() => {
-    if (currentPage > nPages && currentRecords.length === 0)
+  const goPrevAsNoCurrentRecords = () => {
+    if (
+      currentPage === nPages &&
+      currentRecords.length === 1 &&
+      currentPage > 1
+    ) {
       setCurrentPage((prev) => prev - 1);
-    // setCurrentPage(prev => prev-1);
-  }, [currentRecords]);
+    }
+  };
 
   return (
     <div className="mb-20">
@@ -39,7 +42,11 @@ const List = ({ quotes }: Props) => {
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
-            <QuoteCard q={doc} key={doc.id} />
+            <QuoteCard
+              q={doc}
+              key={doc.id}
+              goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+            />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

@@ -15,6 +15,7 @@ const Quote = () => {
   );
 
   if (!loginUser) return <div>No Login User</div>;
+  
   const renderQuoteCard = (
     quote: TypeQuote | TypeAPIQuote,
     type: "locked" | "appChoice" | "notAppChoice",

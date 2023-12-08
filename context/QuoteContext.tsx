@@ -201,8 +201,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const getLoginUserQuotes = async () => {
     if (user?.uid) {
-      const q = query(quotesCollectionRef, where("createdBy", "==", user?.uid));
-      onSnapshot(q, (snapshot) => {
+      const q = query(quotesCollectionRef, where("createdBy", "==", user.uid));
+      onSnapshot(q, async (snapshot) => {
         setLoginUserQuotes(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)

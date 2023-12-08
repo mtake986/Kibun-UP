@@ -22,18 +22,26 @@ const List = ({ events }: Props) => {
 
   const { nPages, currentRecords } = usePagination(currentPage, events);
 
-    useEffect(() => {
-      if (currentPage > nPages && currentRecords.length === 0)
-        setCurrentPage((prev) => prev - 1);
-      // setCurrentPage(prev => prev-1);
-    }, [currentRecords]);
+  const goPrevAsNoCurrentRecords = () => {
+    if (
+      currentPage === nPages &&
+      currentRecords.length === 1 &&
+      currentPage > 1
+    ) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
-            <EventCard key={doc.id} event={doc} />
+            <EventCard
+              key={doc.id}
+              event={doc}
+              goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+            />
           ))}
           {nPages >= 2 && (
             <PaginationBtns

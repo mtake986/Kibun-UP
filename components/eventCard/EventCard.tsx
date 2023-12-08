@@ -8,9 +8,10 @@ import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
 type Props = {
   event: TypeEvent;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const EventCard = ({ event }: Props) => {
+const EventCard = ({ event, goPrevAsNoCurrentRecords }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +35,7 @@ const EventCard = ({ event }: Props) => {
             event={event}
             setIsUpdateMode={setIsUpdateMode}
             isUpdateMode={isUpdateMode}
+            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
         </>
       )}
