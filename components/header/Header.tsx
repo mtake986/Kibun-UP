@@ -23,6 +23,32 @@ export default function Header() {
     }`;
   }
 
+  const headerItems = [
+    {
+      href: "/quote",
+      target: "_self",
+      clickOn: "Quote",
+      className: getLinkStyle("/quote"),
+    },
+    {
+      href: "/event",
+      target: "_self",
+      clickOn: "Event",
+      className: getLinkStyle("/event"),
+    },
+    {
+      href: "/contact",
+      target: "_self",
+      clickOn: "Contact",
+      className: getLinkStyle("/contact"),
+    },
+    {
+      href: `/profile/${loginUser?.uid}`,
+      target: "_self",
+      clickOn: "Profile",
+      className: getLinkStyle(`/profile/${loginUser?.uid}`),
+    },
+  ];
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
@@ -35,7 +61,16 @@ export default function Header() {
           />
         </div>
         <div className="hidden gap-3 text-sm sm:flex ">
-          <UrlLink
+          {headerItems.map((item) => (
+            <UrlLink
+              key={item.href}
+              href={item.href}
+              target={item.target}
+              clickOn={item.clickOn}
+              className={item.className}
+            />
+          ))}
+          {/* <UrlLink
             href="/quote"
             target="_self"
             className={getLinkStyle("/quote")}
@@ -58,7 +93,7 @@ export default function Header() {
             className={getLinkStyle(`/profile/${loginUser?.uid}`)}
             target="_self"
             clickOn="Profile"
-          />
+          /> */}
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
