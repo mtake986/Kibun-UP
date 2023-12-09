@@ -32,9 +32,7 @@ const UserInfoCard = ({
     },
   ];
 
-  const [createdAt, setCreatedAt] = useState<Date>(
-    profileUser.createdAt.toDate()
-  );
+  const createdAtDate = profileUser.createdAt.toDate() ?? undefined;
 
   return (
     <>
@@ -52,11 +50,11 @@ const UserInfoCard = ({
             <p className="text-lg font-semibold">{profileUser.displayName}</p>
             <p className="text-xs text-gray-500">
               Since:{" "}
-              {profileUser.createdAt
+              {createdAtDate
                 ? `${
-                    MONTHS_IN_STR[createdAt.getMonth()]
-                  }/${createdAt.getDate()}, 
-              ${createdAt.getFullYear()}`
+                    MONTHS_IN_STR[createdAtDate.getMonth()]
+                  } ${createdAtDate.getDate()}, 
+              ${createdAtDate.getFullYear()}`
                 : "Error"}
             </p>
           </div>
@@ -84,14 +82,16 @@ const UserInfoCard = ({
         />
         <div className="flex flex-col gap-3">
           <div>
-            <p className="text-lg font-semibold mb-1">{profileUser.displayName}</p>
+            <p className="mb-1 text-lg font-semibold">
+              {profileUser.displayName}
+            </p>
             <p className="text-xs text-gray-500">
               Since:{" "}
-              {profileUser.createdAt
+              {createdAtDate
                 ? `${
-                    MONTHS_IN_STR[createdAt.getMonth()]
-                  }/${createdAt.getDate()}, 
-              ${createdAt.getFullYear()}`
+                    MONTHS_IN_STR[createdAtDate.getMonth()]
+                  } ${createdAtDate.getDate()}, 
+              ${createdAtDate.getFullYear()}`
                 : "Error"}
             </p>
           </div>

@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function Header() {
-  const { fetchLoginUser } = useAuth();
+  const { fetchLoginUser, loginUser } = useAuth();
   const pathname = usePathname();
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
@@ -52,6 +52,12 @@ export default function Header() {
             className={getLinkStyle("/contact")}
             target="_self"
             clickOn="Contact"
+          />
+          <UrlLink
+            href={`/profile/${loginUser?.uid}`}
+            className={getLinkStyle(`/profile/${loginUser?.uid}`)}
+            target="_self"
+            clickOn="Profile"
           />
         </div>
         <div className="flex items-center gap-3">

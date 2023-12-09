@@ -102,7 +102,7 @@ export default function MenuBtn() {
   return (
     <div>
       <MenuIcon
-        className="cursor-pointer text-violet-500 duration-300 hover:opacity-70 dark:text-white"
+        className="cursor-pointer w-5 text-violet-500 duration-300 hover:opacity-70 dark:text-white"
         onClick={toggleDrawer("right", true)}
       />
       <Drawer

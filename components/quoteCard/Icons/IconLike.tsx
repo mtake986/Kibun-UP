@@ -1,5 +1,3 @@
-import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
@@ -18,10 +16,6 @@ const IconLike = ({ q, loginUser }: Props) => {
   const numOfLikes = q.likedBy.length;
   const isLiked = q.likedBy.includes(loginUser.uid);
   const heartFill = isLiked ? "red" : undefined;
-
-  // if (isLoading) {
-  //   return <LoadingSpinnerS />;
-  // }
 
   const handleClick = async () => {
     setIsLoading(true);
