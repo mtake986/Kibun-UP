@@ -1,12 +1,12 @@
 import { useQuote } from "@/context/QuoteContext";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 
 type Props = {
   quote: TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 const Icons = ({ quote, type, refetch, loginUser }: Props) => {
   const { removeLockFromThisQuote, lockThisQuote, updateRandomQuote } =

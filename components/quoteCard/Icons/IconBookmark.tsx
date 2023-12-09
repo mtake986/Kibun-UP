@@ -1,13 +1,13 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { useCallback, useMemo, useState } from "react";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
   q: TypeQuote;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconBookmark = ({ q, loginUser }: Props) => {

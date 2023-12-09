@@ -1,13 +1,13 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { TypeQuote, TypeLoginUser } from "@/types/type";
+import { TypeQuote, TypeUserFromFirestore } from "@/types/type";
 import React from "react";
 import TagList from "./TagList";
 
 type Props = {
   radio: { id: string; label: string };
   updateQuoteTypeForHome: (text: string) => void;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
   loginUserQuotes: TypeQuote[];
 };
 

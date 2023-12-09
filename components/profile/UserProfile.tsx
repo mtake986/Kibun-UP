@@ -57,7 +57,7 @@ const UserProfile = () => {
             <EditMode setIsEditMode={setIsEditMode} />
           </div>
         ) : (
-          <div className="mb-5 flex flex-col items-start gap-2">
+          <div className="mb-5 flex flex-col items-start gap-3">
             <UserInfoCard
               profileUser={profileUser}
               numOfQuotes={profileUserQuotes.length}

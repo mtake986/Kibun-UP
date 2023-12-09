@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
-  TypeLoginUser,
+  TypeUserFromFirestore,
   TypeUpdateUserInputs,
   TypeQuotesPerPage,
 } from "@/types/type";
@@ -44,13 +44,13 @@ type TypeAuthContext = {
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
   ) => void;
-  loginUser: TypeLoginUser | undefined;
+  loginUser: TypeUserFromFirestore | undefined;
   updateQuoteTypeForHome: (text: string) => void;
   fetchLoginUser: (user: any) => void;
   updateTagForQuotableApi: (text: string) => void;
   updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
   fetchUser: (uid: string) => void;
-  profileUser: TypeLoginUser | null;
+  profileUser: TypeUserFromFirestore | null;
 };
 
 const AuthContext = createContext({} as TypeAuthContext);
@@ -63,8 +63,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [signOut, loading, error] = useSignOut(auth);
 
-  const [profileUser, setProfileUser] = useState < TypeLoginUser | null>(null);
-  const [loginUser, setLoginUser] = useState<TypeLoginUser>();
+  const [profileUser, setProfileUser] = useState<TypeUserFromFirestore | null>(
+    null
+  );
+  const [loginUser, setLoginUser] = useState<TypeUserFromFirestore>();
 
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
@@ -109,7 +111,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (user) {
       const q = query(collection(db, "users"), where("uid", "==", user.uid));
       onSnapshot(q, (snapshot) => {
-        setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
+        setLoginUser(snapshot.docs[0]?.data() as TypeUserFromFirestore);
       });
     }
   };
@@ -218,7 +220,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
-      setProfileUser(docSnap.data() as TypeLoginUser);
+      setProfileUser(docSnap.data() as TypeUserFromFirestore);
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");

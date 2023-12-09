@@ -15,7 +15,12 @@ import { Input } from "@/components/ui/input";
 import { auth } from "@/config/Firebase";
 import { quoteSchema } from "@/form/schema";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeTagErrors, ITag, TypeTagError, TypeLoginUser } from "@/types/type";
+import {
+  TypeTagErrors,
+  ITag,
+  TypeTagError,
+  TypeUserFromFirestore,
+} from "@/types/type";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
@@ -356,7 +361,7 @@ const CloseBtn = ({
     any,
     undefined
   >;
-  loginUser: TypeLoginUser | undefined;
+  loginUser: TypeUserFromFirestore | undefined;
 }) => {
   return (
     <Button

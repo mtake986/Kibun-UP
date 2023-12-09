@@ -1,5 +1,5 @@
 "use client";
-import { TypeLoginUser } from "@/types/type";
+import { TypeUserFromFirestore } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import useQuotesFromQuotableAPI from "@/components/hooks/useQuotesFromQuotableAPI";
 import Modal from "./modal/Modal";
@@ -9,7 +9,6 @@ import ApiQuoteCard from "@/components/apiQuoteCard/ApiQuoteCard";
 import ListOfAuthors from "./authors/ListOfAuthors";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import { MdOutlinePerson } from "react-icons/md";
-
 
 const ListOfRandom = () => {
   const [isListOfAuthors, setIsListOfAuthors] = useState(false);
@@ -32,7 +31,6 @@ const ListOfRandom = () => {
     sortBy,
     handleSortBy,
   } = useQuotesFromQuotableAPI();
-  
 
   useEffect(() => {
     fetchData({ currentPage, selectedTags, selectedAuthors, andOr, sortBy });

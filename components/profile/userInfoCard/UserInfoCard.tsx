@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { TypeLoginUser } from "@/types/type";
+import { TypeUserFromFirestore } from "@/types/type";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
+import { MONTHS_IN_STR } from "@/data/CONSTANTS";
 
 type Props = {
-  profileUser: TypeLoginUser;
+  profileUser: TypeUserFromFirestore;
   numOfQuotes: number;
   numOfEvents: number;
   isPathnameSameAsLoginUser?: boolean;
@@ -31,6 +32,8 @@ const UserInfoCard = ({
     },
   ];
 
+  const createdAtDate = profileUser.createdAt.toDate() ?? undefined;
+
   return (
     <>
       {/* mobile */}
@@ -43,7 +46,18 @@ const UserInfoCard = ({
           className="h-24 w-24 rounded-full object-cover object-center text-left"
         />
         <div className="flex flex-col gap-1">
-          <p className="text-lg font-semibold">{profileUser.displayName}</p>
+          <div>
+            <p className="text-lg font-semibold">{profileUser.displayName}</p>
+            <p className="text-xs text-gray-500">
+              Since:{" "}
+              {createdAtDate
+                ? `${
+                    MONTHS_IN_STR[createdAtDate.getMonth()]
+                  } ${createdAtDate.getDate()}, 
+              ${createdAtDate.getFullYear()}`
+                : "Error"}
+            </p>
+          </div>
           <div className="flex justify-start gap-3">
             {items.map((item: { label: string; value: number }) =>
               item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
@@ -57,7 +71,7 @@ const UserInfoCard = ({
         </div>
       </div>
 
-      {/* more than tablet */}
+      {/* tablet, pc */}
       <div className="hidden items-center gap-10 xs:flex">
         <Image
           src={profileUser.photoURL || defaultProfilePhoto}
@@ -67,7 +81,20 @@ const UserInfoCard = ({
           className="rounded-full object-cover object-center text-left xs:h-32 xs:w-32"
         />
         <div className="flex flex-col gap-3">
-          <p className="text-lg font-semibold">{profileUser.displayName}</p>
+          <div>
+            <p className="mb-1 text-lg font-semibold">
+              {profileUser.displayName}
+            </p>
+            <p className="text-xs text-gray-500">
+              Since:{" "}
+              {createdAtDate
+                ? `${
+                    MONTHS_IN_STR[createdAtDate.getMonth()]
+                  } ${createdAtDate.getDate()}, 
+              ${createdAtDate.getFullYear()}`
+                : "Error"}
+            </p>
+          </div>
           <div className="flex justify-start gap-3">
             {items.map((item: { label: string; value: number }) =>
               item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (

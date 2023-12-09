@@ -1,4 +1,4 @@
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { useMemo } from "react";
 
 // export const useQuotesLikedByLoginUser = (quotes: TypeQuote[], uid: string) =>
@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 export const useQuotesBookmarkedByLoginUser = (
   quotes: TypeQuote[],
-  loginUser: TypeLoginUser
+  loginUser: TypeUserFromFirestore
 ) =>
   useMemo(
     () => quotes.filter((q) => q.bookmarkedBy.includes(loginUser.uid)),

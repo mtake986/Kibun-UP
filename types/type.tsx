@@ -56,12 +56,12 @@ export interface ISortFilterBy {
   searchTag: string;
 }
 
-export type TypeLoginUser = {
+export type TypeUserFromFirestore = {
   uid: string;
   email: string;
   displayName: string;
   photoURL: string;
-  createdAt: Date;
+  createdAt: Timestamp;
   settings: {
     itemsPerPage: number;
     tagForQuotableApi: string;

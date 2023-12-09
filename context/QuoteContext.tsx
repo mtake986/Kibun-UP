@@ -24,7 +24,7 @@ import {
   TypeQuoteInputValues,
   ISortFilterBy,
   ITag,
-  TypeLoginUser,
+  TypeUserFromFirestore,
   TypeTabNamesOfQuotes,
   TypeAPIQuote,
   TypeTempLockedQuote,
@@ -87,7 +87,7 @@ type TypeQuoteContext = {
   sortFilterByForNotMine: ISortFilterBy;
 
   fetchQuotesForHomePage: (
-    user: TypeLoginUser,
+    user: TypeUserFromFirestore,
     setIsLoading: (boo: boolean) => void
   ) => void;
   quotesForHomePage: TypeQuote[];
@@ -720,7 +720,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const fetchQuotesForHomePage = (
-    user: TypeLoginUser,
+    user: TypeUserFromFirestore,
     setIsLoading: (boo: boolean) => void
   ) => {
     setIsLoading(true);
@@ -1014,7 +1014,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchQuotesForHomePage,
         quotesForHomePage,
-        
+
         sortFilterAreaForMineShown,
         handleSortFilterAreaForMineShown,
         sortFilterAreaForNotMineShown,

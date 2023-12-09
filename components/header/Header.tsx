@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function Header() {
-  const { fetchLoginUser } = useAuth();
+  const { fetchLoginUser, loginUser } = useAuth();
   const pathname = usePathname();
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
@@ -23,6 +23,32 @@ export default function Header() {
     }`;
   }
 
+  const headerItems = [
+    {
+      href: "/quote",
+      target: "_self",
+      clickOn: "Quote",
+      className: getLinkStyle("/quote"),
+    },
+    {
+      href: "/event",
+      target: "_self",
+      clickOn: "Event",
+      className: getLinkStyle("/event"),
+    },
+    {
+      href: `/profile/${loginUser?.uid}`,
+      target: "_self",
+      clickOn: "Profile",
+      className: getLinkStyle(`/profile/${loginUser?.uid}`),
+    },
+    {
+      href: "/contact",
+      target: "_self",
+      clickOn: "Contact",
+      className: getLinkStyle("/contact"),
+    },
+  ];
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
@@ -35,7 +61,16 @@ export default function Header() {
           />
         </div>
         <div className="hidden gap-3 text-sm sm:flex ">
-          <UrlLink
+          {headerItems.map((item) => (
+            <UrlLink
+              key={item.href}
+              href={item.href}
+              target={item.target}
+              clickOn={item.clickOn}
+              className={item.className}
+            />
+          ))}
+          {/* <UrlLink
             href="/quote"
             target="_self"
             className={getLinkStyle("/quote")}
@@ -53,10 +88,21 @@ export default function Header() {
             target="_self"
             clickOn="Contact"
           />
+          <UrlLink
+            href={`/profile/${loginUser?.uid}`}
+            className={getLinkStyle(`/profile/${loginUser?.uid}`)}
+            target="_self"
+            clickOn="Profile"
+          /> */}
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          {pathname.includes("/profile") ? <MenuBtn /> : <ProfilePic />}
+          {pathname.includes(`/profile/${loginUser?.uid}`) ? (
+            <MenuBtn />
+          ) : (
+            // <ProfilePic />
+            null
+          )}
         </div>
       </nav>
     </header>

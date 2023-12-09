@@ -1,12 +1,12 @@
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast, displayToast } from "@/functions/displayToast";
-import { TypeAPIQuote, TypeLoginUser } from "@/types/type";
+import { TypeAPIQuote, TypeUserFromFirestore } from "@/types/type";
 import React, { useState } from "react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
   q: TypeAPIQuote;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconLock = ({ q, loginUser }: Props) => {
@@ -33,7 +33,7 @@ const IconLock = ({ q, loginUser }: Props) => {
       console.error(error);
       displayErrorToast(error);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleLock = async () => {
