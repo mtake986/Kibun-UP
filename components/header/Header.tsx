@@ -37,16 +37,16 @@ export default function Header() {
       className: getLinkStyle("/event"),
     },
     {
-      href: "/contact",
-      target: "_self",
-      clickOn: "Contact",
-      className: getLinkStyle("/contact"),
-    },
-    {
       href: `/profile/${loginUser?.uid}`,
       target: "_self",
       clickOn: "Profile",
       className: getLinkStyle(`/profile/${loginUser?.uid}`),
+    },
+    {
+      href: "/contact",
+      target: "_self",
+      clickOn: "Contact",
+      className: getLinkStyle("/contact"),
     },
   ];
   return (
@@ -97,7 +97,12 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          {pathname.includes("/profile") ? <MenuBtn /> : <ProfilePic />}
+          {pathname.includes(`/profile/${loginUser?.uid}`) ? (
+            <MenuBtn />
+          ) : (
+            // <ProfilePic />
+            null
+          )}
         </div>
       </nav>
     </header>
