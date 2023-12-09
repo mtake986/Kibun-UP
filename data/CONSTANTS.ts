@@ -106,3 +106,18 @@ export const insertFromBottom = {
   hidden: { opacity: 0, x: 0, y: 100 },
   enter: { opacity: 1, x: 0, y: 0 },
 };
+
+export const MONTHS_IN_STR = [
+  "Jan.",
+  "Feb.",
+  "Mar.",
+  "Apr.",
+  "May",
+  "Jun.",
+  "Jul.",
+  "Aug.",
+  "Sep.",
+  "Oct.",
+  "Nov.",
+  "Dec.",
+];

@@ -2,13 +2,13 @@ import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
   q: TypeQuote;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconLike = ({ q, loginUser }: Props) => {

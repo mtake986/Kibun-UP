@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
@@ -9,7 +9,7 @@ import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
 
 type Props = {
   loginUserQuotes: TypeQuote[];
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const ListOfBookmarks = ({ loginUserQuotes, loginUser }: Props) => {

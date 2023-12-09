@@ -1,13 +1,13 @@
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeAPIQuote, TypeLoginUser } from "@/types/type";
+import { TypeAPIQuote, TypeUserFromFirestore } from "@/types/type";
 import { Heart } from "lucide-react";
 import { useMemo } from "react";
 
 type Props = {
   q: TypeAPIQuote;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconLike = ({ q, loginUser }: Props) => {

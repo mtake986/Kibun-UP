@@ -2,13 +2,13 @@ import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { useEvent } from "@/context/EventContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { TypeEvent, TypeLoginUser } from "@/types/type";
+import { TypeEvent, TypeUserFromFirestore } from "@/types/type";
 import { Target } from "lucide-react";
 import React, { useState } from "react";
 
 type Props = {
   event: TypeEvent;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconLock = ({ event, loginUser }: Props) => {

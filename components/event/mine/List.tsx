@@ -2,7 +2,7 @@
 
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { TypeEvent, TypeLoginUser } from "@/types/type";
+import { TypeEvent, TypeUserFromFirestore } from "@/types/type";
 import { useEffect, useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
 

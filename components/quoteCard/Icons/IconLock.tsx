@@ -1,13 +1,13 @@
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast, displayToast } from "@/functions/displayToast";
-import { TypeLoginUser, TypeQuote } from "@/types/type";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import React, { useState } from "react";
 import { BiLock, BiLockOpen } from "react-icons/bi";
 
 type Props = {
   q: TypeQuote;
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const IconLock = ({ q, loginUser }: Props) => {
@@ -15,9 +15,7 @@ const IconLock = ({ q, loginUser }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   if (isLoading) {
-    return (
-      <LoadingSpinnerXS num={4}/>
-    );
+    return <LoadingSpinnerXS num={4} />;
   }
 
   return (

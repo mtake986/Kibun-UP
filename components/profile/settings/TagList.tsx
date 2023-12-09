@@ -10,13 +10,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { styleVariables } from "./styles";
-import { TypeLoginUser, TypeTagsQuotableAPI } from "@/types/type";
+import { TypeUserFromFirestore, TypeTagsQuotableAPI } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import useFetchTags from "@/components/hooks/useFetchTags";
 
 type Props = {
-  loginUser: TypeLoginUser;
+  loginUser: TypeUserFromFirestore;
 };
 
 const TagList = ({ loginUser }: Props) => {
