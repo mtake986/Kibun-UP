@@ -11,6 +11,7 @@ import UrlLink from "@/components/utils/UrlLink";
 import Image from "next/image";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useQuote } from "@/context/QuoteContext";
+import IconLike from "./IconLike";
 
 type Props = {
   event: TypeEvent;
@@ -74,7 +75,7 @@ const Icons = ({
           />
         ) : null}
         <IconLock event={event} loginUser={loginUser} />
-        {/* <IconLike q={q} loginUser={loginUser} /> */}
+        <IconLike event={event} loginUser={loginUser} />
       </div>
       {isMine ? (
         <IconTrash

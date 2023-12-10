@@ -15,6 +15,8 @@ import {
   addDoc,
   getDocs,
   getDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -62,6 +64,9 @@ type EventContextType = {
   profileUserEvents: TypeEvent[] | [];
   fetchAllEvents: () => Promise<void>;
   allEvents: TypeEvent[] | [];
+
+  cheerEvent: (uid: string, event: TypeEvent) => Promise<void>;
+  removeCheerFromEvent: (uid: string, event: TypeEvent) => Promise<void>;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -91,6 +96,7 @@ export function EventProvider({ children }: EventProviderProps) {
         createdBy: uid,
         createdAt: currTime,
         updatedAt: currTime,
+        cheeredBy: []
       });
       displaySuccessToast({
         text: "Created",
@@ -275,6 +281,42 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
+
+  const cheerEvent = async (uid: string, event: TypeEvent) => {
+    const eventDocRef = doc(db, "events", event.id);
+    const eventDocSnap = await getDoc(eventDocRef);
+    if (eventDocSnap.exists()) {
+      await updateDoc(eventDocRef, {
+        cheeredBy: arrayUnion(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
+      });
+    } else {
+      await setDoc(doc(db, "events", event.id), {
+        ...event,
+        cheeredBy: [uid],
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    }
+  };
+
+  const removeCheerFromEvent = async (uid: string, event: TypeEvent) => {
+    const eventDocRef = doc(db, "events", event.id);
+    const eventDocSnap = await getDoc(eventDocRef);
+    if (eventDocSnap.exists()) {
+      await updateDoc(eventDocRef, {
+        cheeredBy: arrayRemove(uid),
+      }).catch((e) => {
+        displayErrorToast({
+          e,
+        });
+      });
+    }
+  };
+
   return (
     <EventContext.Provider
       value={{
@@ -302,6 +344,8 @@ export function EventProvider({ children }: EventProviderProps) {
         profileUserEvents,
         fetchAllEvents,
         allEvents,
+        cheerEvent,
+        removeCheerFromEvent
       }}
     >
       {children}

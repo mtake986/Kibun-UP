@@ -9,6 +9,7 @@ export interface TypeEvent {
   createdBy: string;
   createdAt: Date;
   updatedAt?: Date;
+  cheeredBy: string[];
 }
 
 export type TypeQuote = {
