@@ -16,8 +16,6 @@ export const metadata = {
 };
 
 const Event = () => {
-  const { isRegisterFormOpen } = useEvent();
-
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
   const {
@@ -25,10 +23,12 @@ const Event = () => {
     getLockedEvent,
     loginUserEvents,
     getLoginUserEvents,
+    fetchAllEvents, 
   } = useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // todo: fetch quotes created by all
   useEffect(() => {
     let isMounted = true;
     const fetchDocs = async () => {
@@ -37,6 +37,7 @@ const Event = () => {
     const fetchEvents = async () => {
       if (loginUserEvents.length === 0) getLoginUserEvents();
       if (!lockedEvent) getLockedEvent();
+      fetchAllEvents();
     };
     const fetchData = async () => {
       setIsLoading(true);

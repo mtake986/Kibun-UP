@@ -4,6 +4,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import List from "../mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { TypeEvent } from "@/types/type";
+import { useAuth } from "@/context/AuthContext";
 
 const Tabs = () => {
 
@@ -12,6 +14,8 @@ const Tabs = () => {
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
 
+  const { allEvents, loginUserEvents } = useEvent();
+  const { loginUser } = useAuth();
   // functions =====
   const displayList = () => {
     switch (currTab) {
@@ -19,7 +23,7 @@ const Tabs = () => {
         return <List events={loginUserEvents} />;
       case "notMine":
         // return <ListNotMine quotes={quotesNotMine} />;
-        return <div>not mine</div>
+        return <List events={allEvents.filter((event: TypeEvent) => event.createdBy !== loginUser?.uid)} />
       default:
         return <List events={loginUserEvents} />;
     }
@@ -28,7 +32,6 @@ const Tabs = () => {
   const handleClick = (val: string) => {
     router.push(pathname + `?tab=${val}`);
   };
-  const { loginUserEvents } = useEvent();
 
   return (
     <div>

@@ -29,7 +29,6 @@ const Quote = () => {
     getQuotesNotMine,
     fetchAllQuotes,
     allQuotes,
-
     apiQuotesFromFirestore,
     fetchApiQuotesFromFirestore,
   } = useQuote();

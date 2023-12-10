@@ -60,6 +60,8 @@ type EventContextType = {
   isUpdateLoading: boolean;
   fetchProfileUserEvents: (uid: string) => Promise<void>;
   profileUserEvents: TypeEvent[] | [];
+  fetchAllEvents: () => Promise<void>;
+  allEvents: TypeEvent[] | [];
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -73,7 +75,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
   const [randomEvent, setRandomEvent] = useState<TypeEvent>();
   const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
-
+  const [allEvents, setAllEvents] = useState<TypeEvent[]>([]);
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const [profileUserEvents, setProfileUserEvents] = useState<TypeEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
@@ -260,8 +262,18 @@ export function EventProvider({ children }: EventProviderProps) {
     });
 
     setProfileUserEvents(es);
-  }
+  };
 
+  const fetchAllEvents = async () => {
+    if (user?.uid) {
+      const querySnapshot = await getDocs(collection(db, "events"));
+      let events: TypeEvent[] = [];
+      querySnapshot.forEach((doc) => {
+        events.push({ ...doc.data(), id: doc.id } as TypeEvent);
+      });
+      setAllEvents(events)
+    }
+  };
 
   return (
     <EventContext.Provider
@@ -288,6 +300,8 @@ export function EventProvider({ children }: EventProviderProps) {
         isUpdateLoading,
         fetchProfileUserEvents,
         profileUserEvents,
+        fetchAllEvents,
+        allEvents,
       }}
     >
       {children}
