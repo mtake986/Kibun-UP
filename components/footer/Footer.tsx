@@ -16,57 +16,49 @@ const Footer = () => {
   const isBtnDisabled = (pathname: string, link: string) =>
     pathname.includes(link);
 
-  // const btnStyle = (pathname: string, link: string) => {
-  //   if (isBtnDisabled(pathname, link)) {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
-  //   } else {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
-  //   }
-  // };
-
-  const btnStyle = (pathname: string, link: string) =>
-    `flex items-center gap-3 text-violet-500 dark:text-white ${
-      isBtnDisabled(pathname, link)
-        ? "font-bold"
-        : "transition duration-300 ease-in hover:opacity-70"
-    }`;
-
   const item = (link: string, icon: React.JSX.Element) => {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`${btnStyle(pathname, `/${link}`)}`}
+        className={`flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70`}
       >
         {icon}
       </button>
     );
   };
 
+  const icons = [
+    <BsHouse key={"BsHouse"} />,
+    <BsChatQuote key={"BsChatQuote"} />,
+    <BsFlag key={"BsFlag"} />,
+    <BsPerson key={"BsPerson"} />,
+    <AiOutlineContacts key={"AiOutlineContacts"} />,
+  ];
   const footerListItems = [
     {
       href: "/home",
       target: "_self",
-      clickOn: item("home", <BsHouse />),
+      clickOn: item("home", icons[0]),
     },
     {
       href: "/quote",
       target: "_self",
-      clickOn: item("quote", <BsChatQuote />),
+      clickOn: item("quote", icons[1]),
     },
     {
       href: "/event",
       target: "_self",
-      clickOn: item("event", <BsFlag />),
+      clickOn: item("event", icons[2]),
     },
     {
       href: `/profile/${user?.uid}`,
       target: "_self",
-      clickOn: item("profile", <BsPerson />),
+      clickOn: item(`/profile/${user?.uid}`, icons[3]),
     },
     {
       href: `/contact`,
       target: "_self",
-      clickOn: item("contact", <AiOutlineContacts />),
+      clickOn: item("contact", icons[4]),
     },
   ];
 
@@ -85,15 +77,22 @@ const Footer = () => {
 
       {/* mobile */}
       <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
-        <div className="flex w-full max-w-[150px] items-center m-auto justify-around gap-10 px-20">
-          {footerListItems.map((item, i) => (
-            <UrlLink
-              key={item.href}
-              href={item.href}
-              target={item.target}
-              clickOn={item.clickOn}
-            />
-          ))}
+        <div className="m-auto flex w-full max-w-[150px] items-center justify-around gap-10 px-20">
+          {footerListItems.map((item, i) => {
+            if (pathname.includes(item.href)) {
+              return (
+                <button disabled={true} className="opacity-50" key={item.href}>{icons[i]}</button>
+              );
+            }
+            return (
+              <UrlLink
+                key={item.href}
+                href={item.href}
+                target={item.target}
+                clickOn={item.clickOn}
+              />
+            );
+          })}
         </div>
       </nav>
     </>
