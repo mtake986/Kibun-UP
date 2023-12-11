@@ -13,6 +13,7 @@ import { displayErrorToast } from "@/functions/displayToast";
 import Actions from "./actions/Actions";
 import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
+import NoProfileUser from "./NoProfileUser";
 
 const UserProfile = () => {
   const pathname = usePathname();
@@ -29,23 +30,20 @@ const UserProfile = () => {
 
   useEffect(() => {
     try {
-      if (loginUser) {
-        if (uid) {
-          fetchUser(uid);
-          fetchProfileUserQuotes(uid);
-          fetchProfileUserEvents(uid);
-          getLockedQuote();
-        }
-      } else {
-        fetchLoginUser(auth.currentUser);
+      fetchLoginUser(auth.currentUser);
+      if (uid) {
+        fetchUser(uid);
+        fetchProfileUserQuotes(uid);
+        fetchProfileUserEvents(uid);
+        getLockedQuote();
       }
     } catch (error) {
       displayErrorToast(error);
     }
-  }, [user, loginUser]);
+  }, [user]);
 
   if (!loginUser) return <div>Please log in</div>;
-  if (!profileUser) return <div>No Profile User</div>;
+  if (!profileUser) return <NoProfileUser uid={uid} />;
 
   const isPathnameSameAsLoginUser = uid === loginUser?.uid;
 

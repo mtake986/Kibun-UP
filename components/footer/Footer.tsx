@@ -13,14 +13,27 @@ const Footer = () => {
   const pathname = usePathname();
   const [user] = useAuthState(auth);
 
-  const isBtnDisabled = (pathname: string, link: string) =>
-    pathname.includes(link);
+  const isBtnDisabled = (pathname: string, link: string) => {
+    // Check for static links
+    if (link.startsWith("/profile/")) {
+      // For dynamic links like /profile/:uid, check if pathname starts with the base path
+      const basePath = "/profile/";
+      if (pathname.startsWith(basePath)) {
+        const uid = pathname.slice(basePath.length);
+        // Assuming any non-empty string is a valid UID
+        return uid.length > 0;
+      }
+      return false;
+    }
+    // Exact match for static paths
+    return pathname === link;
+  };
 
   const item = (link: string, icon: React.JSX.Element) => {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70`}
+        className={`flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white`}
       >
         {icon}
       </button>
@@ -82,7 +95,9 @@ const Footer = () => {
           {footerListItems.map((item, i) => {
             if (pathname.includes(item.href)) {
               return (
-                <button disabled={true} className="opacity-50" key={item.href}>{icons[i]}</button>
+                <button disabled={true} className="opacity-50" key={item.href}>
+                  {icons[i]}
+                </button>
               );
             }
             return (

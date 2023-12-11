@@ -36,7 +36,6 @@ const Quote = () => {
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
 
-  const [isPending, setIsPending] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchDocs = async () => {

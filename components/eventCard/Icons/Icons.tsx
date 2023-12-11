@@ -42,7 +42,7 @@ const Icons = ({
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
-        displayErrorToast(error);
+        displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
   }, []);

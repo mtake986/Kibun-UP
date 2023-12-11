@@ -11,6 +11,7 @@ import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import UrlLink from "@/components/utils/UrlLink";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   q: TypeQuote;
@@ -45,6 +46,7 @@ const Icons = ({
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
+        displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
   }, []);
