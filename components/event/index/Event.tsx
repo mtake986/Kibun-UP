@@ -27,10 +27,8 @@ const Event = () => {
   } = useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   // todo: fetch quotes created by all
   useEffect(() => {
-    let isMounted = true;
     const fetchDocs = async () => {
       if (!loginUser) fetchLoginUser(user);
     };
@@ -51,9 +49,6 @@ const Event = () => {
       }
     };
     fetchData();
-    return () => {
-      isMounted = false;
-    };
   }, [user]);
 
   if (!user) {

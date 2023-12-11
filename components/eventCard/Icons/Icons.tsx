@@ -42,17 +42,12 @@ const Icons = ({
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
+        displayErrorToast(error);
         setIsLoading(false);
       });
   }, []);
 
-  if (!loginUser) {
-    displayToast({ text: "No Login User", color: "red" });
-    return null; // or return some default UI
-  }
-
-
-  const creatorImg = () => {
+  const creatorImg = useCallback(() => {
     return (
       <Image
         src={profilePhoto ?? defaultProfilePhoto}
@@ -62,7 +57,12 @@ const Icons = ({
         className="rounded-full"
       />
     );
-  };
+  }, [profilePhoto]);
+
+  if (!loginUser) {
+    displayToast({ text: "No Login User", color: "red" });
+    return null; // or return some default UI
+  }
 
   const isMine = event.createdBy === loginUser?.uid;
   return (

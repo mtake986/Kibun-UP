@@ -34,6 +34,7 @@ const Footer = () => {
     <BsPerson key={"BsPerson"} />,
     <AiOutlineContacts key={"AiOutlineContacts"} />,
   ];
+
   const footerListItems = [
     {
       href: "/home",

@@ -16,7 +16,6 @@ const IconLike = ({ event, loginUser }: Props) => {
   const { cheerEvent, removeCheerFromEvent } = useEvent();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
   const [numOfCheers, setNumOfCheers] = useState<number>(event.cheeredBy?.length);
   const [isLiked, setIsLiked] = useState<boolean>(event.cheeredBy?.includes(loginUser.uid));
 
@@ -43,7 +42,7 @@ const IconLike = ({ event, loginUser }: Props) => {
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+      className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
       {isLiked ? (
         <>

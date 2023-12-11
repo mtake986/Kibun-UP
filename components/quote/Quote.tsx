@@ -40,6 +40,7 @@ const Quote = () => {
 
   useEffect(() => {
     const fetchDocs = async () => {
+      if (!loginUser) fetchLoginUser(user);
       if (!loginUserQuotes || loginUserQuotes.length === 0) {
         console.log("fetching login user quotes");
         getLoginUserQuotes();
@@ -51,28 +52,15 @@ const Quote = () => {
       if (apiQuotesFromFirestore.length === 0)
         await fetchApiQuotesFromFirestore();
     };
+
     try {
-      setIsPending(true);
-      if (loginUser) {
-        fetchDocs().then(() => setIsPending(false));
-      } else {
-        if (auth.currentUser) {
-          fetchLoginUser(auth.currentUser);
-        } else {
-          // Handle the case where auth.currentUser is null
-          displayErrorToast("Please log in.");
-        }
-      }
+      fetchDocs();
     } catch (error) {
       displayErrorToast(
         `An unexpected error occurred. Please try again later.`
       );
-    } finally {
-      // setTimeout(() => {
-        
-      // }, 5000);
     }
-  }, [user, loginUser]);
+  }, [user]);
 
   if (!user) {
     return <GoogleLoginBtn />;
@@ -80,8 +68,6 @@ const Quote = () => {
 
   if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;
-  } else if (isPending) {
-    return <div>{loginUser?.uid}, Pending...</div>;
   } else {
     return (
       <div className="px-5 py-10 sm:mb-32 sm:p-0">

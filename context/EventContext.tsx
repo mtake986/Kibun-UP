@@ -96,7 +96,7 @@ export function EventProvider({ children }: EventProviderProps) {
         createdBy: uid,
         createdAt: currTime,
         updatedAt: currTime,
-        cheeredBy: []
+        cheeredBy: [],
       });
       displaySuccessToast({
         text: "Created",
@@ -271,16 +271,13 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const fetchAllEvents = async () => {
-    if (user?.uid) {
-      const querySnapshot = await getDocs(collection(db, "events"));
-      let events: TypeEvent[] = [];
-      querySnapshot.forEach((doc) => {
-        events.push({ ...doc.data(), id: doc.id } as TypeEvent);
-      });
-      setAllEvents(events)
-    }
+    const querySnapshot = await getDocs(collection(db, "events"));
+    let events: TypeEvent[] = [];
+    querySnapshot.forEach((doc) => {
+      events.push({ ...doc.data(), id: doc.id } as TypeEvent);
+    });
+    setAllEvents(events);
   };
-
 
   const cheerEvent = async (uid: string, event: TypeEvent) => {
     const eventDocRef = doc(db, "events", event.id);
@@ -288,18 +285,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (eventDocSnap.exists()) {
       await updateDoc(eventDocRef, {
         cheeredBy: arrayUnion(uid),
-      }).catch((e) => {
-        displayErrorToast({
-          e,
-        });
-      });
-    } else {
-      await setDoc(doc(db, "events", event.id), {
-        ...event,
-        cheeredBy: [uid],
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
+      })
     }
   };
 
@@ -309,11 +295,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (eventDocSnap.exists()) {
       await updateDoc(eventDocRef, {
         cheeredBy: arrayRemove(uid),
-      }).catch((e) => {
-        displayErrorToast({
-          e,
-        });
-      });
+      })
     }
   };
 
@@ -345,7 +327,7 @@ export function EventProvider({ children }: EventProviderProps) {
         fetchAllEvents,
         allEvents,
         cheerEvent,
-        removeCheerFromEvent
+        removeCheerFromEvent,
       }}
     >
       {children}

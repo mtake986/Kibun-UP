@@ -49,11 +49,7 @@ const Icons = ({
       });
   }, []);
 
-  if (!loginUser) {
-    return null; // or return some default UI
-  }
-
-  const creatorImg = () => {
+  const creatorImg = useCallback(() => {
     return (
       <Image
         src={profilePhoto ?? defaultProfilePhoto}
@@ -63,7 +59,11 @@ const Icons = ({
         className="rounded-full"
       />
     );
-  };
+  }, [profilePhoto]);
+
+  if (!loginUser) {
+    return null; // or return some default UI
+  }
 
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
