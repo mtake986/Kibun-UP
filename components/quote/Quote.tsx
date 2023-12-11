@@ -27,8 +27,6 @@ const Quote = () => {
     getLockedQuote,
     lockedQuote,
     getQuotesNotMine,
-    fetchAllQuotes,
-    allQuotes,
     apiQuotesFromFirestore,
     fetchApiQuotesFromFirestore,
   } = useQuote();
@@ -36,10 +34,9 @@ const Quote = () => {
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
 
-
   useEffect(() => {
     const fetchDocs = async () => {
-      if (!loginUser) fetchLoginUser(user);
+      fetchLoginUser(user);
       if (!loginUserQuotes || loginUserQuotes.length === 0) {
         console.log("fetching login user quotes");
         getLoginUserQuotes();
@@ -47,7 +44,6 @@ const Quote = () => {
       if (!lockedQuote) await getLockedQuote();
       if (!quotesNotMine || quotesNotMine.length === 0)
         await getQuotesNotMine();
-      if (allQuotes.length === 0) await fetchAllQuotes();
       if (apiQuotesFromFirestore.length === 0)
         await fetchApiQuotesFromFirestore();
     };

@@ -52,27 +52,27 @@ const Footer = () => {
     {
       href: "/home",
       target: "_self",
-      clickOn: item("home", icons[0]),
+      clickOn: item("home", <BsHouse />),
     },
     {
       href: "/quote",
       target: "_self",
-      clickOn: item("quote", icons[1]),
+      clickOn: item("quote", <BsChatQuote />),
     },
     {
       href: "/event",
       target: "_self",
-      clickOn: item("event", icons[2]),
+      clickOn: item("event", <BsFlag key={"BsFlag"} />),
     },
     {
       href: `/profile/${user?.uid}`,
       target: "_self",
-      clickOn: item(`/profile/${user?.uid}`, icons[3]),
+      clickOn: item(`/profile/${user?.uid}`, <BsPerson />),
     },
     {
       href: `/contact`,
       target: "_self",
-      clickOn: item("contact", icons[4]),
+      clickOn: item("contact", <AiOutlineContacts />),
     },
   ];
 
