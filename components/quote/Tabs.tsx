@@ -1,13 +1,12 @@
 import { useQuote } from "@/context/QuoteContext";
 import ListNotMine from "./notMine/ListNotMine";
-import { TypeQuote, TypeTabNamesOfQuotes } from "@/types/type";
+import { TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 import List from "./mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 const SwitchTab = () => {
-  const { loginUserQuotes, quotesNotMine, getLoginUserQuotes } = useQuote();
+  const { loginUserQuotes, quotesNotMine } = useQuote();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -19,7 +18,7 @@ const SwitchTab = () => {
     switch (currTab) {
       case "mine":
         return <List quotes={loginUserQuotes} />;
-      case "all":
+      case "notMine":
         return <ListNotMine quotes={quotesNotMine} />;
       case "api":
         return <ListOfRandom />;
@@ -60,7 +59,7 @@ const tabs: { name: TypeTabNamesOfQuotes; label: string }[] = [
     name: "mine",
     label: "Mine",
   },
-  { name: "all", label: "All" },
+  { name: "notMine", label: "Not Mine" },
   { name: "api", label: "Random" },
 ];
 

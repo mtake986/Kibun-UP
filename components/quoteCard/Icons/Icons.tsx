@@ -11,6 +11,9 @@ import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import UrlLink from "@/components/utils/UrlLink";
+import { displayErrorToast } from "@/functions/displayToast";
+import { usePathname } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 type Props = {
   q: TypeQuote;
@@ -45,15 +48,12 @@ const Icons = ({
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
+        displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
   }, []);
 
-  if (!loginUser) {
-    return null; // or return some default UI
-  }
-
-  const creatorImg = () => {
+  const creatorImg = useCallback(() => {
     return (
       <Image
         src={profilePhoto ?? defaultProfilePhoto}
@@ -63,7 +63,14 @@ const Icons = ({
         className="rounded-full"
       />
     );
-  };
+  }, [profilePhoto]);
+
+  const pathname = usePathname();
+  const uid = extractUidFromPath(pathname);
+
+  if (!loginUser) {
+    return null; // or return some default UI
+  }
 
   return (
     <div className="mt-5 flex items-center justify-between gap-2">
@@ -82,6 +89,8 @@ const Icons = ({
         <IconTrash q={q} goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords} />
       ) : isAPI ? null : isLoading ? (
         <LoadingSpinnerXS num={3} />
+      ) : pathname.includes(uid) ? (
+        <div>{creatorImg()}</div>
       ) : (
         <UrlLink
           href={`/profile/${q.createdBy}`}

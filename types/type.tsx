@@ -9,6 +9,7 @@ export interface TypeEvent {
   createdBy: string;
   createdAt: Date;
   updatedAt?: Date;
+  cheeredBy: string[];
 }
 
 export type TypeQuote = {
@@ -101,7 +102,7 @@ export type ProfileTabs = {
   length: number;
 };
 
-export type TypeTabNamesOfQuotes = "all" | "mine" | "api";
+export type TypeTabNamesOfQuotes = "mine" | "notMine" | "api";
 
 export type TypeQuotesPerPage = 10 | 25 | 50 | 100;
 

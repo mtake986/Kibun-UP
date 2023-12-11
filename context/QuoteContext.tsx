@@ -25,7 +25,6 @@ import {
   ISortFilterBy,
   ITag,
   TypeUserFromFirestore,
-  TypeTabNamesOfQuotes,
   TypeAPIQuote,
   TypeTempLockedQuote,
 } from "@/types/type";

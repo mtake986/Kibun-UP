@@ -3,9 +3,17 @@ import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
 import IconLock from "./IconLock";
 import IconTrash from "./IconTrash";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { auth } from "@/config/Firebase";
 import { displayErrorToast, displayToast } from "@/functions/displayToast";
+import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
+import UrlLink from "@/components/utils/UrlLink";
+import Image from "next/image";
+import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
+import { useQuote } from "@/context/QuoteContext";
+import IconLike from "./IconLike";
+import { usePathname } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 type Props = {
   event: TypeEvent;
@@ -21,26 +29,76 @@ const Icons = ({
   goPrevAsNoCurrentRecords,
 }: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const { getCreatorPhoto } = useQuote();
+
+  const fetchProfilePhoto = useCallback(async () => {
+    const photo = await getCreatorPhoto(event.createdBy);
+    setProfilePhoto(photo);
+  }, [event.createdBy, getCreatorPhoto]);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchLoginUser(auth.currentUser);
+    fetchProfilePhoto()
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        displayErrorToast("Failed to fetch profile photo:", error);
+        setIsLoading(false);
+      });
   }, []);
+
+  const creatorImg = useCallback(() => {
+    return (
+      <Image
+        src={profilePhoto ?? defaultProfilePhoto}
+        alt="profile photo"
+        width={20}
+        height={20}
+        className="rounded-full"
+      />
+    );
+  }, [profilePhoto]);
+
+  const pathname = usePathname();
+  const uid = extractUidFromPath(pathname);
 
   if (!loginUser) {
     displayToast({ text: "No Login User", color: "red" });
     return null; // or return some default UI
   }
 
+  const isMine = event.createdBy === loginUser?.uid;
   return (
     <div className="mt-5 flex items-center justify-between">
       <div className="flex items-center gap-5">
-        <IconEdit
-          setIsUpdateMode={setIsUpdateMode}
-          isUpdateMode={isUpdateMode}
-        />
+        {isMine ? (
+          <IconEdit
+            setIsUpdateMode={setIsUpdateMode}
+            isUpdateMode={isUpdateMode}
+          />
+        ) : null}
         <IconLock event={event} loginUser={loginUser} />
+        <IconLike event={event} loginUser={loginUser} />
       </div>
-      <IconTrash event={event} goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords} />
+      {isMine ? (
+        <IconTrash
+          event={event}
+          goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+        />
+      ) : isLoading ? (
+        <LoadingSpinnerXS num={3} />
+      ) : pathname.includes(uid) ? (
+        <div>{creatorImg()}</div>
+      ) : (
+        <UrlLink
+          href={`/profile/${event.createdBy}`}
+          target={"_self"}
+          clickOn={creatorImg()}
+          className="hover:opacity-70"
+        />
+      )}
     </div>
   );
 };

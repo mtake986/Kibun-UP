@@ -13,34 +13,40 @@ const Footer = () => {
   const pathname = usePathname();
   const [user] = useAuthState(auth);
 
-  const isBtnDisabled = (pathname: string, link: string) =>
-    pathname.includes(link);
-
-  // const btnStyle = (pathname: string, link: string) => {
-  //   if (isBtnDisabled(pathname, link)) {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white font-bold";
-  //   } else {
-  //     return "flex items-center gap-3 text-violet-500 dark:text-white transition duration-300 ease-in hover:opacity-70";
-  //   }
-  // };
-
-  const btnStyle = (pathname: string, link: string) =>
-    `flex items-center gap-3 text-violet-500 dark:text-white ${
-      isBtnDisabled(pathname, link)
-        ? "font-bold"
-        : "transition duration-300 ease-in hover:opacity-70"
-    }`;
+  const isBtnDisabled = (pathname: string, link: string) => {
+    // Check for static links
+    if (link.startsWith("/profile/")) {
+      // For dynamic links like /profile/:uid, check if pathname starts with the base path
+      const basePath = "/profile/";
+      if (pathname.startsWith(basePath)) {
+        const uid = pathname.slice(basePath.length);
+        // Assuming any non-empty string is a valid UID
+        return uid.length > 0;
+      }
+      return false;
+    }
+    // Exact match for static paths
+    return pathname === link;
+  };
 
   const item = (link: string, icon: React.JSX.Element) => {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`${btnStyle(pathname, `/${link}`)}`}
+        className={`flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white`}
       >
         {icon}
       </button>
     );
   };
+
+  const icons = [
+    <BsHouse key={"BsHouse"} />,
+    <BsChatQuote key={"BsChatQuote"} />,
+    <BsFlag key={"BsFlag"} />,
+    <BsPerson key={"BsPerson"} />,
+    <AiOutlineContacts key={"AiOutlineContacts"} />,
+  ];
 
   const footerListItems = [
     {
@@ -56,12 +62,12 @@ const Footer = () => {
     {
       href: "/event",
       target: "_self",
-      clickOn: item("event", <BsFlag />),
+      clickOn: item("event", <BsFlag key={"BsFlag"} />),
     },
     {
       href: `/profile/${user?.uid}`,
       target: "_self",
-      clickOn: item("profile", <BsPerson />),
+      clickOn: item(`/profile/${user?.uid}`, <BsPerson />),
     },
     {
       href: `/contact`,
@@ -85,15 +91,24 @@ const Footer = () => {
 
       {/* mobile */}
       <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
-        <div className="flex w-full max-w-[150px] items-center m-auto justify-around gap-10 px-20">
-          {footerListItems.map((item, i) => (
-            <UrlLink
-              key={item.href}
-              href={item.href}
-              target={item.target}
-              clickOn={item.clickOn}
-            />
-          ))}
+        <div className="m-auto flex w-full max-w-[150px] items-center justify-around gap-10 px-20">
+          {footerListItems.map((item, i) => {
+            if (pathname.includes(item.href)) {
+              return (
+                <button disabled={true} className="opacity-50" key={item.href}>
+                  {icons[i]}
+                </button>
+              );
+            }
+            return (
+              <UrlLink
+                key={item.href}
+                href={item.href}
+                target={item.target}
+                clickOn={item.clickOn}
+              />
+            );
+          })}
         </div>
       </nav>
     </>

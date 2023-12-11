@@ -15,6 +15,8 @@ import {
   addDoc,
   getDocs,
   getDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 type EventProviderProps = {
   children: ReactNode;
@@ -60,6 +62,11 @@ type EventContextType = {
   isUpdateLoading: boolean;
   fetchProfileUserEvents: (uid: string) => Promise<void>;
   profileUserEvents: TypeEvent[] | [];
+  fetchAllEvents: () => Promise<void>;
+  allEvents: TypeEvent[] | [];
+
+  cheerEvent: (uid: string, event: TypeEvent) => Promise<void>;
+  removeCheerFromEvent: (uid: string, event: TypeEvent) => Promise<void>;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -73,7 +80,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
   const [randomEvent, setRandomEvent] = useState<TypeEvent>();
   const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
-
+  const [allEvents, setAllEvents] = useState<TypeEvent[]>([]);
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const [profileUserEvents, setProfileUserEvents] = useState<TypeEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
@@ -89,6 +96,7 @@ export function EventProvider({ children }: EventProviderProps) {
         createdBy: uid,
         createdAt: currTime,
         updatedAt: currTime,
+        cheeredBy: [],
       });
       displaySuccessToast({
         text: "Created",
@@ -260,8 +268,36 @@ export function EventProvider({ children }: EventProviderProps) {
     });
 
     setProfileUserEvents(es);
-  }
+  };
 
+  const fetchAllEvents = async () => {
+    const querySnapshot = await getDocs(collection(db, "events"));
+    let events: TypeEvent[] = [];
+    querySnapshot.forEach((doc) => {
+      events.push({ ...doc.data(), id: doc.id } as TypeEvent);
+    });
+    setAllEvents(events);
+  };
+
+  const cheerEvent = async (uid: string, event: TypeEvent) => {
+    const eventDocRef = doc(db, "events", event.id);
+    const eventDocSnap = await getDoc(eventDocRef);
+    if (eventDocSnap.exists()) {
+      await updateDoc(eventDocRef, {
+        cheeredBy: arrayUnion(uid),
+      })
+    }
+  };
+
+  const removeCheerFromEvent = async (uid: string, event: TypeEvent) => {
+    const eventDocRef = doc(db, "events", event.id);
+    const eventDocSnap = await getDoc(eventDocRef);
+    if (eventDocSnap.exists()) {
+      await updateDoc(eventDocRef, {
+        cheeredBy: arrayRemove(uid),
+      })
+    }
+  };
 
   return (
     <EventContext.Provider
@@ -288,6 +324,10 @@ export function EventProvider({ children }: EventProviderProps) {
         isUpdateLoading,
         fetchProfileUserEvents,
         profileUserEvents,
+        fetchAllEvents,
+        allEvents,
+        cheerEvent,
+        removeCheerFromEvent,
       }}
     >
       {children}
