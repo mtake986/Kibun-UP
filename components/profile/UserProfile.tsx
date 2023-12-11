@@ -14,10 +14,14 @@ import Actions from "./actions/Actions";
 import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import NoProfileUser from "./NoProfileUser";
+import GoogleLoginBtn from "../utils/GoogleLoginBtn";
 
 const UserProfile = () => {
   const pathname = usePathname();
-  const uid = extractUidFromPath(pathname);
+  // const uid = extractUidFromPath(pathname);
+
+  const [uid, setUid] = useState<string>(extractUidFromPath(pathname));
+  const [isPending, setIsPending] = useState<boolean>(true);
 
   const [user] = useAuthState(auth);
 
@@ -30,6 +34,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     try {
+      setIsPending(true);
       fetchLoginUser(auth.currentUser);
       if (uid) {
         fetchUser(uid);
@@ -39,10 +44,16 @@ const UserProfile = () => {
       }
     } catch (error) {
       displayErrorToast(error);
+    } finally {
+      setIsPending(false);
     }
   }, [user]);
 
-  if (!loginUser) return <div>Please log in</div>;
+  if (!user) {
+    return <GoogleLoginBtn />;
+  }
+  if (isPending) return <div>loading</div>;
+
   if (!profileUser) return <NoProfileUser uid={uid} />;
 
   const isPathnameSameAsLoginUser = uid === loginUser?.uid;

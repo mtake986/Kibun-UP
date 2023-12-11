@@ -12,6 +12,8 @@ import Image from "next/image";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { useQuote } from "@/context/QuoteContext";
 import IconLike from "./IconLike";
+import { usePathname } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 type Props = {
   event: TypeEvent;
@@ -59,6 +61,9 @@ const Icons = ({
     );
   }, [profilePhoto]);
 
+  const pathname = usePathname();
+  const uid = extractUidFromPath(pathname);
+
   if (!loginUser) {
     displayToast({ text: "No Login User", color: "red" });
     return null; // or return some default UI
@@ -84,6 +89,8 @@ const Icons = ({
         />
       ) : isLoading ? (
         <LoadingSpinnerXS num={3} />
+      ) : pathname.includes(uid) ? (
+        <div>{creatorImg()}</div>
       ) : (
         <UrlLink
           href={`/profile/${event.createdBy}`}

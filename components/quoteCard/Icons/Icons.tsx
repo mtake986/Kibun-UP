@@ -12,6 +12,8 @@ import { useCallback, useEffect, useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import UrlLink from "@/components/utils/UrlLink";
 import { displayErrorToast } from "@/functions/displayToast";
+import { usePathname } from "next/navigation";
+import { extractUidFromPath } from "@/functions/extractUidFromPath";
 
 type Props = {
   q: TypeQuote;
@@ -63,6 +65,9 @@ const Icons = ({
     );
   }, [profilePhoto]);
 
+  const pathname = usePathname();
+  const uid = extractUidFromPath(pathname);
+
   if (!loginUser) {
     return null; // or return some default UI
   }
@@ -84,6 +89,8 @@ const Icons = ({
         <IconTrash q={q} goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords} />
       ) : isAPI ? null : isLoading ? (
         <LoadingSpinnerXS num={3} />
+      ) : pathname.includes(uid) ? (
+        <div>{creatorImg()}</div>
       ) : (
         <UrlLink
           href={`/profile/${q.createdBy}`}
