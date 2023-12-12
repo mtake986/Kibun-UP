@@ -39,12 +39,12 @@ const IconBookmark = ({ q, loginUser }: Props) => {
       {isBookmarked ? (
         <>
           <BsBookmarkFill size={12} className="text-green-500" />
-          <span className={`text-green-500`}>{numOfBookmarks}</span>
+          <span className={`text-xs text-green-500`}>{numOfBookmarks}</span>
         </>
       ) : (
         <>
           <BsBookmark size={12} />
-          <span>{numOfBookmarks}</span>
+          <span className="text-xs">{numOfBookmarks}</span>
         </>
       )}
     </button>

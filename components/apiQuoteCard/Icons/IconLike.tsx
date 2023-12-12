@@ -35,12 +35,12 @@ const IconLike = ({ q, loginUser }: Props) => {
       {isLiked ? (
         <>
           <Heart size={14} className="text-red-500" fill={heartFill} />
-          <span className={`text-red-500`}>{numOfLikes}</span>
+          <span className={`text-xs text-red-500`}>{numOfLikes}</span>
         </>
       ) : (
         <>
           <Heart size={14} />
-          <span>{numOfLikes}</span>
+          <span className="text-xs">{numOfLikes}</span>
         </>
       )}
     </span>
