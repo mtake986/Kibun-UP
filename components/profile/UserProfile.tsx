@@ -33,20 +33,23 @@ const UserProfile = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    try {
-      setIsPending(true);
-      fetchLoginUser(auth.currentUser);
+    const fetchDocs = async () => {
+      fetchLoginUser(auth.currentUser)
       if (uid) {
         fetchUser(uid);
         fetchProfileUserQuotes(uid);
         fetchProfileUserEvents(uid);
         getLockedQuote();
       }
+    }
+    try {
+      setIsPending(true);
+      fetchDocs().then(() => {
+        setIsPending(false);
+      });
     } catch (error) {
       displayErrorToast(error);
-    } finally {
-      setIsPending(false);
-    }
+    } 
   }, [user]);
 
   if (!user) {

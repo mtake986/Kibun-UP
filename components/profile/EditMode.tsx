@@ -1,13 +1,12 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useAuth } from "@/context/AuthContext";
 import { Textarea } from "../ui/textarea";
+import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
 type Props = {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,7 +61,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
     }
   };
 
-  if (loading) return <p>Updating...</p>;
+  if (loading) return <LoadingSpinnerL />
 
   return (
     <form

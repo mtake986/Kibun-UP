@@ -47,7 +47,7 @@ type TypeAuthContext = {
   ) => void;
   loginUser: TypeUserFromFirestore | undefined;
   updateQuoteTypeForHome: (text: string) => void;
-  fetchLoginUser: (user: any) => void;
+  fetchLoginUser: (user: any) => Promise<void>;
   updateTagForQuotableApi: (text: string) => void;
   updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
   fetchUser: (uid: string) => void;
