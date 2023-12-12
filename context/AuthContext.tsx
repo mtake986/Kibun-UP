@@ -40,13 +40,14 @@ type TypeAuthContext = {
     file: File | null,
     newUsername: string,
     newItemsPerPage: number | null,
+    newDescription: string,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
   ) => void;
   loginUser: TypeUserFromFirestore | undefined;
   updateQuoteTypeForHome: (text: string) => void;
-  fetchLoginUser: (user: any) => void;
+  fetchLoginUser: (user: any) => Promise<void>;
   updateTagForQuotableApi: (text: string) => void;
   updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
   fetchUser: (uid: string) => void;
@@ -97,6 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         displayName,
         photoURL,
+        description: "User description",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         settings: {
@@ -133,6 +135,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     file: File | null,
     newUsername: string,
     newItemsPerPage: number | null,
+    newDescription: string,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
@@ -143,6 +146,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       photoURL: loginUser?.photoURL,
       displayName: "",
       itemsPerPage: 10,
+      description: "",
     };
 
     if (file) {
@@ -160,12 +164,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         newItemsPerPage || loginUser?.settings.itemsPerPage;
     }
 
+    if (newDescription) {
+      payload.description =
+        newDescription || loginUser?.description;
+    }
+
     if (auth.currentUser) {
       const docRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(docRef, {
         photoURL: payload.photoURL,
         displayName: payload.displayName,
         "settings.itemsPerPage": payload.itemsPerPage,
+        description: payload.description
       });
     } else {
       displayErrorToast("No user is signed in");
@@ -175,7 +185,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Profile updated!
         // ...
         alert("Successfully Updated");
-        fetchLoginUser(auth.currentUser).then(() => {
+        fetchLoginUser(auth.currentUser)
+        fetchUser(currentUser.uid).then(() => {
           setLoading(false);
           setIsEditMode(false);
         });

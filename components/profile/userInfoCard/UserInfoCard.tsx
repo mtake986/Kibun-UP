@@ -37,75 +37,81 @@ const UserInfoCard = ({
   return (
     <>
       {/* mobile */}
-      <div className="flex items-center justify-between gap-6 xs:hidden">
-        <Image
-          src={profileUser.photoURL || defaultProfilePhoto}
-          alt="Profile User photo / default profile photo"
-          width={100}
-          height={100}
-          className="h-24 w-24 rounded-full object-cover object-center text-left"
-        />
-        <div className="flex flex-col gap-1">
-          <div>
-            <p className="text-lg font-semibold">{profileUser.displayName}</p>
-            <p className="text-xs text-gray-500">
-              Since:{" "}
-              {createdAtDate
-                ? `${
-                    MONTHS_IN_STR[createdAtDate.getMonth()]
-                  } ${createdAtDate.getDate()}, 
-              ${createdAtDate.getFullYear()}`
-                : "Error"}
-            </p>
-          </div>
-          <div className="flex justify-start gap-3">
-            {items.map((item: { label: string; value: number }) =>
-              item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
-                <div key={item.label} className="flex flex-col items-center">
-                  <span className="text-lg">{item.value}</span>
-                  <p className="text-xs">{item.label}</p>
-                </div>
-              )
-            )}
+      <div className="flex flex-col xs:hidden">
+        <div className="flex items-center gap-6">
+          <Image
+            src={profileUser.photoURL || defaultProfilePhoto}
+            alt="Profile User photo / default profile photo"
+            width={100}
+            height={100}
+            className="h-24 w-24 rounded-full object-cover object-center text-left"
+          />
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-start gap-3">
+              {items.map((item: { label: string; value: number }) =>
+                item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
+                  <div key={item.label} className="flex flex-col items-center">
+                    <span className="text-lg">{item.value}</span>
+                    <p className="text-xs">{item.label}</p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
+        <div>
+          <p className="text-lg font-semibold">{profileUser.displayName}</p>
+          <p className="text-xs text-gray-500">
+            Since:{" "}
+            {createdAtDate
+              ? `${
+                  MONTHS_IN_STR[createdAtDate.getMonth()]
+                } ${createdAtDate.getDate()}, 
+              ${createdAtDate.getFullYear()}`
+              : "Error"}
+          </p>
+        </div>
+        <p className="mt-2 text-xs">{profileUser.description}</p>
       </div>
 
       {/* tablet, pc */}
-      <div className="hidden items-center gap-10 xs:flex">
-        <Image
-          src={profileUser.photoURL || defaultProfilePhoto}
-          alt="Profile User photo / default profile photo"
-          width={100}
-          height={100}
-          className="rounded-full object-cover object-center text-left xs:h-32 xs:w-32"
-        />
-        <div className="flex flex-col gap-3">
-          <div>
-            <p className="mb-1 text-lg font-semibold">
-              {profileUser.displayName}
-            </p>
-            <p className="text-xs text-gray-500">
-              Since:{" "}
-              {createdAtDate
-                ? `${
-                    MONTHS_IN_STR[createdAtDate.getMonth()]
-                  } ${createdAtDate.getDate()}, 
+      <div className="hidden xs:flex xs:flex-col">
+        <div className="flex items-center gap-10">
+          <Image
+            src={profileUser.photoURL || defaultProfilePhoto}
+            alt="Profile User photo / default profile photo"
+            width={100}
+            height={100}
+            className="rounded-full object-cover object-center text-left xs:h-32 xs:w-32"
+          />
+          <div className="flex flex-col gap-3">
+            <div>
+              <p className="mb-1 text-lg font-semibold">
+                {profileUser.displayName}
+              </p>
+              <p className="text-xs text-gray-500">
+                Since:{" "}
+                {createdAtDate
+                  ? `${
+                      MONTHS_IN_STR[createdAtDate.getMonth()]
+                    } ${createdAtDate.getDate()}, 
               ${createdAtDate.getFullYear()}`
-                : "Error"}
-            </p>
-          </div>
-          <div className="flex justify-start gap-3">
-            {items.map((item: { label: string; value: number }) =>
-              item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
-                <div key={item.label} className="flex flex-col items-center">
-                  <span className="text-lg">{item.value}</span>
-                  <p className="text-xs">{item.label}</p>
-                </div>
-              )
-            )}
+                  : "Error"}
+              </p>
+            </div>
+            <div className="flex justify-start gap-3">
+              {items.map((item: { label: string; value: number }) =>
+                item.label === "#/Pg." && !isPathnameSameAsLoginUser ? null : (
+                  <div key={item.label} className="flex flex-col items-center">
+                    <span className="text-lg">{item.value}</span>
+                    <p className="text-xs">{item.label}</p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
+        <p className="mt-2">{profileUser.description}</p>
       </div>
     </>
   );

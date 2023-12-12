@@ -33,20 +33,23 @@ const UserProfile = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    try {
-      setIsPending(true);
-      fetchLoginUser(auth.currentUser);
+    const fetchDocs = async () => {
+      fetchLoginUser(auth.currentUser)
       if (uid) {
         fetchUser(uid);
         fetchProfileUserQuotes(uid);
         fetchProfileUserEvents(uid);
         getLockedQuote();
       }
+    }
+    try {
+      setIsPending(true);
+      fetchDocs().then(() => {
+        setIsPending(false);
+      });
     } catch (error) {
       displayErrorToast(error);
-    } finally {
-      setIsPending(false);
-    }
+    } 
   }, [user]);
 
   if (!user) {
@@ -62,7 +65,7 @@ const UserProfile = () => {
     <div className="mb-32 p-5 sm:p-0">
       {isPathnameSameAsLoginUser ? (
         isEditMode ? (
-          <div className="mb-5 flex flex-col items-center gap-5 px-5">
+          <div className="mb-5 flex flex-col items-center gap-5">
             <EditMode setIsEditMode={setIsEditMode} />
           </div>
         ) : (
