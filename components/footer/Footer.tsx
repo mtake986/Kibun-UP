@@ -1,12 +1,11 @@
 "use client";
-import React, { useState } from "react";
 import UrlLink from "../utils/UrlLink";
 import { usePathname } from "next/navigation";
 import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
 import { AiOutlineContacts } from "react-icons/ai";
-import { capitalize } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
+import { BiPaperPlane } from "react-icons/bi";
 
 const Footer = () => {
   const today = new Date().getFullYear();
@@ -45,6 +44,7 @@ const Footer = () => {
     <BsChatQuote key={"BsChatQuote"} />,
     <BsFlag key={"BsFlag"} />,
     <BsPerson key={"BsPerson"} />,
+    <BiPaperPlane key={"BiPaperPlane"} />,
     <AiOutlineContacts key={"AiOutlineContacts"} />,
   ];
 
@@ -62,7 +62,7 @@ const Footer = () => {
     {
       href: "/event",
       target: "_self",
-      clickOn: item("event", <BsFlag key={"BsFlag"} />),
+      clickOn: item("event", <BsFlag />),
     },
     {
       href: `/profile/${user?.uid}`,
@@ -72,7 +72,12 @@ const Footer = () => {
     {
       href: `/contact`,
       target: "_self",
-      clickOn: item("contact", <AiOutlineContacts />),
+      clickOn: item("contact", <BiPaperPlane />),
+    },
+    {
+      href: `/creator-info`,
+      target: "_self",
+      clickOn: item("creator-info", <AiOutlineContacts />),
     },
   ];
 
