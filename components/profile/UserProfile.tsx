@@ -62,7 +62,7 @@ const UserProfile = () => {
     <div className="mb-32 p-5 sm:p-0">
       {isPathnameSameAsLoginUser ? (
         isEditMode ? (
-          <div className="mb-5 flex flex-col items-center gap-5 px-5">
+          <div className="mb-5 flex flex-col items-center gap-5">
             <EditMode setIsEditMode={setIsEditMode} />
           </div>
         ) : (

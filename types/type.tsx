@@ -62,6 +62,7 @@ export type TypeUserFromFirestore = {
   email: string;
   displayName: string;
   photoURL: string;
+  description: string;
   createdAt: Timestamp;
   settings: {
     itemsPerPage: number;
@@ -77,6 +78,7 @@ export type TypeUpdateUserInputs = {
   photoURL?: string | null;
   displayName?: string;
   itemsPerPage?: number;
+  description?: string;
 };
 
 export type TypeTagsQuotableAPI = {

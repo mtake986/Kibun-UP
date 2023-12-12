@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useAuth } from "@/context/AuthContext";
+import { Textarea } from "../ui/textarea";
 
 type Props = {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +25,9 @@ const EditMode = ({ setIsEditMode }: Props) => {
     loginUser?.displayName || ""
   );
   const [newItemsPerPage, setNewItemsPerPage] = useState<number | null>(null);
+  const [newDescription, setNewDescription] = useState<string>(
+    loginUser?.description || ""
+  );
 
   const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -42,7 +46,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!user) return;
     if (!newUsername && !newItemsPerPage) {
-      alert("Username and items per page is required.");
+      alert("Username and items per page are required.");
       e.preventDefault();
     } else {
       e.preventDefault();
@@ -50,6 +54,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
         photo,
         newUsername,
         newItemsPerPage,
+        newDescription,
         user,
         setLoading,
         setIsEditMode
@@ -61,10 +66,10 @@ const EditMode = ({ setIsEditMode }: Props) => {
 
   return (
     <form
-      className="mx-auto flex max-w-[250px] flex-col gap-5"
+      className="mx-auto flex w-full max-w-[350px] flex-col gap-5 sm:max-w-none"
       onSubmit={onSubmit}
     >
-      <div className="grid w-full max-w-sm items-center gap-1.5">
+      <div className="grid w-full max-w-sm sm:max-w-none items-center gap-1.5">
         <Label htmlFor="picture">Profile Picture</Label>
         <Input
           onChange={(e) => {
@@ -74,31 +79,44 @@ const EditMode = ({ setIsEditMode }: Props) => {
           type="file"
         />
       </div>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="username">
-          Username <span className="text-red-500">*</span>
-        </Label>
-        <Input
-          onChange={(e) => {
-            setNewUsername(e.target.value);
-          }}
-          id="username"
-          defaultValue={loginUser?.displayName}
-        />
+      <div className="sm:flex-row flex flex-col gap-5">
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="username">
+            Username <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            onChange={(e) => {
+              setNewUsername(e.target.value);
+            }}
+            id="username"
+            defaultValue={loginUser?.displayName}
+          />
+        </div>
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="itemsPerPage">
+            Items / page <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            onChange={(e) => {
+              setNewItemsPerPage(Number(e.target.value));
+            }}
+            min={1}
+            max={99}
+            id="itemsPerPage"
+            type="number"
+            defaultValue={String(loginUser?.settings.itemsPerPage)}
+          />
+        </div>
       </div>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="username">
-          Items / page <span className="text-red-500">*</span>
-        </Label>
-        <Input
+      <div className="grid w-full max-w-sm items-center sm:w-full sm:max-w-none gap-1.5">
+        <Label htmlFor="description">Description</Label>
+        <Textarea
           onChange={(e) => {
-            setNewItemsPerPage(Number(e.target.value));
+            setNewDescription(e.target.value);
           }}
-          min={1}
-          // minLength={1}
-          id="itemsPerPage"
-          type="number"
-          defaultValue={String(loginUser?.settings.itemsPerPage)}
+          id="description"
+          defaultValue={loginUser?.description}
+          placeholder="Ex.) I am from Japan and try to transfer to Harvard University."
         />
       </div>
 
