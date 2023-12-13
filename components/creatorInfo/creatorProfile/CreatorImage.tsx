@@ -16,9 +16,9 @@ const CreatorImage = () => {
     <Image
       src={creatorPicture}
       alt="Creator Profile Picture"
-      width={400}
-      height={400}
-      className="m-auto h-40 w-40 rounded-full object-cover object-center sm:h-60 sm:w-60"
+      width={120}
+      height={120}
+      className="m-auto w-40 h-40 rounded-full object-cover object-center sm:h-60 sm:w-60"
     />
   );
 };

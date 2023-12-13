@@ -7,7 +7,7 @@ import HeadingFive from "@/components/utils/HeadingFive";
 const Files = () => {
   return (
     <div>
-      <HeadingFive text="Files" className="text-violet-500 mb-1" />
+      <HeadingFive text="Files" className="text-violet-500 mb-1 dark:text-gray-400" />
       <div className="flex flex-col items-center gap-1">
         <ResumeEng />
         <ResumeJap />
