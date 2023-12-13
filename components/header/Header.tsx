@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import OtherMenu from "./OtherMenu";
 
 export default function Header() {
   const { fetchLoginUser, loginUser } = useAuth();
@@ -16,9 +17,9 @@ export default function Header() {
   }, []);
 
   function getLinkStyle(link: string) {
-    return `text-violet-500 dark:text-white ${
+    return `text-violet-500 dark:text-white text-sm ${
       pathname === link
-        ? "font-bold underline underline-offset-2"
+        ? "font-bold underline underline-offset-2 opacity-70 cursor-default"
         : "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100 dark:after:bg-white"
     }`;
   }
@@ -42,12 +43,6 @@ export default function Header() {
       clickOn: "Profile",
       className: getLinkStyle(`/profile/${loginUser?.uid}`),
     },
-    {
-      href: "/contact",
-      target: "_self",
-      clickOn: "Contact",
-      className: getLinkStyle("/contact"),
-    },
   ];
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
@@ -61,48 +56,26 @@ export default function Header() {
           />
         </div>
         <div className="hidden gap-3 text-sm sm:flex ">
-          {headerItems.map((item) => (
-            <UrlLink
-              key={item.href}
-              href={item.href}
-              target={item.target}
-              clickOn={item.clickOn}
-              className={item.className}
-            />
-          ))}
-          {/* <UrlLink
-            href="/quote"
-            target="_self"
-            className={getLinkStyle("/quote")}
-            clickOn="Quote"
-          />
-          <UrlLink
-            href="/event"
-            className={getLinkStyle("/event")}
-            target="_self"
-            clickOn="Event"
-          />
-          <UrlLink
-            href="/contact"
-            className={getLinkStyle("/contact")}
-            target="_self"
-            clickOn="Contact"
-          />
-          <UrlLink
-            href={`/profile/${loginUser?.uid}`}
-            className={getLinkStyle(`/profile/${loginUser?.uid}`)}
-            target="_self"
-            clickOn="Profile"
-          /> */}
+          {headerItems.map((item) =>
+            pathname === item.href ? (
+              <span key={item.href} className={item.className}>
+                {item.clickOn}
+              </span>
+            ) : (
+              <UrlLink
+                key={item.href}
+                href={item.href}
+                target={item.target}
+                clickOn={item.clickOn}
+                className={item.className}
+              />
+            )
+          )}
+          <OtherMenu />
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          {pathname.includes(`/profile/${loginUser?.uid}`) ? (
-            <MenuBtn />
-          ) : (
-            // <ProfilePic />
-            null
-          )}
+          {pathname.includes(`/profile/${loginUser?.uid}`) ? <MenuBtn /> : null}
         </div>
       </nav>
     </header>
