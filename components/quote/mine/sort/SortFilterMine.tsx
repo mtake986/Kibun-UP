@@ -1,7 +1,7 @@
 import React from "react";
-import OrderSelect from "./OrderSelect";
-import ElementSelect from "./ElementSelect";
-import { SearchBar } from "./SearchBar";
+import OrderSelect from "../modal/sort/OrderSelect";
+import ElementSelect from "../modal/sort/ElementSelect";
+import { SearchBar } from "../modal/filter/SearchBar";
 import Btns from "./Btns";
 import OnlySortBtn from "./OnlySortBtn";
 

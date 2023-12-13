@@ -9,13 +9,10 @@ import HeadingTwo from "@/components/utils/HeadingTwo";
 import { useAuth } from "@/context/AuthContext";
 
 import { useQuote } from "@/context/QuoteContext";
-import MobileSortFilterForMineOpenBtn from "./mine/MobileSortFilterForMineOpenBtn";
-import MobileSortFilterForNotMineOpenBtn from "./notMine/MobileSortFilterForNotMineOpenBtn";
 import { displayErrorToast } from "@/functions/displayToast";
 import LoadingIndicator from "../home/LoadingIndicator";
 import ScrollToTopBtn from "./ScrollToTopBtn";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 const Quote = () => {
   const [user] = useAuthState(auth);
@@ -70,11 +67,6 @@ const Quote = () => {
           <HeadingTwo text="Quotes" />
           <ScrollToTopBtn />
           <RegisterFormToggleBtn />
-          {currTab === "mine" || currTab === null ? (
-            <MobileSortFilterForMineOpenBtn />
-          ) : currTab === "all" ? (
-            <MobileSortFilterForNotMineOpenBtn />
-          ) : null}
           <Tabs />
         </div>
       </div>

@@ -6,7 +6,8 @@ import List from "./mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SwitchTab = () => {
-  const { loginUserQuotes, quotesNotMine } = useQuote();
+  const { loginUserQuotes, quotesNotMine, isSortVariablesForMineDefaultValue, sortedFilteredMyQuotes } =
+    useQuote();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -17,7 +18,9 @@ const SwitchTab = () => {
   const displayList = () => {
     switch (currTab) {
       case "mine":
-        return <List quotes={loginUserQuotes} />;
+        return (
+          <List quotes={isSortVariablesForMineDefaultValue ? loginUserQuotes : sortedFilteredMyQuotes} />
+        );
       case "notMine":
         return <ListNotMine quotes={quotesNotMine} />;
       case "api":

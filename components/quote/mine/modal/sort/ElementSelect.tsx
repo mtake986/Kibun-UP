@@ -9,23 +9,24 @@ import {
 import { useQuote } from "@/context/QuoteContext";
 
 const ElementSelect = () => {
-  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
+  const { updateSortVariablesForMine, sortVariablesForMine } = useQuote();
 
   return (
     <Select
       onValueChange={(ele) => {
-        updateSortFilterByForMine("sortByElement", ele);
+        updateSortVariablesForMine("sortBy", ele);
       }}
-      value={sortFilterByForMine.sortByElement}
-      defaultValue={sortFilterByForMine.sortByElement}
+      value={sortVariablesForMine.sortByElement}
+      defaultValue={sortVariablesForMine.sortByElement}
     >
-      <SelectTrigger className="w-full text-xs sm:w-[120px]">
+      <SelectTrigger className="w-full text-xs">
         <SelectValue placeholder="Ex.) By" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="quote">Quote</SelectItem>
+        <SelectItem value="content">Content</SelectItem>
         <SelectItem value="author">Author</SelectItem>
         <SelectItem value="createdAt">Created At</SelectItem>
+        <SelectItem value="createdBy">Created By</SelectItem>
       </SelectContent>
     </Select>
   );

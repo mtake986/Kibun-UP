@@ -51,8 +51,8 @@ export interface ITag {
   color: string;
 }
 
-export interface ISortFilterBy {
-  order: string;
+export interface TypeSortFilterBy {
+  order: TypeSortOrder;
   sortByElement: string;
   searchTag: string;
 }
@@ -151,3 +151,8 @@ export type TypeAuthorOfAPI = {
   quoteCount: number;
   slug: string;
 };
+
+export type TypeFetchMineOrNot = 'mine' | 'not';
+export type TypeSortOrder = 'asc' | 'desc';
+export type TypeSortBy2 = 'author' | 'content' | 'createdAt' | 'createdBy';
+export type TypeSortType = 'order' | 'sortBy' | 'tag';

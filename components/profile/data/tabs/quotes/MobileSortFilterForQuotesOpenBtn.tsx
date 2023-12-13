@@ -3,7 +3,7 @@ import { useQuote } from "@/context/QuoteContext";
 
 export default function MobileSortFilterForQuotesOpenBtn() {
   const {
-    isSortFilterByForMineDefaultValue,
+    isSortVariablesForMineDefaultValue,
     handleSortFilterAreaForMineShown,
   } = useQuote();
 
@@ -14,7 +14,7 @@ export default function MobileSortFilterForQuotesOpenBtn() {
         size={20}
         onClick={handleSortFilterAreaForMineShown}
       />
-      {!isSortFilterByForMineDefaultValue ? (
+      {!isSortVariablesForMineDefaultValue ? (
         <div className="absolute right-0 top-0 h-1.5 w-1.5 rounded-full bg-red-500"></div>
       ) : null}
     </div>
