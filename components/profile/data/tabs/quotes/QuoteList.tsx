@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useQuote } from "@/context/QuoteContext";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterQuotes from "./Sort/SortFilterQuotes";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 
 import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";

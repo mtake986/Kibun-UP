@@ -1,10 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { app, auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useEvent } from "@/context/EventContext";
-import usePagination from "@/components/hooks/usePagination";
-
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
