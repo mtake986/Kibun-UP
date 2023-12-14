@@ -10,17 +10,15 @@ type Props = {
 };
 
 const IconLike = ({ q, loginUser }: Props) => {
-  const { storeFav, removeFav, allQuotes } = useQuote();
+  const { storeFav, removeFav } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
   const [numOfLikes, setNumOfLikes] = useState<number>(
-    q.likedBy?.length
+    q.likedBy ? q.likedBy.length : 0
   );
   const [isLiked, setIsLiked] = useState<boolean>(
-    q.likedBy?.includes(loginUser.uid)
+    q.likedBy ? q.likedBy.includes(loginUser.uid) : false
   );
-
   const heartFill = isLiked ? "red" : undefined;
 
   const handleClick = async () => {
@@ -29,7 +27,7 @@ const IconLike = ({ q, loginUser }: Props) => {
       if (isLiked) {
         setNumOfLikes((prev) => prev - 1);
         setIsLiked((prev) => !prev);
-        await removeFav(loginUser.uid, q)
+        await removeFav(loginUser.uid, q);
       } else {
         setNumOfLikes((prev) => prev + 1);
         setIsLiked((prev) => !prev);

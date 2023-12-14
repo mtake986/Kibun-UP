@@ -53,6 +53,7 @@ const Quote = () => {
       );
     }
   }, [user]);
+  
 
   if (!user) {
     return <GoogleLoginBtn />;

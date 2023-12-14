@@ -4,10 +4,7 @@ import { useQuote } from "@/context/QuoteContext";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
-
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
 import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
-
 
 const QuoteList = () => {
 
@@ -19,15 +16,6 @@ const QuoteList = () => {
     profileUserQuotes
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  if (isLoading) {
-    return (
-      <div className="h-40 flex items-center justify-center">
-        <LoadingSpinnerL />
-      </div>
-    );
-  }
-
   const goPrevAsNoCurrentRecords = () => {
     if (
       currentPage === nPages &&
@@ -38,7 +26,6 @@ const QuoteList = () => {
     }
   };
 
-  // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
     <div className="mb-20">
       {currentRecords && currentRecords.length >= 1 ? (

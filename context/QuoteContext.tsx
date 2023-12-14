@@ -428,7 +428,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    console.log(tempQs);
 
     setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
   };
@@ -497,7 +496,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   ] = useState<boolean>(true);
 
   const sortAndFilterNotMyQuotes = async () => {
-    console.log(quotesNotMine.length, sortedFilteredNotMyQuotes.length)
     let q = query(
       quotesCollectionRef,
       orderBy(
@@ -534,7 +532,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    console.log("tempQs: " + tempQs);
     setSortedFilteredNotMyQuotes(
       tempQs.filter((q) => q.createdBy !== user?.uid)
     );

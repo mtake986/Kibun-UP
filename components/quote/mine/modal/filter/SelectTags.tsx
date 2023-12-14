@@ -11,16 +11,16 @@ const SelectTags = () => {
   } = useQuote();
   return (
     <div>
-      <div className="flex items-center space-x-2 mb-2">
+      <div className="mb-2 flex items-center space-x-2">
         <Checkbox
-          id="terms"
+          id="disabled"
           checked={isTagToFilterMyQuotesDisabled}
           onClick={() => {
             setIsTagToFilterMyQuotesDisabled((prev) => !prev);
           }}
         />
         <label
-          htmlFor="terms"
+          htmlFor="disabled"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Disabled
@@ -31,7 +31,7 @@ const SelectTags = () => {
           onChange={(e) => {
             updateSortVariablesForMine("tag", e.target.value);
           }}
-          placeholder="Ex.) Tag"
+          placeholder="Ex.) Motivation"
           value={sortVariablesForMine.searchTag}
         />
       )}
