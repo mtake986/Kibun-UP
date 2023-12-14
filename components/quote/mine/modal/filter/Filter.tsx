@@ -1,10 +1,7 @@
 import React from "react";
-import ListOfSelectedAuthors from "./ListOfSelectedAuthors";
 import SectionSubTtl from "../SectionSubTtl";
-import SelectAndOr from "./SelectAndOr";
 import SelectTags from "./SelectTags";
 import SectionTtl from "../SectionTtl";
-import { TypeAndOr, TypeAndOrLabel, TypeSelectedAuthors } from "@/types/type";
 
 const Filter = () => {
   return (
