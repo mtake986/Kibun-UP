@@ -97,8 +97,8 @@ type TypeQuoteContext = {
   sortVariablesForNotMine: TypeSortFilterBy;
   isTagToFilterNotMyQuotesDisabled: boolean;
   isSortVariablesForNotMineDefaultValue: boolean;
-  updateSortVariablesForNotMine: (which: string, ele: any) => void;
-  sortAndFilterNotMyQuotes: () => void;
+  updateSortVariablesForNotMine: (which: TypeSortType, ele: any) => void;
+  sortAndFilterNotMyQuotes: (sortVariablesForNotMine: TypeSortFilterBy) => void;
   setIsTagToFilterNotMyQuotesDisabled: React.Dispatch<
     React.SetStateAction<boolean>
   >;
@@ -428,7 +428,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-
     setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
   };
 
@@ -495,7 +494,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortVariablesForNotMineDefaultValue,
   ] = useState<boolean>(true);
 
-  const sortAndFilterNotMyQuotes = async () => {
+  const sortAndFilterNotMyQuotes = async (sortVariablesForNotMine: TypeSortFilterBy) => {
     let q = query(
       quotesCollectionRef,
       orderBy(
@@ -536,7 +535,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       tempQs.filter((q) => q.createdBy !== user?.uid)
     );
   };
-  const updateSortVariablesForNotMine = (which: string, ele: any) => {
+  const updateSortVariablesForNotMine = (which: TypeSortType, ele: any) => {
     if (which === "order") {
       setSortVariablesForNotMine((prev) => ({
         ...prev,

@@ -33,7 +33,7 @@ const Modal = () => {
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              sortAndFilterNotMyQuotes();
+              sortAndFilterNotMyQuotes(sortVariablesForNotMine);
               checkSortVariablesForNotMineDefaultValue();
             } catch (error) {
               displayErrorToast(error);
