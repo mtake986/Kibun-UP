@@ -63,6 +63,7 @@ const Quote = () => {
   } else {
     return (
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
+        {/* {user.metadata.lastSignInTime} */}
         <div className="relative">
           <HeadingTwo text="Quotes" />
           <ScrollToTopBtn />

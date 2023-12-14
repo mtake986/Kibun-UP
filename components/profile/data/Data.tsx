@@ -1,6 +1,5 @@
 import QuoteList from "./tabs/quotes/QuoteList";
 import EventList from "./tabs/events/EventList";
-import MobileSortFilterForQuotesOpenBtn from "./tabs/quotes/MobileSortFilterForQuotesOpenBtn";
 import Tabs from "./tabs/Tabs";
 import SectionTitle from "../SectionTitle";
 import { useSearchParams } from "next/navigation";
@@ -13,11 +12,6 @@ const Data = () => {
   return (
     <div className="relative mt-10">
       <SectionTitle title="Data" />
-
-      {currTab === "quotes" || currTab === null ? (
-        <MobileSortFilterForQuotesOpenBtn />
-      ) : null}
-
       <Tabs />
 
       {currTab === "quotes" || currTab === null ? <QuoteList /> : <EventList />}
