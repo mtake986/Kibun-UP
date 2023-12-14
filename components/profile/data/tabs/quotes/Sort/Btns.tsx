@@ -16,14 +16,14 @@ type Props = {
 const Btns = ({ setIsLoading }: Props) => {
   const {
     getLoginUserQuotes,
-    sortAndFilterQuotes,
+    sortAndFilterMyQuotes,
     resetSortVariablesForMineInputs,
   } = useQuote();
 
   async function handleSortAndFilter() {
     try {
       setIsLoading(true);
-      sortAndFilterQuotes();
+      sortAndFilterMyQuotes();
     } catch (error) {
       displayErrorToast(error);
     } finally {

@@ -17,16 +17,6 @@ type Props = {
 };
 
 const List = ({ quotes }: Props) => {
-  const [user] = useAuthState(auth);
-
-  const {
-    sortFilterAreaForMineShown,
-    isSortVariablesForMineDefaultValue,
-    sortedFilteredMyQuotes,
-    sortVariablesForMine,
-  } = useQuote();
-
-  console.log(quotes, quotes.length);
   const [currentPage, setCurrentPage] = useState(1);
   const { nPages, currentRecords } = usePagination(
     currentPage,

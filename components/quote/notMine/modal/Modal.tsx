@@ -13,16 +13,16 @@ import { useQuote } from "@/context/QuoteContext";
 
 const Modal = () => {
   const {
-    sortAndFilterMyQuotes,
-    sortVariablesForMine,
-    checkSortVariablesForMineDefaultValue,
-    isSortVariablesForMineDefaultValue,
-    resetSortVariablesForMineDefaultValue,
+    sortAndFilterNotMyQuotes,
+    sortVariablesForNotMine,
+    checkSortVariablesForNotMineDefaultValue,
+    isSortVariablesForNotMineDefaultValue,
+    resetSortVariablesForNotMineDefaultValue,
   } = useQuote();
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        {isSortVariablesForMineDefaultValue ? null : (
+        {isSortVariablesForNotMineDefaultValue ? null : (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
         )}
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
@@ -33,9 +33,9 @@ const Modal = () => {
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              sortAndFilterMyQuotes(sortVariablesForMine);
-              console.log(sortVariablesForMine);
-              checkSortVariablesForMineDefaultValue();
+              sortAndFilterNotMyQuotes();
+              console.log(sortVariablesForNotMine);
+              checkSortVariablesForNotMineDefaultValue();
             } catch (error) {
               displayErrorToast(error);
             }
@@ -53,7 +53,7 @@ const Modal = () => {
               className="w-full"
               type="reset"
               onClick={() => {
-                resetSortVariablesForMineDefaultValue()
+                resetSortVariablesForNotMineDefaultValue()
               }}
             >
               Reset

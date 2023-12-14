@@ -14,17 +14,25 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   const { storeBookmark, removeBookmark, allQuotes } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const numOfBookmarks = useMemo(() => q.bookmarkedBy.length, [q.bookmarkedBy]);
-  const isBookmarked = useMemo(
-    () => q.bookmarkedBy.includes(loginUser.uid),
-    [q.bookmarkedBy, loginUser.uid]
+  const [numOfBookmarks, setNumOfBookmarks] = useState<number>(
+    q.bookmarkedBy?.length
+  );
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(
+    q.bookmarkedBy?.includes(loginUser.uid)
   );
 
   const handleClick = useCallback(() => {
     try {
-      isBookmarked
-        ? removeBookmark(loginUser.uid, q)
-        : storeBookmark(loginUser.uid, q);
+      if (isBookmarked) {
+        setNumOfBookmarks((prev) => prev - 1);
+        setIsBookmarked((prev) => !prev);
+        removeBookmark(loginUser.uid, q)
+      }
+      else {
+        setNumOfBookmarks((prev) => prev + 1);
+        setIsBookmarked((prev) => !prev);
+        storeBookmark(loginUser.uid, q);
+      }
     } catch (e) {
       displayErrorToast(e);
     }

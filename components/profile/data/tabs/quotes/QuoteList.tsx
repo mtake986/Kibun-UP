@@ -11,7 +11,6 @@ import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
 
 
 const QuoteList = () => {
-  const { sortFilterAreaForMineShown } = useQuote();
 
   const {profileUserQuotes} = useQuote();
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,9 +42,6 @@ const QuoteList = () => {
   // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
   return (
     <div className="mb-20">
-      {sortFilterAreaForMineShown ? (
-        <SortFilterQuotes setIsLoading={setIsLoading} />
-      ) : null}
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc) => (

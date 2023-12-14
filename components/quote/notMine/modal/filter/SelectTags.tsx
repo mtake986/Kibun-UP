@@ -4,19 +4,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const SelectTags = () => {
   const {
-    updateSortVariablesForMine,
-    sortVariablesForMine,
-    isTagToFilterMyQuotesDisabled,
-    setIsTagToFilterMyQuotesDisabled,
+    updateSortVariablesForNotMine,
+    sortVariablesForNotMine,
+    isTagToFilterNotMyQuotesDisabled,
+    setIsTagToFilterNotMyQuotesDisabled,
   } = useQuote();
   return (
     <div>
       <div className="flex items-center space-x-2 mb-2">
         <Checkbox
           id="terms"
-          checked={isTagToFilterMyQuotesDisabled}
+          checked={isTagToFilterNotMyQuotesDisabled}
           onClick={() => {
-            setIsTagToFilterMyQuotesDisabled((prev) => !prev);
+            setIsTagToFilterNotMyQuotesDisabled((prev) => !prev);
           }}
         />
         <label
@@ -26,13 +26,13 @@ const SelectTags = () => {
           Disabled
         </label>
       </div>
-      {isTagToFilterMyQuotesDisabled ? null : (
+      {isTagToFilterNotMyQuotesDisabled ? null : (
         <Input
           onChange={(e) => {
-            updateSortVariablesForMine("tag", e.target.value);
+            updateSortVariablesForNotMine("tag", e.target.value);
           }}
           placeholder="Ex.) Tag"
-          value={sortVariablesForMine.searchTag}
+          value={sortVariablesForNotMine.searchTag}
         />
       )}
     </div>
