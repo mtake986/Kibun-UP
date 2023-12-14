@@ -1,15 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterMine from "./sort/SortFilterMine";
 import usePagination from "@/components/hooks/usePagination";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
-import Image from "next/image";
 import Modal from "./modal/Modal";
 
 type Props = {

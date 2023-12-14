@@ -2,11 +2,8 @@
 import { TypeQuote } from "@/types/type";
 import { useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
-
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterNotMine from "./sort/SortFilterNotMine";
-import { useQuote } from "@/context/QuoteContext";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
 import Modal from "./modal/Modal";
 
