@@ -7,20 +7,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useQuote } from "@/context/QuoteContext";
+import { TypeSortOrder } from "@/types/type";
 
 const OrderSelect = () => {
-  const { updateSortFilterByForMine, sortFilterByForMine } = useQuote();
+  const { updateSortVariablesForNotMine, sortVariablesForNotMine } = useQuote();
 
   return (
     <Select
-      onValueChange={(ele) => {
-        updateSortFilterByForMine("order", ele);
+      onValueChange={(ele: TypeSortOrder) => {
+        updateSortVariablesForNotMine("order", ele);
       }}
-      value={sortFilterByForMine.order}
-      defaultValue={sortFilterByForMine.order}
+      value={sortVariablesForNotMine.order}
+      defaultValue={sortVariablesForNotMine.order}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Ex.) Order" />
+        <SelectValue placeholder="Sort Order" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="asc">Asc.</SelectItem>

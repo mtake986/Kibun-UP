@@ -2,12 +2,10 @@
 import { TypeQuote } from "@/types/type";
 import { useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
-
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterNotMine from "./sort/SortFilterNotMine";
-import { useQuote } from "@/context/QuoteContext";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
+import Modal from "./modal/Modal";
 
 type Props = {
   quotes: TypeQuote[];
@@ -18,22 +16,26 @@ const ListNotMine = ({ quotes }: Props) => {
 
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
-  const { sortFilterAreaForNotMineShown } = useQuote();
   return (
     <div className="mb-20">
-      {sortFilterAreaForNotMineShown ? <SortFilterNotMine /> : null}
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+        <Modal />
+      </div>
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
+        {quotes.length} quotes found
+      </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <QuoteCard key={doc.id} q={doc} />
           ))}
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
         </div>
       ) : (
         <NoFetchedData text="No quotes found" />

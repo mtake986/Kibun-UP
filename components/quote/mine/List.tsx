@@ -1,28 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useQuote } from "@/context/QuoteContext";
 import { TypeQuote } from "@/types/type";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterMine from "./sort/SortFilterMine";
 import usePagination from "@/components/hooks/usePagination";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
-import Image from "next/image";
+import Modal from "./modal/Modal";
 
 type Props = {
   quotes: TypeQuote[];
 };
 
 const List = ({ quotes }: Props) => {
-  const [user] = useAuthState(auth);
-
-  const { sortFilterAreaForMineShown } = useQuote();
-
-  console.log(quotes, quotes.length);
   const [currentPage, setCurrentPage] = useState(1);
-  const { nPages, currentRecords } = usePagination(currentPage, quotes);
+  const { nPages, currentRecords } = usePagination(
+    currentPage,
+    quotes,
+  );
 
   const goPrevAsNoCurrentRecords = () => {
     if (
@@ -34,12 +28,9 @@ const List = ({ quotes }: Props) => {
     }
   };
 
-  return (
-    <div className="mb-20">
-      {sortFilterAreaForMineShown ? <SortFilterMine /> : null}
-      {/* bug when delete the last element in the last page */}
-      {/* because the if is based on currentRecords. quotes exist, but not currentRecords */}
-      {currentRecords && currentRecords.length >= 1 ? (
+  const displayCards = () => {
+    if (currentRecords && currentRecords.length >= 1) {
+      return (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <QuoteCard
@@ -48,17 +39,30 @@ const List = ({ quotes }: Props) => {
               goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
+          
         </div>
-      ) : (
-        <NoFetchedData text="No quotes found" />
-      )}
+      );
+    } else {
+      return <NoFetchedData text="No quotes found" />;
+    }
+  };
+
+  return (
+    <div className="mb-20">
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+        <Modal />
+      </div>
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
+        {quotes.length} quotes found
+      </div>
+      {displayCards()}
     </div>
   );
 };

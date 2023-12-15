@@ -14,17 +14,25 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   const { storeBookmark, removeBookmark, allQuotes } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const numOfBookmarks = useMemo(() => q.bookmarkedBy.length, [q.bookmarkedBy]);
-  const isBookmarked = useMemo(
-    () => q.bookmarkedBy.includes(loginUser.uid),
-    [q.bookmarkedBy, loginUser.uid]
+  const [numOfBookmarks, setNumOfBookmarks] = useState<number>(
+    q.bookmarkedBy?.length
+  );
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(
+    q.bookmarkedBy?.includes(loginUser.uid)
   );
 
   const handleClick = useCallback(() => {
     try {
-      isBookmarked
-        ? removeBookmark(loginUser.uid, q)
-        : storeBookmark(loginUser.uid, q);
+      if (isBookmarked) {
+        setNumOfBookmarks((prev) => prev - 1);
+        setIsBookmarked((prev) => !prev);
+        removeBookmark(loginUser.uid, q)
+      }
+      else {
+        setNumOfBookmarks((prev) => prev + 1);
+        setIsBookmarked((prev) => !prev);
+        storeBookmark(loginUser.uid, q);
+      }
     } catch (e) {
       displayErrorToast(e);
     }
@@ -34,12 +42,12 @@ const IconBookmark = ({ q, loginUser }: Props) => {
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+      className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
       {isBookmarked ? (
         <>
           <BsBookmarkFill size={12} className="text-green-500" />
-          <span className={`text-xs text-green-500`}>{numOfBookmarks}</span>
+          <span className="text-xs text-green-500">{numOfBookmarks}</span>
         </>
       ) : (
         <>

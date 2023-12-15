@@ -60,8 +60,8 @@ const UserInfoCard = ({
           </div>
         </div>
         <div>
-          <p className="text-lg font-semibold">{profileUser.displayName}</p>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm font-semibold mt-2">{profileUser.displayName}</p>
+          <p className="text-[10px] text-gray-500">
             Since:{" "}
             {createdAtDate
               ? `${

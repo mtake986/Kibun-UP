@@ -153,13 +153,12 @@ export default function RegisterForm() {
     if (loginUser) {
       values.tags = inputTags;
       registerQuote(values, loginUser.uid);
-      reset({
+      form.reset({
         author: "",
         content: "",
         draftStatus: "Public",
         tags: [],
       });
-      form.reset();
       setInputTags([]);
       setInputTagName("");
       setInputTagColor("");
@@ -281,7 +280,8 @@ export default function RegisterForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    if (validateInputTags() === "pass") addTag();
+                    if (validateInputTags() === VALIDATION_STATUS.PASS)
+                      addTag();
                   }}
                   disabled={isAddBtnDisabled}
                   className={getAddButtonClass(isAddBtnDisabled)}

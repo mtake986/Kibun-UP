@@ -3,32 +3,17 @@ import React, { useEffect, useState } from "react";
 import { useQuote } from "@/context/QuoteContext";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
-import SortFilterQuotes from "./Sort/SortFilterQuotes";
 import QuoteCard from "@/components/quoteCard/QuoteCard";
-
-import LoadingSpinnerL from "@/components/utils/LoadingSpinnerL";
-import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
-
+import usePagination from "@/components/hooks/usePagination";
 
 const QuoteList = () => {
-  const { sortFilterAreaForMineShown } = useQuote();
-
-  const {profileUserQuotes} = useQuote();
+  const { profileUserQuotes } = useQuote();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = usePaginationTenItems(
+  const { nPages, currentRecords } = usePagination(
     currentPage,
     profileUserQuotes
   );
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  if (isLoading) {
-    return (
-      <div className="h-40 flex items-center justify-center">
-        <LoadingSpinnerL />
-      </div>
-    );
-  }
 
   const goPrevAsNoCurrentRecords = () => {
     if (
@@ -40,32 +25,39 @@ const QuoteList = () => {
     }
   };
 
-  // if (!loading && loginUserQuotes.length === 0) return <div>No Quotes</div>;
-  return (
-    <div className="mb-20">
-      {sortFilterAreaForMineShown ? (
-        <SortFilterQuotes setIsLoading={setIsLoading} />
-      ) : null}
-      {currentRecords && currentRecords.length >= 1 ? (
+  const displayCards = () => {
+    if (currentRecords && currentRecords.length >= 1) {
+      return (
         <div className="flex flex-col gap-3">
-          {currentRecords.map((doc) => (
+          {currentRecords.map((doc, i) => (
             <QuoteCard
-              key={doc.id}
               q={doc}
+              key={doc.id}
               goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
         </div>
-      ) : (
-        <NoFetchedData text="No quotes found" />
-      )}
+      );
+    } else {
+      return <NoFetchedData text="No quotes found" />;
+    }
+  };
+
+  return (
+    <div className="mb-20">
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+      </div>
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
+        {profileUserQuotes.length} quotes found
+      </div>
+      {displayCards()}
     </div>
   );
 };

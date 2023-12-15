@@ -22,11 +22,15 @@ import {
 import {
   TypeQuote,
   TypeQuoteInputValues,
-  ISortFilterBy,
+  TypeSortFilterBy,
   ITag,
   TypeUserFromFirestore,
   TypeAPIQuote,
   TypeTempLockedQuote,
+  TypeFetchMineOrNot,
+  TypeSortOrder,
+  TypeSortBy2,
+  TypeSortType,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "../functions/functions";
@@ -75,48 +79,42 @@ type TypeQuoteContext = {
   setRandomQuote: (quote: TypeQuote | undefined) => void;
   setLockedQuote: (quote: TypeQuote | undefined) => void;
 
-  sortAndFilterMyQuotes: () => void;
+  // ========== sort and filter quots =========
+  // =========== For My quotes ===========
+  sortedFilteredMyQuotes: TypeQuote[];
+  sortVariablesForMine: TypeSortFilterBy;
+  isTagToFilterMyQuotesDisabled: boolean;
+  isSortVariablesForMineDefaultValue: boolean;
+  updateSortVariablesForMine: (which: TypeSortType, ele: any) => void;
+  sortAndFilterMyQuotes: (sortVariablesForMine: TypeSortFilterBy) => void;
+  setIsTagToFilterMyQuotesDisabled: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  resetSortVariablesForMineDefaultValue: () => void;
+  checkSortVariablesForMineDefaultValue: () => void;
+  // =========== For Not My quotes ===========
+  sortedFilteredNotMyQuotes: TypeQuote[];
+  sortVariablesForNotMine: TypeSortFilterBy;
+  isTagToFilterNotMyQuotesDisabled: boolean;
+  isSortVariablesForNotMineDefaultValue: boolean;
+  updateSortVariablesForNotMine: (which: TypeSortType, ele: any) => void;
+  sortAndFilterNotMyQuotes: (sortVariablesForNotMine: TypeSortFilterBy) => void;
+  setIsTagToFilterNotMyQuotesDisabled: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  resetSortVariablesForNotMineDefaultValue: () => void;
+  checkSortVariablesForNotMineDefaultValue: () => void;
+  // END sort and filter quotes ================
 
-  updateSortFilterByForMine: (which: string, ele: string) => void;
-  sortFilterByForMine: ISortFilterBy;
-
-  sortAndFilterNotMyQuotes: () => void;
-
-  updateSortFilterByForNotMine: (which: string, ele: string) => void;
-  sortFilterByForNotMine: ISortFilterBy;
-
-  fetchQuotesForHomePage: (
-    user: TypeUserFromFirestore,
-    setIsLoading: (boo: boolean) => void
-  ) => void;
   quotesForHomePage: TypeQuote[];
-
-  sortFilterAreaForMineShown: boolean;
-  handleSortFilterAreaForMineShown: () => void;
-  sortFilterAreaForNotMineShown: boolean;
-  handleSortFilterAreaForNotMineShown: () => void;
 
   profileWhichTab: "quotes" | "bookmarks" | "likes" | "events";
   handleProfileWhichTab: (
     value: "quotes" | "bookmarks" | "likes" | "events"
   ) => void;
-  isSortFilterAreaForProfileQuotesShown: boolean;
-  toggleSortFilterAreaForProfileQuotes: () => void;
 
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
-
-  onlySortMyQuotes: () => void;
-  onlySortNotMyQuotes: () => void;
-
-  isSortFilterByForMineDefaultValue: boolean;
-  checkSortFilterByForMineDefaultValue: () => void;
-
-  isSortFilterByForNotMineDefaultValue: boolean;
-  checkSortFilterByForNotMineDefaultValue: () => void;
-
-  resetSortFilterByForMineInputs: () => void;
-  resetSortFilterByForNotMineInputs: () => void;
 
   updateRandomQuote: () => void;
 
@@ -150,24 +148,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     TypeAPIQuote[]
   >([]);
 
+  const [quotesForHomePage, setQuotesForHomePage] = useState<TypeQuote[]>([]);
+
   const quotesCollectionRef = collection(db, "quotes");
   const lockedQuotesCollectionRef = collection(db, "lockedQuotes");
   const apiQuotesFromFirestoreCollectionRef = collection(db, "apiQuotes");
 
   const [user] = useAuthState(auth);
-
-  const [sortFilterByForMine, setSortFilterByForMine] = useState<ISortFilterBy>(
-    { order: "desc", sortByElement: "createdAt", searchTag: "" }
-  );
-
-  const [sortFilterByForNotMine, setSortFilterByForNotMine] =
-    useState<ISortFilterBy>({
-      order: "desc",
-      sortByElement: "createdAt",
-      searchTag: "",
-    });
-
-  const [quotesForHomePage, setQuotesForHomePage] = useState<TypeQuote[]>([]);
 
   const registerQuote = async (values: TypeQuoteInputValues, uid: string) => {
     const currTime = serverTimestamp();
@@ -186,28 +173,26 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const getQuotesNotMine = async () => {
-    setLoginUserQuotes([]);
-    if (!user) return;
-
-    const q = query(quotesCollectionRef, where("createdBy", "!=", user.uid));
-
-    onSnapshot(q, (snapshot) => {
-      setQuotesNotMine(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-      );
-    });
+    if (user?.uid) {
+      const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let tempQs: TypeQuote[] = [];
+      querySnapshot.forEach((doc) => {
+        tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+      });
+      setQuotesNotMine(tempQs.filter((q) => q.createdBy !== user?.uid));
+    }
   };
 
   const getLoginUserQuotes = async () => {
     if (user?.uid) {
-      const q = query(quotesCollectionRef, where("createdBy", "==", user.uid));
-      onSnapshot(q, async (snapshot) => {
-        setLoginUserQuotes(
-          snapshot.docs.map(
-            (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
-          )
-        );
+      const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let tempQs: TypeQuote[] = [];
+      querySnapshot.forEach((doc) => {
+        tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
       });
+      setLoginUserQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
     }
   };
 
@@ -372,7 +357,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     }
   };
-
   const removeBookmark = async (uid: string, q: TypeQuote) => {
     const quoteDocRef = doc(db, "quotes", q.id);
     const quoteDocSnap = await getDoc(quoteDocRef);
@@ -385,353 +369,211 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  // todo: not allowed to use a different value from where()
-  const sortAndFilterMyQuotes = async () => {
-    let q = query(
-      quotesCollectionRef,
-      where("createdBy", "==", user?.uid),
-      orderBy("createdAt", "desc")
-    );
+  // ============   Sort and Fiter Quotes   ================
 
-    let qs;
-    if (user?.uid) {
-      if (sortFilterByForMine.sortByElement === "quote") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("quote", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("quote", "desc")
-          );
-      } else if (sortFilterByForMine.sortByElement === "author") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("author", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("author", "desc")
-          );
-      } else if (sortFilterByForMine.sortByElement === "createdAt") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("createdAt", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("createdAt", "desc")
-          );
-      }
-      if (sortFilterByForMine.searchTag) {
-        onSnapshot(q, (snapshot) => {
-          qs = snapshot.docs.filter((doc) => {
-            if (doc.data().tags) {
-              return (
-                doc
-                  .data()
-                  // below return true or false
-                  .tags.some(
-                    (tag: ITag) => tag.name === sortFilterByForMine.searchTag
-                  )
-              );
-            }
-          });
-          setLoginUserQuotes(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-          );
-        });
-      } else {
-        onSnapshot(q, (snapshot) => {
-          qs = snapshot.docs.filter((doc) => {
-            if (doc.data().tags?.length === 0 || !doc.data().tags) {
-              return true;
-            }
-          });
-          setLoginUserQuotes(
-            qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-          );
-        });
-      }
-    }
-
-    setIsSortFilterByForMineDefaultValue(false);
-  };
-
-  // todo: Refactor, comment int should be fine
-  const sortAndFilterNotMyQuotes = async () => {
-    let q = query(
-      quotesCollectionRef,
-      // where("createdBy", "!=", user?.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    let qs;
-
-    if (!user?.uid) return;
-
-    if (sortFilterByForNotMine.sortByElement === "quote") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("quote", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("quote", "desc")
-        );
-    } else if (sortFilterByForNotMine.sortByElement === "author") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("author", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("author", "desc")
-        );
-    } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("createdAt", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("createdAt", "desc")
-        );
-    }
-
-    if (sortFilterByForNotMine.searchTag) {
-      onSnapshot(q, (snapshot) => {
-        qs = snapshot.docs.filter((doc) => {
-          if (doc.data().uid !== user?.uid) {
-            if (doc.data().tags) {
-              return (
-                doc
-                  .data()
-                  // below return true or false
-                  .tags.some(
-                    (tag: ITag) => tag.name === sortFilterByForNotMine.searchTag
-                  )
-              );
-            }
-          }
-        });
-        setQuotesNotMine(
-          qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-        );
-      });
-    } else {
-      onSnapshot(q, (snapshot) => {
-        qs = snapshot.docs.filter((doc) => {
-          if (doc.data().uid !== user?.uid) {
-            if (doc.data().tags?.length === 0 || !doc.data().tags) {
-              return true;
-            }
-          }
-        });
-
-        setQuotesNotMine(
-          qs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-        );
-      });
-    }
-
-    setIsSortFilterByForMineDefaultValue(false);
-  };
-
-  const onlySortMyQuotes = async () => {
-    let q = query(
-      quotesCollectionRef,
-      where("createdBy", "==", user?.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    if (user?.uid) {
-      if (sortFilterByForMine.sortByElement === "quote") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("quote", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("quote", "desc")
-          );
-      } else if (sortFilterByForMine.sortByElement === "author") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("author", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("author", "desc")
-          );
-      } else if (sortFilterByForMine.sortByElement === "createdAt") {
-        if (sortFilterByForMine.order === "asc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("createdAt", "asc")
-          );
-        else if (sortFilterByForMine.order === "desc")
-          q = query(
-            quotesCollectionRef,
-            where("createdBy", "==", user?.uid),
-            orderBy("createdAt", "desc")
-          );
-      }
-
-      await onSnapshot(q, (snapshot) => {
-        setLoginUserQuotes(
-          snapshot.docs.map(
-            (doc) => ({ ...doc.data(), id: doc.id } as TypeQuote)
-          )
-        );
-      });
-    }
-
-    checkSortFilterByForMineDefaultValue();
-  };
-  const onlySortNotMyQuotes = () => {
-    let q = query(
-      quotesCollectionRef,
-      // where("createdBy", "!=", user?.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    if (!user?.uid) return;
-
-    if (sortFilterByForNotMine.sortByElement === "quote") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // ERROR: QuoteContext.tsx:541 Uncaught (in promise) FirebaseError: Invalid query. You have a where filter with an inequality (<, <=, !=, not-in, >, or >=) on field 'uid' and so you must also use 'uid' as your first argument to orderBy(), but your first orderBy() is on field 'author' instead.
-          // where("createdBy", "!=", user?.uid),
-          orderBy("quote", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("quote", "desc")
-        );
-    } else if (sortFilterByForNotMine.sortByElement === "author") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("author", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("author", "desc")
-        );
-    } else if (sortFilterByForNotMine.sortByElement === "createdAt") {
-      if (sortFilterByForNotMine.order === "asc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("createdAt", "asc")
-        );
-      else if (sortFilterByForNotMine.order === "desc")
-        q = query(
-          quotesCollectionRef,
-          // where("createdBy", "!=", user?.uid),
-          orderBy("createdAt", "desc")
-        );
-    }
-
-    onSnapshot(q, (snapshot) => {
-      setQuotesNotMine(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeQuote))
-      );
+  // ========== My Quotes =================
+  const [sortedFilteredMyQuotes, setSortedFilteredMyQuotes] = useState<
+    TypeQuote[]
+  >([]);
+  const [sortVariablesForMine, setSortVariablesForMine] =
+    useState<TypeSortFilterBy>({
+      order: "desc",
+      sortByElement: "createdAt",
+      searchTag: "",
     });
-  };
+  const [isTagToFilterMyQuotesDisabled, setIsTagToFilterMyQuotesDisabled] =
+    useState<boolean>(true);
+  const [
+    isSortVariablesForMineDefaultValue,
+    setIsSortVariablesForMineDefaultValue,
+  ] = useState<boolean>(true);
 
-  const updateSortFilterByForMine = (which: string, ele: string) => {
-    if (which === "order") {
-      setSortFilterByForMine((prev) => ({
-        ...prev,
-        order: ele,
-      }));
-    } else if (which === "sortByElement") {
-      setSortFilterByForMine((prev) => ({
-        ...prev,
-        sortByElement: ele,
-      }));
-    } else if (which === "searchTag") {
-      setSortFilterByForMine((prev) => ({
-        ...prev,
-        searchTag: ele,
-      }));
-    }
-  };
-
-  const updateSortFilterByForNotMine = (which: string, ele: string) => {
-    if (which === "order") {
-      setSortFilterByForNotMine((prev) => ({
-        ...prev,
-        order: ele,
-      }));
-    } else if (which === "sortByElement") {
-      setSortFilterByForNotMine((prev) => ({
-        ...prev,
-        sortByElement: ele,
-      }));
-    } else if (which === "searchTag") {
-      setSortFilterByForNotMine((prev) => ({
-        ...prev,
-        searchTag: ele,
-      }));
-    }
-  };
-
-  const fetchQuotesForHomePage = (
-    user: TypeUserFromFirestore,
-    setIsLoading: (boo: boolean) => void
+  const sortAndFilterMyQuotes = async (
+    sortVariablesForMine: TypeSortFilterBy
   ) => {
-    setIsLoading(true);
-    if (user.settings.quoteTypeForHome === "mine") {
-      setQuotesForHomePage(loginUserQuotes);
-    } else if (user.settings.quoteTypeForHome === "bookmarks") {
-      // setQuotesForHomePage(myBookmarks.quotes);
-    } else {
-      // setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
-    }
-    setIsLoading(false);
+    let q = query(
+      quotesCollectionRef,
+      orderBy(sortVariablesForMine.sortByElement, sortVariablesForMine.order)
+    );
+
+    const querySnapshot = await getDocs(q);
+    let tempQs: TypeQuote[] = [];
+    querySnapshot.forEach((doc) => {
+      // No need to filter by tag
+      if (isTagToFilterMyQuotesDisabled) {
+        tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+      }
+      // If searchTag is empty, leave quotes who have no tags
+      else if (sortVariablesForMine.searchTag === "") {
+        if (doc.data().tags.length === 0) {
+          tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+        }
+      }
+      // If searchTag is not empty, filter by searchTag
+      else {
+        if (
+          doc
+            .data()
+            .tags.some(
+              (tag: { color: string; name: string }) =>
+                tag.name === sortVariablesForMine.searchTag
+            )
+        ) {
+          tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+        }
+      }
+    });
+
+    setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
   };
+
+  const updateSortVariablesForMine = (which: TypeSortType, ele: any) => {
+    if (which === "order") {
+      setSortVariablesForMine((prev) => ({
+        ...prev,
+        order: ele,
+      }));
+    } else if (which === "sortBy") {
+      setSortVariablesForMine((prev) => ({
+        ...prev,
+        sortByElement: ele,
+      }));
+    } else if (which === "tag") {
+      setSortVariablesForMine((prev) => ({
+        ...prev,
+        searchTag: ele,
+      }));
+    }
+  };
+
+  const checkSortVariablesForMineDefaultValue = () => {
+    if (
+      sortVariablesForMine.order !== "desc" ||
+      sortVariablesForMine.sortByElement !== "createdAt" ||
+      !isTagToFilterMyQuotesDisabled
+    ) {
+      setIsSortVariablesForMineDefaultValue(false);
+    } else {
+      setIsSortVariablesForMineDefaultValue(true);
+    }
+  };
+
+  const resetSortVariablesForMineDefaultValue = () => {
+    setSortVariablesForMine({
+      order: "desc",
+      sortByElement: "createdAt",
+      searchTag: "",
+    });
+    setIsTagToFilterMyQuotesDisabled(true);
+    setIsSortVariablesForMineDefaultValue(true);
+    getLoginUserQuotes();
+  };
+
+  // END ============   My Quotes   ================
+
+  // ============   Not My Quotes   ================
+  const [sortedFilteredNotMyQuotes, setSortedFilteredNotMyQuotes] = useState<
+    TypeQuote[]
+  >([]);
+  const [sortVariablesForNotMine, setSortVariablesForNotMine] =
+    useState<TypeSortFilterBy>({
+      order: "desc",
+      sortByElement: "createdAt",
+      searchTag: "",
+    });
+  const [
+    isTagToFilterNotMyQuotesDisabled,
+    setIsTagToFilterNotMyQuotesDisabled,
+  ] = useState<boolean>(true);
+  const [
+    isSortVariablesForNotMineDefaultValue,
+    setIsSortVariablesForNotMineDefaultValue,
+  ] = useState<boolean>(true);
+
+  const sortAndFilterNotMyQuotes = async (
+    sortVariablesForNotMine: TypeSortFilterBy
+  ) => {
+    let q = query(
+      quotesCollectionRef,
+      orderBy(
+        sortVariablesForNotMine.sortByElement,
+        sortVariablesForNotMine.order
+      )
+    );
+
+    const querySnapshot = await getDocs(q);
+    let tempQs: TypeQuote[] = [];
+    querySnapshot.forEach((doc) => {
+      // No need to filter by tag
+      if (isTagToFilterNotMyQuotesDisabled) {
+        tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+      }
+      // If searchTag is empty, leave quotes who have no tags
+      else if (sortVariablesForNotMine.searchTag === "") {
+        if (doc.data().tags.length === 0) {
+          tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+        }
+      }
+      // If searchTag is not empty, filter by searchTag
+      else {
+        if (
+          doc
+            .data()
+            .tags.some(
+              (tag: { color: string; name: string }) =>
+                tag.name === sortVariablesForNotMine.searchTag
+            )
+        ) {
+          tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+        }
+      }
+    });
+
+    setSortedFilteredNotMyQuotes(
+      tempQs.filter((q) => q.createdBy !== user?.uid)
+    );
+  };
+  const updateSortVariablesForNotMine = (which: TypeSortType, ele: any) => {
+    if (which === "order") {
+      setSortVariablesForNotMine((prev) => ({
+        ...prev,
+        order: ele,
+      }));
+    } else if (which === "sortBy") {
+      setSortVariablesForNotMine((prev) => ({
+        ...prev,
+        sortByElement: ele,
+      }));
+    } else if (which === "tag") {
+      setSortVariablesForNotMine((prev) => ({
+        ...prev,
+        searchTag: ele,
+      }));
+    }
+  };
+  const checkSortVariablesForNotMineDefaultValue = () => {
+    if (
+      sortVariablesForNotMine.order !== "desc" ||
+      sortVariablesForNotMine.sortByElement !== "createdAt" ||
+      !isTagToFilterNotMyQuotesDisabled
+    ) {
+      setIsSortVariablesForNotMineDefaultValue(false);
+    } else {
+      setIsSortVariablesForNotMineDefaultValue(true);
+    }
+  };
+  const resetSortVariablesForNotMineDefaultValue = () => {
+    setSortVariablesForNotMine({
+      order: "desc",
+      sortByElement: "createdAt",
+      searchTag: "",
+    });
+    setIsTagToFilterNotMyQuotesDisabled(true);
+    setIsSortVariablesForNotMineDefaultValue(true);
+    getQuotesNotMine();
+  };
+
+  // END ============   Not My Quotes   ================
 
   const updateRandomQuote = async () => {
     let qs, lu;
@@ -791,18 +633,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     }
   };
 
-  const [sortFilterAreaForMineShown, setSortFilterAreaForMineShown] =
-    useState(false);
-  const handleSortFilterAreaForMineShown = () => {
-    setSortFilterAreaForMineShown((prev) => !prev);
-  };
-
-  const [sortFilterAreaForNotMineShown, setSortFilterAreaForNotMineShown] =
-    useState(false);
-  const handleSortFilterAreaForNotMineShown = () => {
-    setSortFilterAreaForNotMineShown((prev) => !prev);
-  };
-
   const [profileWhichTab, setProfileWhichTab] = useState<
     "quotes" | "bookmarks" | "likes" | "events"
   >("quotes");
@@ -812,59 +642,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setProfileWhichTab(value);
   };
 
-  const [
-    isSortFilterAreaForProfileQuotesShown,
-    setIsSortFilterAreaForProfileQuotesShown,
-  ] = useState(false);
-  const toggleSortFilterAreaForProfileQuotes = () => {
-    setIsSortFilterAreaForProfileQuotesShown((prev) => !prev);
-  };
-
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const toggleRegisterFormOpen = () => {
     setIsRegisterFormOpen((prev) => !prev);
-  };
-
-  const [
-    isSortFilterByForMineDefaultValue,
-    setIsSortFilterByForMineDefaultValue,
-  ] = useState<boolean>(true);
-  const checkSortFilterByForMineDefaultValue = () => {
-    sortFilterByForMine.order !== "desc" ||
-    sortFilterByForMine.sortByElement !== "createdAt" ||
-    sortFilterByForMine.searchTag !== ""
-      ? setIsSortFilterByForMineDefaultValue(false)
-      : setIsSortFilterByForMineDefaultValue(true);
-  };
-
-  const [
-    isSortFilterByForNotMineDefaultValue,
-    setIsSortFilterByForNotMineDefaultValue,
-  ] = useState<boolean>(true);
-  const checkSortFilterByForNotMineDefaultValue = () => {
-    sortFilterByForNotMine.order !== "desc" ||
-    sortFilterByForNotMine.sortByElement !== "createdAt" ||
-    sortFilterByForNotMine.searchTag !== ""
-      ? setIsSortFilterByForNotMineDefaultValue(false)
-      : setIsSortFilterByForNotMineDefaultValue(true);
-  };
-
-  const resetSortFilterByForNotMineInputs = () => {
-    setSortFilterByForNotMine({
-      order: "desc",
-      sortByElement: "createdAt",
-      searchTag: "",
-    });
-    setIsSortFilterByForNotMineDefaultValue(true);
-  };
-
-  const resetSortFilterByForMineInputs = () => {
-    setSortFilterByForMine({
-      order: "desc",
-      sortByElement: "createdAt",
-      searchTag: "",
-    });
-    setIsSortFilterByForMineDefaultValue(true);
   };
 
   // API Quotes from Firestore
@@ -1001,42 +781,13 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         setRandomQuote,
         setLockedQuote,
 
-        sortAndFilterMyQuotes,
-
-        updateSortFilterByForMine,
-        sortFilterByForMine,
-
-        sortAndFilterNotMyQuotes,
-
-        updateSortFilterByForNotMine,
-        sortFilterByForNotMine,
-
-        fetchQuotesForHomePage,
         quotesForHomePage,
-
-        sortFilterAreaForMineShown,
-        handleSortFilterAreaForMineShown,
-        sortFilterAreaForNotMineShown,
-        handleSortFilterAreaForNotMineShown,
 
         profileWhichTab,
         handleProfileWhichTab,
-        isSortFilterAreaForProfileQuotesShown,
-        toggleSortFilterAreaForProfileQuotes,
 
         isRegisterFormOpen,
         toggleRegisterFormOpen,
-
-        onlySortMyQuotes,
-        onlySortNotMyQuotes,
-
-        isSortFilterByForMineDefaultValue,
-        checkSortFilterByForMineDefaultValue,
-        isSortFilterByForNotMineDefaultValue,
-        checkSortFilterByForNotMineDefaultValue,
-
-        resetSortFilterByForMineInputs,
-        resetSortFilterByForNotMineInputs,
 
         updateRandomQuote,
 
@@ -1051,6 +802,28 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         fetchProfileUserQuotes,
         profileUserQuotes,
+
+        // ========== sort and filter quots =========
+        // =========== For My quotes ===========
+        sortedFilteredMyQuotes,
+        sortVariablesForMine,
+        isTagToFilterMyQuotesDisabled,
+        isSortVariablesForMineDefaultValue,
+        updateSortVariablesForMine,
+        sortAndFilterMyQuotes,
+        setIsTagToFilterMyQuotesDisabled,
+        resetSortVariablesForMineDefaultValue,
+        checkSortVariablesForMineDefaultValue,
+        // =========== For Not My quotes ===========
+        sortedFilteredNotMyQuotes,
+        sortVariablesForNotMine,
+        isTagToFilterNotMyQuotesDisabled,
+        isSortVariablesForNotMineDefaultValue,
+        updateSortVariablesForNotMine,
+        sortAndFilterNotMyQuotes,
+        setIsTagToFilterNotMyQuotesDisabled,
+        resetSortVariablesForNotMineDefaultValue,
+        checkSortVariablesForNotMineDefaultValue,
       }}
     >
       {children}
