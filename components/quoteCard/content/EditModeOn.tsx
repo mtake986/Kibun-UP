@@ -48,8 +48,8 @@ export default function EditModeOn({
   setIsCardLoading,
 }: Props) {
   const [user] = useAuthState(auth);
-  const { getLoginUserQuotes, profileUserQuotes, fetchProfileUserQuotes } = useQuote();
-  const { reset } = useForm();
+  const { fetchProfileUserQuotes } =
+    useQuote();
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
   const [inputTags, setInputTags] = useState<ITag[]>(q.tags || []);
@@ -156,23 +156,10 @@ export default function EditModeOn({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // Add a new document with a generated id.
     values.tags = inputTags;
     handleUpdate(values, q.id, setIsCardLoading, user?.uid);
     fetchProfileUserQuotes(q.createdBy);
     setIsUpdateMode(false);
-    reset({
-      author: "",
-      content: "",
-      draftStatus: "Public",
-    });
-    setInputTags([]);
-    setInputTagName("");
-    setInputTagColor("");
-    setTagErrors({});
-    form.reset();
   }
 
   return (

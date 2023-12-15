@@ -153,13 +153,12 @@ export default function RegisterForm() {
     if (loginUser) {
       values.tags = inputTags;
       registerQuote(values, loginUser.uid);
-      reset({
+      form.reset({
         author: "",
         content: "",
         draftStatus: "Public",
         tags: [],
       });
-      form.reset();
       setInputTags([]);
       setInputTagName("");
       setInputTagColor("");
