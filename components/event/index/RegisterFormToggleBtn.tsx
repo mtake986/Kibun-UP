@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import UrlLink from "@/components/utils/UrlLink";
 import { useEvent } from "@/context/EventContext";
 import { Plus } from "lucide-react";

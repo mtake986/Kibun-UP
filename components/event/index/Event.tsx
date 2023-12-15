@@ -60,9 +60,11 @@ const Event = () => {
   } else {
     return (
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
-        <HeadingTwo text="Events" />
-        <RegisterFormToggleBtn />
-        <Tabs />
+        <div className="relative">
+          <HeadingTwo text="Events" />
+          <RegisterFormToggleBtn />
+          <Tabs />
+        </div>
       </div>
     );
   }
