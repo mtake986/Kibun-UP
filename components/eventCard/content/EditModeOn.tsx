@@ -29,6 +29,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { useEvent } from "@/context/EventContext";
+import { usePathname } from "next/navigation";
 
 type Props = {
   event: TypeEvent;
@@ -42,9 +43,8 @@ export default function EditModeOn({
   setIsLoading,
 }: Props) {
   const [user] = useAuthState(auth);
-  const { handleUpdate, handleDelete } = useEvent();
-
-  const { reset } = useForm();
+  const { handleUpdate, fetchProfileUserEvents, getLoginUserEvents } = useEvent();
+  const pathname = usePathname();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
@@ -62,14 +62,12 @@ export default function EditModeOn({
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     handleUpdate(values, event.id, setIsLoading);
+    if (pathname.includes('profile')) {
+      fetchProfileUserEvents(event.createdBy);
+    } else {
+      getLoginUserEvents();
+    }
     setIsUpdateMode(false);
-    reset({
-      eventTitle: values.eventTitle,
-      place: values.place,
-      description: values.description,
-      eventDate: values.eventDate,
-    });
-    form.reset();
   }
 
   return (
