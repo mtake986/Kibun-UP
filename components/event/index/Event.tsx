@@ -23,7 +23,7 @@ const Event = () => {
     getLockedEvent,
     loginUserEvents,
     getLoginUserEvents,
-    fetchAllEvents, 
+    fetchAllEvents,
   } = useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,11 +60,9 @@ const Event = () => {
   } else {
     return (
       <div className="px-5 py-10 sm:mb-32 sm:p-0">
-        <div className="relative">
-          <HeadingTwo text="Events" />
-          <RegisterFormToggleBtn />
-          <Tabs />
-        </div>
+        <HeadingTwo text="Events" />
+        <RegisterFormToggleBtn />
+        <Tabs />
       </div>
     );
   }

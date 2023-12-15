@@ -28,9 +28,6 @@ const Quote = () => {
     fetchApiQuotesFromFirestore,
   } = useQuote();
 
-  const searchParams = useSearchParams();
-  const currTab = searchParams.get("tab");
-
   useEffect(() => {
     const fetchDocs = async () => {
       fetchLoginUser(user);

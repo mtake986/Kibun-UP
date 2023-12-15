@@ -46,7 +46,7 @@ const SwitchTab = () => {
       case "api":
         return <ListOfRandom />;
       default:
-        <List
+        return <List
           quotes={
             isSortVariablesForMineDefaultValue
               ? loginUserQuotes

@@ -54,8 +54,8 @@ const Icons = ({
       <Image
         src={profilePhoto ?? defaultProfilePhoto}
         alt="profile photo"
-        width={20}
-        height={20}
+        width={16}
+        height={16}
         className="rounded-full"
       />
     );
