@@ -4,7 +4,7 @@ import { useEvent } from "@/context/EventContext";
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
-import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
+import usePagination from "@/components/hooks/usePagination";
 
 const EventList = () => {
 
@@ -12,7 +12,7 @@ const EventList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { nPages, currentRecords } = usePaginationTenItems(
+  const { nPages, currentRecords } = usePagination(
     currentPage,
     profileUserEvents
   );
@@ -27,28 +27,40 @@ const EventList = () => {
     }
   };
 
-  return (
-    <div className="mb-20">
-      {currentRecords && currentRecords.length >= 1 ? (
+
+  const displayCards = () => {
+    if (currentRecords && currentRecords.length >= 1) {
+      return (
         <div className="flex flex-col gap-3">
-          {currentRecords.map((doc) => (
+          {currentRecords.map((doc, i) => (
             <EventCard
               event={doc}
               key={doc.id}
               goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
         </div>
-      ) : (
-        <NoFetchedData text="No events found" />
-      )}
+      );
+    } else {
+      return <NoFetchedData text="No events found" />;
+    }
+  };
+
+  return (
+    <div className="mb-20">
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+      </div>
+      <div className="mb-2 flex flex-col gap-3 text-gray-400">
+        {profileUserEvents.length} events found
+      </div>
+      {displayCards()}
     </div>
   );
 };

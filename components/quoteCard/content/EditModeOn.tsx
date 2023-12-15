@@ -48,6 +48,7 @@ export default function EditModeOn({
   setIsCardLoading,
 }: Props) {
   const [user] = useAuthState(auth);
+  const { getLoginUserQuotes, profileUserQuotes, fetchProfileUserQuotes } = useQuote();
   const { reset } = useForm();
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
@@ -160,6 +161,7 @@ export default function EditModeOn({
     // Add a new document with a generated id.
     values.tags = inputTags;
     handleUpdate(values, q.id, setIsCardLoading, user?.uid);
+    fetchProfileUserQuotes(q.createdBy);
     setIsUpdateMode(false);
     reset({
       author: "",

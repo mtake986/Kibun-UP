@@ -13,7 +13,6 @@ const Data = () => {
     <div className="relative mt-10">
       <SectionTitle title="Data" />
       <Tabs />
-
       {currTab === "quotes" || currTab === null ? <QuoteList /> : <EventList />}
     </div>
   );

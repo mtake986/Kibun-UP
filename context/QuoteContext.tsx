@@ -494,7 +494,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     setIsSortVariablesForNotMineDefaultValue,
   ] = useState<boolean>(true);
 
-  const sortAndFilterNotMyQuotes = async (sortVariablesForNotMine: TypeSortFilterBy) => {
+  const sortAndFilterNotMyQuotes = async (
+    sortVariablesForNotMine: TypeSortFilterBy
+  ) => {
     let q = query(
       quotesCollectionRef,
       orderBy(
