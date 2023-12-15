@@ -289,7 +289,7 @@ export default function EditModeOn({
                 disabled={isAddBtnDisabled}
                 type="button"
                 onClick={() => {
-                  if (validateInputTags() === "pass") addTag();
+                  if (validateInputTags() === VALIDATION_STATUS.PASS) addTag();
                 }}
                 className={getButtonClasses(isAddBtnDisabled)}
               >

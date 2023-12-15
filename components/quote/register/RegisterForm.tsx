@@ -281,7 +281,8 @@ export default function RegisterForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    if (validateInputTags() === "pass") addTag();
+                    if (validateInputTags() === VALIDATION_STATUS.PASS)
+                      addTag();
                   }}
                   disabled={isAddBtnDisabled}
                   className={getAddButtonClass(isAddBtnDisabled)}

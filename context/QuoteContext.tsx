@@ -106,10 +106,6 @@ type TypeQuoteContext = {
   checkSortVariablesForNotMineDefaultValue: () => void;
   // END sort and filter quotes ================
 
-  fetchQuotesForHomePage: (
-    user: TypeUserFromFirestore,
-    setIsLoading: (boo: boolean) => void
-  ) => void;
   quotesForHomePage: TypeQuote[];
 
   profileWhichTab: "quotes" | "bookmarks" | "likes" | "events";
@@ -579,21 +575,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   // END ============   Not My Quotes   ================
 
-  const fetchQuotesForHomePage = (
-    user: TypeUserFromFirestore,
-    setIsLoading: (boo: boolean) => void
-  ) => {
-    setIsLoading(true);
-    if (user.settings.quoteTypeForHome === "mine") {
-      setQuotesForHomePage(loginUserQuotes);
-    } else if (user.settings.quoteTypeForHome === "bookmarks") {
-      // setQuotesForHomePage(myBookmarks.quotes);
-    } else {
-      // setQuotesForHomePage(loginUserQuotes.concat(myBookmarks.quotes));
-    }
-    setIsLoading(false);
-  };
-
   const updateRandomQuote = async () => {
     let qs, lu;
     if (user) {
@@ -800,7 +781,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         setRandomQuote,
         setLockedQuote,
 
-        fetchQuotesForHomePage,
         quotesForHomePage,
 
         profileWhichTab,
