@@ -5,7 +5,7 @@ type Props = {
   text?: string;
 }
 const SectionTtl = ({ text = "Default Title" }: Props) => {
-  const title = text || "Default Title";
+  const title = text;
 
   return (
     <div className="flex items-center gap-3">

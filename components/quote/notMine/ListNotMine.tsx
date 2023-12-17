@@ -31,7 +31,7 @@ const ListNotMine = ({ quotes }: Props) => {
       <div className="mb-2 flex flex-col gap-3 text-gray-400">
         {quotes.length} quotes found
       </div>
-      {currentRecords && currentRecords.length >= 1 ? (
+      {currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (
             <QuoteCard key={doc.id} q={doc} />

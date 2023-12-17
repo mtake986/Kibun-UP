@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { useQuote } from "@/context/QuoteContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const SelectTags = () => {
+const TagInput = () => {
   const {
     updateSortVariablesForNotMine,
     sortVariablesForNotMine,
@@ -15,7 +15,7 @@ const SelectTags = () => {
         <Checkbox
           id="terms"
           checked={isTagToFilterNotMyQuotesDisabled}
-          onClick={() => {
+          onChange={() => {
             setIsTagToFilterNotMyQuotesDisabled((prev) => !prev);
           }}
         />
@@ -31,7 +31,7 @@ const SelectTags = () => {
           onChange={(e) => {
             updateSortVariablesForNotMine("tag", e.target.value);
           }}
-          placeholder="Ex.) Tag"
+          placeholder="Ex.) Motivation"
           value={sortVariablesForNotMine.searchTag}
         />
       )}
@@ -39,4 +39,4 @@ const SelectTags = () => {
   );
 };
 
-export default SelectTags;
+export default TagInput;

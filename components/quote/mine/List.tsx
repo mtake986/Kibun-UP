@@ -29,7 +29,7 @@ const List = ({ quotes }: Props) => {
   };
 
   const displayCards = () => {
-    if (currentRecords && currentRecords.length >= 1) {
+    if (currentRecords.length >= 1) {
       return (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (

@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { useQuote } from "@/context/QuoteContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const SelectTags = () => {
+const TagInput = () => {
   const {
     updateSortVariablesForMine,
     sortVariablesForMine,
@@ -39,4 +39,4 @@ const SelectTags = () => {
   );
 };
 
-export default SelectTags;
+export default TagInput;
