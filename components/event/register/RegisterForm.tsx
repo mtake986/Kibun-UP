@@ -114,7 +114,7 @@ export default function RegisterForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ex.) My Birthday"
+                      placeholder="E.G.) My Birthday"
                       {...field}
                       // defaultValue={field.value}
                     />
@@ -131,7 +131,7 @@ export default function RegisterForm() {
                   <FormLabel>Place</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ex.) My Parent's house (SLC, Utah)"
+                      placeholder="E.G.) My Parent's house (SLC, Utah)"
                       {...field}
                     />
                   </FormControl>
@@ -151,7 +151,7 @@ export default function RegisterForm() {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex.) My Birthday"
+                    placeholder="E.G.) My Birthday"
                     {...field}
                     // defaultValue={field.value}
                   />
@@ -168,7 +168,7 @@ export default function RegisterForm() {
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex.) My Parent's house (SLC, Utah)"
+                    placeholder="E.G.) My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -233,7 +233,7 @@ export default function RegisterForm() {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Ex.) My 23rd Birthday at my Parent's house"
+                    placeholder="E.G.) My 23rd Birthday at my Parent's house"
                     {...field}
                   />
                 </FormControl>

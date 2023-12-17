@@ -21,7 +21,7 @@ const OrderSelect = () => {
       defaultValue={sortVariablesForMine.order}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Ex.) Order" />
+        <SelectValue placeholder="E.G.) Order" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="asc">Asc.</SelectItem>

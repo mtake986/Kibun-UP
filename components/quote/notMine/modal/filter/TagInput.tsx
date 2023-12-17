@@ -13,14 +13,14 @@ const TagInput = () => {
     <div>
       <div className="flex items-center space-x-2 mb-2">
         <Checkbox
-          id="terms"
+          id="tag-filter-checkbox"
           checked={isTagToFilterNotMyQuotesDisabled}
           onChange={() => {
             setIsTagToFilterNotMyQuotesDisabled((prev) => !prev);
           }}
         />
         <label
-          htmlFor="terms"
+          htmlFor="tag-filter-checkbox"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Disabled
@@ -31,7 +31,7 @@ const TagInput = () => {
           onChange={(e) => {
             updateSortVariablesForNotMine("tag", e.target.value);
           }}
-          placeholder="Ex.) Motivation"
+          placeholder="E.G.) Motivation"
           value={sortVariablesForNotMine.searchTag}
         />
       )}

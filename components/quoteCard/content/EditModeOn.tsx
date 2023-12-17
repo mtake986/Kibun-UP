@@ -179,7 +179,7 @@ export default function EditModeOn({
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Ex.) Just Do It"
+                  placeholder="E.G.) Just Do It"
                   {...field}
                   // defaultValue={field.value}
                 />
@@ -198,7 +198,7 @@ export default function EditModeOn({
                 Author <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="Ex.) NIKE" {...field} />
+                <Input placeholder="E.G.) NIKE" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -233,7 +233,7 @@ export default function EditModeOn({
             <Input
               maxLength={20}
               placeholder={
-                inputTags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
+                inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
               }
               value={inputTagName}
               onChange={(e) =>
@@ -254,7 +254,7 @@ export default function EditModeOn({
                     inputTagColor ? "border-none" : null
                   } w-full`}
                 >
-                  <SelectValue placeholder="Ex.) Color" />
+                  <SelectValue placeholder="E.G.) Color" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem

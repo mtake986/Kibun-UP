@@ -15,7 +15,7 @@ const TagInput = () => {
         <Checkbox
           id="disabled"
           checked={isTagToFilterMyQuotesDisabled}
-          onClick={() => {
+          onChange={() => {
             setIsTagToFilterMyQuotesDisabled((prev) => !prev);
           }}
         />
@@ -31,7 +31,7 @@ const TagInput = () => {
           onChange={(e) => {
             updateSortVariablesForMine("tag", e.target.value);
           }}
-          placeholder="Ex.) Motivation"
+          placeholder="E.G.) Motivation"
           value={sortVariablesForMine.searchTag}
         />
       )}

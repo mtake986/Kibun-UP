@@ -43,7 +43,8 @@ export default function EditModeOn({
   setIsLoading,
 }: Props) {
   const [user] = useAuthState(auth);
-  const { handleUpdate, fetchProfileUserEvents, getLoginUserEvents } = useEvent();
+  const { handleUpdate, fetchProfileUserEvents, getLoginUserEvents } =
+    useEvent();
   const pathname = usePathname();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
@@ -62,7 +63,7 @@ export default function EditModeOn({
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     handleUpdate(values, event.id, setIsLoading);
-    if (pathname.includes('profile')) {
+    if (pathname.includes("profile")) {
       fetchProfileUserEvents(event.createdBy);
     } else {
       getLoginUserEvents();
@@ -83,7 +84,7 @@ export default function EditModeOn({
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex.) My Birthday" {...field} />
+                  <Input placeholder="E.G.) My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +99,7 @@ export default function EditModeOn({
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex.) My Parent's house (SLC, Utah)"
+                    placeholder="E.G.) My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -161,7 +162,7 @@ export default function EditModeOn({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Ex.) My 23rd Birthday at my Parent's house"
+                  placeholder="E.G.) My 23rd Birthday at my Parent's house"
                   {...field}
                 />
               </FormControl>

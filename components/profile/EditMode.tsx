@@ -61,14 +61,14 @@ const EditMode = ({ setIsEditMode }: Props) => {
     }
   };
 
-  if (loading) return <LoadingSpinnerL />
+  if (loading) return <LoadingSpinnerL />;
 
   return (
     <form
       className="mx-auto flex w-full max-w-[350px] flex-col gap-5 sm:max-w-none"
       onSubmit={onSubmit}
     >
-      <div className="grid w-full max-w-sm sm:max-w-none items-center gap-1.5">
+      <div className="grid w-full max-w-sm items-center gap-1.5 sm:max-w-none">
         <Label htmlFor="picture">Profile Picture</Label>
         <Input
           onChange={(e) => {
@@ -78,7 +78,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
           type="file"
         />
       </div>
-      <div className="sm:flex-row flex flex-col gap-5">
+      <div className="flex flex-col gap-5 sm:flex-row">
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="username">
             Username <span className="text-red-500">*</span>
@@ -107,7 +107,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
           />
         </div>
       </div>
-      <div className="grid w-full max-w-sm items-center sm:w-full sm:max-w-none gap-1.5">
+      <div className="grid w-full max-w-sm items-center gap-1.5 sm:w-full sm:max-w-none">
         <Label htmlFor="description">Description</Label>
         <Textarea
           onChange={(e) => {
@@ -115,7 +115,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
           }}
           id="description"
           defaultValue={loginUser?.description}
-          placeholder="Ex.) I am from Japan and try to transfer to Harvard University."
+          placeholder="E.G.) I am from Japan and try to transfer to Harvard University."
         />
       </div>
 
