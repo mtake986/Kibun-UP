@@ -29,6 +29,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeEvent } from "@/types/type";
 import { eventSchema } from "@/form/schema";
 import { useEvent } from "@/context/EventContext";
+import { usePathname } from "next/navigation";
 
 type Props = {
   event: TypeEvent;
@@ -42,9 +43,9 @@ export default function EditModeOn({
   setIsLoading,
 }: Props) {
   const [user] = useAuthState(auth);
-  const { handleUpdate, handleDelete } = useEvent();
-
-  const { reset } = useForm();
+  const { handleUpdate, fetchProfileUserEvents, getLoginUserEvents } =
+    useEvent();
+  const pathname = usePathname();
   // 1. Define your form.
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
@@ -62,14 +63,12 @@ export default function EditModeOn({
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
     handleUpdate(values, event.id, setIsLoading);
+    if (pathname.includes("profile")) {
+      fetchProfileUserEvents(event.createdBy);
+    } else {
+      getLoginUserEvents();
+    }
     setIsUpdateMode(false);
-    reset({
-      eventTitle: values.eventTitle,
-      place: values.place,
-      description: values.description,
-      eventDate: values.eventDate,
-    });
-    form.reset();
   }
 
   return (
@@ -85,7 +84,7 @@ export default function EditModeOn({
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex.) My Birthday" {...field} />
+                  <Input placeholder="E.G.) My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +99,7 @@ export default function EditModeOn({
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex.) My Parent's house (SLC, Utah)"
+                    placeholder="E.G.) My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -163,7 +162,7 @@ export default function EditModeOn({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Ex.) My 23rd Birthday at my Parent's house"
+                  placeholder="E.G.) My 23rd Birthday at my Parent's house"
                   {...field}
                 />
               </FormControl>

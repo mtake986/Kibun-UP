@@ -35,6 +35,7 @@ import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
 import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "./TagErrors";
+import { usePathname } from "next/navigation";
 
 type Props = {
   q: TypeQuote;
@@ -48,8 +49,9 @@ export default function EditModeOn({
   setIsCardLoading,
 }: Props) {
   const [user] = useAuthState(auth);
-  const { fetchProfileUserQuotes } =
+  const { fetchProfileUserQuotes, getLoginUserQuotes, handleUpdate } =
     useQuote();
+  const pathname = usePathname();
   const [inputTagName, setInputTagName] = useState("");
   const [inputTagColor, setInputTagColor] = useState<string>("");
   const [inputTags, setInputTags] = useState<ITag[]>(q.tags || []);
@@ -152,13 +154,15 @@ export default function EditModeOn({
     },
   });
 
-  const { handleUpdate } = useQuote();
-
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     values.tags = inputTags;
     handleUpdate(values, q.id, setIsCardLoading, user?.uid);
-    fetchProfileUserQuotes(q.createdBy);
+    if (pathname.includes("profile")) {
+      fetchProfileUserQuotes(q.createdBy);
+    } else {
+      getLoginUserQuotes();
+    }
     setIsUpdateMode(false);
   }
 
@@ -175,7 +179,7 @@ export default function EditModeOn({
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Ex.) Just Do It"
+                  placeholder="E.G.) Just Do It"
                   {...field}
                   // defaultValue={field.value}
                 />
@@ -194,7 +198,7 @@ export default function EditModeOn({
                 Author <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="Ex.) NIKE" {...field} />
+                <Input placeholder="E.G.) NIKE" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -229,7 +233,7 @@ export default function EditModeOn({
             <Input
               maxLength={20}
               placeholder={
-                inputTags.length >= 5 ? "Max. 5 tags" : "Ex.) Motivation"
+                inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
               }
               value={inputTagName}
               onChange={(e) =>
@@ -250,7 +254,7 @@ export default function EditModeOn({
                     inputTagColor ? "border-none" : null
                   } w-full`}
                 >
-                  <SelectValue placeholder="Ex.) Color" />
+                  <SelectValue placeholder="E.G.) Color" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem

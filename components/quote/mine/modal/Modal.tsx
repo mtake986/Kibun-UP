@@ -34,7 +34,6 @@ const Modal = () => {
             e.preventDefault();
             try {
               sortAndFilterMyQuotes(sortVariablesForMine);
-              console.log(sortVariablesForMine);
               checkSortVariablesForMineDefaultValue();
             } catch (error) {
               displayErrorToast(error);
