@@ -29,3 +29,7 @@ export const contactEmailSchema = z.object({
   title: z.string().min(2).max(30),
   message: z.string().min(2).max(1000),
 });
+
+export const commentSchema = z.object({
+  comment: z.string().min(2).max(1000),
+});

@@ -96,7 +96,7 @@ const Footer = () => {
 
       {/* mobile */}
       <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
-        <div className="m-auto flex w-full max-w-[150px] items-center justify-around gap-10 px-20">
+        <div className="m-auto flex w-full items-center justify-around px-5">
           {footerListItems.map((item, i) => {
             if (pathname.includes(item.href)) {
               return (

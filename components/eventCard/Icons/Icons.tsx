@@ -14,6 +14,11 @@ import { useQuote } from "@/context/QuoteContext";
 import IconLike from "./IconLike";
 import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
+import IconComment from "./IconComment";
+import useComments from "./hooks/useComments";
+import CommentList from "./CommentList";
+import CommentForm from "./CommentForm";
+import CommentArea from "./CommentArea";
 
 type Props = {
   event: TypeEvent;
@@ -30,9 +35,10 @@ const Icons = ({
 }: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAddMode, setIsAddMode] = useState<boolean>(false);
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const { getCreatorPhoto } = useQuote();
-
+  const { fetchComments, comments } = useComments();
   const fetchProfilePhoto = useCallback(async () => {
     const photo = await getCreatorPhoto(event.createdBy);
     setProfilePhoto(photo);
@@ -41,6 +47,7 @@ const Icons = ({
   useEffect(() => {
     setIsLoading(true);
     fetchLoginUser(auth.currentUser);
+    fetchComments(event.id);
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
@@ -70,35 +77,52 @@ const Icons = ({
   }
 
   const isMine = event.createdBy === loginUser?.uid;
+
+  const toggleAddMode = () => {
+    setIsAddMode((prev) => !prev);
+  };
+
   return (
-    <div className="mt-5 flex items-center justify-between">
-      <div className="flex items-center gap-5">
+    <div>
+      <div className="mt-5 flex items-center justify-between">
+        <div className="flex items-center gap-5">
+          <IconComment toggleAddMode={toggleAddMode} />
+          {isMine ? (
+            <IconEdit
+              setIsUpdateMode={setIsUpdateMode}
+              isUpdateMode={isUpdateMode}
+            />
+          ) : null}
+          <IconLock event={event} loginUser={loginUser} />
+          <IconLike event={event} loginUser={loginUser} />
+        </div>
         {isMine ? (
-          <IconEdit
-            setIsUpdateMode={setIsUpdateMode}
-            isUpdateMode={isUpdateMode}
+          <IconTrash
+            event={event}
+            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
-        ) : null}
-        <IconLock event={event} loginUser={loginUser} />
-        <IconLike event={event} loginUser={loginUser} />
+        ) : isLoading ? (
+          <LoadingSpinnerXS num={3} />
+        ) : pathname.includes(uid) ? (
+          <div>{creatorImg()}</div>
+        ) : (
+          <UrlLink
+            href={`/profile/${event.createdBy}`}
+            target={"_self"}
+            clickOn={creatorImg()}
+            className="hover:opacity-70"
+          />
+        )}
       </div>
-      {isMine ? (
-        <IconTrash
-          event={event}
-          goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
-        />
-      ) : isLoading ? (
-        <LoadingSpinnerXS num={3} />
-      ) : pathname.includes(uid) ? (
-        <div>{creatorImg()}</div>
-      ) : (
-        <UrlLink
-          href={`/profile/${event.createdBy}`}
-          target={"_self"}
-          clickOn={creatorImg()}
-          className="hover:opacity-70"
-        />
-      )}
+
+      {/* comment area */}
+      <CommentArea
+        loginUser={loginUser}
+        toggleAddMode={toggleAddMode}
+        eid={event.id}
+        comments={comments}
+        isAddMode={isAddMode}
+      />
     </div>
   );
 };

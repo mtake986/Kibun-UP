@@ -10,6 +10,7 @@ export interface TypeEvent {
   createdAt: Date;
   updatedAt?: Date;
   cheeredBy: string[];
+  comments?: TypeComment[];
 }
 
 export type TypeQuote = {
@@ -152,7 +153,16 @@ export type TypeAuthorOfAPI = {
   slug: string;
 };
 
-export type TypeFetchMineOrNot = 'mine' | 'not';
-export type TypeSortOrder = 'asc' | 'desc';
-export type TypeSortBy2 = 'author' | 'content' | 'createdAt' | 'createdBy';
-export type TypeSortType = 'order' | 'sortBy' | 'tag';
+export type TypeFetchMineOrNot = "mine" | "not";
+export type TypeSortOrder = "asc" | "desc";
+export type TypeSortBy2 = "author" | "content" | "createdAt" | "createdBy";
+export type TypeSortType = "order" | "sortBy" | "tag";
+
+export type TypeComment = {
+  createdBy: string;
+  comment: string;
+  createdAt: Timestamp;
+  id: string;
+  updatedAt?: Timestamp;
+  replies?: TypeComment[];
+};
