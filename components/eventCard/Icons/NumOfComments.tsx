@@ -13,7 +13,7 @@ const NumOfComments = ({
   comments,
 }: Props) => {
   return (
-    <div className="mt-3 flex items-center gap-3 text-gray-400">
+    <div className="mt-1 flex items-center gap-3 text-gray-400">
       <span className="text-sm">{comments.length} comments</span>
       {comments.length >= 1 ? (
         areCommentsShown ? (

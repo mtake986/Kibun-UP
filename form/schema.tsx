@@ -24,12 +24,43 @@ export const quoteSchema = z.object({
 });
 
 export const contactEmailSchema = z.object({
-  sender_name: z.string().min(2).max(20),
-  sender_email: z.string().email(),
-  title: z.string().min(2).max(30),
-  message: z.string().min(2).max(1000),
+  sender_name: z.string({
+    required_error: "Please enter your name",
+  }).min(2, {
+    message: "Name must be at least 2 characters long",
+  }).max(20, {
+    message: "Name must be less than 20 characters long",
+  }),
+  sender_email: z.string({
+    required_error: "Please enter your email",
+  }).email({
+    message: "Please enter a valid email address",
+  }),
+  title: z.string({
+    required_error: "Please enter a title",
+  }).min(2, {
+    message: "Title must be at least 2 characters long",
+  }).max(50, {
+    message: "Title must be less than 50 characters long",
+  }),
+  message: z.string({
+    required_error: "Please enter a message",
+  }).min(2, {
+    message: "Message must be at least 2 characters long",
+  }).max(1000, {
+    message: "Message must be less than 1000 characters long",
+  }),
 });
 
 export const commentSchema = z.object({
-  comment: z.string().min(2).max(1000),
+  comment: z
+    .string({
+      required_error: "Please enter a comment",
+    })
+    .min(2, {
+      message: "Comment must be at least 2 characters long",
+    })
+    .max(1000, {
+      message: "Comment must be less than 1000 characters long",
+    }),
 });

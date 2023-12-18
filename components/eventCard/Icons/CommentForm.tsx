@@ -1,13 +1,11 @@
 import { Textarea } from "@/components/ui/textarea";
 import { commentSchema } from "@/form/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useComments from "./hooks/useComments";
 import {
-  displayErrorToast,
-  displaySuccessToast,
   displayToast,
 } from "@/functions/displayToast";
 import {
@@ -15,14 +13,10 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { TypeUserFromFirestore } from "@/types/type";
-import { useQuote } from "@/context/QuoteContext";
 import Image from "next/image";
-import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
-import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 
 type Props = {

@@ -16,8 +16,6 @@ import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import IconComment from "./IconComment";
 import useComments from "./hooks/useComments";
-import CommentList from "./CommentList";
-import CommentForm from "./CommentForm";
 import CommentArea from "./CommentArea";
 
 type Props = {

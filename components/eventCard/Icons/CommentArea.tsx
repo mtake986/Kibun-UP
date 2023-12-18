@@ -1,7 +1,8 @@
 import { TypeComment, TypeUserFromFirestore } from "@/types/type";
-import React, { useState } from "react";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
+import NumOfComments from "./NumOfComments";
+import { useState } from "react";
 
 type Props = {
   loginUser: TypeUserFromFirestore;
@@ -17,6 +18,12 @@ const CommentArea = ({
   comments,
   isAddMode,
 }: Props) => {
+    const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
+
+    const toggleCommentList = () => {
+      setAreCommentsShown((prev) => !prev);
+    };
+
   return (
     <div className="mt-5">
       {isAddMode ? (
@@ -26,7 +33,16 @@ const CommentArea = ({
           eid={eid}
         />
       ) : null}
-      <CommentList comments={comments} />
+      <NumOfComments
+        toggleCommentList={toggleCommentList}
+        areCommentsShown={areCommentsShown}
+        comments={comments}
+      />
+      <CommentList
+        loginUser={loginUser}
+        comments={comments}
+        areCommentsShown={areCommentsShown}
+      />
     </div>
   );
 };
