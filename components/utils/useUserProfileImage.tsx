@@ -5,7 +5,6 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import { displayErrorToast } from "@/functions/displayToast";
-import LoadingSpinnerS from "./LoadingSpinnerS";
 import LoadingSpinnerXS from "./LoadingSpinnerXS";
 
 type Props = {

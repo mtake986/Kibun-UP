@@ -26,7 +26,7 @@ type Props = {
 };
 
 const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
-  const { addComment } = useComments();
+  const { addComment, fetchComments } = useComments();
   const [isPending, setIsPending] = useState<boolean>(false);
 
   const creatorImg = useCallback(() => {
@@ -54,6 +54,7 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
     setIsPending(true);
     try {
       await addComment(loginUser.uid, values.comment, eid);
+      await fetchComments(eid);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({
@@ -70,9 +71,9 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
 
   return (
     <div>
-      {isPending ? (
+      {/* {isPending ? (
         <LoadingSpinnerS />
-      ) : (
+      ) : ( */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-start gap-3">
@@ -110,7 +111,7 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
             </div>
           </form>
         </Form>
-      )}
+      {/* // )} */}
     </div>
   );
 };

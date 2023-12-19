@@ -8,11 +8,12 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const useComments = () => {
-  const [commentInput, setCommentInput] = useState<string>("");
   const [comments, setComments] = useState<TypeComment[]>([]);
+  const [eid, setEid] = useState<string | null>(null);
+
   const addComment = async (uid: string, comment: string, eid: string) => {
     const currTime = serverTimestamp();
     await addDoc(collection(db, "events", eid, "comments"), {
@@ -20,6 +21,7 @@ const useComments = () => {
       comment,
       createdAt: currTime,
     });
+    setEid(eid);
   };
 
   const removeComment = (uid: string) => {};
@@ -35,13 +37,12 @@ const useComments = () => {
       tempComments.push({ ...doc.data(), id: doc.id } as TypeComment);
     });
     setComments(tempComments);
+    console.log(comments.length);
   };
 
   return {
     addComment,
     removeComment,
-    commentInput,
-    setCommentInput,
     fetchComments,
     comments,
   };

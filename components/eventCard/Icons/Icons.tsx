@@ -1,10 +1,10 @@
-import { TypeEvent } from "@/types/type";
+import { TypeComment, TypeEvent } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
 import IconLock from "./IconLock";
 import IconTrash from "./IconTrash";
 import { useCallback, useEffect, useState } from "react";
-import { auth } from "@/config/Firebase";
+import { auth, db } from "@/config/Firebase";
 import { displayErrorToast, displayToast } from "@/functions/displayToast";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import UrlLink from "@/components/utils/UrlLink";
@@ -17,6 +17,7 @@ import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import IconComment from "./IconComment";
 import useComments from "./hooks/useComments";
 import CommentArea from "./CommentArea";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 type Props = {
   event: TypeEvent;
@@ -34,9 +35,10 @@ const Icons = ({
   const { loginUser, fetchLoginUser } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddMode, setIsAddMode] = useState<boolean>(false);
+  const [comments, setComments] = useState<TypeComment[]>([]);
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const { getCreatorPhoto } = useQuote();
-  const { fetchComments, comments } = useComments();
+  // const { fetchComments, comments } = useComments();
   const fetchProfilePhoto = useCallback(async () => {
     const photo = await getCreatorPhoto(event.createdBy);
     setProfilePhoto(photo);
@@ -45,13 +47,33 @@ const Icons = ({
   useEffect(() => {
     setIsLoading(true);
     fetchLoginUser(auth.currentUser);
-    fetchComments(event.id);
+    const q = query(
+      collection(db, "events", event.id, "comments"),
+      orderBy("createdAt", "desc")
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      // Respond to data
+      // ...
+      setComments(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
+        )
+      );
+    });
+
+    // Later ...
+
+    // Stop listening to changes
+    console.log("passed");
+
     fetchProfilePhoto()
       .then(() => setIsLoading(false))
       .catch((error) => {
         displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
+    return unsubscribe;
   }, []);
 
   const creatorImg = useCallback(() => {

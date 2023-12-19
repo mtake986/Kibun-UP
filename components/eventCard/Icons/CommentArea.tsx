@@ -18,11 +18,10 @@ const CommentArea = ({
   comments,
   isAddMode,
 }: Props) => {
-    const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
-
-    const toggleCommentList = () => {
-      setAreCommentsShown((prev) => !prev);
-    };
+  const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
+  const toggleCommentList = () => {
+    setAreCommentsShown((prev) => !prev);
+  };
 
   return (
     <div className="mt-5">

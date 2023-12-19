@@ -42,6 +42,7 @@ function TimeAgo(timestamp: number) {
 }
 
 const CommentCard = ({ comment, loginUser }: Props) => {
+  const isMine = loginUser.uid === comment.createdBy;
 
   const { creatorImg } = useUserProfileImage({ comment });
   return (
@@ -54,15 +55,17 @@ const CommentCard = ({ comment, loginUser }: Props) => {
       />
       <div className="flex flex-grow flex-col items-start">
         <p className="text-xs text-gray-500">
-          {TimeAgo(comment.createdAt.toMillis())}
+          {TimeAgo(comment.createdAt?.toMillis() ?? 'just now')}
         </p>
 
         <p className="text-sm">{comment.comment}</p>
       </div>
 
-      <button className="h-4 w-4">
-        <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
-      </button>
+      {isMine ? (
+        <button className="h-4 w-4">
+          <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
+        </button>
+      ) : null}
     </div>
   );
 };
