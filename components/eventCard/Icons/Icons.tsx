@@ -64,15 +64,14 @@ const Icons = ({
 
     // Later ...
 
-    // Stop listening to changes
-    console.log("passed");
-
+    
     fetchProfilePhoto()
-      .then(() => setIsLoading(false))
-      .catch((error) => {
+    .then(() => setIsLoading(false))
+    .catch((error) => {
         displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
+      // Stop listening to changes
     return unsubscribe;
   }, []);
 

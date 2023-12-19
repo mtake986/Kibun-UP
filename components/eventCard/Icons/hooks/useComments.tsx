@@ -24,9 +24,8 @@ const useComments = () => {
     setEid(eid);
   };
 
-  const removeComment = (uid: string) => {};
-
-  const updateComment = (uid: string) => {};
+  // TODO: Implement removeComment functionality
+  // TODO: Implement updateComment functionality
 
   const fetchComments = async (eid: string) => {
     const commentsRef = collection(db, "events", eid, "comments");
@@ -42,7 +41,6 @@ const useComments = () => {
 
   return {
     addComment,
-    removeComment,
     fetchComments,
     comments,
   };
