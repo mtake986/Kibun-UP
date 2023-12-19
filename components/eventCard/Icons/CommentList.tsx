@@ -7,11 +7,12 @@ type Props = {
   comments: TypeComment[];
   areCommentsShown: boolean;
 };
+
 const CommentList = ({ loginUser, comments, areCommentsShown }: Props) => {
   return (
     <div className="mt-1">
       {areCommentsShown && comments.length >= 1 ? (
-        <div className="mt-1 space-y-3">
+        <div className="flex flex-col space-y-3">
           {comments.map((comment: TypeComment) => (
             <CommentCard
               key={comment.id}

@@ -4,6 +4,8 @@ import useUserProfileImage from "@/components/utils/useUserProfileImage";
 import UrlLink from "@/components/utils/UrlLink";
 import { BiDotsHorizontal, BiDotsVertical } from "react-icons/bi";
 import { MONTHS_IN_STR } from "@/data/CONSTANTS";
+import { useState } from "react";
+import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 
 type Props = {
   comment: TypeComment;
@@ -43,8 +45,11 @@ function TimeAgo(timestamp: number) {
 
 const CommentCard = ({ comment, loginUser }: Props) => {
   const isMine = loginUser.uid === comment.createdBy;
+  const [isPending, setIsPending] = useState<boolean>(true);
+  const { creatorImg } = useUserProfileImage({ comment, setIsPending });
 
-  const { creatorImg } = useUserProfileImage({ comment });
+  if (isPending) return <LoadingSpinnerXS num={4} />; 
+
   return (
     <div className="flex items-start gap-3">
       <UrlLink
@@ -55,14 +60,14 @@ const CommentCard = ({ comment, loginUser }: Props) => {
       />
       <div className="flex flex-grow flex-col items-start">
         <p className="text-xs text-gray-500">
-          {TimeAgo(comment.createdAt?.toMillis() ?? 'just now')}
+          {TimeAgo(comment.createdAt?.toMillis() ?? "just now")}
         </p>
 
         <p className="text-sm">{comment.comment}</p>
       </div>
 
       {isMine ? (
-        <button className="h-4 w-4">
+        <button className="h-4 w-4 mt-1">
           <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
         </button>
       ) : null}

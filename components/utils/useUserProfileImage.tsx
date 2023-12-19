@@ -9,11 +9,11 @@ import LoadingSpinnerXS from "./LoadingSpinnerXS";
 
 type Props = {
   comment: TypeComment;
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const useUserProfileImage = ({ comment }: Props) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+const useUserProfileImage = ({ comment, setIsPending }: Props) => {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
-  const getCreatorPhoto = async (uid: string): Promise<string> => {
+  const getCreatorPhoto = useCallback(async (uid: string): Promise<string> => {
     const userDocRef = doc(db, "users", uid);
     const docSnap = await getDoc(userDocRef);
 
@@ -21,7 +21,7 @@ const useUserProfileImage = ({ comment }: Props) => {
       return docSnap.data()?.photoURL;
     }
     return "";
-  };
+  }, []);
 
   const fetchProfilePhoto = useCallback(async () => {
     const photo = await getCreatorPhoto(comment.createdBy);
@@ -29,16 +29,16 @@ const useUserProfileImage = ({ comment }: Props) => {
   }, [comment.createdBy, getCreatorPhoto]);
 
   useEffect(() => {
+    setIsPending(true);
     fetchProfilePhoto()
-      .then(() => setIsLoading(false))
+      .then(() => setIsPending(false))
       .catch((error) => {
         displayErrorToast("Failed to fetch profile photo:", error);
-        setIsLoading(false);
+        setIsPending(false);
       });
   }, []);
 
   const creatorImg = () => {
-    if (isLoading) return <LoadingSpinnerXS num={4} />; 
     return (
       <div className="h-4 w-4">
         <Image
