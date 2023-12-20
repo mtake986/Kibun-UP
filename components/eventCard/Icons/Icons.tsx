@@ -55,7 +55,6 @@ const Icons = ({
       collection(db, "events", event.id, "comments"),
       orderBy("createdAt", "desc")
     );
-    setSelectedSortByForComments("newestFirst");
     const unsubscribe = onSnapshot(q, (snapshot) => {
       // Respond to data
       // ...
