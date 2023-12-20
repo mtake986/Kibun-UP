@@ -29,7 +29,7 @@ type Props = {
   goPrevAsNoCurrentRecords?: () => void;
 };
 
-const Icons = ({
+const Icons2 = ({
   event,
   setIsUpdateMode,
   isUpdateMode,
@@ -55,16 +55,8 @@ const Icons = ({
       collection(db, "events", event.id, "comments"),
       orderBy("createdAt", "desc")
     );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      // Respond to data
-      // ...
-      setComments(
-        snapshot.docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
-        )
-      );
-    });
 
+    sortNewestFirst();
     // Later ...
 
     fetchProfilePhoto()
@@ -74,7 +66,6 @@ const Icons = ({
         setIsLoading(false);
       });
     // Stop listening to changes
-    return unsubscribe;
   }, []);
 
   const creatorImg = useCallback(() => {
@@ -103,39 +94,26 @@ const Icons = ({
     setIsAddMode((prev) => !prev);
   };
 
-  const sortNewestFirst = () => {
+  const sortComments = (order: "asc" | "desc") => {
     const q = query(
       collection(db, "events", event.id, "comments"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", order)
     );
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      // Respond to data
       setComments(
         snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
         )
       );
     });
-    setSelectedSortByForComments("newestFirst");
+    setSelectedSortByForComments(
+      order === "asc" ? "oldestFirst" : "newestFirst"
+    );
     return unsubscribe;
   };
 
-  const sortOldestFirst = () => {
-    const q = query(
-      collection(db, "events", event.id, "comments"),
-      orderBy("createdAt", "asc")
-    );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      // Respond to data
-      setComments(
-        snapshot.docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
-        )
-      );
-    });
-    setSelectedSortByForComments("oldestFirst");
-    return unsubscribe;
-  };
+  const sortNewestFirst = () => sortComments("desc");
+  const sortOldestFirst = () => sortComments("asc");
 
   return (
     <div>
@@ -185,4 +163,4 @@ const Icons = ({
   );
 };
 
-export default Icons;
+export default Icons2;
