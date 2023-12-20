@@ -44,7 +44,7 @@ const IconLock = ({ event, loginUser }: Props) => {
   };
 
   return (
-    <span className="duration-300 hover:opacity-50">
+    <span>
       {lockedEvent?.id === event.id ? (
         <Target
           size={14}
@@ -55,7 +55,7 @@ const IconLock = ({ event, loginUser }: Props) => {
         <Target
           size={14}
           onClick={handleLock}
-          className="cursor-pointer hover:opacity-70"
+          className="cursor-pointer duration-300 hover:opacity-70"
         />
       )}
     </span>
