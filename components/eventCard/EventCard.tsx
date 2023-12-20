@@ -4,7 +4,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import EditModeOn from "./content/EditModeOn";
 import LoadingSpinnerL from "../utils/LoadingSpinnerL";
-import Icons from "./icons/Icons2";
+import Icons from "./Icons/Icons";
 
 type Props = {
   event: TypeEvent;

@@ -29,7 +29,7 @@ type Props = {
   goPrevAsNoCurrentRecords?: () => void;
 };
 
-const Icons2 = ({
+const Icons = ({
   event,
   setIsUpdateMode,
   isUpdateMode,
@@ -163,4 +163,4 @@ const Icons2 = ({
   );
 };
 
-export default Icons2;
+export default Icons;
