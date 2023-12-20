@@ -12,9 +12,10 @@ import ActionBtn from "./ActionBtn";
 type Props = {
   comment: TypeComment;
   loginUser: TypeUserFromFirestore;
+  eventCreatorId: string;
 };
 
-const CommentCard = ({ comment, loginUser }: Props) => {
+const CommentCard = ({ comment, loginUser, eventCreatorId }: Props) => {
   const isMine = loginUser.uid === comment.createdBy;
   const [isPending, setIsPending] = useState<boolean>(true);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
@@ -37,7 +38,7 @@ const CommentCard = ({ comment, loginUser }: Props) => {
         <p className="text-sm">{comment.comment}</p>
       </div>
 
-      {isMine ? <ActionBtn  /> : null}
+      {isMine ? <ActionBtn comment={comment} loginUser={loginUser} eventCreatorId={eventCreatorId} /> : null}
     </div>
   );
 };

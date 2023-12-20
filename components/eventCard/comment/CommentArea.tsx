@@ -1,5 +1,6 @@
 import {
   TypeComment,
+  TypeEvent,
   TypeSelectedSortByForComments,
   TypeUserFromFirestore,
 } from "@/types/type";
@@ -11,7 +12,7 @@ import { useState } from "react";
 type Props = {
   loginUser: TypeUserFromFirestore;
   toggleAddMode: () => void;
-  eid: string;
+  event: TypeEvent;
   comments: TypeComment[];
   isAddMode: boolean;
   sortOldestFirst: () => void;
@@ -21,7 +22,7 @@ type Props = {
 const CommentArea = ({
   loginUser,
   toggleAddMode,
-  eid,
+  event,
   comments,
   isAddMode,
   sortOldestFirst,
@@ -39,7 +40,7 @@ const CommentArea = ({
         <CommentForm
           loginUser={loginUser}
           toggleAddMode={toggleAddMode}
-          eid={eid}
+          eid={event.id}
         />
       ) : null}
       <NumOfComments
@@ -49,11 +50,12 @@ const CommentArea = ({
         sortOldestFirst={sortOldestFirst}
         sortNewestFirst={sortNewestFirst}
         selectedSortByForComments={selectedSortByForComments}
-      />
+        />
       <CommentList
         loginUser={loginUser}
         comments={comments}
         areCommentsShown={areCommentsShown}
+        eventCreatorId={event.createdBy}
       />
     </div>
   );

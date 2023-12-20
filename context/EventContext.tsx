@@ -234,7 +234,6 @@ export function EventProvider({ children }: EventProviderProps) {
         );
         const randomNum = getRandomNum(events.length);
         const e: TypeEvent = events[randomNum];
-        console.log(events, randomNum, e);
         setRandomEvent(e);
       });
     }
@@ -285,7 +284,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (eventDocSnap.exists()) {
       await updateDoc(eventDocRef, {
         cheeredBy: arrayUnion(uid),
-      })
+      });
     }
   };
 
@@ -295,7 +294,7 @@ export function EventProvider({ children }: EventProviderProps) {
     if (eventDocSnap.exists()) {
       await updateDoc(eventDocRef, {
         cheeredBy: arrayRemove(uid),
-      })
+      });
     }
   };
 

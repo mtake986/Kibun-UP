@@ -1,4 +1,8 @@
-import { TypeComment, TypeSelectedSortByForComments } from "@/types/type";
+import {
+  TypeComment,
+  TypeEvent,
+  TypeSelectedSortByForComments,
+} from "@/types/type";
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import SortBtn from "./SortBtn";

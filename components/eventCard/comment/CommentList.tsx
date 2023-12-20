@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { TypeComment, TypeUserFromFirestore } from "@/types/type";
+import { TypeComment, TypeEvent, TypeUserFromFirestore } from "@/types/type";
 import CommentCard from "./card/CommentCard";
 
 type Props = {
   loginUser: TypeUserFromFirestore;
   comments: TypeComment[];
   areCommentsShown: boolean;
+  eventCreatorId: string;
 };
 
-const CommentList = ({ loginUser, comments, areCommentsShown }: Props) => {
+const CommentList = ({
+  loginUser,
+  comments,
+  areCommentsShown,
+  eventCreatorId,
+}: Props) => {
   return (
     <div className="mt-1">
       {areCommentsShown && comments.length >= 1 ? (
@@ -18,6 +24,7 @@ const CommentList = ({ loginUser, comments, areCommentsShown }: Props) => {
               key={comment.id}
               comment={comment}
               loginUser={loginUser}
+              eventCreatorId={eventCreatorId}
             />
           ))}
         </div>

@@ -6,10 +6,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TypeComment, TypeEvent, TypeUserFromFirestore } from "@/types/type";
 import { BiDotsVertical } from "react-icons/bi";
 
-const ActionBtn = () => {
-
+type Props = {
+  comment: TypeComment;
+  loginUser: TypeUserFromFirestore;
+  eventCreatorId: string;
+};
+const ActionBtn = ({ comment, loginUser, eventCreatorId }: Props) => {
   const displayItems = () => {
     // todo 1: when my comment => edit, delete
     // todo 2: when other's comment -> nothing
@@ -23,7 +28,7 @@ const ActionBtn = () => {
         <DropdownMenuItem>Subscription</DropdownMenuItem>
       </>
     );
-  }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -31,9 +36,10 @@ const ActionBtn = () => {
           <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {displayItems()}
-      </DropdownMenuContent>
+      {comment.createdBy === loginUser.uid ||
+      eventCreatorId === loginUser.uid ? (
+        <DropdownMenuContent>{displayItems()}</DropdownMenuContent>
+      ) : null}
     </DropdownMenu>
   );
 };
