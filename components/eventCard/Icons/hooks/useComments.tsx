@@ -36,7 +36,6 @@ const useComments = () => {
       tempComments.push({ ...doc.data(), id: doc.id } as TypeComment);
     });
     setComments(tempComments);
-    console.log(comments.length);
   };
 
   return {

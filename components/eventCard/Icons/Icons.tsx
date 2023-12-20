@@ -15,7 +15,6 @@ import IconLike from "./IconLike";
 import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import IconComment from "./IconComment";
-import useComments from "./hooks/useComments";
 import CommentArea from "./CommentArea";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
