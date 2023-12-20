@@ -2,7 +2,7 @@ import { TypeEvent } from "@/types/type";
 
 import { useState } from "react";
 import Content from "./content/Content";
-import Icons from "./Icons/Icons";
+import Icons from "./icons/Icons";
 import EditModeOn from "./content/EditModeOn";
 import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 
@@ -37,6 +37,7 @@ const EventCard = ({ event, goPrevAsNoCurrentRecords }: Props) => {
             isUpdateMode={isUpdateMode}
             goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
+          
         </>
       )}
     </div>

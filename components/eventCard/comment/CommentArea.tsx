@@ -1,4 +1,8 @@
-import { TypeComment, TypeUserFromFirestore } from "@/types/type";
+import {
+  TypeComment,
+  TypeSelectedSortByForComments,
+  TypeUserFromFirestore,
+} from "@/types/type";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import NumOfComments from "./NumOfComments";
@@ -10,6 +14,9 @@ type Props = {
   eid: string;
   comments: TypeComment[];
   isAddMode: boolean;
+  sortOldestFirst: () => void;
+  sortNewestFirst: () => void;
+  selectedSortByForComments: TypeSelectedSortByForComments;
 };
 const CommentArea = ({
   loginUser,
@@ -17,6 +24,9 @@ const CommentArea = ({
   eid,
   comments,
   isAddMode,
+  sortOldestFirst,
+  sortNewestFirst,
+  selectedSortByForComments,
 }: Props) => {
   const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
   const toggleCommentList = () => {
@@ -36,6 +46,9 @@ const CommentArea = ({
         toggleCommentList={toggleCommentList}
         areCommentsShown={areCommentsShown}
         comments={comments}
+        sortOldestFirst={sortOldestFirst}
+        sortNewestFirst={sortNewestFirst}
+        selectedSortByForComments={selectedSortByForComments}
       />
       <CommentList
         loginUser={loginUser}

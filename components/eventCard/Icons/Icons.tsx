@@ -1,4 +1,8 @@
-import { TypeComment, TypeEvent } from "@/types/type";
+import {
+  TypeComment,
+  TypeEvent,
+  TypeSelectedSortByForComments,
+} from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import IconEdit from "./IconEdit";
 import IconLock from "./IconLock";
@@ -15,7 +19,7 @@ import IconLike from "./IconLike";
 import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import IconComment from "./IconComment";
-import CommentArea from "./CommentArea";
+import CommentArea from "../comment/CommentArea";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 type Props = {
@@ -35,9 +39,10 @@ const Icons = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddMode, setIsAddMode] = useState<boolean>(false);
   const [comments, setComments] = useState<TypeComment[]>([]);
+  const [selectedSortByForComments, setSelectedSortByForComments] =
+    useState<TypeSelectedSortByForComments>("newestFirst");
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const { getCreatorPhoto } = useQuote();
-  // const { fetchComments, comments } = useComments();
   const fetchProfilePhoto = useCallback(async () => {
     const photo = await getCreatorPhoto(event.createdBy);
     setProfilePhoto(photo);
@@ -50,7 +55,7 @@ const Icons = ({
       collection(db, "events", event.id, "comments"),
       orderBy("createdAt", "desc")
     );
-
+    setSelectedSortByForComments("newestFirst");
     const unsubscribe = onSnapshot(q, (snapshot) => {
       // Respond to data
       // ...
@@ -63,14 +68,13 @@ const Icons = ({
 
     // Later ...
 
-    
     fetchProfilePhoto()
-    .then(() => setIsLoading(false))
-    .catch((error) => {
+      .then(() => setIsLoading(false))
+      .catch((error) => {
         displayErrorToast("Failed to fetch profile photo:", error);
         setIsLoading(false);
       });
-      // Stop listening to changes
+    // Stop listening to changes
     return unsubscribe;
   }, []);
 
@@ -98,6 +102,40 @@ const Icons = ({
 
   const toggleAddMode = () => {
     setIsAddMode((prev) => !prev);
+  };
+
+  const sortNewestFirst = () => {
+    const q = query(
+      collection(db, "events", event.id, "comments"),
+      orderBy("createdAt", "desc")
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      // Respond to data
+      setComments(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
+        )
+      );
+    });
+    setSelectedSortByForComments("newestFirst");
+    return unsubscribe;
+  };
+
+  const sortOldestFirst = () => {
+    const q = query(
+      collection(db, "events", event.id, "comments"),
+      orderBy("createdAt", "asc")
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      // Respond to data
+      setComments(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
+        )
+      );
+    });
+    setSelectedSortByForComments("oldestFirst");
+    return unsubscribe;
   };
 
   return (
@@ -140,6 +178,9 @@ const Icons = ({
         eid={event.id}
         comments={comments}
         isAddMode={isAddMode}
+        sortOldestFirst={sortOldestFirst}
+        sortNewestFirst={sortNewestFirst}
+        selectedSortByForComments={selectedSortByForComments}
       />
     </div>
   );
