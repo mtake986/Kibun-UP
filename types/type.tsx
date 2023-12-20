@@ -166,3 +166,5 @@ export type TypeComment = {
   updatedAt?: Timestamp;
   replies?: TypeComment[];
 };
+
+export type TypeSelectedSortByForComments = "newestFirst" | "oldestFirst";

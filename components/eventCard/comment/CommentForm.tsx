@@ -4,10 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useComments from "./hooks/useComments";
-import {
-  displayToast,
-} from "@/functions/displayToast";
+
+import { displayToast } from "@/functions/displayToast";
 import {
   Form,
   FormControl,
@@ -18,6 +16,9 @@ import {
 import { TypeUserFromFirestore } from "@/types/type";
 import Image from "next/image";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
+import { motion } from "framer-motion";
+import { insertFromTopS } from "@/data/CONSTANTS";
+import useComments from "./hooks/useComments";
 
 type Props = {
   loginUser: TypeUserFromFirestore;
@@ -74,6 +75,13 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
       {/* {isPending ? (
         <LoadingSpinnerS />
       ) : ( */}
+      <motion.div
+        variants={insertFromTopS}
+        initial="hidden"
+        animate="enter"
+        transition={{ type: "linear" }}
+        className="mt-5 px-3"
+      >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-start gap-3">
@@ -111,7 +119,8 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
             </div>
           </form>
         </Form>
-      {/* // )} */}
+        {/* // )} */}
+      </motion.div>
     </div>
   );
 };

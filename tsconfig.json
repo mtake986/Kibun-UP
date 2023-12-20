@@ -34,7 +34,8 @@
     "app/profile/[uid]",
     "data/CONSTANTS.ts",
     "components/hooks/useSelectedTag.tsx",
-    "app/profile/[uid]/activity"
-, "components/eventCard/Icons/NumOfComments.tsx"  ],
+    "app/profile/[uid]/activity",
+    "components/eventCard/comment/NumOfComments.tsx"
+  ],
   "exclude": ["node_modules"]
 }
