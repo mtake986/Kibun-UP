@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TypeComment, TypeUserFromFirestore } from "@/types/type";
-import CommentCard from "./CommentCard";
+import CommentCard from "./card/CommentCard";
 
 type Props = {
   loginUser: TypeUserFromFirestore;

@@ -7,6 +7,7 @@ import { MONTHS_IN_STR } from "@/data/CONSTANTS";
 import { useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { TimeAgo } from "@/functions/timeAgo";
+import ActionBtn from "./ActionBtn";
 
 type Props = {
   comment: TypeComment;
@@ -18,7 +19,7 @@ const CommentCard = ({ comment, loginUser }: Props) => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
 
-  if (isPending) return <LoadingSpinnerXS num={4} />; 
+  if (isPending) return <LoadingSpinnerXS num={4} />;
 
   return (
     <div className="flex items-start gap-3">
@@ -36,11 +37,7 @@ const CommentCard = ({ comment, loginUser }: Props) => {
         <p className="text-sm">{comment.comment}</p>
       </div>
 
-      {isMine ? (
-        <button className="h-4 w-4 mt-1">
-          <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
-        </button>
-      ) : null}
+      {isMine ? <ActionBtn  /> : null}
     </div>
   );
 };
