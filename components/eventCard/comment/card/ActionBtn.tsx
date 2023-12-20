@@ -17,17 +17,20 @@ type Props = {
 const ActionBtn = ({ comment, loginUser, eventCreatorId }: Props) => {
   const displayItems = () => {
     // todo 1: when my comment => edit, delete
+    if (comment.createdBy === loginUser.uid) {
+      return (
+        <>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem>Delete</DropdownMenuItem>
+        </>
+      );
+    }
     // todo 2: when other's comment -> nothing
-    // todo 3: when user of the post => delete
 
-    return (
-      <>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
-      </>
-    );
+    // todo 3: when user of the post => delete
+    if (eventCreatorId === loginUser.uid) {
+      return <DropdownMenuItem>Delete</DropdownMenuItem>;
+    }
   };
   return (
     <DropdownMenu>
