@@ -14,9 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { TypeComment } from "@/types/type";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { insertFromTopS } from "@/data/CONSTANTS";
 import useComments from "../hooks/useComments";
 
 type Props = {
