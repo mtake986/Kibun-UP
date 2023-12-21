@@ -3,16 +3,19 @@ import { TypeComment } from "@/types/type";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 
 const useComments = () => {
   const [comments, setComments] = useState<TypeComment[]>([]);
-
+  
   const addComment = async (uid: string, comment: string, eid: string) => {
     const currTime = serverTimestamp();
     await addDoc(collection(db, "events", eid, "comments"), {
@@ -22,8 +25,24 @@ const useComments = () => {
     });
   };
 
-  // TODO: Implement removeComment functionality
-  // TODO: Implement updateComment functionality
+  const removeComment = async (commentId: string, eid: string) => {
+    const commentRef = doc(db, "events", eid, "comments", commentId);
+
+    await deleteDoc(commentRef);
+  };
+
+  const updateComment = async (
+    commentId: string,
+    updatedComment: string,
+    eid: string
+  ) => {
+    const commentRef = doc(db, "events", eid, "comments", commentId);
+
+    await updateDoc(commentRef, {
+      comment: updatedComment,
+      updatedAt: serverTimestamp(),
+    });
+  };
 
   const fetchComments = async (eid: string) => {
     const q = query(
@@ -32,10 +51,6 @@ const useComments = () => {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeComment))
-      );
-      // Respond to data
       setComments(
         snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
@@ -53,12 +68,6 @@ const useComments = () => {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log(
-        snapshot.docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
-        )
-      );
-      // Respond to data
       setComments(
         snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
@@ -71,6 +80,8 @@ const useComments = () => {
 
   return {
     addComment,
+    removeComment,
+    updateComment,
     comments,
     fetchComments,
     sortOldestFirst,

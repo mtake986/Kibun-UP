@@ -7,6 +7,7 @@ type Props = {
   comments: TypeComment[];
   areCommentsShown: boolean;
   eventCreatorId: string;
+  eid: string;
 };
 
 const CommentList = ({
@@ -14,6 +15,7 @@ const CommentList = ({
   comments,
   areCommentsShown,
   eventCreatorId,
+  eid,
 }: Props) => {
   return (
     <div className="mt-1">
@@ -25,6 +27,7 @@ const CommentList = ({
               comment={comment}
               loginUser={loginUser}
               eventCreatorId={eventCreatorId}
+              eid={eid}
             />
           ))}
         </div>

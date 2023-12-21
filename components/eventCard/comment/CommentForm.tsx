@@ -55,7 +55,6 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
     setIsPending(true);
     try {
       await addComment(loginUser.uid, values.comment, eid);
-      await fetchComments(eid);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({

@@ -24,7 +24,7 @@ const NumOfComments = ({
   selectedSortByForComments,
 }: Props) => {
   return (
-    <div className="mt-1 flex items-center gap-3 text-gray-400">
+    <div className="mb-1 mt-1 flex w-full items-center gap-3 text-gray-400">
       <span className="text-sm">{comments.length} comments</span>
       {comments.length >= 1 ? (
         areCommentsShown ? (
@@ -45,7 +45,8 @@ const NumOfComments = ({
           />
         )
       ) : null}
-      {areCommentsShown ? (
+
+      {comments.length >= 2 ? (
         <SortBtn
           sortOldestFirst={sortOldestFirst}
           sortNewestFirst={sortNewestFirst}

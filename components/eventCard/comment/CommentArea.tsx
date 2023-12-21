@@ -56,6 +56,7 @@ const CommentArea = ({
         comments={comments}
         areCommentsShown={areCommentsShown}
         eventCreatorId={event.createdBy}
+        eid={event.id}
       />
     </div>
   );
