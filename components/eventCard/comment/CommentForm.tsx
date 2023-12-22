@@ -19,6 +19,7 @@ import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import { motion } from "framer-motion";
 import { insertFromTopS } from "@/data/CONSTANTS";
 import useComments from "./hooks/useComments";
+import LoadingCover from "@/components/utils/LoadingCover";
 
 type Props = {
   loginUser: TypeUserFromFirestore;
@@ -27,7 +28,7 @@ type Props = {
 };
 
 const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
-  const { addComment, fetchComments } = useComments();
+  const { addComment } = useComments();
   const [isPending, setIsPending] = useState<boolean>(false);
 
   const creatorImg = useCallback(() => {
@@ -55,7 +56,6 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
     setIsPending(true);
     try {
       await addComment(loginUser.uid, values.comment, eid);
-      await fetchComments(eid);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({
@@ -71,57 +71,53 @@ const CommentForm = ({ loginUser, toggleAddMode, eid }: Props) => {
   }
 
   return (
-    <div>
-      {/* {isPending ? (
-        <LoadingSpinnerS />
-      ) : ( */}
-      <motion.div
-        variants={insertFromTopS}
-        initial="hidden"
-        animate="enter"
-        transition={{ type: "linear" }}
-        className="mt-5 px-3"
-      >
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex items-start gap-3">
-              {creatorImg()}
-              <FormField
-                control={form.control}
-                name="comment"
-                render={({ field }) => (
-                  <FormItem className="w-full space-y-0">
-                    <FormControl>
-                      <Textarea
-                        className="min-h-10 border-none bg-slate-50 dark:border-none"
-                        placeholder="Add a comment..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="mt-2 flex items-center justify-end gap-3 text-xs">
-              <button
-                className="cursor-pointer hover:opacity-70"
-                onClick={toggleAddMode}
-              >
-                Cancel
-              </button>
-              <button
-                className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 hover:opacity-70"
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </Form>
-        {/* // )} */}
-      </motion.div>
-    </div>
+    <motion.div
+      variants={insertFromTopS}
+      initial="hidden"
+      animate="enter"
+      transition={{ type: "linear" }}
+      className="relative mt-5 px-3"
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex items-start gap-3">
+            {creatorImg()}
+            <FormField
+              control={form.control}
+              name="comment"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-0">
+                  <FormControl>
+                    <Textarea
+                      className="min-h-10 border-none bg-slate-50 dark:border-none"
+                      placeholder="Add a comment..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="mt-2 flex items-center justify-end gap-3 text-xs">
+            <button
+              className="cursor-pointer hover:opacity-70"
+              onClick={toggleAddMode}
+            >
+              Cancel
+            </button>
+            <button
+              className="cursor-pointer text-white rounded-full bg-blue-500 px-3 py-1 hover:opacity-70"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </Form>
+
+      {isPending ? <LoadingCover spinnerSize="s" /> : null}
+    </motion.div>
   );
 };
 

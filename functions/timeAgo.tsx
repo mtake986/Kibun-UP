@@ -26,5 +26,5 @@ export function TimeAgo(timestamp: number) {
     return "just now";
   };
 
-  return <span>{timeAgo(timestamp)}</span>;
+  return timeAgo(timestamp);
 }

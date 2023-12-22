@@ -152,7 +152,7 @@ const Icons = ({
       <CommentArea
         loginUser={loginUser}
         toggleAddMode={toggleAddMode}
-        eid={event.id}
+        event={event}
         comments={comments}
         isAddMode={isAddMode}
         sortOldestFirst={sortOldestFirst}

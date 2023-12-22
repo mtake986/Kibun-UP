@@ -69,7 +69,7 @@ type TypeQuoteContext = {
   quotesNotMine: TypeQuote[];
   getQuotesNotMine: () => void;
 
-  registerQuote: (values: TypeQuoteInputValues, uid: string) => void;
+  registerQuote: (values: TypeQuoteInputValues, uid: string) => Promise<void>;
 
   storeFav: (uid: string, q: TypeQuote) => void;
   removeFav: (uid: string, q: TypeQuote) => void;

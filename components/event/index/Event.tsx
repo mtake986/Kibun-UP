@@ -33,8 +33,10 @@ const Event = () => {
       if (!loginUser) fetchLoginUser(user);
     };
     const fetchEvents = async () => {
-      if (loginUserEvents.length === 0) getLoginUserEvents();
-      if (!lockedEvent) getLockedEvent();
+      // if (loginUserEvents.length === 0) getLoginUserEvents();
+      // if (!lockedEvent) getLockedEvent();
+      getLoginUserEvents();
+      getLockedEvent();
       fetchAllEvents();
     };
     const fetchData = async () => {

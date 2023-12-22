@@ -1,25 +1,35 @@
 import { TypeComment, TypeUserFromFirestore } from "@/types/type";
-import { usePathname } from "next/navigation";
 import useUserProfileImage from "@/components/utils/useUserProfileImage";
 import UrlLink from "@/components/utils/UrlLink";
-import { BiDotsHorizontal, BiDotsVertical } from "react-icons/bi";
-import { MONTHS_IN_STR } from "@/data/CONSTANTS";
 import { useState } from "react";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import { TimeAgo } from "@/functions/timeAgo";
+import ActionBtn from "./ActionBtn";
+import CommentUpdateForm from "./CommendUpdateForm";
 
 type Props = {
   comment: TypeComment;
   loginUser: TypeUserFromFirestore;
+  eventCreatorId: string;
+  eid: string;
 };
 
-const CommentCard = ({ comment, loginUser }: Props) => {
-  const isMine = loginUser.uid === comment.createdBy;
+const CommentCard = ({ comment, loginUser, eventCreatorId, eid }: Props) => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
+  const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
 
-  if (isPending) return <LoadingSpinnerXS num={4} />; 
+  if (isPending) return <LoadingSpinnerXS num={4} />;
 
+  if (isUpdateMode) {
+    return (
+      <CommentUpdateForm
+        comment={comment}
+        setIsUpdateMode={setIsUpdateMode}
+        eid={eid}
+      />
+    );
+  }
   return (
     <div className="flex items-start gap-3">
       <UrlLink
@@ -29,18 +39,22 @@ const CommentCard = ({ comment, loginUser }: Props) => {
         clickOn={creatorImg()}
       />
       <div className="flex flex-grow flex-col items-start">
-        <p className="text-xs text-gray-500">
-          {TimeAgo(comment.createdAt?.toMillis() ?? "just now")}
-        </p>
+        <div className="flex w-full items-center justify-between gap-3 text-gray-500">
+          <p className="text-xs text-gray-500">
+            {TimeAgo(comment.createdAt?.toMillis() ?? "just now")}
+          </p>
+
+          <ActionBtn
+            comment={comment}
+            loginUser={loginUser}
+            eventCreatorId={eventCreatorId}
+            eid={eid}
+            setIsUpdateMode={setIsUpdateMode}
+          />
+        </div>
 
         <p className="text-sm">{comment.comment}</p>
       </div>
-
-      {isMine ? (
-        <button className="h-4 w-4 mt-1">
-          <BiDotsVertical className="cursor-pointer duration-300 hover:opacity-70" />
-        </button>
-      ) : null}
     </div>
   );
 };

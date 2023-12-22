@@ -40,10 +40,10 @@ import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "@/components/quoteCard/content/TagErrors";
 import { useAuth } from "@/context/AuthContext";
 import { displayErrorToast } from "@/functions/displayToast";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import LoadingCover from "@/components/utils/LoadingCover";
 
 export default function RegisterForm() {
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { loginUser, fetchLoginUser } = useAuth();
   const { registerQuote, toggleRegisterFormOpen } = useQuote();
   const [inputTagName, setInputTagName] = useState("");
@@ -136,7 +136,6 @@ export default function RegisterForm() {
       : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
   };
 
-  const { reset } = useForm();
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
@@ -151,25 +150,28 @@ export default function RegisterForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     if (loginUser) {
+      setIsPending(true);
       values.tags = inputTags;
-      registerQuote(values, loginUser.uid);
-      form.reset({
-        author: "",
-        content: "",
-        draftStatus: "Public",
-        tags: [],
+      registerQuote(values, loginUser.uid).then(() => {
+        form.reset({
+          author: "",
+          content: "",
+          draftStatus: "Public",
+          tags: [],
+        });
+        setInputTags([]);
+        setInputTagName("");
+        setInputTagColor("");
+        setTagErrors({});
+        setIsPending(false);
       });
-      setInputTags([]);
-      setInputTagName("");
-      setInputTagColor("");
-      setTagErrors({});
     } else {
       displayErrorToast("Please log in.");
     }
   }
 
   return (
-    <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+    <div className="relative px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -338,6 +340,7 @@ export default function RegisterForm() {
           </div>
         </form>
       </Form>
+      {isPending ? <LoadingCover spinnerSize="s" /> : null}
     </div>
   );
 }

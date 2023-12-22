@@ -28,13 +28,13 @@ const Home = () => {
     setIsEventLoading(true);
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
-      if (user && !lockedEvent) await getLockedEvent();
-      if (user && loginUserEvents.length === 0) await getLoginUserEvents();
-      if (user && !randomEvent) await getRandomEvent();
+      await getLockedEvent();
+      await getLoginUserEvents();
+      await getRandomEvent();
     };
     const fetchQuotes = async () => {
-      if (user && !lockedQuote) await getLockedQuote();
-      if (user && !randomQuote) await updateRandomQuote();
+      await getLockedQuote();
+      await updateRandomQuote();
     };
 
     if (user) {
