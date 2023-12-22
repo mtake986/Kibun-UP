@@ -33,6 +33,7 @@ import UrlLink from "@/components/utils/UrlLink";
 import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
+import LoadingCover from "@/components/utils/LoadingCover";
 
 const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
   if (isSubmitBtnDisabled) {
@@ -62,8 +63,9 @@ const isSubmitBtnDisabled = (
 };
 
 export default function RegisterForm() {
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { loginUser, fetchLoginUser } = useAuth();
-  const { getLoginUserEvents, registerEvent } = useEvent();
+  const { registerEvent } = useEvent();
   useEffect(() => {
     if (!loginUser) fetchLoginUser(auth.currentUser);
   }, [auth.currentUser]);
@@ -83,15 +85,15 @@ export default function RegisterForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof eventSchema>) {
     if (loginUser) {
+      setIsPending(true);
       registerEvent(values, loginUser.uid).then(() => {
-        reset({
+        form.reset({
           eventTitle: "",
           place: "",
           description: "",
           eventDate: new Date(),
         });
-        form.reset();
-        // getLoginUserEvents();
+        setIsPending(false);
       });
     } else {
       displayErrorToast("Please log in.");
@@ -99,7 +101,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
+    <div className="relative px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <Form {...form}>
         <HeadingTwo text="Register Form" />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -254,6 +256,7 @@ export default function RegisterForm() {
           </div>
         </form>
       </Form>
+      {isPending ? <LoadingCover spinnerSize="s" /> : null}
     </div>
   );
 }

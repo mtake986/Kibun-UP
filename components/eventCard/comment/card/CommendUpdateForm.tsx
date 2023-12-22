@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { TypeComment } from "@/types/type";
 import useComments from "../hooks/useComments";
+import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
+import LoadingCover from "@/components/utils/LoadingCover";
 
 type Props = {
   comment: TypeComment;
@@ -55,43 +57,42 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
   }
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="comment"
-            render={({ field }) => (
-              <FormItem className="w-full space-y-0">
-                <FormControl>
-                  <Textarea
-                    className="min-h-10 w-full border-none bg-slate-50 dark:border-none"
-                    placeholder="Add a comment..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="mt-2 flex items-center justify-end gap-3 text-xs">
-            <button
-              className="cursor-pointer hover:opacity-70"
-              onClick={() => setIsUpdateMode(false)}
-              type="button"
-            >
-              Cancel
-            </button>
-            <button
-              className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 hover:opacity-70"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+        <FormField
+          control={form.control}
+          name="comment"
+          render={({ field }) => (
+            <FormItem className="w-full space-y-0">
+              <FormControl>
+                <Textarea
+                  className="min-h-10 w-full border-none bg-slate-50 dark:border-none"
+                  placeholder="Add a comment..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="mt-2 flex items-center justify-end gap-3 text-xs">
+          <button
+            className="cursor-pointer hover:opacity-70"
+            onClick={() => setIsUpdateMode(false)}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 text-white hover:opacity-70"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+        {isPending ? <LoadingCover spinnerSize="s" /> : null}
+      </form>
+    </Form>
   );
 };
 
