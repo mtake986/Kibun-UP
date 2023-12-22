@@ -75,21 +75,21 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
             </FormItem>
           )}
         />
-        <div className="mt-2 flex items-center justify-end gap-3 text-xs">
-          <button
-            className="cursor-pointer hover:opacity-70"
-            onClick={() => setIsUpdateMode(false)}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button
-            className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 text-white hover:opacity-70"
-            type="submit"
-          >
-            Submit
-          </button>
-        </div>
+        <button
+          aria-label="Cancel comment update"
+          className="cursor-pointer hover:opacity-70"
+          onClick={() => setIsUpdateMode(false)}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-label="Submit updated comment"
+          className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 hover:opacity-70"
+          type="submit"
+        >
+          Submit
+        </button>
         {isPending ? <LoadingCover spinnerSize="s" /> : null}
       </form>
     </Form>
