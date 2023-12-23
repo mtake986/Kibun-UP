@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { TypeComment, TypeEvent, TypeUserFromFirestore } from "@/types/type";
 import CommentCard from "./card/CommentCard";
+import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
+import PaginationBtns from "@/components/utils/PaginationBtns";
 
 type Props = {
   loginUser: TypeUserFromFirestore;
@@ -17,21 +19,55 @@ const CommentList = ({
   eventCreatorId,
   eid,
 }: Props) => {
-  return (
-    <div className="mt-1">
-      {areCommentsShown && comments.length >= 1 ? (
-        <div className="flex flex-col space-y-3">
-          {comments.map((comment: TypeComment) => (
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { nPages, currentRecords } = usePaginationTenItems(
+    currentPage,
+    comments
+  );
+
+  const goPrevAsNoCurrentRecords = () => {
+    if (
+      currentPage === nPages &&
+      currentRecords.length === 1 &&
+      currentPage > 1
+    ) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+      const displayCards = () => {
+    if (currentRecords && currentRecords.length >= 1) {
+      return (
+        <div className="flex flex-col gap-3">
+          {currentRecords.map((comment, i) => (
             <CommentCard
               key={comment.id}
               comment={comment}
               loginUser={loginUser}
               eventCreatorId={eventCreatorId}
               eid={eid}
+              goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
         </div>
-      ) : null}
+      );
+    }
+  };
+
+  return (
+    <div className="">
+      <div className="flex items-center justify-between">
+        {nPages >= 2 && (
+          <PaginationBtns
+            nPages={nPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+      </div>
+      {displayCards()}
     </div>
   );
 };

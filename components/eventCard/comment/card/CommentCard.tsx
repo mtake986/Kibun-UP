@@ -12,9 +12,16 @@ type Props = {
   loginUser: TypeUserFromFirestore;
   eventCreatorId: string;
   eid: string;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 
-const CommentCard = ({ comment, loginUser, eventCreatorId, eid }: Props) => {
+const CommentCard = ({
+  comment,
+  loginUser,
+  eventCreatorId,
+  eid,
+  goPrevAsNoCurrentRecords,
+}: Props) => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
@@ -50,6 +57,7 @@ const CommentCard = ({ comment, loginUser, eventCreatorId, eid }: Props) => {
             eventCreatorId={eventCreatorId}
             eid={eid}
             setIsUpdateMode={setIsUpdateMode}
+            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
         </div>
 

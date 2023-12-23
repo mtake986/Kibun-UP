@@ -27,7 +27,6 @@ const EventList = () => {
     }
   };
 
-
   const displayCards = () => {
     if (currentRecords && currentRecords.length >= 1) {
       return (

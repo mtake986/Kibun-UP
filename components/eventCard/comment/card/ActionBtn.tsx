@@ -16,6 +16,7 @@ type Props = {
   eventCreatorId: string;
   eid: string;
   setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
+  goPrevAsNoCurrentRecords?: () => void;
 };
 const ActionBtn = ({
   comment,
@@ -23,6 +24,7 @@ const ActionBtn = ({
   eventCreatorId,
   eid,
   setIsUpdateMode,
+  goPrevAsNoCurrentRecords,
 }: Props) => {
   const { removeComment } = useComments();
   const displayItems = () => {
@@ -30,12 +32,18 @@ const ActionBtn = ({
     if (comment.createdBy === loginUser.uid) {
       return (
         <>
-          <DropdownMenuItem className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800" onClick={() => setIsUpdateMode(true)}>
+          <DropdownMenuItem
+            className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800"
+            onClick={() => setIsUpdateMode(true)}
+          >
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800"
-            onClick={() => removeComment(comment.id, eid)}
+            onClick={() => {
+              removeComment(comment.id, eid);
+              goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
+            }}
           >
             Delete
           </DropdownMenuItem>
