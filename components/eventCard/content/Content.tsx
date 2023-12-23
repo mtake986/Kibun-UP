@@ -1,7 +1,11 @@
 import { TypeEvent } from "@/types/type";
 import HeadingThree from "@/components/utils/HeadingThree";
-import { MdPlace } from "react-icons/md";
+import { MdCalendarMonth, MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
+import LeftDays from "./LeftDays";
+import { LuCalendarClock } from "react-icons/lu";
+import { calculateLeftDays } from "@/functions/functions";
+import { returnLeftDaysString } from "./returnLeftDaysString";
 
 type Props = {
   event: TypeEvent;
@@ -13,7 +17,7 @@ type InfoProps = {
 };
 const Info: React.FC<InfoProps> = ({ icon, text }) => (
   <div className="flex items-center">
-    <div className="flex w-10">{icon}</div>
+    <div className="mr-2 flex h-4 w-4">{icon}</div>
     <p>{text}</p>
   </div>
 );
@@ -24,24 +28,28 @@ const Content = ({ event }: Props) => {
         text={event.eventTitle}
         className="text-center text-2xl font-semibold"
       />
-      {event.place && (
+      {event.place ? (
+        <Info icon={<MdPlace size={16} />} text={event.place} />
+      ) : null}
+      {event.eventDate ? (
         <Info
-          icon={<MdPlace size={16} className="mr-5" />}
-          text={event.place}
+          icon={<MdCalendarMonth size={16} />}
+          text={event.eventDate ? event.eventDate.toDate().toDateString() : ""}
         />
-      )}
-      {event.eventDate && (
-        <Info
-          icon={<BiTime size={20} className="mr-5" />}
-          text={event.eventDate ? event.eventDate.toDate().toDateString() : ''}
-        />
-      )}
-      {event.description && (
-        <Info
-          icon={<BiInfoCircle size={20} className="mr-5" />}
-          text={event.description}
-        />
-      )}
+      ) : null}
+      {event.eventDate ? (
+        <div className="flex items-center">
+          <div className="mr-2 flex h-4 w-4">
+            <LuCalendarClock size={16} />
+          </div>
+          <p>
+            {returnLeftDaysString(event.eventDate.toDate().toISOString())}
+          </p>
+        </div>
+      ) : null}
+      {event.description ? (
+        <Info icon={<BiInfoCircle size={20} />} text={event.description} />
+      ) : null}
     </div>
   );
 };
