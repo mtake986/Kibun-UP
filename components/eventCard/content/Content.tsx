@@ -2,7 +2,6 @@ import { TypeEvent } from "@/types/type";
 import HeadingThree from "@/components/utils/HeadingThree";
 import { MdCalendarMonth, MdPlace } from "react-icons/md";
 import { BiInfoCircle, BiTime } from "react-icons/bi";
-import LeftDays from "./LeftDays";
 import { LuCalendarClock } from "react-icons/lu";
 import { calculateLeftDays } from "@/functions/functions";
 import { returnLeftDaysString } from "./returnLeftDaysString";
@@ -17,7 +16,7 @@ type InfoProps = {
 };
 const Info: React.FC<InfoProps> = ({ icon, text }) => (
   <div className="flex items-center">
-    <div className="mr-2 flex h-4 w-4">{icon}</div>
+    <div className="mr-2 h-5 w-5">{icon}</div>
     <p>{text}</p>
   </div>
 );
@@ -43,7 +42,7 @@ const Content = ({ event }: Props) => {
             <LuCalendarClock size={16} />
           </div>
           <p>
-            {returnLeftDaysString(event.eventDate.toDate().toISOString())}
+            {returnLeftDaysString(calculateLeftDays(event.eventDate.toDate()))}
           </p>
         </div>
       ) : null}

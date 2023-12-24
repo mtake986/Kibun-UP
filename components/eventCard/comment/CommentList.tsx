@@ -19,7 +19,6 @@ const CommentList = ({
   eventCreatorId,
   eid,
 }: Props) => {
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const { nPages, currentRecords } = usePaginationTenItems(
@@ -37,8 +36,8 @@ const CommentList = ({
     }
   };
 
-      const displayCards = () => {
-    if (currentRecords && currentRecords.length >= 1) {
+  const displayCards = () => {
+    if (currentRecords.length >= 1) {
       return (
         <div className="flex flex-col gap-3">
           {currentRecords.map((comment, i) => (
@@ -56,6 +55,7 @@ const CommentList = ({
     }
   };
 
+  if (!areCommentsShown) return null;
   return (
     <div className="">
       <div className="flex items-center justify-between">

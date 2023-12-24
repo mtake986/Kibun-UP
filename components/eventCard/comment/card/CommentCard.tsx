@@ -22,7 +22,7 @@ const CommentCard = ({
   eid,
   goPrevAsNoCurrentRecords,
 }: Props) => {
-  const [isPending, setIsPending] = useState<boolean>(true);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
 
