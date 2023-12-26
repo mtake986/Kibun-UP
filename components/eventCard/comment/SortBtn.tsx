@@ -24,10 +24,10 @@ const SortOption = ({
   isSelected: boolean;
 }) => (
   <DropdownMenuItem className={`p-0 ${isSelected ? "hover:bg-slate-800" : ""}`}>
-    {isSelected && <BiCheck className="ml-1 text-gray-400" size={16} />}
+    {isSelected && <BiCheck className="mr-1 text-gray-400" size={16} />}
     <button
       disabled={isSelected}
-      className={`text-sm ${isSelected ? "text-gray-400" : "m-auto ml-7"} py-1`}
+      className={`text-sm ${isSelected ? "text-gray-400" : "m-auto ml-5"} py-1`}
       onClick={onClick}
     >
       {label}

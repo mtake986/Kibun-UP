@@ -62,6 +62,7 @@ export default function EditModeOn({
     inputTagName.length > 20 ||
     inputTags.length >= 5 ||
     inputTags.some((tag) => tag.name === inputTagName);
+    
   const validateInputTags = (): string => {
     if (inputTags.length === 5) {
       const error: TypeTagError = {

@@ -143,7 +143,7 @@ export default function EditModeOn({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date()}
+                    // disabled={(date) => date < new Date()}
                     initialFocus
                     className="bg-slate-50 dark:border-none dark:bg-slate-900"
                   />

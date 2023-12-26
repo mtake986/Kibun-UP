@@ -5,7 +5,7 @@ import { useState } from "react";
 import Content from "./content/Content";
 import Icons from "./Icons/Icons";
 import EditModeOn from "./content/EditModeOn";
-import LoadingSpinnerL from "../utils/LoadingSpinnerL";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 type Props = {
   q: TypeQuote;
@@ -19,7 +19,9 @@ const QuoteCard = ({ q, goPrevAsNoCurrentRecords }: Props) => {
   return (
     <div className="relative rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isCardLoading ? (
-        <LoadingSpinnerL />
+        <div className="flex items-center justify-center">
+          <LoadingSpinnerS />
+        </div>
       ) : (
         <>
           {isUpdateMode ? (

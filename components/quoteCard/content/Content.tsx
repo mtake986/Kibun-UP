@@ -13,27 +13,23 @@ type Props = {
   q: TypeQuote;
 };
 
+type InfoProps = {
+  icon: React.ReactNode;
+  text: string;
+};
+const Info: React.FC<InfoProps> = ({ icon, text }) => (
+  <div className="flex items-center">
+    <div className="mr-2 flex h-4 w-4">{icon}</div>
+    <p>{text}</p>
+  </div>
+);
+
 const Content = ({ q }: Props) => {
   return (
     <div className="flex flex-col gap-3 text-sm">
-      <div className="flex items-center">
-        <div className="flex w-10">
-          <BsChatLeftText size={16} className="mr-5" />
-        </div>
-        <p>{q.content}</p>
-      </div>
-      <div className="flex items-center">
-        <div className="flex w-10">
-          <BsFillPersonFill size={16} className="mr-5" />
-        </div>
-        <p>{q.author}</p>
-      </div>
-      <div className="flex items-center">
-        <div className="flex w-10">
-          <EyeIcon size={16} className="mr-5" />
-        </div>
-        <p>{q.draftStatus}</p>
-      </div>
+      <Info icon={<BsChatLeftText size={16} />} text={q.content} />
+      <Info icon={<BsFillPersonFill size={16} />} text={q.author} />
+      <Info icon={<EyeIcon size={16} />} text={q.draftStatus} />
       {q.tags && q.tags?.length >= 1 && (
         <div className="flex flex-wrap items-center gap-2">
           {q.tags.map((tag, i) => (
