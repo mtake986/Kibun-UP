@@ -62,7 +62,7 @@ export default function EditModeOn({
     inputTagName.length > 20 ||
     inputTags.length >= 5 ||
     inputTags.some((tag) => tag.name === inputTagName);
-    
+
   const validateInputTags = (): string => {
     if (inputTags.length === 5) {
       const error: TypeTagError = {
@@ -180,7 +180,7 @@ export default function EditModeOn({
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="E.G.) Just Do It"
+                  placeholder="Just Do It"
                   {...field}
                   // defaultValue={field.value}
                 />
@@ -199,7 +199,7 @@ export default function EditModeOn({
                 Author <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="E.G.) NIKE" {...field} />
+                <Input placeholder="NIKE" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -233,9 +233,7 @@ export default function EditModeOn({
           <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
             <Input
               maxLength={20}
-              placeholder={
-                inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
-              }
+              placeholder={inputTags.length >= 5 ? "Max. 5 tags" : "Motivation"}
               value={inputTagName}
               onChange={(e) =>
                 setInputTagName(capitalizeFirstLetter(e.target.value))
@@ -255,7 +253,7 @@ export default function EditModeOn({
                     inputTagColor ? "border-none" : null
                   } w-full`}
                 >
-                  <SelectValue placeholder="E.G.) Color" />
+                  <SelectValue placeholder="Color" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem

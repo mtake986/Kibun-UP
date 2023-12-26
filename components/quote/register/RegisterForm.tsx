@@ -186,7 +186,7 @@ export default function RegisterForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="E.G.) Just Do It"
+                      placeholder="Just Do It"
                       {...field}
                       // defaultValue={field.value}
                     />
@@ -205,7 +205,7 @@ export default function RegisterForm() {
                     Author <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="E.G.) NIKE" {...field} />
+                    <Input placeholder="NIKE" {...field} />
                   </FormControl>
                   <FormMessage className="text-red-500" />
                 </FormItem>
@@ -243,7 +243,7 @@ export default function RegisterForm() {
                 <Input
                   maxLength={20}
                   placeholder={
-                    inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
+                    inputTags.length >= 5 ? "Max. 5 tags" : "Motivation"
                   }
                   value={inputTagName}
                   onChange={(e) =>
@@ -260,7 +260,7 @@ export default function RegisterForm() {
                     defaultValue="white"
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="E.G.) Color" />
+                      <SelectValue placeholder="Color" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem
@@ -276,7 +276,7 @@ export default function RegisterForm() {
                           key={color}
                           className={`${changeTagColor(color)}`}
                           value={color}
-                          placeholder="E.G.) Color"
+                          placeholder="Color"
                         >
                           {inputTagName}
                         </SelectItem>

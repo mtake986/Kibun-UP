@@ -115,7 +115,7 @@ const EditMode = ({ setIsEditMode }: Props) => {
           }}
           id="description"
           defaultValue={loginUser?.description}
-          placeholder="E.G.) I am from Japan and try to transfer to Harvard University."
+          placeholder="I am from Japan and try to transfer to Harvard University."
         />
       </div>
 

@@ -64,3 +64,24 @@ export const commentSchema = z.object({
       message: "Comment must be less than 1000 characters long",
     }),
 });
+
+export const proposalSchema = z.object({
+  title: z
+    .string({
+      required_error: "Please enter a title",
+    })
+    .min(2, {
+      message: "Title must be at least 2 characters long",
+    })
+    .max(100, {
+      message: "Title must be less than 100 characters long",
+    }),
+  detail: z
+    .string()
+    .min(2, {
+      message: "Detail must be at least 2 characters long",
+    })
+    .max(1000, {
+      message: "Detail must be less than 1000 characters long",
+    }),
+});

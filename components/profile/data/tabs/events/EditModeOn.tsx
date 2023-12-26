@@ -83,7 +83,7 @@ export default function EditModeOn({
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="E.G.) My Birthday" {...field} />
+                  <Input placeholder="My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +98,7 @@ export default function EditModeOn({
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="E.G.) My Parent's house (SLC, Utah)"
+                    placeholder="My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -160,7 +160,7 @@ export default function EditModeOn({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="E.G.) My 23rd Birthday at my Parent's house"
+                  placeholder="My 23rd Birthday at my Parent's house"
                   {...field}
                 />
               </FormControl>
