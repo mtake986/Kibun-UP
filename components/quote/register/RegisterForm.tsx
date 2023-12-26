@@ -171,176 +171,181 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="relative px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
-      <Form {...form}>
-        <HeadingTwo text="Register Form" />
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem className="w-full space-y-0">
-                <FormLabel>
-                  Content <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="E.G.) Just Do It"
-                    {...field}
-                    // defaultValue={field.value}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="author"
-            render={({ field }) => (
-              <FormItem className="w-full space-y-0">
-                <FormLabel>
-                  Author <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="E.G.) NIKE" {...field} />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="draftStatus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Draft Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={"Public"}>
+    <div className="h-full px-5 pb-20 pt-10 sm:p-0">
+      <HeadingTwo text="Register Form" />
+      <div className={`${isPending ? "relative opacity-50" : "relative"}`}>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-0">
+                  <FormLabel>
+                    Content <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
-                    </SelectTrigger>
+                    <Input
+                      placeholder="E.G.) Just Do It"
+                      {...field}
+                      // defaultValue={field.value}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Draft">Draft</SelectItem>
-                    <SelectItem value="Public">Public</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-red-500" />
-              </FormItem>
-            )}
-          />
-
-          <div>
-            <FormLabel>Tags</FormLabel>
-            <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
-              <Input
-                maxLength={20}
-                placeholder={
-                  inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
-                }
-                value={inputTagName}
-                onChange={(e) =>
-                  setInputTagName(capitalizeFirstLetter(e.target.value))
-                }
-                disabled={inputTags.length >= 5}
-              />
-              <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
-                <Select
-                  onValueChange={(color) => {
-                    setInputTagColor(color);
-                  }}
-                  disabled={inputTagName.length === 0}
-                  defaultValue="white"
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="E.G.) Color" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      disabled={true}
-                      key="inputTagColor"
-                      value="inputTagColor"
-                    >
-                      Tag color
-                    </SelectItem>
-                    <Separator />
-                    {tagColors.map((color) => (
-                      <SelectItem
-                        key={color}
-                        className={`${changeTagColor(color)}`}
-                        value={color}
-                        placeholder="E.G.) Color"
-                      >
-                        {inputTagName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    if (validateInputTags() === VALIDATION_STATUS.PASS)
-                      addTag();
-                  }}
-                  disabled={isAddBtnDisabled}
-                  className={getAddButtonClass(isAddBtnDisabled)}
-                >
-                  Add
-                </Button>
-              </div>
-            </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              {inputTags.map((tag, i) => (
-                <Badge
-                  key={i}
-                  onClick={() => removeTag(tag.name)}
-                  className={`cursor-pointer border-none font-light ${changeTagColor(
-                    tag.color
-                  )}`}
-                >
-                  #{tag.name}
-                  <MdClose className="ml-1 cursor-pointer rounded-full" />
-                </Badge>
-              ))}
-              {inputTagName && (
-                <Badge
-                  className={` border-none font-light hover:opacity-70 ${changeTagColor(
-                    inputTagColor
-                  )}`}
-                >
-                  #{inputTagName}
-                </Badge>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
               )}
-            </div>
-            <TagErrors tagErrors={tagErrors} />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Button
-              className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
-              type="submit"
-              disabled={form.formState.isSubmitting}
-            >
-              Submit
-            </Button>
-            <UrlLink
-              clickOn={
-                <CloseBtn
-                  toggleRegisterFormOpen={toggleRegisterFormOpen}
-                  form={form}
-                  loginUser={loginUser}
-                />
-              }
-              href="/quote"
-              target="_self"
             />
-          </div>
-        </form>
-      </Form>
-      {isPending ? <LoadingCover spinnerSize="s" /> : null}
+
+            <FormField
+              control={form.control}
+              name="author"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-0">
+                  <FormLabel>
+                    Author <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="E.G.) NIKE" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="draftStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Draft Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={"Public"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Draft">Draft</SelectItem>
+                      <SelectItem value="Public">Public</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+
+            <div>
+              <FormLabel>Tags</FormLabel>
+              <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
+                <Input
+                  maxLength={20}
+                  placeholder={
+                    inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
+                  }
+                  value={inputTagName}
+                  onChange={(e) =>
+                    setInputTagName(capitalizeFirstLetter(e.target.value))
+                  }
+                  disabled={inputTags.length >= 5}
+                />
+                <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
+                  <Select
+                    onValueChange={(color) => {
+                      setInputTagColor(color);
+                    }}
+                    disabled={inputTagName.length === 0}
+                    defaultValue="white"
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="E.G.) Color" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        disabled={true}
+                        key="inputTagColor"
+                        value="inputTagColor"
+                      >
+                        Tag color
+                      </SelectItem>
+                      <Separator />
+                      {tagColors.map((color) => (
+                        <SelectItem
+                          key={color}
+                          className={`${changeTagColor(color)}`}
+                          value={color}
+                          placeholder="E.G.) Color"
+                        >
+                          {inputTagName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      if (validateInputTags() === VALIDATION_STATUS.PASS)
+                        addTag();
+                    }}
+                    disabled={isAddBtnDisabled}
+                    className={getAddButtonClass(isAddBtnDisabled)}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {inputTags.map((tag, i) => (
+                  <Badge
+                    key={i}
+                    onClick={() => removeTag(tag.name)}
+                    className={`cursor-pointer border-none font-light ${changeTagColor(
+                      tag.color
+                    )}`}
+                  >
+                    #{tag.name}
+                    <MdClose className="ml-1 cursor-pointer rounded-full" />
+                  </Badge>
+                ))}
+                {inputTagName && (
+                  <Badge
+                    className={` border-none font-light hover:opacity-70 ${changeTagColor(
+                      inputTagColor
+                    )}`}
+                  >
+                    #{inputTagName}
+                  </Badge>
+                )}
+              </div>
+              <TagErrors tagErrors={tagErrors} />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Button
+                className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                Submit
+              </Button>
+              <UrlLink
+                clickOn={
+                  <CloseBtn
+                    toggleRegisterFormOpen={toggleRegisterFormOpen}
+                    form={form}
+                    loginUser={loginUser}
+                  />
+                }
+                href="/quote"
+                target="_self"
+              />
+            </div>
+          </form>
+        </Form>
+        {isPending ? <LoadingCover spinnerSize="s" /> : null}
+      </div>
     </div>
   );
 }

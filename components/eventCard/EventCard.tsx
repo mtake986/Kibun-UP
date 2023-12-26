@@ -3,8 +3,9 @@ import { TypeEvent } from "@/types/type";
 import { useState } from "react";
 import Content from "./content/Content";
 import EditModeOn from "./content/EditModeOn";
-import LoadingSpinnerL from "../utils/LoadingSpinnerL";
 import Icons from "./Icons/Icons";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
+import LoadingCover from "../utils/LoadingCover";
 
 type Props = {
   event: TypeEvent;
@@ -18,7 +19,9 @@ const EventCard = ({ event, goPrevAsNoCurrentRecords }: Props) => {
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
       {isLoading ? (
-        <LoadingSpinnerL />
+        <div className="flex items-center justify-center">
+          <LoadingSpinnerS />
+        </div>
       ) : (
         <>
           {isUpdateMode ? (
@@ -37,7 +40,6 @@ const EventCard = ({ event, goPrevAsNoCurrentRecords }: Props) => {
             isUpdateMode={isUpdateMode}
             goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
-          
         </>
       )}
     </div>
