@@ -161,7 +161,7 @@ export default function ContactForm() {
               name="message"
               render={({ field }) => (
                 <FormItem className="w-full space-y-0">
-                  <FormLabel className="text-base">
+                  <FormLabel>
                     Message <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>

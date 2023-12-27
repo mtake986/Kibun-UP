@@ -6,7 +6,6 @@ import Subtitle from "./subtitle/Subtitle"
 const Proposals = () => {
   return (
     <div className="flex flex-col gap-5">
-      <Subtitle />
       <ProposalForm />
       <ProposalsList />
     </div>
