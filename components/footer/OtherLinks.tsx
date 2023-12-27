@@ -2,28 +2,19 @@ import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   BiDotsVertical,
-  BiDotsVerticalRounded,
   BiPaperPlane,
 } from "react-icons/bi";
 import { usePathname } from "next/navigation";
 import UrlLink from "../utils/UrlLink";
-import Link from "next/link";
-import { AiOutlineContacts } from "react-icons/ai";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/config/Firebase";
 import { FaTasks } from "react-icons/fa";
+import { AiOutlineContacts } from "react-icons/ai";
 
 const OtherLinks = () => {
-  const today = new Date().getFullYear();
   const pathname = usePathname();
-  const [user] = useAuthState(auth);
 
   const isBtnDisabled = (pathname: string, link: string) => {
     // Check for static links
@@ -40,14 +31,6 @@ const OtherLinks = () => {
     // Exact match for static paths
     return pathname === link;
   };
-
-  function getLinkStyle(link: string) {
-    return `text-violet-500 dark:text-white text-sm ${
-      pathname === link
-        ? "font-bold underline underline-offset-2 opacity-70 cursor-default"
-        : "relative block w-fit after:absolute after:bottom-0.5 after:block after:h-[1px] after:w-full after:origin-center after:scale-x-0 after:bg-violet-500 after:transition after:duration-300 after:content-[''] after:hover:scale-x-100 dark:after:bg-white"
-    }`;
-  }
 
   const item = (link: string, icon: React.JSX.Element, label: string) => {
     if (isBtnDisabled(pathname, `/${link}`)) {

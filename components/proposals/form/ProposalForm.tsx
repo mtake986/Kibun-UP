@@ -86,7 +86,6 @@ const ProposalForm = () => {
                     <Input
                       placeholder="Summary of the proposal"
                       {...field}
-                      // defaultValue={field.value}
                       className="border-none bg-slate-50 dark:border-none"
                     />
                   </FormControl>

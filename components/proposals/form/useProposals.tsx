@@ -11,7 +11,7 @@ const useProposals = () => {
     await addDoc(proposalsCollectionRef, {
       ...values,
       createdBy: uid,
-      VotedUpBy: [],
+      votedUpBy: [],
       createdAt: currTime,
     }).then(() => {
       displaySuccessToast({
