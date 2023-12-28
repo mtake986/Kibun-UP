@@ -50,7 +50,7 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         {/* currentPage Btn is always shown */}
         {!isFirstPage && !isLastPage ? (
           <button
-            className={clsNameFocused}
+            className={twMerge(clsNameFocused)}
             onClick={() => setCurrentPage(currentPage)}
             disabled={true}
           >
