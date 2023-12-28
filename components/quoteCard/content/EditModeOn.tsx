@@ -36,6 +36,7 @@ import { Separator } from "@/components/ui/separator";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 import TagErrors from "./TagErrors";
 import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   q: TypeQuote;
@@ -249,9 +250,11 @@ export default function EditModeOn({
                 disabled={inputTagName.length === 0}
               >
                 <SelectTrigger
-                  className={`${changeTagColor(inputTagColor)} ${
-                    inputTagColor ? "border-none" : null
-                  } w-full`}
+                  className={twMerge(
+                    "w-full",
+                    changeTagColor(inputTagColor),
+                    inputTagColor ? "border-none" : ""
+                  )}
                 >
                   <SelectValue placeholder="Color" />
                 </SelectTrigger>
@@ -267,7 +270,10 @@ export default function EditModeOn({
                   {tagColors.map((color) => (
                     <SelectItem
                       key={color}
-                      className={`hover:opacity-100 ${changeTagColor(color)}`}
+                      className={twMerge(
+                        "hover:opacity-100",
+                        changeTagColor(color)
+                      )}
                       value={color}
                     >
                       {inputTagName}
@@ -292,9 +298,10 @@ export default function EditModeOn({
               <Badge
                 key={i}
                 onClick={() => removeTag(tag.name)}
-                className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
-                  tag.color
-                )}`}
+                className={twMerge(
+                  "cursor-pointer border-none font-light hover:opacity-70",
+                  changeTagColor(tag.color)
+                )}
               >
                 #{tag.name}
                 <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -302,9 +309,10 @@ export default function EditModeOn({
             ))}
             {inputTagName && (
               <Badge
-                className={`border-none font-light hover:opacity-70 ${changeTagColor(
-                  inputTagColor
-                )}`}
+                className={twMerge(
+                  "border-none font-light hover:opacity-70",
+                  changeTagColor(inputTagColor)
+                )}
               >
                 #{inputTagName}
               </Badge>
@@ -316,14 +324,16 @@ export default function EditModeOn({
         <div className="flex items-center gap-3">
           <Button
             type="submit"
-            className={`w-full cursor-pointer rounded-md bg-green-50 px-3 py-2 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 hover:text-green-500 dark:bg-green-700 dark:text-white dark:hover:bg-green-600`}
+            className={
+              "w-full cursor-pointer rounded-md bg-green-50 px-3 py-2 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 hover:text-green-500 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
+            }
             variant="ghost"
           >
             Save
           </Button>
           <Button
             onClick={() => setIsUpdateMode(false)}
-            className={`cursor-pointer rounded-md bg-red-50 px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
+            className="cursor-pointer rounded-md bg-red-50 px-3 py-2 text-sm text-red-500 duration-300 ease-in hover:bg-red-100 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
             variant="ghost"
           >
             Cancel

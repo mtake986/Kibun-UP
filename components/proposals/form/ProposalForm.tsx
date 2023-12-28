@@ -32,6 +32,7 @@ import Subtitle from "../subtitle/Subtitle";
 import LoadingCover from "@/components/utils/LoadingCover";
 import useProposals from "./useProposals";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { twMerge } from "tailwind-merge";
 
 const ProposalForm = () => {
   const { loginUser, fetchLoginUser } = useAuth();
@@ -71,7 +72,7 @@ const ProposalForm = () => {
     <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
       <HeadingTwo text="Proposal Form" />
       <Subtitle />
-      <div className={`${isPending ? "relative opacity-50" : "relative"}`}>
+      <div className={twMerge(isPending ? "relative opacity-50" : "relative")}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField

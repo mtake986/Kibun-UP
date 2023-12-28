@@ -1,4 +1,5 @@
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   nPages: number;
@@ -7,7 +8,6 @@ type Props = {
 };
 
 const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
-
   const nextPage = () => {
     if (currentPage !== nPages) setCurrentPage(currentPage + 1);
   };
@@ -27,9 +27,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   return (
     <nav className="flex gap-1">
       <button
-        className={`px-2 py-1 text-xs text-blue-500 dark:text-white ${
+        className={twMerge(
+          "px-2 py-1 text-xs text-blue-500 dark:text-white",
           isFirstPage ? "cursor-default opacity-30" : "cursor-pointer"
-        }`}
+        )}
         onClick={prevPage}
         disabled={isFirstPage}
       >
@@ -49,15 +50,14 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         {/* currentPage Btn is always shown */}
         {!isFirstPage && !isLastPage ? (
           <button
-          className={clsNameFocused}
+            className={clsNameFocused}
             onClick={() => setCurrentPage(currentPage)}
             disabled={true}
-            >
+          >
             {currentPage}
           </button>
         ) : null}
         {nPages - 2 >= currentPage && <span>...</span>}
-
 
         <button
           key={nPages}
@@ -69,9 +69,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
         </button>
       </div>
       <button
-        className={`px-2 py-1 text-xs text-blue-500 dark:text-white ${
+        className={twMerge(
+          "px-2 py-1 text-xs text-blue-500 dark:text-white",
           isLastPage ? "cursor-default opacity-30" : "cursor-pointer"
-        }`}
+        )}
         onClick={nextPage}
         disabled={isLastPage}
       >

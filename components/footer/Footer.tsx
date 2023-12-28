@@ -33,7 +33,7 @@ const Footer = () => {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white`}
+        className="flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
       >
         {icon}
       </button>

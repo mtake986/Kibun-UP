@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TypeSelectedSortByForComments } from "@/types/type";
 import { BiCheck } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   sortOldestFirst: () => void;
@@ -23,11 +24,11 @@ const SortOption = ({
   onClick: () => void;
   isSelected: boolean;
 }) => (
-  <DropdownMenuItem className={`p-0 ${isSelected ? "hover:bg-slate-800" : ""}`}>
+  <DropdownMenuItem className={twMerge('p-0', isSelected ? "hover:bg-slate-800" : "")}>
     {isSelected && <BiCheck className="mr-1 text-gray-400" size={16} />}
     <button
       disabled={isSelected}
-      className={`text-sm ${isSelected ? "text-gray-400" : "m-auto ml-5"} py-1`}
+      className={twMerge('text-sm py-1', isSelected ? "text-gray-400" : "m-auto ml-5")}
       onClick={onClick}
     >
       {label}

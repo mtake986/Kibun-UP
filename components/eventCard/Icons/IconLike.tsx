@@ -47,7 +47,7 @@ const IconLike = ({ event, loginUser }: Props) => {
       {isLiked ? (
         <>
           <PiHandsClappingBold size={14} className="text-emerald-500" />
-          <span className={`text-xs text-emerald-500`}>{numOfCheers}</span>
+          <span className="text-xs text-emerald-500">{numOfCheers}</span>
         </>
       ) : (
         <>

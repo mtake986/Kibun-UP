@@ -3,6 +3,7 @@ import { changeTagColor } from "@/functions/functions";
 import { BsChatLeftText, BsFillPersonFill } from "react-icons/bs";
 import { TypeAPIQuote, TypeSelectedAuthors } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   q: TypeAPIQuote;
@@ -44,7 +45,7 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
           {q.tags.map((tag, i) => (
             <Badge
               key={tag.name}
-              className={`border-none font-light ${changeTagColor(tag.color)}`}
+              className={twMerge('border-none font-light' , changeTagColor(tag.color))}
             >
               #{tag.name}
             </Badge>

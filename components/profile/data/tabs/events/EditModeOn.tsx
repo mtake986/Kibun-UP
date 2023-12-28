@@ -173,14 +173,14 @@ export default function EditModeOn({
           <div className="flex items-center gap-1">
             <Button
               onClick={() => setIsUpdateMode(false)}
-              className={` flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+              className="flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto"
               variant="ghost"
             >
               <span>Cancel</span>
             </Button>
             <Button
               type="submit"
-              className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
+              className="flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto"
               variant="ghost"
             >
               <span>Save</span>
@@ -188,7 +188,7 @@ export default function EditModeOn({
           </div>
           <Button
             onClick={() => handleDelete(event.id)}
-            className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+            className="duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto"
             variant="ghost"
           >
             <Trash size={14} />

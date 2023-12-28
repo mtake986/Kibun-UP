@@ -37,7 +37,7 @@ const OtherLinks = () => {
       return (
         <button
           disabled={true}
-          className={`flex items-center gap-3 text-violet-500 opacity-50 transition duration-300 ease-in dark:text-white`}
+          className="flex items-center gap-3 text-violet-500 opacity-50 transition duration-300 ease-in dark:text-white"
         >
           {icon} {label}
         </button>
@@ -46,7 +46,7 @@ const OtherLinks = () => {
       return (
         <button
           disabled={false}
-          className={`flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white`}
+          className="flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
         >
           {icon} {label}
         </button>

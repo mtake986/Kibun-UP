@@ -174,14 +174,14 @@ export default function EditModeOn({
           <button
             aria-label="Save changes"
             type="submit"
-            className={`w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600`}
+            className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
           >
             Save
           </button>
           <button
             aria-label="Cancel editing"
             onClick={() => setIsUpdateMode(false)}
-            className={`cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
+            className="cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
           >
             Cancel
           </button>

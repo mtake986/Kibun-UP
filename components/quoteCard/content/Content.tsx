@@ -8,6 +8,7 @@ import {
 } from "react-icons/bs";
 import { TypeQuote } from "@/types/type";
 import { EyeIcon, EyeOff } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   q: TypeQuote;
@@ -35,7 +36,10 @@ const Content = ({ q }: Props) => {
           {q.tags.map((tag, i) => (
             <Badge
               key={tag.name}
-              className={`border-none font-light ${changeTagColor(tag.color)}`}
+              className={twMerge(
+                "border-none font-light",
+                changeTagColor(tag.color)
+              )}
             >
               #{tag.name}
             </Badge>

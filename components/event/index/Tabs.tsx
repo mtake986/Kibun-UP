@@ -1,4 +1,3 @@
-
 import { useEvent } from "@/context/EventContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
@@ -6,9 +5,9 @@ import List from "../mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { TypeEvent } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
+import { twMerge } from "tailwind-merge";
 
 const Tabs = () => {
-
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,7 +22,13 @@ const Tabs = () => {
         return <List events={loginUserEvents} />;
       case "notMine":
         // return <ListNotMine quotes={quotesNotMine} />;
-        return <List events={allEvents.filter((event: TypeEvent) => event.createdBy !== loginUser?.uid)} />
+        return (
+          <List
+            events={allEvents.filter(
+              (event: TypeEvent) => event.createdBy !== loginUser?.uid
+            )}
+          />
+        );
       default:
         return <List events={loginUserEvents} />;
     }
@@ -39,11 +44,12 @@ const Tabs = () => {
         {tabs.map((tab) => (
           <span
             key={tab.name}
-            className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
+            className={twMerge(
+              "w-full cursor-pointer py-1 text-center text-xs sm:text-sm",
               currTab === tab.name || (currTab === null && tab.name === "mine")
                 ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
                 : ""
-            }`}
+            )}
             onClick={() => handleClick(tab.name)}
           >
             {tab.label}
@@ -56,7 +62,7 @@ const Tabs = () => {
   );
 };
 
-const tabs: { name: 'mine' | 'notMine'; label: string }[] = [
+const tabs: { name: "mine" | "notMine"; label: string }[] = [
   {
     name: "mine",
     label: "Mine",

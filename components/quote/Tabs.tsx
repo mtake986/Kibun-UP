@@ -4,6 +4,7 @@ import { TypeTabNamesOfQuotes } from "@/types/type";
 import ListOfRandom from "./random/ListOfRandom";
 import List from "./mine/List";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 const SwitchTab = () => {
   const {
@@ -46,13 +47,15 @@ const SwitchTab = () => {
       case "api":
         return <ListOfRandom />;
       default:
-        return <List
-          quotes={
-            isSortVariablesForMineDefaultValue
-              ? loginUserQuotes
-              : sortedFilteredMyQuotes
-          }
-        />;
+        return (
+          <List
+            quotes={
+              isSortVariablesForMineDefaultValue
+                ? loginUserQuotes
+                : sortedFilteredMyQuotes
+            }
+          />
+        );
     }
   };
 
@@ -66,11 +69,12 @@ const SwitchTab = () => {
         {tabs.map((tab) => (
           <span
             key={tab.name}
-            className={`w-full cursor-pointer py-1 text-center text-xs sm:text-sm ${
+            className={twMerge(
+              "w-full cursor-pointer py-1 text-center text-xs sm:text-sm",
               currTab === tab.name || (currTab === null && tab.name === "mine")
                 ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
                 : ""
-            }`}
+            )}
             onClick={() => handleClick(tab.name)}
           >
             {tab.label}

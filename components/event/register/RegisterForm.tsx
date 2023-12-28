@@ -33,6 +33,7 @@ import { displayErrorToast } from "@/functions/displayToast";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import LoadingCover from "@/components/utils/LoadingCover";
+import { twMerge } from "tailwind-merge";
 
 const getSubmitBtnClassName = (isSubmitBtnDisabled: boolean) => {
   if (isSubmitBtnDisabled) {
@@ -102,7 +103,7 @@ export default function RegisterForm() {
   return (
     <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
       <HeadingTwo text="Register Form" />
-      <div className={`${isPending ? "relative opacity-50" : "relative"}`}>
+      <div className={twMerge('relative', isPending ? "opacity-50" : "")}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="hidden sm:flex sm:flex-row sm:gap-8">
