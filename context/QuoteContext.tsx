@@ -203,8 +203,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
   };
-
-  const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
+const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
+  try {
     const isApi = "authorSlug" in q;
     if (isApi) {
       const registerAPIQuote = async () => {
@@ -221,17 +221,22 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             updatedAt: serverTimestamp(),
           });
         } else {
-          console.log('exists')
+          console.log("Quote already exists in the database");
         }
       };
-      registerAPIQuote();
-
+      await registerAPIQuote();
     }
     await setDoc(doc(db, "lockedQuotes", uid), {
       qid: q.id,
       createdBy: q.createdBy,
     });
-  };
+  } catch (error) {
+    console.error("Error locking quote:", error);
+    // ここでユーザーにフィードバックを提供するためのエラートーストを表示するか、
+    // エラーを外部のエラー追跡サービスに送信することもできます。
+    displayErrorToast({ text: `Error: ${error}` });
+  }
+};
 
   const removeLockFromThisQuote = async (uid: string) => {
     await deleteDoc(doc(db, "lockedQuotes", uid));
