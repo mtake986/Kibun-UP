@@ -44,12 +44,12 @@ const IconLike = ({ q, loginUser }: Props) => {
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+      className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
       {isLiked ? (
         <>
           <Heart size={14} className="text-red-500" fill={heartFill} />
-          <span className={`text-xs text-red-500`}>{numOfLikes}</span>
+          <span className={"text-xs text-red-500"}>{numOfLikes}</span>
         </>
       ) : (
         <>

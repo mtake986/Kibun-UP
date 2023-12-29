@@ -11,7 +11,7 @@ const TagInput = () => {
   } = useQuote();
   return (
     <div>
-      <div className="flex items-center space-x-2 mb-2">
+      <div className="mb-2 flex items-center space-x-2">
         <Checkbox
           id="tag-filter-checkbox"
           checked={isTagToFilterNotMyQuotesDisabled}
@@ -31,7 +31,7 @@ const TagInput = () => {
           onChange={(e) => {
             updateSortVariablesForNotMine("tag", e.target.value);
           }}
-          placeholder="E.G.) Motivation"
+          placeholder="Motivation"
           value={sortVariablesForNotMine.searchTag}
         />
       )}

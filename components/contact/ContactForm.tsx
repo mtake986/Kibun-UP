@@ -105,7 +105,7 @@ export default function ContactForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="E.G.) John Doe"
+                      placeholder="John Doe"
                       {...field}
                       // defaultValue={field.value}
                       className="border-none bg-slate-50 dark:border-none"
@@ -126,7 +126,7 @@ export default function ContactForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="E.G.) john.doe@gmail.com"
+                      placeholder="john.doe@gmail.com"
                       {...field}
                       className="border-none bg-slate-50 dark:border-none"
                     />
@@ -146,7 +146,7 @@ export default function ContactForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="E.G.) This is Awesome!!"
+                      placeholder="This is Awesome!!"
                       {...field}
                       className="border-none bg-slate-50 dark:border-none"
                     />
@@ -161,13 +161,13 @@ export default function ContactForm() {
               name="message"
               render={({ field }) => (
                 <FormItem className="w-full space-y-0">
-                  <FormLabel className="text-base">
+                  <FormLabel>
                     Message <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       className="border-none bg-slate-50 dark:border-none"
-                      placeholder="E.G.) This is Awesome!!"
+                      placeholder="This is Awesome!!"
                       {...field}
                     />
                   </FormControl>

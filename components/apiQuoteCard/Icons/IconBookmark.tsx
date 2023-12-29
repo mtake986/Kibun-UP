@@ -31,12 +31,12 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   return (
     <span
       onClick={handleBookmarkClick}
-      className={`flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70`}
+      className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
       {isBookmarked ? (
         <>
           <BsBookmarkFill size={12} className="text-green-500" />
-          <span className={`text-xs text-green-500`}>{numOfBookmarks}</span>
+          <span className="text-xs text-green-500">{numOfBookmarks}</span>
         </>
       ) : (
         <>

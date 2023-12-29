@@ -2,7 +2,13 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import { MenuIcon } from "lucide-react";
-import { BsActivity, BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
+import {
+  BsActivity,
+  BsChatQuote,
+  BsFlag,
+  BsHouse,
+  BsPerson,
+} from "react-icons/bs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
@@ -11,6 +17,7 @@ import LogOutBtn from "./LogOutBtn";
 import { AiOutlineContacts } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 import { capitalize } from "@mui/material";
+import { twMerge } from "tailwind-merge";
 
 type Anchor = "right";
 
@@ -35,15 +42,16 @@ export default function MenuBtn() {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`${btnStyle(pathname, `/${link}`)}`}
+        className={twMerge(btnStyle(pathname, `/${link}`))}
       >
         {icon}
         <span
-          className={`text-sm ${
+          className={twMerge(
+            "text-sm",
             isBtnDisabled(pathname, `/${link}`)
               ? "font-semibold underline underline-offset-2"
-              : null
-          }`}
+              : ''
+          )}
         >
           {capitalize(link)}
         </span>
@@ -102,7 +110,7 @@ export default function MenuBtn() {
   return (
     <div>
       <MenuIcon
-        className="cursor-pointer w-5 text-violet-500 duration-300 hover:opacity-70 dark:text-white"
+        className="w-5 cursor-pointer text-violet-500 duration-300 hover:opacity-70 dark:text-white"
         onClick={toggleDrawer("right", true)}
       />
       <Drawer

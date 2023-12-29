@@ -84,7 +84,7 @@ export default function EditModeOn({
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="E.G.) My Birthday" {...field} />
+                  <Input placeholder="My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,7 +99,7 @@ export default function EditModeOn({
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="E.G.) My Parent's house (SLC, Utah)"
+                    placeholder="My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -162,7 +162,7 @@ export default function EditModeOn({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="E.G.) My 23rd Birthday at my Parent's house"
+                  placeholder="My 23rd Birthday at my Parent's house"
                   {...field}
                 />
               </FormControl>
@@ -174,14 +174,14 @@ export default function EditModeOn({
           <button
             aria-label="Save changes"
             type="submit"
-            className={`w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600`}
+            className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
           >
             Save
           </button>
           <button
             aria-label="Cancel editing"
             onClick={() => setIsUpdateMode(false)}
-            className={`cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600`}
+            className="cursor-pointer rounded-md bg-red-50 px-3 py-2.5 text-sm text-red-500 duration-300 ease-in hover:bg-red-50 hover:text-red-500 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
           >
             Cancel
           </button>

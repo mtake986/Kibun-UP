@@ -5,6 +5,7 @@ import {
 } from "@/components/utils/fonts";
 import { calculateLeftDays } from "@/functions/functions";
 import { TypeEvent } from "@/types/type";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   event: TypeEvent;
@@ -12,7 +13,10 @@ type Props = {
 const LeftDays = ({ event }: Props) => {
   return (
     <div
-      className={`text-center ${fontDancingScript.className} dark:text-white`}
+      className={twMerge(
+        "text-center dark:text-white",
+        fontDancingScript.className
+      )}
     >
       {calculateLeftDays(event.eventDate.toDate()) <= 0 ? (
         <span className="text-center text-3xl">
@@ -22,11 +26,12 @@ const LeftDays = ({ event }: Props) => {
         <div className="flex flex-col">
           <div className="flex items-end justify-center gap-2 italic">
             <strong
-              className={`block text-5xl ${
+              className={twMerge(
+                "block text-5xl",
                 calculateLeftDays(event.eventDate.toDate()) <= 3
                   ? "text-red-500"
-                  : null
-              }`}
+                  : ""
+              )}
             >
               {calculateLeftDays(event.eventDate.toDate())}
             </strong>

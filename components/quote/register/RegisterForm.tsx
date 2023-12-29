@@ -41,6 +41,7 @@ import TagErrors from "@/components/quoteCard/content/TagErrors";
 import { useAuth } from "@/context/AuthContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import LoadingCover from "@/components/utils/LoadingCover";
+import { twMerge } from "tailwind-merge";
 
 export default function RegisterForm() {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -173,7 +174,7 @@ export default function RegisterForm() {
   return (
     <div className="h-full px-5 pb-20 pt-10 sm:p-0">
       <HeadingTwo text="Register Form" />
-      <div className={`${isPending ? "relative opacity-50" : "relative"}`}>
+      <div className={twMerge("relative", isPending ? "opacity-50" : "")}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -186,7 +187,7 @@ export default function RegisterForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="E.G.) Just Do It"
+                      placeholder="Just Do It"
                       {...field}
                       // defaultValue={field.value}
                     />
@@ -205,7 +206,7 @@ export default function RegisterForm() {
                     Author <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="E.G.) NIKE" {...field} />
+                    <Input placeholder="NIKE" {...field} />
                   </FormControl>
                   <FormMessage className="text-red-500" />
                 </FormItem>
@@ -243,7 +244,7 @@ export default function RegisterForm() {
                 <Input
                   maxLength={20}
                   placeholder={
-                    inputTags.length >= 5 ? "Max. 5 tags" : "E.G.) Motivation"
+                    inputTags.length >= 5 ? "Max. 5 tags" : "Motivation"
                   }
                   value={inputTagName}
                   onChange={(e) =>
@@ -260,7 +261,7 @@ export default function RegisterForm() {
                     defaultValue="white"
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="E.G.) Color" />
+                      <SelectValue placeholder="Color" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem
@@ -274,9 +275,9 @@ export default function RegisterForm() {
                       {tagColors.map((color) => (
                         <SelectItem
                           key={color}
-                          className={`${changeTagColor(color)}`}
+                          className={twMerge(changeTagColor(color))}
                           value={color}
-                          placeholder="E.G.) Color"
+                          placeholder="Color"
                         >
                           {inputTagName}
                         </SelectItem>
@@ -301,9 +302,10 @@ export default function RegisterForm() {
                   <Badge
                     key={i}
                     onClick={() => removeTag(tag.name)}
-                    className={`cursor-pointer border-none font-light ${changeTagColor(
-                      tag.color
-                    )}`}
+                    className={twMerge(
+                      "cursor-pointer border-none font-light",
+                      changeTagColor(tag.color)
+                    )}
                   >
                     #{tag.name}
                     <MdClose className="ml-1 cursor-pointer rounded-full" />
@@ -311,9 +313,10 @@ export default function RegisterForm() {
                 ))}
                 {inputTagName && (
                   <Badge
-                    className={` border-none font-light hover:opacity-70 ${changeTagColor(
-                      inputTagColor
-                    )}`}
+                    className={twMerge(
+                      "border-none font-light hover:opacity-70",
+                      changeTagColor(inputTagColor)
+                    )}
                   >
                     #{inputTagName}
                   </Badge>

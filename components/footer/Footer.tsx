@@ -6,6 +6,7 @@ import { AiOutlineContacts } from "react-icons/ai";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
 import { BiPaperPlane } from "react-icons/bi";
+import OtherLinks from "./OtherLinks";
 
 const Footer = () => {
   const today = new Date().getFullYear();
@@ -32,7 +33,7 @@ const Footer = () => {
     return (
       <button
         disabled={isBtnDisabled(pathname, `/${link}`)}
-        className={`flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white`}
+        className="flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
       >
         {icon}
       </button>
@@ -44,8 +45,6 @@ const Footer = () => {
     <BsChatQuote key={"BsChatQuote"} />,
     <BsFlag key={"BsFlag"} />,
     <BsPerson key={"BsPerson"} />,
-    <BiPaperPlane key={"BiPaperPlane"} />,
-    <AiOutlineContacts key={"AiOutlineContacts"} />,
   ];
 
   const footerListItems = [
@@ -68,16 +67,6 @@ const Footer = () => {
       href: `/profile/${user?.uid}`,
       target: "_self",
       clickOn: item(`/profile/${user?.uid}`, <BsPerson />),
-    },
-    {
-      href: `/contact`,
-      target: "_self",
-      clickOn: item("contact", <BiPaperPlane />),
-    },
-    {
-      href: `/creator-info`,
-      target: "_self",
-      clickOn: item("creator-info", <AiOutlineContacts />),
     },
   ];
 
@@ -114,6 +103,7 @@ const Footer = () => {
               />
             );
           })}
+          <OtherLinks />
         </div>
       </nav>
     </>

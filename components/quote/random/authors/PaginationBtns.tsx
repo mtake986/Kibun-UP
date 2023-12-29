@@ -1,5 +1,6 @@
 import { alphabetArrs } from "@/data/CONSTANTS";
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   nPages: number;
@@ -8,7 +9,6 @@ type Props = {
 };
 
 const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
-
   const nextPage = () => {
     if (currentPage !== nPages) setCurrentPage(currentPage + 1);
   };
@@ -28,9 +28,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   return (
     <nav className="flex gap-1">
       <button
-        className={`cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white ${
+        className={twMerge(
+          "cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white",
           isFirstPage && "opacity-30"
-        }`}
+        )}
         onClick={prevPage}
         disabled={isFirstPage && true}
       >
@@ -63,9 +64,10 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
       </div>
 
       <button
-        className={`cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white ${
+        className={twMerge(
+          "cursor-pointer px-2 py-1 text-xs text-blue-500 dark:text-white",
           isLastPage && "opacity-30"
-        }`}
+        )}
         onClick={nextPage}
         disabled={isLastPage && true}
       >

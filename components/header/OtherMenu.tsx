@@ -35,6 +35,12 @@ const OtherMenu = () => {
       clickOn: "Creator Info",
       className: getLinkStyle("/creator-info"),
     },
+    {
+      href: "/proposals",
+      target: "_self",
+      clickOn: "Proposals",
+      className: getLinkStyle("/proposals"),
+    },
   ];
   return (
     <DropdownMenu>

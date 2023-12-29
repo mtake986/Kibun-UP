@@ -31,7 +31,7 @@ const TagInput = () => {
           onChange={(e) => {
             updateSortVariablesForMine("tag", e.target.value);
           }}
-          placeholder="E.G.) Motivation"
+          placeholder="Motivation"
           value={sortVariablesForMine.searchTag}
         />
       )}

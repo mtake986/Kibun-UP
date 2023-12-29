@@ -1,6 +1,7 @@
 import { useQuote } from "@/context/QuoteContext";
 import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   quote: TypeQuote;
@@ -25,11 +26,11 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
             updateRandomQuote();
           }
         }}
-        className={`${
-          type === "locked"
+        className={
+          twMerge(type === "locked"
             ? "cursor-not-allowed opacity-30 duration-300"
-            : "cursor-pointer duration-300 hover:opacity-50"
-        }`}
+            : "cursor-pointer duration-300 hover:opacity-50")
+        }
       />
       {type === "locked" ? (
         <BiLock
@@ -43,7 +44,7 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
               }
             }
           }}
-          className={`text-red-500  duration-300 hover:text-red-500 hover:opacity-50`}
+          className="text-red-500  duration-300 hover:text-red-500 hover:opacity-50"
         />
       ) : (
         <BiLockOpen

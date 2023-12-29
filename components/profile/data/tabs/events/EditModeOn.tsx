@@ -83,7 +83,7 @@ export default function EditModeOn({
                   Event Title <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="E.G.) My Birthday" {...field} />
+                  <Input placeholder="My Birthday" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +98,7 @@ export default function EditModeOn({
                 <FormLabel>Place</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="E.G.) My Parent's house (SLC, Utah)"
+                    placeholder="My Parent's house (SLC, Utah)"
                     {...field}
                   />
                 </FormControl>
@@ -160,7 +160,7 @@ export default function EditModeOn({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="E.G.) My 23rd Birthday at my Parent's house"
+                  placeholder="My 23rd Birthday at my Parent's house"
                   {...field}
                 />
               </FormControl>
@@ -173,14 +173,14 @@ export default function EditModeOn({
           <div className="flex items-center gap-1">
             <Button
               onClick={() => setIsUpdateMode(false)}
-              className={` flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+              className="flex items-center gap-2 duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto"
               variant="ghost"
             >
               <span>Cancel</span>
             </Button>
             <Button
               type="submit"
-              className={`flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto`}
+              className="flex items-center gap-2 duration-300  hover:bg-emerald-50 hover:text-emerald-500 sm:w-auto"
               variant="ghost"
             >
               <span>Save</span>
@@ -188,7 +188,7 @@ export default function EditModeOn({
           </div>
           <Button
             onClick={() => handleDelete(event.id)}
-            className={`duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+            className="duration-300  hover:bg-red-50 hover:text-red-500 sm:w-auto"
             variant="ghost"
           >
             <Trash size={14} />

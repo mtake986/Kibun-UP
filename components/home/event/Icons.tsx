@@ -5,6 +5,7 @@ import { TypeEvent } from "@/types/type";
 import { Target } from "lucide-react";
 import React, { useState } from "react";
 import { BiRefresh } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   event: TypeEvent;
@@ -33,11 +34,11 @@ const Icons = ({ event, type }: Props) => {
             }, 1000);
           }
         }}
-        className={`${
+        className={twMerge(
           type === "locked"
             ? "cursor-not-allowed opacity-30 duration-300"
             : "cursor-pointer duration-300 hover:opacity-50"
-        }`}
+        )}
         size={20}
       />
 
@@ -49,11 +50,11 @@ const Icons = ({ event, type }: Props) => {
             if (loginUser) lockThisEvent(loginUser.uid, event);
           }
         }}
-        className={`${
+        className={twMerge(
           type === "locked"
             ? "cursor-pointer text-red-500 duration-300 hover:opacity-50"
             : "cursor-pointer duration-300 hover:opacity-50"
-        }`}
+        )}
         size={14}
       />
     </div>

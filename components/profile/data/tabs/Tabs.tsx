@@ -4,6 +4,7 @@ import { ProfileTabs } from "@/types/type";
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
+import { twMerge } from "tailwind-merge";
 
 const Tabs = () => {
   const { profileUserQuotes } = useQuote();
@@ -28,11 +29,12 @@ const Tabs = () => {
       {tabs.map((tab) => (
         <span
           key={tab.name}
-          className={`w-full cursor-pointer py-1 text-center text-xs ${
+          className={twMerge(
+            "w-full cursor-pointer py-1 text-center text-xs",
             currTab === tab.name || (currTab === null && tab.name === "quotes")
               ? "rounded-2xl bg-violet-50 text-violet-500 dark:bg-slate-900 dark:text-white"
               : ""
-          }`}
+          )}
           onClick={() => handleClick(tab.name)}
         >
           {capitalizeFirstLetter(tab.name)}

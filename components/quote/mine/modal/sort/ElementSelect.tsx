@@ -20,7 +20,7 @@ const ElementSelect = () => {
       defaultValue={sortVariablesForMine.sortByElement}
     >
       <SelectTrigger className="w-full text-xs">
-        <SelectValue placeholder="E.G.) By" />
+        <SelectValue placeholder="By" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="content">Content</SelectItem>
