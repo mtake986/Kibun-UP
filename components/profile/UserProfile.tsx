@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { extractUidFromPath } from "@/functions/extractUidFromPath";
 import NoProfileUser from "./NoProfileUser";
 import GoogleLoginBtn from "../utils/GoogleLoginBtn";
+import LoadingSpinnerS from "../utils/LoadingSpinnerS";
 
 const UserProfile = () => {
   const pathname = usePathname();
@@ -55,7 +56,7 @@ const UserProfile = () => {
   if (!user) {
     return <GoogleLoginBtn />;
   }
-  if (isPending) return <div>loading</div>;
+  if (isPending) return <LoadingSpinnerS />;
 
   if (!profileUser) return <NoProfileUser uid={uid} />;
 

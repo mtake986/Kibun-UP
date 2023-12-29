@@ -60,7 +60,9 @@ const UserInfoCard = ({
           </div>
         </div>
         <div>
-          <p className="text-sm font-semibold mt-2">{profileUser.displayName}</p>
+          <p className="mt-2 text-sm font-semibold">
+            {profileUser.displayName}
+          </p>
           <p className="text-[10px] text-gray-500">
             Since:{" "}
             {createdAtDate
@@ -71,7 +73,9 @@ const UserInfoCard = ({
               : "Error"}
           </p>
         </div>
-        <p className="mt-2 text-xs">{profileUser.description}</p>
+        <p className="mt-2 whitespace-pre-line text-xs">
+          {profileUser.description}
+        </p>
       </div>
 
       {/* tablet, pc */}
@@ -111,7 +115,7 @@ const UserInfoCard = ({
             </div>
           </div>
         </div>
-        <p className="mt-2">{profileUser.description}</p>
+        <p className="mt-2 whitespace-pre-line">{profileUser.description}</p>
       </div>
     </>
   );
