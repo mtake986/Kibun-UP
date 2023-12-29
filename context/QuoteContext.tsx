@@ -205,6 +205,28 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   };
 
   const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
+    const isApi = "authorSlug" in q;
+    if (isApi) {
+      const registerAPIQuote = async () => {
+        const docRef = doc(db, "apiQuotes", q.id);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          await setDoc(docRef, {
+            ...q,
+            likedBy: [],
+            bookmarkedBy: [],
+            createdBy: "api",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          });
+        } else {
+          console.log('exists')
+        }
+      };
+      registerAPIQuote();
+
+    }
     await setDoc(doc(db, "lockedQuotes", uid), {
       qid: q.id,
       createdBy: q.createdBy,

@@ -13,3 +13,6 @@ https://stackoverflow.com/questions/71000652/firestore-how-to-structure-data-the
 4. Quotable API
 https://github.com/lukePeavey/quotable/issues
 
+
+5. Detect a key is in the object
+```console.log('authorSlug' in q)```
