@@ -172,9 +172,15 @@ export type TypeSelectedSortByForComments = "newestFirst" | "oldestFirst";
 export type TypeProposal = {
   id: string;
   title: string;
-  detail?: string;
   createdBy: string;
   createdAt: Timestamp;
   votedUpBy: string[];
-  solved: boolean;
+  status: TypeProposalStatusValue;
+  description?: string;
+  updatedAt?: Timestamp;
+  comments?: TypeComment[];
+  tags?: string[];
 };
+
+export type TypeProposalStatusValue = "open" | "closed" | "inProgress";
+export type TypeProposalStatusLabel = "Open" | "Closed" | "In Progress";

@@ -50,7 +50,7 @@ const ProposalForm = () => {
     resolver: zodResolver(proposalSchema),
     defaultValues: {
       title: "",
-      detail: "",
+      description: "",
     },
   });
 
@@ -97,14 +97,14 @@ const ProposalForm = () => {
 
             <FormField
               control={form.control}
-              name="detail"
+              name="description"
               render={({ field }) => (
                 <FormItem className="w-full space-y-0">
-                  <FormLabel>Detail</FormLabel>
+                  <FormLabel>description</FormLabel>
                   <FormControl>
                     <Textarea
                       className="border-none bg-slate-50 dark:border-none"
-                      placeholder="Explain the proposal in detail"
+                      placeholder="Explain the proposal in description"
                       {...field}
                     />
                   </FormControl>

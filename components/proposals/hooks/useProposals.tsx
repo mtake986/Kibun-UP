@@ -1,7 +1,7 @@
 import { db } from "@/config/Firebase";
 import { displayErrorToast, displaySuccessToast } from "@/functions/displayToast";
 import { TypeProposal } from "@/types/type";
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { Timestamp, addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 
 const useProposals = () => {
@@ -10,20 +10,20 @@ const useProposals = () => {
   const proposalsCollectionRef = collection(db, "proposals");
 
   const submitProposal = async (
-    values: { title: string; detail: string },
+    values: { title: string; description: string },
     uid: string
   ) => {
-    const currTime = serverTimestamp();
-    await addDoc(proposalsCollectionRef, {
+    const payload = {
       ...values,
       createdBy: uid,
+      createdAt: serverTimestamp(),
       votedUpBy: [],
-      createdAt: currTime,
-      solved: false,
-    })
+      status: "open",
+    };
+    await addDoc(proposalsCollectionRef, payload)
       .then(() => {
         displaySuccessToast({
-          text: "Success: Created",
+          text: "Successfully Created",
         });
       })
       .catch((error) => {

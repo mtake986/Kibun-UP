@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
-import ProposalsList from "./list/ProposalsList";
+import ProposalsList from "./list/ListHome";
 import ProposalForm from "./form/ProposalForm";
 import useProposals from "./hooks/useProposals";
 import LoadingSpinnerM from "../utils/LoadingSpinnerM";
 
-const Proposals = () => {
+const ProposalHome = () => {
   const { fetchProposals, proposals, isPending } = useProposals();
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const Proposals = () => {
   );
 };
 
-export default Proposals;
+export default ProposalHome;

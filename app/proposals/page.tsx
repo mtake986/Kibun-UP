@@ -1,10 +1,8 @@
-import Proposals from "@/components/proposals/Proposals"
+import ProposalHome from "@/components/proposals/ProposalHome";
 import React from 'react'
 
 const ProposalsPage = () => {
-  return (
-    <Proposals />
-  )
+  return <ProposalHome />;
 }
 
 export default ProposalsPage
