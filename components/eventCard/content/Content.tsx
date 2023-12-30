@@ -16,7 +16,7 @@ type InfoProps = {
 };
 const Info: React.FC<InfoProps> = ({ icon, text }) => (
   <div className="flex items-center">
-    <div className="mr-2 h-5 w-5">{icon}</div>
+    <div className="mr-2 h-4 w-4">{icon}</div>
     <p className="whitespace-pre-line">{text}</p>
   </div>
 );
