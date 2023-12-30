@@ -30,7 +30,7 @@ import UrlLink from "@/components/utils/UrlLink";
 import RequiredMark from "@/components/utils/RequiredMark";
 import Subtitle from "../subtitle/Subtitle";
 import LoadingCover from "@/components/utils/LoadingCover";
-import useProposals from "./useProposals";
+import useProposals from "../form/useProposals";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { twMerge } from "tailwind-merge";
 

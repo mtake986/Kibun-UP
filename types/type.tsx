@@ -168,3 +168,13 @@ export type TypeComment = {
 };
 
 export type TypeSelectedSortByForComments = "newestFirst" | "oldestFirst";
+
+export type TypeProposal = {
+  id: string;
+  title: string;
+  detail: string;
+  createdBy: string;
+  createdAt: Timestamp;
+  votedUpBy: string[];
+  solved: boolean;
+};

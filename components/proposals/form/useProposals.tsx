@@ -1,9 +1,12 @@
 import { db } from "@/config/Firebase";
 import { displayErrorToast, displaySuccessToast } from "@/functions/displayToast";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import React from "react";
+import { TypeProposal } from "@/types/type";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import React, { useState } from "react";
 
 const useProposals = () => {
+  const [proposals, setProposals] = useState<TypeProposal[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(true);
   const proposalsCollectionRef = collection(db, "proposals");
 
   const submitProposal = async (
@@ -16,6 +19,7 @@ const useProposals = () => {
       createdBy: uid,
       votedUpBy: [],
       createdAt: currTime,
+      solved: false,
     })
       .then(() => {
         displaySuccessToast({
@@ -28,7 +32,25 @@ const useProposals = () => {
         });
       });
   };
-  return { submitProposal };
+
+  const fetchProposals = async () => {
+    setIsPending(true);
+    const q = query(proposalsCollectionRef, orderBy("createdAt", "asc"));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setProposals(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeProposal)
+        )
+      );
+      setIsPending(false);
+    });
+    return unsubscribe;
+  }
+
+  return { submitProposal, fetchProposals, proposals, isPending };
+
+
 };
 
 export default useProposals;
