@@ -30,15 +30,14 @@ import UrlLink from "@/components/utils/UrlLink";
 import RequiredMark from "@/components/utils/RequiredMark";
 import Subtitle from "../subtitle/Subtitle";
 import LoadingCover from "@/components/utils/LoadingCover";
-import useProposals from "../form/useProposals";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useProposals from "../hooks/useProposals";
 import { twMerge } from "tailwind-merge";
 
 const ProposalForm = () => {
   const { loginUser, fetchLoginUser } = useAuth();
 
   const [isPending, setIsPending] = useState<boolean>(false);
-  const { submitProposal } = useProposals();
+  const { submitProposal, fetchProposals } = useProposals();
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -66,6 +65,7 @@ const ProposalForm = () => {
     } else {
       displayErrorToast("Please log in.");
     }
+    fetchProposals();
   }
 
   return (
