@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import ProposalsList from "./list/ListHome";
 import ProposalForm from "./form/ProposalForm";
-import useProposals from "./hooks/useProposals";
+import useProposals from "./form/hooks/useProposals";
 import LoadingSpinnerM from "../utils/LoadingSpinnerM";
 
 const ProposalHome = () => {
@@ -15,11 +15,9 @@ const ProposalHome = () => {
   return (
     <div className="flex flex-col gap-5">
       <ProposalForm />
-      {isPending ? (
-        <LoadingSpinnerM />
-      ) : (
-        <ProposalsList proposals={proposals} />
-      )}
+
+        <ProposalsList proposals={proposals} isPending={isPending} />
+
     </div>
   );
 };
