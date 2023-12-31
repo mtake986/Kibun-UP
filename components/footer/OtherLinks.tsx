@@ -4,10 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  BiDotsVertical,
-  BiPaperPlane,
-} from "react-icons/bi";
+import { BiDotsVertical, BiPaperPlane } from "react-icons/bi";
 import { usePathname } from "next/navigation";
 import UrlLink from "../utils/UrlLink";
 import { FaTasks } from "react-icons/fa";
@@ -37,7 +34,7 @@ const OtherLinks = () => {
       return (
         <button
           disabled={true}
-          className="flex items-center gap-3 text-violet-500 opacity-50 transition duration-300 ease-in dark:text-white"
+          className="flex items-center gap-2 text-violet-500 opacity-50 transition duration-300 ease-in dark:text-white"
         >
           {icon} {label}
         </button>
@@ -46,7 +43,7 @@ const OtherLinks = () => {
       return (
         <button
           disabled={false}
-          className="flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
+          className="flex items-center gap-2 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
         >
           {icon} {label}
         </button>
@@ -81,7 +78,7 @@ const OtherLinks = () => {
       <DropdownMenuTrigger>
         <BiDotsVertical />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white p-2 dark:bg-slate-900">
+      <DropdownMenuContent className="flex flex-col space-y-2 bg-white p-2 px-3 dark:bg-slate-900">
         {items.map((item: ItemProps) =>
           pathname === item.href ? (
             <span key={item.href}>{item.clickOn}</span>

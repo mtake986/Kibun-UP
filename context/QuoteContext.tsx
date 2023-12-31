@@ -167,7 +167,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       updatedAt: currTime,
     }).then(() => {
       displaySuccessToast({
-        text: "Success: Created",
+        text: "Successfully Created",
       });
     });
   };
@@ -203,40 +203,37 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
   };
-const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
-  try {
-    const isApi = "authorSlug" in q;
-    if (isApi) {
-      const registerAPIQuote = async () => {
-        const docRef = doc(db, "apiQuotes", q.id);
-        const docSnap = await getDoc(docRef);
+  const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
+    try {
+      const isApi = "authorSlug" in q;
+      if (isApi) {
+        const registerAPIQuote = async () => {
+          const docRef = doc(db, "apiQuotes", q.id);
+          const docSnap = await getDoc(docRef);
 
-        if (!docSnap.exists()) {
-          await setDoc(docRef, {
-            ...q,
-            likedBy: [],
-            bookmarkedBy: [],
-            createdBy: "api",
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-          });
-        } else {
-          console.log("Quote already exists in the database");
-        }
-      };
-      await registerAPIQuote();
+          if (!docSnap.exists()) {
+            await setDoc(docRef, {
+              ...q,
+              likedBy: [],
+              bookmarkedBy: [],
+              createdBy: "api",
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+            });
+          } else {
+            console.log("Quote already exists in the database");
+          }
+        };
+        await registerAPIQuote();
+      }
+      await setDoc(doc(db, "lockedQuotes", uid), {
+        qid: q.id,
+        createdBy: q.createdBy,
+      });
+    } catch (error) {
+      displayErrorToast({ text: `Error: ${error}` });
     }
-    await setDoc(doc(db, "lockedQuotes", uid), {
-      qid: q.id,
-      createdBy: q.createdBy,
-    });
-  } catch (error) {
-    console.error("Error locking quote:", error);
-    // ここでユーザーにフィードバックを提供するためのエラートーストを表示するか、
-    // エラーを外部のエラー追跡サービスに送信することもできます。
-    displayErrorToast({ text: `Error: ${error}` });
-  }
-};
+  };
 
   const removeLockFromThisQuote = async (uid: string) => {
     await deleteDoc(doc(db, "lockedQuotes", uid));

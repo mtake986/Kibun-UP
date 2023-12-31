@@ -30,15 +30,14 @@ import UrlLink from "@/components/utils/UrlLink";
 import RequiredMark from "@/components/utils/RequiredMark";
 import Subtitle from "../subtitle/Subtitle";
 import LoadingCover from "@/components/utils/LoadingCover";
-import useProposals from "./useProposals";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useProposals from "./hooks/useProposals";
 import { twMerge } from "tailwind-merge";
 
 const ProposalForm = () => {
   const { loginUser, fetchLoginUser } = useAuth();
 
   const [isPending, setIsPending] = useState<boolean>(false);
-  const { submitProposal } = useProposals();
+  const { submitProposal, fetchProposals } = useProposals();
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -51,7 +50,7 @@ const ProposalForm = () => {
     resolver: zodResolver(proposalSchema),
     defaultValues: {
       title: "",
-      detail: "",
+      description: "",
     },
   });
 
@@ -66,6 +65,7 @@ const ProposalForm = () => {
     } else {
       displayErrorToast("Please log in.");
     }
+    fetchProposals();
   }
 
   return (
@@ -97,14 +97,14 @@ const ProposalForm = () => {
 
             <FormField
               control={form.control}
-              name="detail"
+              name="description"
               render={({ field }) => (
                 <FormItem className="w-full space-y-0">
-                  <FormLabel>Detail</FormLabel>
+                  <FormLabel>description</FormLabel>
                   <FormControl>
                     <Textarea
                       className="border-none bg-slate-50 dark:border-none"
-                      placeholder="Explain the proposal in detail"
+                      placeholder="Explain the proposal in description"
                       {...field}
                     />
                   </FormControl>
