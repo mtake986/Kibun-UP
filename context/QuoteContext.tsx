@@ -231,9 +231,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         createdBy: q.createdBy,
       });
     } catch (error) {
-      console.error("Error locking quote:", error);
-      // ここでユーザーにフィードバックを提供するためのエラートーストを表示するか、
-      // エラーを外部のエラー追跡サービスに送信することもできます。
       displayErrorToast({ text: `Error: ${error}` });
     }
   };

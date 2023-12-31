@@ -6,7 +6,7 @@ type Props = {
 const CreatedDateString = ({date}: Props) => {
   return (
     <p>
-      {date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()}
+      {(date.getMonth() + 1) + '/' + date.getDate() + ', ' + date.getFullYear()}
     </p>
   );
 }
