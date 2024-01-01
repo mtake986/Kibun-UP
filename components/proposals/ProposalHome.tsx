@@ -13,11 +13,9 @@ const ProposalHome = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="sm:p-0 flex flex-col gap-5 px-5 py-10 pb-20 sm:mb-32">
       <ProposalForm />
-
-        <ProposalsList proposals={proposals} isPending={isPending} />
-
+      <ProposalsList proposals={proposals} isPending={isPending} />
     </div>
   );
 };

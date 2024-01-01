@@ -22,6 +22,8 @@ import HeadingTwo from "../utils/HeadingTwo";
 import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { displaySuccessToast, displayToast } from "@/functions/displayToast";
+import Subtitle from "./SubTitle";
+import GoToProposalForm from "./GoToProposalForm";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -89,7 +91,10 @@ export default function ContactForm() {
 
   return (
     <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
-      <HeadingTwo text="Contact Form" />
+      <div className="mb-4 flex flex-col">
+        <h2 className="text-center mb-1 text-3xl font-bold">Contact Form</h2>
+        <Subtitle />
+      </div>
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -187,16 +192,7 @@ export default function ContactForm() {
           </form>
         </Form>
       )}
-      <p className="sm:text-md mt-5 text-center text-xs">
-        Or, you can{" "}
-        <UrlLink
-          className="text-sky-500 underline-offset-2 hover:underline"
-          target="_blank"
-          href="https://github.com/mtake986/Kibun-UP/issues"
-          clickOn="create an issue"
-        />{" "}
-        in GitHub.
-      </p>
+      <GoToProposalForm />
     </div>
   );
 }
