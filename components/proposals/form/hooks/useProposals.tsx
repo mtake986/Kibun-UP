@@ -28,6 +28,20 @@ const useProposals = () => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const proposalsCollectionRef = collection(db, "proposals");
 
+  const fetchProposals = async () => {
+    setIsPending(true);
+    const q = query(proposalsCollectionRef, orderBy("createdAt", "asc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setProposals(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeProposal)
+        )
+      );
+      setIsPending(false);
+    });
+    return unsubscribe;
+  };
+
   const submitProposal = async (
     values: { title: string; description: string },
     uid: string
@@ -57,38 +71,22 @@ const useProposals = () => {
     values: { title: string; description: string }
   ) => {
     const proposalRef = doc(db, "proposals", id);
-        const quoteDocSnap = await getDoc(proposalRef);
-    if (!quoteDocSnap.exists()) {
-
+    const quoteDocSnap = await getDoc(proposalRef);
+    if (quoteDocSnap.exists()) {
       await updateDoc(proposalRef, { ...values, updatedAt: serverTimestamp() })
-      .then(() => {
-        displaySuccessToast({
-          text: "Successfully Created",
+        .then(() => {
+          displaySuccessToast({
+            text: "Successfully Created",
+          });
+        })
+        .catch((error) => {
+          displayErrorToast({
+            text: "Error: " + error.message,
+          });
         });
-      })
-      .catch((error) => {
-        displayErrorToast({
-          text: "Error: " + error.message,
-        });
-      });
     } else {
       cannotFindDocInFirestore("proposal");
     }
-  };
-
-  const fetchProposals = async () => {
-    setIsPending(true);
-    const q = query(proposalsCollectionRef, orderBy("createdAt", "asc"));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setProposals(
-        snapshot.docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as TypeProposal)
-        )
-      );
-      setIsPending(false);
-    });
-    return unsubscribe;
   };
 
   const addVote = async (uid: string, proposalId: string) => {
@@ -99,7 +97,7 @@ const useProposals = () => {
         votedBy: arrayUnion(uid),
       }).catch((e) => {
         displayErrorToast({
-          e,
+          text: "Error: " + e.message,
         });
       });
     } else {
@@ -113,16 +111,18 @@ const useProposals = () => {
       await updateDoc(proposalRef, {
         votedBy: arrayRemove(uid),
       }).catch((e) => {
-        displayErrorToast(e);
+        displayErrorToast({
+          text: "Error: " + e.message,
+        });
       });
     } else {
       cannotFindDocInFirestore("proposal");
     }
   };
 
-    const deleteProposal = async (proposalId: string) => {
-      await deleteDoc(doc(db, "proposals", proposalId));
-    };
+  const deleteProposal = async (proposalId: string) => {
+    await deleteDoc(doc(db, "proposals", proposalId));
+  };
 
   return {
     submitProposal,
