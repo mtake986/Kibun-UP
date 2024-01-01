@@ -15,7 +15,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { MdCancel, MdOutlineCancel } from "react-icons/md";
-import { usePathname } from "next/navigation";
+import useProposals from "@/components/proposals/form/hooks/useProposals";
+import { displayErrorToast } from "@/functions/displayToast";
 
 type Props = {
   proposal: TypeProposal;
@@ -23,26 +24,18 @@ type Props = {
 };
 
 const IconTrash = ({ proposal, goPrevAsNoCurrentRecords }: Props) => {
-  const pathname = usePathname();
-
   const { loginUser } = useAuth();
+  const { deleteProposal } = useProposals();
 
-  const handleClick = (id: string) => {
-    console.log(id)
-  }
-  // const handleClick = (q: TypeQuote) => {
-  //   try {
-  //     handleDelete(q.id);
-  //     if (loginUser && lockedQuote?.id === q.id)
-  //       removeLockFromThisQuote(loginUser?.uid);
-  //     if (loginUser && pathname.includes("profile")) {
-  //       fetchProfileUserQuotes(loginUser?.uid);
-  //     }
-  //     goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
-  //   } catch (e) {
-  //     displayErrorToast(e);
-  //   }
-  // };
+  const handleClick = (proposalId: string) => {
+    try {
+      deleteProposal(proposalId);
+      goPrevAsNoCurrentRecords && goPrevAsNoCurrentRecords();
+    } catch (e) {
+      displayErrorToast(e);
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -51,24 +44,23 @@ const IconTrash = ({ proposal, goPrevAsNoCurrentRecords }: Props) => {
           className="cursor-pointer duration-300 hover:opacity-70"
         />
       </AlertDialogTrigger>
-      <AlertDialogContent className="bg-white dark:bg-slate-900">
+      <AlertDialogContent className="w-72 bg-white dark:bg-slate-900">
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the data
-            from our servers.
+          <AlertDialogTitle className="text-left">
+            Delete proposal
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-left text-gray-500">
+            Delete your proposal permanently?
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="flex items-center gap-3">
-            <MdOutlineCancel size={14} />
+        <AlertDialogFooter className="flex flex-row items-center gap-3 justify-end">
+          <AlertDialogCancel className="mt-0 h-auto border-none hover:bg-gray-500 rounded-full">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleClick(proposal.id)}
-            className="flex items-center gap-3 text-red-500"
+            className="h-auto hover:bg-red-500 rounded-full"
           >
-            <Trash size={14} />
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -1,9 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { TypeProposal } from "@/types/type";
-import React, { useEffect, useState } from "react";
 import IconEdit from "./IconEdit";
 import IconVote from "./IconVote";
-import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import IconTrash from "./IconTrash";
 
 type Props = {
@@ -14,20 +12,11 @@ type Props = {
 const Icons = ({ proposal, setIsUpdateMode, isUpdateMode }: Props) => {
   const { loginUser } = useAuth();
 
-  const [isMine, setIsMine] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsMine(proposal.createdBy === loginUser?.uid);
-  }, []);
-
-  if (!loginUser) {
-    return null; // or return some default UI
-  }
-
+  if (!loginUser) return null;
   return (
-    <div className="mt-5 flex items-center justify-between gap-2">
+    <div className="mt-3 flex items-center justify-between gap-2">
       <div className="flex items-center gap-5">
-        {isMine ? (
+        {proposal.createdBy === loginUser?.uid ? (
           <IconEdit
             setIsUpdateMode={setIsUpdateMode}
             isUpdateMode={isUpdateMode}
@@ -35,7 +24,7 @@ const Icons = ({ proposal, setIsUpdateMode, isUpdateMode }: Props) => {
         ) : null}
         <IconVote proposal={proposal} loginUser={loginUser} />
       </div>
-      {isMine ? (
+      {proposal.createdBy === loginUser?.uid ? (
         <IconTrash proposal={proposal} />
       ) : null}
     </div>

@@ -124,9 +124,9 @@ const ProposalForm = () => {
               Submit
             </button>
           </form>
-          <CreateAnIssueLink />
-          <SendMessageToCreatorLink />
         </Form>
+        <CreateAnIssueLink />
+        <SendMessageToCreatorLink />
         {isPending ? <LoadingCover spinnerSize="s" /> : null}
       </div>
     </div>

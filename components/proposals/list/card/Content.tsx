@@ -1,5 +1,3 @@
-import returnDateString from "@/components/utils/CreatedDateString";
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import { TypeProposal } from "@/types/type";
@@ -8,6 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import defaultProfilePhoto from "@/public/icons/defaultProfilePhoto.png";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import UrlLink from "@/components/utils/UrlLink";
+import relativeDate from "@/components/utils/RelativeDate";
 
 type Props = {
   proposal: TypeProposal;
@@ -60,11 +59,11 @@ const Content = ({ proposal }: Props) => {
           />
         )}
       </div>
-      <div>
+      <div className="w-full">
         <h1 className="text-lg">{proposal?.title}</h1>
-        <p className="text-sm">{proposal?.description}</p>
-        <span className="text-right text-xs text-gray-500">
-          {returnDateString(proposal.createdAt?.toDate() ?? new Date())}
+        <p className="text-sm whitespace-pre-line">{proposal?.description}</p>
+        <span className="block text-right text-xs text-gray-500">
+          {proposal?.updatedAt ? relativeDate(proposal.updatedAt?.toDate() ?? new Date()) + ' (edited)' : relativeDate(proposal.createdAt?.toDate() ?? new Date())}
         </span>
       </div>
 

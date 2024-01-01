@@ -174,7 +174,7 @@ export type TypeProposal = {
   title: string;
   createdBy: string;
   createdAt: Timestamp;
-  votedUpBy: string[];
+  votedBy: string[];
   status: TypeProposalStatusValue;
   description?: string;
   updatedAt?: Timestamp;

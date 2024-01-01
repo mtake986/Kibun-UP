@@ -1,6 +1,9 @@
+import useProposals from "@/components/proposals/form/hooks/useProposals";
+import { displayErrorToast } from "@/functions/displayToast";
 import { TypeUserFromFirestore, TypeProposal } from "@/types/type";
-import { Heart } from "lucide-react";
 import { useState } from "react";
+import { MdOutlineThumbUp } from "react-icons/md";
+import { MdThumbUp } from "react-icons/md";
 
 type Props = {
   proposal: TypeProposal;
@@ -9,36 +12,33 @@ type Props = {
 
 const IconVote = ({ proposal, loginUser }: Props) => {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [numOfLikes, setNumOfLikes] = useState<number>(
-    proposal.votedUpBy ? proposal.votedUpBy.length : 0
+  const [numOfVotes, setNumOfVotes] = useState<number>(
+    proposal.votedBy ? proposal.votedBy.length : 0
   );
-  const [isLiked, setIsLiked] = useState<boolean>(
-    proposal.votedUpBy ? proposal.votedUpBy.includes(loginUser.uid) : false
+  const [isVoted, setIsVoted] = useState<boolean>(
+    proposal.votedBy ? proposal.votedBy.includes(loginUser.uid) : false
   );
-  const heartFill = isLiked ? "red" : undefined;
 
-  // const handleClick = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     if (isLiked) {
-  //       setNumOfLikes((prev) => prev - 1);
-  //       setIsLiked((prev) => !prev);
-  //       await removeFav(loginUser.uid, q);
-  //     } else {
-  //       setNumOfLikes((prev) => prev + 1);
-  //       setIsLiked((prev) => !prev);
-  //       await storeFav(loginUser.uid, q);
-  //     }
-  //   } catch (error) {
-  //     displayErrorToast(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const { addVote, removeVote } = useProposals();
 
-  const handleClick = (id: string) => {
-    console.log(id)
-  }
+  const handleClick = async (proposalId: string) => {
+    setIsPending(true);
+    try {
+      if (isVoted) {
+        setNumOfVotes((prev) => prev - 1);
+        setIsVoted((prev) => !prev);
+        await removeVote(loginUser.uid, proposalId);
+      } else {
+        setNumOfVotes((prev) => prev + 1);
+        setIsVoted((prev) => !prev);
+        await addVote(loginUser.uid, proposalId);
+      }
+    } catch (error) {
+      displayErrorToast("Something went wrong. Please try again later.");
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <button
@@ -46,15 +46,15 @@ const IconVote = ({ proposal, loginUser }: Props) => {
       disabled={isPending}
       className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
-      {isLiked ? (
+      {isVoted ? (
         <>
-          <Heart size={14} className="text-red-500" fill={heartFill} />
-          <span className={"text-xs text-red-500"}>{numOfLikes}</span>
+          <MdThumbUp size={14} />
+          <span className={"text-xs"}>{numOfVotes}</span>
         </>
       ) : (
         <>
-          <Heart size={14} />
-          <span className="text-xs">{numOfLikes}</span>
+          <MdOutlineThumbUp size={14} />
+          <span className="text-xs">{numOfVotes}</span>
         </>
       )}
     </button>

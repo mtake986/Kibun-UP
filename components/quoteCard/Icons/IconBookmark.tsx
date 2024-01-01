@@ -11,7 +11,7 @@ type Props = {
 };
 
 const IconBookmark = ({ q, loginUser }: Props) => {
-  const { storeBookmark, removeBookmark, allQuotes } = useQuote();
+  const { storeBookmark, removeBookmark } = useQuote();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [numOfBookmarks, setNumOfBookmarks] = useState<number>(

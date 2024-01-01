@@ -203,6 +203,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
   };
+  
   const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
     try {
       const isApi = "authorSlug" in q;
