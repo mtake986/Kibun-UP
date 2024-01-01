@@ -1,6 +1,12 @@
 
-const returnDateString = ( date : Date) => {
-  return date.getMonth() + 1 + "/" + date.getDate() + ", " + date.getFullYear();
-};
+
+export const returnDateString = (date: Date) => {
+    return new Intl.DateTimeFormat(undefined, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+  };
+
 
 export default returnDateString;

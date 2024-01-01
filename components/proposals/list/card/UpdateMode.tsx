@@ -63,11 +63,18 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
   async function onSubmit(values: z.infer<typeof proposalSchema>) {
     setIsPending(true);
     if (loginUser) {
-      updateProposal(proposal.id, values).then(() => {
-        setIsPending(false);
-        setIsCardLoading(false);
-        setIsUpdateMode(false);
-      });
+      updateProposal(proposal.id, values)
+        .then(() => {
+          setIsPending(false);
+          setIsCardLoading(false);
+          setIsUpdateMode(false);
+        })
+        .catch((error) => {
+          displayErrorToast({
+            text: "Error updating proposal: " + error.message,
+          });
+          setIsPending(false);
+        });
     } else {
       displayErrorToast("Please log in.");
       setIsPending(false);
@@ -94,7 +101,7 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
                     className="border-none bg-slate-50 dark:border-none"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -112,7 +119,7 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />

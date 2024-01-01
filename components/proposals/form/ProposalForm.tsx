@@ -94,7 +94,7 @@ const ProposalForm = () => {
                       className="border-none bg-slate-50 dark:border-none"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -112,7 +112,7 @@ const ProposalForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
