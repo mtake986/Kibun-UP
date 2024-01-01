@@ -1,10 +1,9 @@
-import CreatedDateString from "@/components/utils/CreatedDateString";
 import { TypeProposal } from "@/types/type";
 import React from "react";
 import Tabs from "./Tabs";
 import useProposalTab from "./hooks/useProposalTab";
 import { useSearchParams } from "next/navigation";
-import List from "./ProposalList";
+import ProposalList from "./ProposalList";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 
 type Props = {
@@ -21,7 +20,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
     switch (currTab) {
       case "open":
         return (
-          <List
+          <ProposalList
             proposals={proposals.filter(
               (proposal) => proposal.status === "open"
             )}
@@ -29,7 +28,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
         );
       case "inProgress":
         return (
-          <List
+          <ProposalList
             proposals={proposals.filter(
               (proposal) => proposal.status === "inProgress"
             )}
@@ -37,7 +36,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
         );
       case "closed":
         return (
-          <List
+          <ProposalList
             proposals={proposals.filter(
               (proposal) => proposal.status === "closed"
             )}
@@ -45,7 +44,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
         );
       default:
         return (
-          <List
+          <ProposalList
             proposals={proposals.filter(
               (proposal) => proposal.status === "open"
             )}
@@ -54,7 +53,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
     }
   };
   return (
-    <div className="flex flex-col gap-3">
+    <div>
       <Tabs tabs={tabs} handleTabClick={handleTabClick} />
       {isPending ? <LoadingSpinnerM /> : displayList()}
     </div>

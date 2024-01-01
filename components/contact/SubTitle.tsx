@@ -5,9 +5,8 @@ import { twMerge } from "tailwind-merge";
 const Subtitle = () => {
   return (
     <p className={twMerge("text-center text-sm", fontDancingScript.className)}>
-      Let the creator know how to make the service even better!!
+      Send a message to the creator!! Always welcome to hear from you ^^
     </p>
   );
-};
-
+}
 export default Subtitle;
