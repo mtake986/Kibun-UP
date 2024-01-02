@@ -28,7 +28,6 @@ import { twMerge } from "tailwind-merge";
 import useProposals from "./hooks/useProposals";
 import CreateAnIssueLink from "./CreateAnIssueLink";
 import SendMessageToCreatorLink from "./SendMessageToCreatorLink";
-import { ITag, TypeTagErrors } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
 import { labelsForProposals } from "@/data/CONSTANTS";
 import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
@@ -38,22 +37,6 @@ const ProposalForm = () => {
 
   const [isPending, setIsPending] = useState<boolean>(false);
   const { submitProposal, fetchProposals } = useProposals();
-  const [inputTagName, setInputTagName] = useState("");
-  const [inputTagColor, setInputTagColor] = useState<string>("");
-  const [inputTags, setInputTags] = useState<ITag[]>([]);
-
-  const addTag = () => {
-    const defaultColor = "white";
-    setInputTags([
-      ...inputTags,
-      { name: inputTagName, color: inputTagColor || defaultColor },
-    ]);
-    setInputTagName("");
-    setInputTagColor("");
-  };
-  const removeTag = (inputTagName: string) => {
-    setInputTags(inputTags.filter((tag) => tag.name !== inputTagName));
-  };
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -142,31 +125,31 @@ const ProposalForm = () => {
                   </div>
                   {labelsForProposals.map((item) => (
                     <FormField
-                      key={item.name}
+                      key={item}
                       control={form.control}
                       name="labels"
                       render={({ field }) => {
                         return (
                           <FormItem
-                            key={item.name}
+                            key={item}
                             className="flex flex-row items-start space-x-3 space-y-0"
                           >
                             <FormControl>
                               <Checkbox
-                                checked={field.value?.includes(item.name)}
+                                checked={field.value?.includes(item)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, item.name])
+                                    ? field.onChange([...field.value, item])
                                     : field.onChange(
                                         field.value?.filter(
-                                          (value) => value !== item.name
+                                          (value) => value !== item
                                         )
                                       );
                                 }}
                               />
                             </FormControl>
                             <FormLabel className="text-sm font-normal">
-                              {capitalizeFirstLetter(item.name)}
+                              {capitalizeFirstLetter(item)}
                             </FormLabel>
                           </FormItem>
                         );
