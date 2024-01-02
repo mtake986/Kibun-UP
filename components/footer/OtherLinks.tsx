@@ -76,7 +76,7 @@ const OtherLinks = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <BiDotsVertical />
+        <BiDotsVertical className="text-violet-500 dark:text-white" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col space-y-2 bg-white p-2 px-3 dark:bg-slate-900">
         {items.map((item: ItemProps) =>

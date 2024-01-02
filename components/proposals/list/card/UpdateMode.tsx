@@ -32,6 +32,9 @@ import LoadingCover from "@/components/utils/LoadingCover";
 import { twMerge } from "tailwind-merge";
 import useProposals from "../../form/hooks/useProposals";
 import { TypeProposal } from "@/types/type";
+import { labelsForProposals } from "@/data/CONSTANTS";
+import { Checkbox } from "@/components/ui/checkbox";
+import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 
 type Props = {
   proposal: TypeProposal;
@@ -56,6 +59,7 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
     defaultValues: {
       title: proposal.title,
       description: proposal?.description ?? "",
+      labels: proposal.labels,
     },
   });
 
@@ -120,6 +124,52 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="labels"
+            render={() => (
+              <FormItem>
+                <div className="mb-1">
+                  <FormLabel className="text-base">Labels</FormLabel>
+                </div>
+                {labelsForProposals.map((item) => (
+                  <FormField
+                    key={item}
+                    control={form.control}
+                    name="labels"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="text-sm font-normal">
+                            {capitalizeFirstLetter(item)}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+                <FormMessage />
               </FormItem>
             )}
           />
