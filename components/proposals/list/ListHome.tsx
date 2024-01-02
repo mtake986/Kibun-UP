@@ -9,9 +9,11 @@ import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
 type Props = {
   proposals: TypeProposal[];
   isPending: boolean;
+  sortBy: "newestFirst" | "mostVotes";
+  setSortBy: React.Dispatch<React.SetStateAction<"newestFirst" | "mostVotes">>;
 };
 
-const ListHome = ({ proposals, isPending }: Props) => {
+const ListHome = ({ proposals, isPending, sortBy, setSortBy }: Props) => {
   const { tabs, handleTabClick } = useProposalTab();
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
@@ -24,6 +26,8 @@ const ListHome = ({ proposals, isPending }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "open"
             )}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
           />
         );
       case "inProgress":
@@ -32,6 +36,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "inProgress"
             )}
+            sortBy={sortBy} setSortBy={setSortBy}
           />
         );
       case "closed":
@@ -40,6 +45,7 @@ const ListHome = ({ proposals, isPending }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "closed"
             )}
+            sortBy={sortBy} setSortBy={setSortBy}
           />
         );
       default:
@@ -48,12 +54,13 @@ const ListHome = ({ proposals, isPending }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "open"
             )}
+            sortBy={sortBy} setSortBy={setSortBy}
           />
         );
     }
   };
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <Tabs tabs={tabs} handleTabClick={handleTabClick} />
       {isPending ? <LoadingSpinnerM /> : displayList()}
     </div>

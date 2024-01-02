@@ -156,7 +156,7 @@ const ProposalForm = () => {
                       }}
                     />
                   ))}
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />

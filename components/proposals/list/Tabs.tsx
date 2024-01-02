@@ -12,7 +12,7 @@ const Tabs = ({ tabs, handleTabClick }: Props) => {
   const currTab = searchParams.get("tab");
 
   return (
-    <div className="mb-3 flex items-stretch">
+    <div className="flex items-stretch">
       {tabs.map((tab) => (
         <span
           key={tab.label}
