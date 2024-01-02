@@ -4,7 +4,7 @@ import React from 'react'
 const CreateAnIssueLink = () => {
   return (
     <p className="sm:text-md mt-5 text-center text-xs">
-      Or, you can{" "}
+      For engineers, you can{" "}
       <UrlLink
         className="text-sky-500 underline-offset-2 hover:underline"
         target="_blank"

@@ -47,7 +47,7 @@ const OtherMenu = () => {
       <DropdownMenuTrigger>
         <BiDotsVertical />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white p-2 dark:bg-slate-900">
+      <DropdownMenuContent className="bg-white p-3 flex flex-col gap-1 dark:bg-slate-900">
         {items.map((item) =>
           pathname === item.href ? (
             <span key={item.href} className={item.className}>

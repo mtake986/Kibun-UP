@@ -26,17 +26,38 @@ import React, { useState } from "react";
 const useProposals = () => {
   const [proposals, setProposals] = useState<TypeProposal[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
+    const [sortBy, setSortBy] = useState<"newestFirst" | "mostVotes">(
+      "newestFirst"
+    );
   const proposalsCollectionRef = collection(db, "proposals");
 
   const fetchProposals = async () => {
     setIsPending(true);
-    const q = query(proposalsCollectionRef, orderBy("createdAt", "asc"));
+    const q = query(proposalsCollectionRef, orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setProposals(
         snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeProposal)
         )
       );
+      setIsPending(false);
+    });
+    return unsubscribe;
+  };
+
+  const sortProposals = async (sortBy: "newestFirst" | "mostVotes") => {
+    setIsPending(true);
+    const q = query(proposalsCollectionRef, orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const temp = snapshot.docs.map(
+        (doc) => ({ ...doc.data(), id: doc.id } as TypeProposal)
+      );
+
+      if (sortBy === "mostVotes") {
+        temp.sort((a, b) => b.votedBy.length - a.votedBy.length);
+      }
+
+      setProposals(temp);
       setIsPending(false);
     });
     return unsubscribe;
@@ -133,6 +154,9 @@ const useProposals = () => {
     addVote,
     removeVote,
     deleteProposal,
+    sortProposals,
+    sortBy, 
+    setSortBy,
   };
 };
 

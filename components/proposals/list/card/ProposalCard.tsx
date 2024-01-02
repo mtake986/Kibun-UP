@@ -1,10 +1,8 @@
-import CreatedDateString from "@/components/utils/CreatedDateString";
 import { TypeProposal } from "@/types/type";
 import React, { useState } from "react";
 import Content from "./Content";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import Icons from "./Icons/Icons";
-import ProposalForm from "../../form/ProposalForm";
 import UpdateMode from "./UpdateMode";
 
 type Props = {

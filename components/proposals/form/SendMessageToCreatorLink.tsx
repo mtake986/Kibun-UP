@@ -7,7 +7,7 @@ const SendMessageToCreatorLink = () => {
       Wanna{" "}
       <UrlLink
         className="text-sky-500 underline-offset-2 hover:underline"
-        target="_blank"
+        target="_self"
         href="/contact"
         clickOn="send a message"
       />{" "}

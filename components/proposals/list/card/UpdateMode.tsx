@@ -45,7 +45,7 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
 
   const [isPending, setIsPending] = useState<boolean>(false);
-  const { updateProposal, fetchProposals } = useProposals();
+  const { updateProposal } = useProposals();
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -169,7 +169,7 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
                     }}
                   />
                 ))}
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />

@@ -114,7 +114,7 @@ const Content = ({ proposal }: Props) => {
         </div>
         <h1 className="text-lg">{proposal?.title}</h1>
       </div>
-      <div className="flex w-full flex-col gap-1">
+      <div className="flex w-full flex-col gap-2">
         <p className="whitespace-pre-line text-sm">{proposal?.description}</p>
         {proposal.labels && proposal.labels?.length >= 1 && (
           <div className="flex flex-wrap items-center gap-2">
