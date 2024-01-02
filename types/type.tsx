@@ -179,7 +179,7 @@ export type TypeProposal = {
   description?: string;
   updatedAt?: Timestamp;
   comments?: TypeComment[];
-  tags?: string[];
+  labels?: string[];
 };
 
 export type TypeProposalStatusValue = "open" | "closed" | "inProgress";

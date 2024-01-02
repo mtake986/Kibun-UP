@@ -130,3 +130,8 @@ export const MONTHS_IN_STR = [
   "Nov.",
   "Dec.",
 ];
+
+export const labelsForProposals: {name: string, color: string}[] = [
+  {name: 'bug', color: 'red'},
+  {name: 'enhancement', color: 'green'},
+]

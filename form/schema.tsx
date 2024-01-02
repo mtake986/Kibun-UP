@@ -73,12 +73,14 @@ export const proposalSchema = z.object({
     .min(2, {
       message: "Title must be at least 2 characters long",
     })
-    .max(100, {
-      message: "Title must be less than 100 characters long",
+    .max(50, {
+      message: "Title must be less than 50 characters long",
     }),
-  description: z
-    .string()
-    .max(5000, {
-      message: "Description must be less than 5000 characters long",
-    }),
+  description: z.string().max(5000, {
+    message: "Description must be less than 5000 characters long",
+  }),
+  labels: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
 });
+
