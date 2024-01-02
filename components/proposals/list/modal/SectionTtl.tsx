@@ -4,7 +4,7 @@ import React from 'react'
 type Props = {
   text: string;
 }
-const SectionTtl = ({ text = "Default Title" }: Props) => {
+const SectionTtl = ({ text }: Props) => {
   return (
     <div className="flex items-center gap-3 px-5">
       <div className="w-[50%] border-b border-slate-300"></div>
