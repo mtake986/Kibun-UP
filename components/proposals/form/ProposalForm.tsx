@@ -19,7 +19,11 @@ import { proposalSchema } from "@/form/schema";
 import { init, send } from "@emailjs/browser";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { displayErrorToast } from "@/functions/displayToast";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+  displayToast,
+} from "@/functions/displayToast";
 import { Textarea } from "@/components/ui/textarea";
 import RequiredMark from "@/components/utils/RequiredMark";
 import Subtitle from "../subtitle/Subtitle";
@@ -54,12 +58,39 @@ const ProposalForm = () => {
     },
   });
 
+  const sendEmail = async (values: z.infer<typeof proposalSchema>) => {
+    // 必要なIDをそれぞれ環境変数から取得
+    const userID = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
+    const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_NEW_PROPOSAL;
+
+    if (userID && serviceID && templateID) {
+      // emailJS初期化
+      init(userID);
+
+      // emailJS送信データを定義
+      const params = {
+        uid: loginUser?.uid,
+        title: values.title,
+        description: values.description,
+        labels: values.labels,
+      };
+
+      // emailJS送信
+      try {
+        await send(serviceID, templateID, params);
+      } catch (error) {
+        // 送信失敗したらalertで表示
+      }
+    }
+  };
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof proposalSchema>) {
     if (loginUser) {
       setIsPending(true);
       submitProposal(values, loginUser.uid).then(() => {
         form.reset();
+        sendEmail(values);
         setIsPending(false);
       });
     } else {

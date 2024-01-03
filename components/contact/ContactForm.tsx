@@ -18,8 +18,6 @@ import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
 import { useEffect, useState } from "react";
-import HeadingTwo from "../utils/HeadingTwo";
-import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
 import { displaySuccessToast, displayToast } from "@/functions/displayToast";
 import Subtitle from "./SubTitle";
