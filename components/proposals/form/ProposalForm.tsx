@@ -92,12 +92,15 @@ const ProposalForm = () => {
   async function onSubmit(values: z.infer<typeof proposalSchema>) {
     if (loginUser) {
       setIsPending(true);
-      submitProposal(values, loginUser.uid).then(() => {
-        form.reset();
+      try {
+        submitProposal(values, loginUser.uid);
         sendEmail(values);
-        setIsPending(false);
-        displaySuccessToast({text: "Successfully created!"});
-      });
+      } catch (error) {
+        displayErrorToast(error);
+      }
+      form.reset();
+      setIsPending(false);
+      displaySuccessToast({text: "Successfully created!"});
     } else {
       displayErrorToast("Please log in.");
     }
