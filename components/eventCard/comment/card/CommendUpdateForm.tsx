@@ -17,6 +17,7 @@ import { TypeComment } from "@/types/type";
 import useComments from "../hooks/useComments";
 import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import LoadingCover from "@/components/utils/LoadingCover";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   comment: TypeComment;
@@ -41,7 +42,6 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
     setIsPending(true);
     try {
       await updateComment(comment.id, values.comment, eid);
-      setIsUpdateMode(false);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({
@@ -58,7 +58,7 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={twMerge('relative', isPending ? "opacity-50" : "")}>
         <FormField
           control={form.control}
           name="comment"
@@ -75,21 +75,20 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
             </FormItem>
           )}
         />
-        <button
-          aria-label="Cancel comment update"
-          className="cursor-pointer hover:opacity-70"
-          onClick={() => setIsUpdateMode(false)}
-          type="button"
-        >
-          Cancel
-        </button>
-        <button
-          aria-label="Submit updated comment"
-          className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 hover:opacity-70"
-          type="submit"
-        >
-          Submit
-        </button>
+        <div className="mt-2 flex items-center justify-end gap-3 text-xs">
+          <button
+            className="cursor-pointer hover:opacity-70"
+            onClick={() => {setIsUpdateMode(false)}}
+          >
+            Cancel
+          </button>
+          <button
+            className="cursor-pointer rounded-full bg-blue-500 px-3 py-1 text-white hover:opacity-70"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
         {isPending ? <LoadingCover spinnerSize="s" /> : null}
       </form>
     </Form>

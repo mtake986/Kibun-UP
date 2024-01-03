@@ -3,6 +3,7 @@ import { cannotFindDocInFirestore } from "@/functions/cannotFindDocInFirestore";
 import {
   displayErrorToast,
   displaySuccessToast,
+  displayToast,
 } from "@/functions/displayToast";
 import { TypeProposal } from "@/types/type";
 import {
@@ -87,7 +88,7 @@ const useProposals = () => {
       await updateDoc(proposalRef, { ...values, updatedAt: serverTimestamp() })
         .then(() => {
           displaySuccessToast({
-            text: "Successfully Created",
+            text: "Successfully updated!"
           });
         })
         .catch((error) => {

@@ -39,9 +39,8 @@ import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
 type Props = {
   proposal: TypeProposal;
   setIsUpdateMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsCardLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
+const UpdateMode = ({ proposal, setIsUpdateMode }: Props) => {
   const { loginUser, fetchLoginUser } = useAuth();
 
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -70,7 +69,6 @@ const UpdateMode = ({ proposal, setIsUpdateMode, setIsCardLoading }: Props) => {
       updateProposal(proposal.id, values)
         .then(() => {
           setIsPending(false);
-          setIsCardLoading(false);
           setIsUpdateMode(false);
         })
         .catch((error) => {
