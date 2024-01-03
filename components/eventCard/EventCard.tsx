@@ -14,34 +14,25 @@ type Props = {
 
 const EventCard = ({ event, goPrevAsNoCurrentRecords }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="rounded-md border px-4 py-6 dark:border-white sm:p-6">
-      {isLoading ? (
-        <div className="flex items-center justify-center">
-          <LoadingSpinnerS />
-        </div>
-      ) : (
-        <>
-          {isUpdateMode ? (
-            <EditModeOn
-              event={event}
-              setIsUpdateMode={setIsUpdateMode}
-              setIsLoading={setIsLoading}
-            />
-          ) : (
-            <Content event={event} />
-          )}
-
-          <Icons
+        {isUpdateMode ? (
+          <EditModeOn
             event={event}
             setIsUpdateMode={setIsUpdateMode}
-            isUpdateMode={isUpdateMode}
-            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
-        </>
-      )}
+        ) : (
+          <>
+            <Content event={event} />
+            <Icons
+              event={event}
+              setIsUpdateMode={setIsUpdateMode}
+              isUpdateMode={isUpdateMode}
+              goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+            />
+          </>
+        )}
     </div>
   );
 };

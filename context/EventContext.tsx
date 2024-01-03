@@ -33,8 +33,7 @@ type EventContextType = {
   handleUpdate: (
     values: TypeEventInputValues,
     eid: string,
-    setIsLoading: (boo: boolean) => void
-  ) => void;
+  ) => Promise<void>;
   handleDelete: (id: string) => void;
 
   getLoginUserEvents: () => void;
@@ -109,9 +108,7 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleUpdate = async (
     values: TypeEventInputValues,
     eid: string,
-    setIsLoading: (boo: boolean) => void
   ) => {
-    setIsLoading(true);
     console.log(values);
     const docRef = doc(db, "events", eid);
     await updateDoc(docRef, {
@@ -130,7 +127,6 @@ export function EventProvider({ children }: EventProviderProps) {
       }
     }
     setTimeout(() => {
-      setIsLoading(false);
       displaySuccessToast({
         text: "Updated",
       });

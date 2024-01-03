@@ -1,4 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
+import { twMerge } from "tailwind-merge";
 
 export const displayToast = ({
   text,
@@ -14,7 +15,7 @@ export const displayToast = ({
   };
   return toast({
     title: text,
-    className: `border-none ${styleMap[color]}`,
+    className: twMerge('border-none', styleMap[color]),
   });
 };
 export const displaySuccessToast = ({
