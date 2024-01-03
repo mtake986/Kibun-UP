@@ -60,7 +60,7 @@ export default function EditModeOn({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleUpdate(values, event.id, setIsLoading);
+    handleUpdate(values, event.id);
     setIsUpdateMode(false);
     reset({
       eventTitle: values.eventTitle,
