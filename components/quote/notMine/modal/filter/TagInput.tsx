@@ -15,7 +15,7 @@ const TagInput = () => {
         <Checkbox
           id="tag-filter-checkbox"
           checked={isTagToFilterNotMyQuotesDisabled}
-          onChange={() => {
+          onClick={() => {
             setIsTagToFilterNotMyQuotesDisabled((prev) => !prev);
           }}
         />

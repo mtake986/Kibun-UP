@@ -12,10 +12,11 @@ const TagInput = () => {
   return (
     <div>
       <div className="mb-2 flex items-center space-x-2">
+        {isTagToFilterMyQuotesDisabled ? 'tag-disabled' : 'able to input'}
         <Checkbox
           id="disabled"
           checked={isTagToFilterMyQuotesDisabled}
-          onChange={() => {
+          onClick={() => {
             setIsTagToFilterMyQuotesDisabled((prev) => !prev);
           }}
         />
