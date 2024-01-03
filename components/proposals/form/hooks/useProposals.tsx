@@ -75,16 +75,6 @@ const useProposals = () => {
       status: "open",
     };
     await addDoc(proposalsCollectionRef, payload)
-      .then(() => {
-        displaySuccessToast({
-          text: "Successfully Created",
-        });
-      })
-      .catch((error) => {
-        displayErrorToast({
-          text: "Error: " + error.message,
-        });
-      });
   };
 
   const updateProposal = async (

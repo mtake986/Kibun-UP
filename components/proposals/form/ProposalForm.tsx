@@ -81,6 +81,10 @@ const ProposalForm = () => {
         await send(serviceID, templateID, params);
       } catch (error) {
         // 送信失敗したらalertで表示
+        displayToast({
+          text: "ERROR: Failed to send email to the creator. Please try again. " + error,
+          color: "red",
+        });
       }
     }
   };
@@ -92,6 +96,7 @@ const ProposalForm = () => {
         form.reset();
         sendEmail(values);
         setIsPending(false);
+        displaySuccessToast({text: "Successfully created!"});
       });
     } else {
       displayErrorToast("Please log in.");
@@ -152,7 +157,9 @@ const ProposalForm = () => {
               render={() => (
                 <FormItem>
                   <div className="mb-1">
-                    <FormLabel className="text-base">Labels</FormLabel>
+                    <FormLabel className="text-base">
+                      Labels <RequiredMark />
+                    </FormLabel>
                   </div>
                   {labelsForProposals.map((item) => (
                     <FormField
@@ -191,6 +198,7 @@ const ProposalForm = () => {
                 </FormItem>
               )}
             />
+
             <button
               className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
               type="submit"
