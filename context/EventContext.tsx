@@ -30,10 +30,7 @@ import {
 } from "@/functions/displayToast";
 
 type EventContextType = {
-  handleUpdate: (
-    values: TypeEventInputValues,
-    eid: string,
-  ) => Promise<void>;
+  handleUpdate: (values: TypeEventInputValues, eid: string) => Promise<void>;
   handleDelete: (id: string) => void;
 
   getLoginUserEvents: () => void;
@@ -105,16 +102,20 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const handleUpdate = async (
-    values: TypeEventInputValues,
-    eid: string,
-  ) => {
+  const handleUpdate = async (values: TypeEventInputValues, eid: string) => {
     console.log(values);
     const docRef = doc(db, "events", eid);
-    await updateDoc(docRef, {
-      ...values,
-      updatedAt: serverTimestamp(),
-    });
+    try {
+      await updateDoc(docRef, {
+        ...values,
+        updatedAt: serverTimestamp(),
+      });
+      displaySuccessToast({
+        text: "Updated",
+      });
+    } catch (error) {
+      displayErrorToast(error);
+    }
 
     if (lockedEvent?.id === eid) {
       // alert(lockedEvent?.id + "," + eid);
@@ -126,11 +127,6 @@ export function EventProvider({ children }: EventProviderProps) {
         });
       }
     }
-    setTimeout(() => {
-      displaySuccessToast({
-        text: "Updated",
-      });
-    }, 500);
   };
 
   const handleDelete = async (id: string) => {
