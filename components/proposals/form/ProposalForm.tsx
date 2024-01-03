@@ -19,7 +19,11 @@ import { proposalSchema } from "@/form/schema";
 import { init, send } from "@emailjs/browser";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { displayErrorToast } from "@/functions/displayToast";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+  displayToast,
+} from "@/functions/displayToast";
 import { Textarea } from "@/components/ui/textarea";
 import RequiredMark from "@/components/utils/RequiredMark";
 import Subtitle from "../subtitle/Subtitle";
@@ -54,14 +58,49 @@ const ProposalForm = () => {
     },
   });
 
+  const sendEmail = async (values: z.infer<typeof proposalSchema>) => {
+    // 必要なIDをそれぞれ環境変数から取得
+    const userID = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
+    const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_NEW_PROPOSAL;
+
+    if (userID && serviceID && templateID) {
+      // emailJS初期化
+      init(userID);
+
+      // emailJS送信データを定義
+      const params = {
+        uid: loginUser?.uid,
+        title: values.title,
+        description: values.description,
+        labels: values.labels,
+      };
+
+      // emailJS送信
+      try {
+        await send(serviceID, templateID, params);
+      } catch (error) {
+        // 送信失敗したらalertで表示
+        displayToast({
+          text: "ERROR: Failed to send email to the creator. Please try again. " + error,
+          color: "red",
+        });
+      }
+    }
+  };
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof proposalSchema>) {
     if (loginUser) {
       setIsPending(true);
-      submitProposal(values, loginUser.uid).then(() => {
-        form.reset();
-        setIsPending(false);
-      });
+      try {
+        submitProposal(values, loginUser.uid);
+        sendEmail(values);
+      } catch (error) {
+        displayErrorToast(error);
+      }
+      form.reset();
+      setIsPending(false);
+      displaySuccessToast({text: "Successfully created!"});
     } else {
       displayErrorToast("Please log in.");
     }
@@ -121,7 +160,9 @@ const ProposalForm = () => {
               render={() => (
                 <FormItem>
                   <div className="mb-1">
-                    <FormLabel className="text-base">Labels</FormLabel>
+                    <FormLabel className="text-base">
+                      Labels <RequiredMark />
+                    </FormLabel>
                   </div>
                   {labelsForProposals.map((item) => (
                     <FormField
@@ -160,6 +201,7 @@ const ProposalForm = () => {
                 </FormItem>
               )}
             />
+
             <button
               className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
               type="submit"
