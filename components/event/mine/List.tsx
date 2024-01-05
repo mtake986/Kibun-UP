@@ -33,7 +33,10 @@ const List = ({ events }: Props) => {
 
   return (
     <div className="mb-20">
-      <Modal />
+      <div className="flex items-center mb-1 justify-between">
+        <p>{events.length} events found</p>
+        <Modal />
+      </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (

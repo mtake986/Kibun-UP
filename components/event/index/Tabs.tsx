@@ -40,7 +40,7 @@ const Tabs = () => {
 
   return (
     <div>
-      <div className="mb-3 flex items-stretch">
+      <div className="flex mb-1 items-stretch">
         {tabs.map((tab) => (
           <span
             key={tab.name}
