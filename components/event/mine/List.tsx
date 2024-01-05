@@ -2,14 +2,14 @@
 
 import { auth, db } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { TypeEvent, TypeUserFromFirestore } from "@/types/type";
+import { TypeEvent } from "@/types/type";
 import { useEffect, useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
-
 import PaginationBtns from "@/components/utils/PaginationBtns";
 import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
 import UrlLink from "@/components/utils/UrlLink";
+import Modal from "./modal/Modal";
 
 type Props = {
   events: TypeEvent[];
@@ -19,7 +19,6 @@ const List = ({ events }: Props) => {
   const [user] = useAuthState(auth);
 
   const [currentPage, setCurrentPage] = useState(1);
-
   const { nPages, currentRecords } = usePagination(currentPage, events);
 
   const goPrevAsNoCurrentRecords = () => {
@@ -34,6 +33,7 @@ const List = ({ events }: Props) => {
 
   return (
     <div className="mb-20">
+      <Modal />
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">
           {currentRecords.map((doc, i) => (

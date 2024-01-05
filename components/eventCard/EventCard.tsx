@@ -1,11 +1,8 @@
 import { TypeEvent } from "@/types/type";
-
 import { useState } from "react";
 import Content from "./content/Content";
 import EditModeOn from "./content/EditModeOn";
 import Icons from "./Icons/Icons";
-import LoadingSpinnerS from "../utils/LoadingSpinnerS";
-import LoadingCover from "../utils/LoadingCover";
 
 type Props = {
   event: TypeEvent;

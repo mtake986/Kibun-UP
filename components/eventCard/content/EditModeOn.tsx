@@ -40,14 +40,11 @@ type Props = {
   setIsUpdateMode: (boo: boolean) => void;
 };
 
-export default function EditModeOn({
-  event,
-  setIsUpdateMode,
-}: Props) {
+export default function EditModeOn({ event, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  const { handleUpdate, fetchProfileUserEvents, getLoginUserEvents } =
+  const { handleUpdate, fetchProfileUserEvents, getLoginUserEventsDefault } =
     useEvent();
   const pathname = usePathname();
   // 1. Define your form.
@@ -67,22 +64,24 @@ export default function EditModeOn({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-    handleUpdate(values, event.id).then(() => {
-      if (pathname.includes("profile")) {
-        fetchProfileUserEvents(event.createdBy);
-      } else {
-        getLoginUserEvents();
-      }
-      setIsPending(false);
-      setIsUpdateMode(false);
-    }).catch((err: any) => {
-      setIsPending(false);
-      displayErrorToast(err);
-    })
+    handleUpdate(values, event.id)
+      .then(() => {
+        if (pathname.includes("profile")) {
+          fetchProfileUserEvents(event.createdBy);
+        } else {
+          getLoginUserEventsDefault();
+        }
+        setIsPending(false);
+        setIsUpdateMode(false);
+      })
+      .catch((err: any) => {
+        setIsPending(false);
+        displayErrorToast(err);
+      });
   }
 
   return (
-    <div className={twMerge('relative', isPending ? "opacity-50" : "")}>
+    <div className={twMerge("relative", isPending ? "opacity-50" : "")}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:gap-8">

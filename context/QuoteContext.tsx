@@ -171,6 +171,18 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       });
     });
   };
+  
+    const getLoginUserQuotes = async () => {
+      if (user?.uid) {
+        const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        let tempQs: TypeQuote[] = [];
+        querySnapshot.forEach((doc) => {
+          tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
+        });
+        setLoginUserQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
+      }
+    };
 
   const getQuotesNotMine = async () => {
     if (user?.uid) {
@@ -181,18 +193,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
       });
       setQuotesNotMine(tempQs.filter((q) => q.createdBy !== user?.uid));
-    }
-  };
-
-  const getLoginUserQuotes = async () => {
-    if (user?.uid) {
-      const q = query(quotesCollectionRef, orderBy("createdAt", "desc"));
-      const querySnapshot = await getDocs(q);
-      let tempQs: TypeQuote[] = [];
-      querySnapshot.forEach((doc) => {
-        tempQs.push({ ...doc.data(), id: doc.id } as TypeQuote);
-      });
-      setLoginUserQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
     }
   };
 

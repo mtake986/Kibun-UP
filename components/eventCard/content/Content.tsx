@@ -47,7 +47,7 @@ const Content = ({ event }: Props) => {
         </div>
       ) : null}
       {event.description ? (
-        <Info icon={<BiInfoCircle size={20} />} text={event.description} />
+        <Info icon={<BiInfoCircle size={16} />} text={event.description} />
       ) : null}
     </div>
   );
