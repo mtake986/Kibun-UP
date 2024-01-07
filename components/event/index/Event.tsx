@@ -18,7 +18,7 @@ export const metadata = {
 const Event = () => {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
-  const { getLockedEvent, getLoginUserEventsDefault, fetchAllEvents } =
+  const { getLockedEvent, getLoginUserEventsDefault, getEventsNotMine, } =
     useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const Event = () => {
       // if (!lockedEvent) getLockedEvent();
       getLoginUserEventsDefault();
       getLockedEvent();
-      fetchAllEvents();
+      getEventsNotMine();
     };
     const fetchData = async () => {
       setIsLoading(true);

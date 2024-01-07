@@ -15,15 +15,12 @@ import LoadingIndicator from "./LoadingIndicator";
 const Home = () => {
   const { fetchLoginUser } = useAuth();
   const {
-    randomEvent,
-    lockedEvent,
     getRandomEvent,
     getLockedEvent,
     getLoginUserEventsDefault,
-    loginUserEvents,
   } = useEvent();
 
-  const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
+  const { updateRandomQuote, getLockedQuote } =
     useQuote();
 
   const [isEventLoading, setIsEventLoading] = useState<boolean>(false);

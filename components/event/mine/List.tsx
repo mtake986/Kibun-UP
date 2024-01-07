@@ -1,7 +1,4 @@
 "use client";
-
-import { auth, db } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeEvent } from "@/types/type";
 import { useEffect, useState } from "react";
 import usePagination from "@/components/hooks/usePagination";
@@ -10,14 +7,14 @@ import NoFetchedData from "@/components/utils/NoFetchedData";
 import EventCard from "@/components/eventCard/EventCard";
 import UrlLink from "@/components/utils/UrlLink";
 import Modal from "./modal/Modal";
+import { useSearchParams } from "next/navigation";
+import ModalForNotMyEvents from "../modalForNotMyEvents/ModalForNotMyEvents";
 
 type Props = {
   events: TypeEvent[];
 };
 
 const List = ({ events }: Props) => {
-  const [user] = useAuthState(auth);
-
   const [currentPage, setCurrentPage] = useState(1);
   const { nPages, currentRecords } = usePagination(currentPage, events);
 
@@ -31,11 +28,15 @@ const List = ({ events }: Props) => {
     }
   };
 
+  // not mine
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
+  const isMine = currTab !== 'notMine';
   return (
     <div className="mb-20">
-      <div className="flex items-center mb-1 justify-between">
+      <div className="mb-1 flex items-center justify-between">
         <p>{events.length} events found</p>
-        <Modal />
+        {isMine ? <Modal /> : <ModalForNotMyEvents />}
       </div>
       {currentRecords && currentRecords.length >= 1 ? (
         <div className="flex flex-col gap-3">

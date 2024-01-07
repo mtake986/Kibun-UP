@@ -9,19 +9,25 @@ import {
 import { displayErrorToast } from "@/functions/displayToast";
 import Sort from "./sort/Sort";
 import { useEvent } from "@/context/EventContext";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Modal = () => {
+const ModalForNotMyEvents = () => {
   const {
-    getLoginUserEventsWithSort,
-    resetSortVariablesForMyEvents,
-    isSortVariablesForMyEventsDefault,
-    checkSortVariablesForMyEventsDefault,
+    isSortVariablesForEventsOtherThanLoginUserDefault,
+    getEventsOtherThanLoginUserWithSort,
+    checkSortVariablesForNotMyEventsDefault,
+    resetSortVariablesForNotMyEvents,
   } = useEvent();
+
+  const searchParams = useSearchParams();
+  const currTab = searchParams.get("tab");
+
+  const isMine = currTab !== "notMine";
 
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        {isSortVariablesForMyEventsDefault ? null : (
+        {isSortVariablesForEventsOtherThanLoginUserDefault ? null : (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
         )}
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
@@ -32,8 +38,8 @@ const Modal = () => {
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              getLoginUserEventsWithSort();
-              checkSortVariablesForMyEventsDefault();
+              getEventsOtherThanLoginUserWithSort();
+              checkSortVariablesForNotMyEventsDefault();
             } catch (error) {
               displayErrorToast(error);
             }
@@ -51,7 +57,7 @@ const Modal = () => {
               className="w-full"
               type="reset"
               onClick={() => {
-                resetSortVariablesForMyEvents();
+                resetSortVariablesForNotMyEvents();
               }}
             >
               Reset
@@ -63,4 +69,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default ModalForNotMyEvents;
