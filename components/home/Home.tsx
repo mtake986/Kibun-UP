@@ -14,10 +14,13 @@ import LoadingIndicator from "./LoadingIndicator";
 
 const Home = () => {
   const { fetchLoginUser } = useAuth();
-  const { randomEvent, lockedEvent, getRandomEvent, getLockedEvent, getLoginUserEvents, loginUserEvents } =
-    useEvent();
+  const {
+    getRandomEvent,
+    getLockedEvent,
+    getLoginUserEventsDefault,
+  } = useEvent();
 
-  const { randomQuote, lockedQuote, updateRandomQuote, getLockedQuote } =
+  const { updateRandomQuote, getLockedQuote } =
     useQuote();
 
   const [isEventLoading, setIsEventLoading] = useState<boolean>(false);
@@ -29,7 +32,7 @@ const Home = () => {
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
       await getLockedEvent();
-      await getLoginUserEvents();
+      await getLoginUserEventsDefault();
       await getRandomEvent();
     };
     const fetchQuotes = async () => {

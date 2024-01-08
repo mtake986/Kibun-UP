@@ -39,7 +39,6 @@ const List = ({ quotes }: Props) => {
               goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
-          
         </div>
       );
     } else {

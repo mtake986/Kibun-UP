@@ -17,8 +17,8 @@ const ProposalHome = () => {
   
   useEffect(() => {
     fetchProposals();
-    if (sortBy === "mostVotes") sortProposals(sortBy);
-  }, [sortBy]);
+    // if (sortBy === "mostVotes") sortProposals(sortBy);
+  }, [sortBy]); 
 
   return (
     <div className="flex flex-col gap-5 px-5 py-10 pb-20 sm:mb-32 sm:p-0">

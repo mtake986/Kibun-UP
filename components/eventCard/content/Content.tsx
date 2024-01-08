@@ -23,10 +23,8 @@ const Info: React.FC<InfoProps> = ({ icon, text }) => (
 const Content = ({ event }: Props) => {
   return (
     <div className="flex flex-col gap-3">
-      <HeadingThree
-        text={event.eventTitle}
-        className="text-center text-2xl font-semibold"
-      />
+      <h3 className="text-center text-2xl font-semibold">{event.eventTitle}</h3>
+
       {event.place ? (
         <Info icon={<MdPlace size={16} />} text={event.place} />
       ) : null}
@@ -47,7 +45,7 @@ const Content = ({ event }: Props) => {
         </div>
       ) : null}
       {event.description ? (
-        <Info icon={<BiInfoCircle size={20} />} text={event.description} />
+        <Info icon={<BiInfoCircle size={16} />} text={event.description} />
       ) : null}
     </div>
   );

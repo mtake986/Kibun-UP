@@ -33,7 +33,7 @@ type EventContextType = {
   handleUpdate: (values: TypeEventInputValues, eid: string) => Promise<void>;
   handleDelete: (id: string) => void;
 
-  getLoginUserEvents: () => void;
+  getLoginUserEventsWithSort: () => Promise<void>;
   loginUserEvents: TypeEvent[] | [];
 
   lockThisEvent: (uid: string, data: TypeEvent) => void;
@@ -58,11 +58,28 @@ type EventContextType = {
   isUpdateLoading: boolean;
   fetchProfileUserEvents: (uid: string) => Promise<void>;
   profileUserEvents: TypeEvent[] | [];
-  fetchAllEvents: () => Promise<void>;
-  allEvents: TypeEvent[] | [];
 
   cheerEvent: (uid: string, event: TypeEvent) => Promise<void>;
   removeCheerFromEvent: (uid: string, event: TypeEvent) => Promise<void>;
+
+  handleSortVariablesMyEventsElement: (element: string) => void;
+  handleSortVariablesMyEventsOrder: (order: "desc" | "asc") => void;
+  sortVariablesForMyEvents: { element: string; order: "desc" | "asc" };
+  resetSortVariablesForMyEvents: () => void;
+  isSortVariablesForMyEventsDefault: boolean;
+  checkSortVariablesForMyEventsDefault: () => void;
+  getLoginUserEventsDefault: () => Promise<void>;
+
+  handleSortVariablesNotMyEventsElement: (sortBy: string) => void;
+  handleSortVariablesNotMyEventsOrder: (order: "desc" | "asc") => void;
+  sortVariablesForEventsOtherThanLoginUser: {
+    sortBy: string;
+    order: "desc" | "asc";
+  };
+  isSortVariablesForEventsOtherThanLoginUserDefault: boolean;
+  getEventsOtherThanLoginUserWithSort: () => Promise<void>;
+  checkSortVariablesForNotMyEventsDefault: () => void;
+  resetSortVariablesForNotMyEvents: () => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -76,13 +93,68 @@ export function EventProvider({ children }: EventProviderProps) {
   const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
   const [randomEvent, setRandomEvent] = useState<TypeEvent>();
   const [eventsNotMine, setEventsNotMine] = useState<TypeEvent[]>([]);
-  const [allEvents, setAllEvents] = useState<TypeEvent[]>([]);
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState<boolean>(false);
   const [profileUserEvents, setProfileUserEvents] = useState<TypeEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
   const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
+  const [
+    isSortVariablesForMyEventsDefault,
+    setIsSortVariablesForMyEventsDefault,
+  ] = useState(true);
+  const [sortVariablesForMyEvents, setSortVariablesForMyEvents] = useState<{
+    element: string;
+    order: "desc" | "asc";
+  }>({ element: "createdAt", order: "desc" });
+
+  const [
+    sortVariablesForEventsOtherThanLoginUser,
+    setSortVariablesForEventsOtherThanLoginUser,
+  ] = useState<{
+    sortBy: string;
+    order: "desc" | "asc";
+  }>({ sortBy: "createdAt", order: "desc" });
+  const [
+    isSortVariablesForEventsOtherThanLoginUserDefault,
+    setIsSortVariablesForEventsOtherThanLoginUserDefault,
+  ] = useState<boolean>(true);
+
+  const getLoginUserEventsWithSort = async () => {
+    if (user?.uid) {
+      const q = query(
+        eventsCollectionRef,
+        // where("createdBy", "==", user?.uid),
+        orderBy(
+          sortVariablesForMyEvents.element,
+          sortVariablesForMyEvents.order
+        )
+      );
+      onSnapshot(q, (snapshot) => {
+        setLoginUserEvents(
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+            .filter((doc) => doc.createdBy === user?.uid)
+        );
+      });
+    }
+  };
+  const getLoginUserEventsDefault = async () => {
+    if (user?.uid) {
+      const q = query(
+        eventsCollectionRef,
+        // where("createdBy", "==", user?.uid),
+        orderBy("createdAt", "desc")
+      );
+      onSnapshot(q, (snapshot) => {
+        setLoginUserEvents(
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+            .filter((doc) => doc.createdBy === user?.uid)
+        );
+      });
+    }
+  };
 
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
@@ -103,7 +175,6 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const handleUpdate = async (values: TypeEventInputValues, eid: string) => {
-    console.log(values);
     const docRef = doc(db, "events", eid);
     try {
       await updateDoc(docRef, {
@@ -131,41 +202,6 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
-  };
-
-  const getLoginUserEvents = async () => {
-    if (user?.uid) {
-      const q = query(
-        eventsCollectionRef,
-        where("createdBy", "==", user?.uid)
-        // orderBy("createdAt", "asc")
-      );
-      onSnapshot(q, (snapshot) => {
-        setLoginUserEvents(
-          snapshot.docs.map(
-            (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
-          )
-        );
-      });
-    }
-  };
-
-  const filterEvents = async (type: string) => {
-    if (loginUserEvents.length > 0) {
-    }
-    // const collectionRef = collection(db, "events");
-    // if (user?.uid) {
-    //   const q = query(
-    //     collectionRef,
-    //     where("createdBy", "==", user?.uid),
-    //     orderBy("eventTitle", "asc")
-    //   );
-    //   onSnapshot(q, (snapshot) => {
-    //     setLoginUserEvents(
-    //       snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-    //     );
-    //   });
-    // }
   };
 
   const lockThisEvent = async (uid: string, data: TypeEvent) => {
@@ -261,15 +297,6 @@ export function EventProvider({ children }: EventProviderProps) {
     setProfileUserEvents(es);
   };
 
-  const fetchAllEvents = async () => {
-    const querySnapshot = await getDocs(collection(db, "events"));
-    let events: TypeEvent[] = [];
-    querySnapshot.forEach((doc) => {
-      events.push({ ...doc.data(), id: doc.id } as TypeEvent);
-    });
-    setAllEvents(events);
-  };
-
   const cheerEvent = async (uid: string, event: TypeEvent) => {
     const eventDocRef = doc(db, "events", event.id);
     const eventDocSnap = await getDoc(eventDocRef);
@@ -290,12 +317,90 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
+  const handleSortVariablesMyEventsElement = (element: string) => {
+    setSortVariablesForMyEvents((prev) => ({ ...prev, element }));
+  };
+
+  const handleSortVariablesMyEventsOrder = (order: "desc" | "asc") => {
+    setSortVariablesForMyEvents((prev) => ({ ...prev, order }));
+  };
+
+  const checkSortVariablesForMyEventsDefault = () => {
+    if (
+      sortVariablesForMyEvents.element === "createdAt" &&
+      sortVariablesForMyEvents.order === "desc"
+    ) {
+      setIsSortVariablesForMyEventsDefault(true);
+    } else {
+      setIsSortVariablesForMyEventsDefault(false);
+    }
+  };
+
+  const resetSortVariablesForMyEvents = () => {
+    setSortVariablesForMyEvents({ element: "createdAt", order: "desc" });
+    setIsSortVariablesForMyEventsDefault(true);
+    getLoginUserEventsDefault();
+  };
+
+  const handleSortVariablesNotMyEventsElement = (sortBy: string) => {
+    setSortVariablesForEventsOtherThanLoginUser((prev) => ({
+      ...prev,
+      sortBy,
+    }));
+  };
+
+  const handleSortVariablesNotMyEventsOrder = (order: "desc" | "asc") => {
+    setSortVariablesForEventsOtherThanLoginUser((prev) => ({
+      ...prev,
+      order,
+    }));
+  };
+
+  const getEventsOtherThanLoginUserWithSort = async () => {
+    if (user?.uid) {
+      const q = query(
+        eventsCollectionRef,
+        orderBy(
+          sortVariablesForEventsOtherThanLoginUser.sortBy,
+          sortVariablesForEventsOtherThanLoginUser.order
+        )
+      );
+      onSnapshot(q, (snapshot) => {
+        setEventsNotMine(
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+            .filter((doc) => doc.createdBy !== user?.uid)
+        );
+      });
+    }
+  };
+
+  const checkSortVariablesForNotMyEventsDefault = () => {
+    if (
+      sortVariablesForEventsOtherThanLoginUser.sortBy === "createdAt" &&
+      sortVariablesForEventsOtherThanLoginUser.order === "desc"
+    ) {
+      setIsSortVariablesForEventsOtherThanLoginUserDefault(true);
+    } else {
+      setIsSortVariablesForEventsOtherThanLoginUserDefault(false);
+    }
+  };
+
+  const resetSortVariablesForNotMyEvents = () => {
+    setSortVariablesForEventsOtherThanLoginUser({
+      sortBy: "createdAt",
+      order: "desc",
+    });
+    setIsSortVariablesForEventsOtherThanLoginUserDefault(true);
+    getEventsNotMine();
+  };
+
   return (
     <EventContext.Provider
       value={{
         handleUpdate,
         handleDelete,
-        getLoginUserEvents,
+        getLoginUserEventsWithSort,
         loginUserEvents,
         lockThisEvent,
         unlockThisEvent,
@@ -315,10 +420,24 @@ export function EventProvider({ children }: EventProviderProps) {
         isUpdateLoading,
         fetchProfileUserEvents,
         profileUserEvents,
-        fetchAllEvents,
-        allEvents,
         cheerEvent,
         removeCheerFromEvent,
+
+        handleSortVariablesMyEventsElement,
+        handleSortVariablesMyEventsOrder,
+        sortVariablesForMyEvents,
+        resetSortVariablesForMyEvents,
+        isSortVariablesForMyEventsDefault,
+        checkSortVariablesForMyEventsDefault,
+        getLoginUserEventsDefault,
+
+        handleSortVariablesNotMyEventsElement,
+        handleSortVariablesNotMyEventsOrder,
+        sortVariablesForEventsOtherThanLoginUser,
+        isSortVariablesForEventsOtherThanLoginUserDefault,
+        getEventsOtherThanLoginUserWithSort,
+        checkSortVariablesForNotMyEventsDefault,
+        resetSortVariablesForNotMyEvents,
       }}
     >
       {children}

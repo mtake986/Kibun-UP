@@ -18,13 +18,8 @@ export const metadata = {
 const Event = () => {
   const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser } = useAuth();
-  const {
-    lockedEvent,
-    getLockedEvent,
-    loginUserEvents,
-    getLoginUserEvents,
-    fetchAllEvents,
-  } = useEvent();
+  const { getLockedEvent, getLoginUserEventsDefault, getEventsNotMine, } =
+    useEvent();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // todo: fetch quotes created by all
@@ -33,11 +28,11 @@ const Event = () => {
       if (!loginUser) fetchLoginUser(user);
     };
     const fetchEvents = async () => {
-      // if (loginUserEvents.length === 0) getLoginUserEvents();
+      // if (loginUserEvents.length === 0) getLoginUserEventsDefault();
       // if (!lockedEvent) getLockedEvent();
-      getLoginUserEvents();
+      getLoginUserEventsDefault();
       getLockedEvent();
-      fetchAllEvents();
+      getEventsNotMine();
     };
     const fetchData = async () => {
       setIsLoading(true);
