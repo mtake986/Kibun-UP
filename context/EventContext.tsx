@@ -80,6 +80,12 @@ type EventContextType = {
   getEventsOtherThanLoginUserWithSort: () => Promise<void>;
   checkSortVariablesForNotMyEventsDefault: () => void;
   resetSortVariablesForNotMyEvents: () => void;
+
+  AreMyPastEventsRemoved: boolean;
+  setAreMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
+
+  AreNotMyPastEventsRemoved: boolean;
+  setAreNotMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -89,6 +95,9 @@ export function useEvent() {
 }
 
 export function EventProvider({ children }: EventProviderProps) {
+  // ======================
+  // states
+  // ======================
   const [loginUserEvents, setLoginUserEvents] = useState<TypeEvent[]>([]);
   const [lockedEvent, setLockedEvent] = useState<TypeEvent>();
   const [randomEvent, setRandomEvent] = useState<TypeEvent>();
@@ -120,25 +129,14 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsSortVariablesForEventsOtherThanLoginUserDefault,
   ] = useState<boolean>(true);
 
-  const getLoginUserEventsWithSort = async () => {
-    if (user?.uid) {
-      const q = query(
-        eventsCollectionRef,
-        // where("createdBy", "==", user?.uid),
-        orderBy(
-          sortVariablesForMyEvents.element,
-          sortVariablesForMyEvents.order
-        )
-      );
-      onSnapshot(q, (snapshot) => {
-        setLoginUserEvents(
-          snapshot.docs
-            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-            .filter((doc) => doc.createdBy === user?.uid)
-        );
-      });
-    }
-  };
+  const [AreMyPastEventsRemoved, setAreMyPastEventsRemoved] =
+    useState<boolean>(false);
+  const [AreNotMyPastEventsRemoved, setAreNotMyPastEventsRemoved] =
+    useState<boolean>(false);
+
+  // ======================
+  // functions
+  // ======================
   const getLoginUserEventsDefault = async () => {
     if (user?.uid) {
       const q = query(
@@ -155,6 +153,33 @@ export function EventProvider({ children }: EventProviderProps) {
       });
     }
   };
+
+  const getLoginUserEventsWithSort = async () => {
+    if (user?.uid) {
+      const q = query(
+        eventsCollectionRef,
+        // where("createdBy", "==", user?.uid),
+        orderBy(
+          sortVariablesForMyEvents.element,
+          sortVariablesForMyEvents.order
+        )
+      );
+      onSnapshot(q, (snapshot) => {
+        let tempEvents: TypeEvent[] = AreMyPastEventsRemoved
+          ? snapshot.docs
+              .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+              .filter((doc) => doc.createdBy === user?.uid)
+              .filter((doc) => doc.eventDate.toDate() >= new Date())
+          : snapshot.docs
+              .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+              .filter((doc) => doc.createdBy === user?.uid);
+
+        setLoginUserEvents(tempEvents);
+
+      });
+    }
+  };
+
 
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
@@ -366,11 +391,15 @@ export function EventProvider({ children }: EventProviderProps) {
         )
       );
       onSnapshot(q, (snapshot) => {
-        setEventsNotMine(
-          snapshot.docs
-            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-            .filter((doc) => doc.createdBy !== user?.uid)
-        );
+        let tempEvents: TypeEvent[] = AreNotMyPastEventsRemoved
+          ? snapshot.docs
+              .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+              .filter((doc) => doc.createdBy !== user?.uid)
+              .filter((doc) => doc.eventDate.toDate() >= new Date())
+          : snapshot.docs
+              .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+              .filter((doc) => doc.createdBy !== user?.uid);
+        setEventsNotMine(tempEvents);
       });
     }
   };
@@ -438,6 +467,11 @@ export function EventProvider({ children }: EventProviderProps) {
         getEventsOtherThanLoginUserWithSort,
         checkSortVariablesForNotMyEventsDefault,
         resetSortVariablesForNotMyEvents,
+
+        AreMyPastEventsRemoved,
+        setAreMyPastEventsRemoved,
+        AreNotMyPastEventsRemoved,
+        setAreNotMyPastEventsRemoved,
       }}
     >
       {children}
