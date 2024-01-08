@@ -19,7 +19,6 @@ const SelectSortNotMyEventsElement = () => {
     <Select
       onValueChange={(ele) => {
         handleSortVariablesNotMyEventsElement(ele);
-        console.log(sortVariablesForEventsOtherThanLoginUser, ele);
       }}
       value={sortVariablesForEventsOtherThanLoginUser.sortBy}
       defaultValue={sortVariablesForEventsOtherThanLoginUser.sortBy}

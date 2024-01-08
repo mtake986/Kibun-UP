@@ -130,7 +130,6 @@ export function EventProvider({ children }: EventProviderProps) {
           sortVariablesForMyEvents.order
         )
       );
-      console.log("fetching user events");
       onSnapshot(q, (snapshot) => {
         setLoginUserEvents(
           snapshot.docs
@@ -147,7 +146,6 @@ export function EventProvider({ children }: EventProviderProps) {
         // where("createdBy", "==", user?.uid),
         orderBy("createdAt", "desc")
       );
-      console.log("fetching user events, createdAt desc");
       onSnapshot(q, (snapshot) => {
         setLoginUserEvents(
           snapshot.docs
@@ -177,7 +175,6 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const handleUpdate = async (values: TypeEventInputValues, eid: string) => {
-    console.log(values);
     const docRef = doc(db, "events", eid);
     try {
       await updateDoc(docRef, {
@@ -367,10 +364,6 @@ export function EventProvider({ children }: EventProviderProps) {
           sortVariablesForEventsOtherThanLoginUser.sortBy,
           sortVariablesForEventsOtherThanLoginUser.order
         )
-      );
-      console.log(
-        sortVariablesForEventsOtherThanLoginUser.sortBy,
-        sortVariablesForEventsOtherThanLoginUser.order
       );
       onSnapshot(q, (snapshot) => {
         setEventsNotMine(
