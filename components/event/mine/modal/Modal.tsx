@@ -9,6 +9,8 @@ import {
 import { displayErrorToast } from "@/functions/displayToast";
 import Sort from "./sort/Sort";
 import { useEvent } from "@/context/EventContext";
+import Filter from "./filter/Filter";
+import { Button } from "@/components/ui/button";
 
 const Modal = () => {
   const {
@@ -16,14 +18,15 @@ const Modal = () => {
     resetSortVariablesForMyEvents,
     isSortVariablesForMyEventsDefault,
     checkSortVariablesForMyEventsDefault,
+    AreMyPastEventsRemoved,
   } = useEvent();
 
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        {isSortVariablesForMyEventsDefault ? null : (
+        {!isSortVariablesForMyEventsDefault || AreMyPastEventsRemoved ? (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
-        )}
+        ) : null}
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
       </DialogTrigger>
       <DialogContent className="bg-white dark:bg-slate-950">
@@ -40,14 +43,14 @@ const Modal = () => {
           }}
         >
           <div className="flex flex-col gap-3">
-            {/* <Filter /> */}
+            <Filter />
             <Sort />
           </div>
           <div className="flex items-center gap-3">
-            <button type="submit" className="w-full">
+            <Button type="submit" className="w-full">
               Update
-            </button>
-            <button
+            </Button>
+            <Button
               className="w-full"
               type="reset"
               onClick={() => {
@@ -55,7 +58,7 @@ const Modal = () => {
               }}
             >
               Reset
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>
