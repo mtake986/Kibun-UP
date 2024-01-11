@@ -18,7 +18,7 @@ const IconBookmark = ({ q, loginUser }: Props) => {
   const [numOfBookmarks, setNumOfBookmarks] = useState<number>(
     quote?.likedBy.length ?? 0
   );
-  const heartFill = isBookmarked ? "red" : undefined;
+
   const handleClick = async () => {
     try {
       if (isBookmarked) {
