@@ -34,8 +34,8 @@ const List = ({ events }: Props) => {
   const isMine = currTab !== 'notMine';
   return (
     <div className="mb-20">
-      <div className="mb-1 flex items-center justify-between">
-        <p>{events.length} events found</p>
+      <div className="flex justify-between">
+        <p className="text-gray-400">{events.length} events found</p>
         {isMine ? <Modal /> : <ModalForNotMyEvents />}
       </div>
       {currentRecords && currentRecords.length >= 1 ? (
