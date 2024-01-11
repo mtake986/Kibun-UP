@@ -35,7 +35,7 @@ const List = ({ events }: Props) => {
   return (
     <div className="mb-20">
       <div className="flex justify-between">
-        <p className="text-gray-400">{events.length} events found</p>
+        <p className="text-gray-400 text-sm">{events.length} events found</p>
         {isMine ? <Modal /> : <ModalForNotMyEvents />}
       </div>
       {currentRecords && currentRecords.length >= 1 ? (

@@ -17,18 +17,18 @@ const IconLike = ({ event, loginUser }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [numOfCheers, setNumOfCheers] = useState<number>(event.cheeredBy?.length);
-  const [isLiked, setIsLiked] = useState<boolean>(event.cheeredBy?.includes(loginUser.uid));
+  const [isCheered, setIsCheered] = useState<boolean>(event.cheeredBy?.includes(loginUser.uid));
 
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      if (isLiked) {
+      if (isCheered) {
         setNumOfCheers(prev => prev - 1)
-        setIsLiked(prev => !prev)
+        setIsCheered(prev => !prev)
         await removeCheerFromEvent(loginUser.uid, event);
       } else {
         setNumOfCheers(prev => prev + 1)
-        setIsLiked(prev => !prev)
+        setIsCheered(prev => !prev)
         await cheerEvent(loginUser.uid, event);
       }
     } catch (error) {
@@ -44,7 +44,7 @@ const IconLike = ({ event, loginUser }: Props) => {
       disabled={isLoading}
       className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
-      {isLiked ? (
+      {isCheered ? (
         <>
           <PiHandsClappingBold size={14} className="text-emerald-500" />
           <span className="text-xs text-emerald-500">{numOfCheers}</span>

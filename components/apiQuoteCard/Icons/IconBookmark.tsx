@@ -1,8 +1,7 @@
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import { TypeAPIQuote, TypeUserFromFirestore } from "@/types/type";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 type Props = {
@@ -12,25 +11,33 @@ type Props = {
 
 const IconBookmark = ({ q, loginUser }: Props) => {
   const { apiQuotesFromFirestore, handleBookmarkApiQuote } = useQuote();
-
-  const { numOfBookmarks, isBookmarked } = useMemo(() => {
-    const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
-    const isBookmarked = quote?.bookmarkedBy.includes(loginUser.uid) ?? false;
-    const numOfBookmarks = quote?.bookmarkedBy.length ?? 0;
-    return { numOfBookmarks, isBookmarked };
-  }, [apiQuotesFromFirestore, q.id, loginUser.uid]);
-
-  const handleBookmarkClick = useCallback(() => {
+  const quote = apiQuotesFromFirestore.find((ele) => ele.id === q.id);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(
+    quote?.likedBy.includes(loginUser.uid) ?? false
+  );
+  const [numOfBookmarks, setNumOfBookmarks] = useState<number>(
+    quote?.likedBy.length ?? 0
+  );
+  const heartFill = isBookmarked ? "red" : undefined;
+  const handleClick = async () => {
     try {
-      handleBookmarkApiQuote(loginUser.uid, q);
-    } catch (e) {
-      displayErrorToast(e);
+      if (isBookmarked) {
+        setNumOfBookmarks((prev) => prev - 1);
+        setIsBookmarked((prev) => !prev);
+        await handleBookmarkApiQuote(loginUser.uid, q);
+      } else {
+        setNumOfBookmarks((prev) => prev + 1);
+        setIsBookmarked((prev) => !prev);
+        await handleBookmarkApiQuote(loginUser.uid, q);
+      }
+    } catch (error) {
+      displayErrorToast(error);
     }
-  }, [loginUser.uid, q, handleBookmarkApiQuote]);
+  };
 
   return (
     <span
-      onClick={handleBookmarkClick}
+      onClick={handleClick}
       className="flex cursor-pointer items-center gap-1 duration-300 hover:opacity-70"
     >
       {isBookmarked ? (
