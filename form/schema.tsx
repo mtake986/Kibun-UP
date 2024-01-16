@@ -8,6 +8,12 @@ export const eventSchema = z.object({
     required_error: "Please select a date and time",
     invalid_type_error: "That's not a date!",
   }),
+  tags: z.array(
+    z.object({
+      name: z.string().max(30),
+      color: z.string(),
+    })
+  ),
 });
 
 export const quoteSchema = z.object({

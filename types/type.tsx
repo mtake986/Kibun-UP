@@ -11,6 +11,7 @@ export interface TypeEvent {
   updatedAt?: Date;
   cheeredBy: string[];
   comments?: TypeComment[];
+  tags?: ITag[];
 }
 
 export type TypeQuote = {

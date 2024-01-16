@@ -4,6 +4,7 @@ import { BsChatLeftText, BsFillPersonFill } from "react-icons/bs";
 import { TypeAPIQuote, TypeSelectedAuthors } from "@/types/type";
 import { Checkbox } from "@/components/ui/checkbox";
 import { twMerge } from "tailwind-merge";
+import Tags from "@/components/utils/Tags";
 
 type Props = {
   q: TypeAPIQuote;
@@ -40,18 +41,7 @@ const Content = ({ q, selectedAuthors, handleAuthors }: Props) => {
           checked={selectedAuthors.some((a) => a.label === q.author)}
         />
       </div>
-      {q.tags && q.tags?.length >= 1 && (
-        <div className="flex flex-wrap items-center gap-2">
-          {q.tags.map((tag, i) => (
-            <Badge
-              key={tag.name}
-              className={twMerge('border-none font-light' , changeTagColor(tag.color))}
-            >
-              #{tag.name}
-            </Badge>
-          ))}
-        </div>
-      )}
+      {q.tags ? <Tags tags={q.tags} /> : null}
     </div>
   );
 };

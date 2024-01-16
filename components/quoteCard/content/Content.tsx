@@ -3,12 +3,11 @@ import { changeTagColor } from "@/functions/functions";
 import {
   BsChatLeftText,
   BsFillPersonFill,
-  BsToggle2Off,
-  BsToggle2On,
 } from "react-icons/bs";
 import { TypeQuote } from "@/types/type";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import Tags from "@/components/utils/Tags";
 
 type Props = {
   q: TypeQuote;
@@ -31,21 +30,9 @@ const Content = ({ q }: Props) => {
       <Info icon={<BsChatLeftText size={16} />} text={q.content} />
       <Info icon={<BsFillPersonFill size={16} />} text={q.author} />
       <Info icon={<EyeIcon size={16} />} text={q.draftStatus} />
-      {q.tags && q.tags?.length >= 1 && (
-        <div className="flex flex-wrap items-center gap-2">
-          {q.tags.map((tag, i) => (
-            <Badge
-              key={tag.name}
-              className={twMerge(
-                "border-none font-light",
-                changeTagColor(tag.color)
-              )}
-            >
-              #{tag.name}
-            </Badge>
-          ))}
-        </div>
-      )}
+      {q.tags ? (
+        <Tags tags={q.tags} />
+      ) : null}
     </div>
   );
 };
