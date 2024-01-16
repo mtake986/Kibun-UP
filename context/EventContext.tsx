@@ -62,24 +62,24 @@ type EventContextType = {
   cheerEvent: (uid: string, event: TypeEvent) => Promise<void>;
   removeCheerFromEvent: (uid: string, event: TypeEvent) => Promise<void>;
 
-  handleSortVariablesMyEventsElement: (element: string) => void;
-  handleSortVariablesMyEventsOrder: (order: "desc" | "asc") => void;
-  sortVariablesForMyEvents: { element: string; order: "desc" | "asc" };
-  resetSortVariablesForMyEvents: () => void;
-  isSortVariablesForMyEventsDefault: boolean;
-  checkSortVariablesForMyEventsDefault: () => void;
+  handleSortFilterVariablesMyEventsElement: (element: string) => void;
+  handleSortFilterVariablesMyEventsOrder: (order: "desc" | "asc") => void;
+  SortFilterVariablesForMyEvents: { element: string; order: "desc" | "asc" };
+  resetSortFilterVariablesForMyEvents: () => void;
+  isSortFilterVariablesForMyEventsDefault: boolean;
+  checkSortFilterVariablesForMyEventsDefault: () => void;
   getLoginUserEventsDefault: () => Promise<void>;
 
-  handleSortVariablesNotMyEventsElement: (sortBy: string) => void;
-  handleSortVariablesNotMyEventsOrder: (order: "desc" | "asc") => void;
-  sortVariablesForEventsOtherThanLoginUser: {
+  handleSortFilterVariablesNotMyEventsElement: (sortBy: string) => void;
+  handleSortFilterVariablesNotMyEventsOrder: (order: "desc" | "asc") => void;
+  SortFilterVariablesForEventsOtherThanLoginUser: {
     sortBy: string;
     order: "desc" | "asc";
   };
-  isSortVariablesForEventsOtherThanLoginUserDefault: boolean;
+  isSortFilterVariablesForEventsOtherThanLoginUserDefault: boolean;
   getEventsOtherThanLoginUserWithSort: () => Promise<void>;
-  checkSortVariablesForNotMyEventsDefault: () => void;
-  resetSortVariablesForNotMyEvents: () => void;
+  checkSortFilterVariablesForNotMyEventsDefault: () => void;
+  resetSortFilterVariablesForNotMyEvents: () => void;
 
   AreMyPastEventsRemoved: boolean;
   setAreMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
@@ -109,30 +109,32 @@ export function EventProvider({ children }: EventProviderProps) {
   const [user] = useAuthState(auth);
   const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
   const [
-    isSortVariablesForMyEventsDefault,
-    setIsSortVariablesForMyEventsDefault,
+    isSortFilterVariablesForMyEventsDefault,
+    setIsSortFilterVariablesForMyEventsDefault,
   ] = useState(true);
-  const [sortVariablesForMyEvents, setSortVariablesForMyEvents] = useState<{
-    element: string;
-    order: "desc" | "asc";
-  }>({ element: "createdAt", order: "desc" });
+  const [SortFilterVariablesForMyEvents, setSortFilterVariablesForMyEvents] =
+    useState<{
+      element: string;
+      order: "desc" | "asc";
+    }>({ element: "createdAt", order: "desc" });
 
   const [
-    sortVariablesForEventsOtherThanLoginUser,
-    setSortVariablesForEventsOtherThanLoginUser,
+    SortFilterVariablesForEventsOtherThanLoginUser,
+    setSortFilterVariablesForEventsOtherThanLoginUser,
   ] = useState<{
     sortBy: string;
     order: "desc" | "asc";
   }>({ sortBy: "createdAt", order: "desc" });
   const [
-    isSortVariablesForEventsOtherThanLoginUserDefault,
-    setIsSortVariablesForEventsOtherThanLoginUserDefault,
+    isSortFilterVariablesForEventsOtherThanLoginUserDefault,
+    setIsSortFilterVariablesForEventsOtherThanLoginUserDefault,
   ] = useState<boolean>(true);
 
   const [AreMyPastEventsRemoved, setAreMyPastEventsRemoved] =
     useState<boolean>(false);
   const [AreNotMyPastEventsRemoved, setAreNotMyPastEventsRemoved] =
     useState<boolean>(false);
+
 
   // ======================
   // functions
@@ -160,26 +162,34 @@ export function EventProvider({ children }: EventProviderProps) {
         eventsCollectionRef,
         // where("createdBy", "==", user?.uid),
         orderBy(
-          sortVariablesForMyEvents.element,
-          sortVariablesForMyEvents.order
+          SortFilterVariablesForMyEvents.element,
+          SortFilterVariablesForMyEvents.order
         )
       );
       onSnapshot(q, (snapshot) => {
+        // Get the current date
+        const today = new Date();
+
+        // Get yesterday's date
+        const yesterday = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - 1
+        );
+
         let tempEvents: TypeEvent[] = AreMyPastEventsRemoved
           ? snapshot.docs
               .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
               .filter((doc) => doc.createdBy === user?.uid)
-              .filter((doc) => doc.eventDate.toDate() >= new Date())
+              .filter((doc) => doc.eventDate.toDate() >= yesterday)
           : snapshot.docs
               .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
               .filter((doc) => doc.createdBy === user?.uid);
 
         setLoginUserEvents(tempEvents);
-
       });
     }
   };
-
 
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
@@ -342,40 +352,40 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const handleSortVariablesMyEventsElement = (element: string) => {
-    setSortVariablesForMyEvents((prev) => ({ ...prev, element }));
+  const handleSortFilterVariablesMyEventsElement = (element: string) => {
+    setSortFilterVariablesForMyEvents((prev) => ({ ...prev, element }));
   };
 
-  const handleSortVariablesMyEventsOrder = (order: "desc" | "asc") => {
-    setSortVariablesForMyEvents((prev) => ({ ...prev, order }));
+  const handleSortFilterVariablesMyEventsOrder = (order: "desc" | "asc") => {
+    setSortFilterVariablesForMyEvents((prev) => ({ ...prev, order }));
   };
 
-  const checkSortVariablesForMyEventsDefault = () => {
+  const checkSortFilterVariablesForMyEventsDefault = () => {
     if (
-      sortVariablesForMyEvents.element === "createdAt" &&
-      sortVariablesForMyEvents.order === "desc"
+      SortFilterVariablesForMyEvents.element === "createdAt" &&
+      SortFilterVariablesForMyEvents.order === "desc"
     ) {
-      setIsSortVariablesForMyEventsDefault(true);
+      setIsSortFilterVariablesForMyEventsDefault(true);
     } else {
-      setIsSortVariablesForMyEventsDefault(false);
+      setIsSortFilterVariablesForMyEventsDefault(false);
     }
   };
 
-  const resetSortVariablesForMyEvents = () => {
-    setSortVariablesForMyEvents({ element: "createdAt", order: "desc" });
-    setIsSortVariablesForMyEventsDefault(true);
+  const resetSortFilterVariablesForMyEvents = () => {
+    setSortFilterVariablesForMyEvents({ element: "createdAt", order: "desc" });
+    setIsSortFilterVariablesForMyEventsDefault(true);
     getLoginUserEventsDefault();
   };
 
-  const handleSortVariablesNotMyEventsElement = (sortBy: string) => {
-    setSortVariablesForEventsOtherThanLoginUser((prev) => ({
+  const handleSortFilterVariablesNotMyEventsElement = (sortBy: string) => {
+    setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
       ...prev,
       sortBy,
     }));
   };
 
-  const handleSortVariablesNotMyEventsOrder = (order: "desc" | "asc") => {
-    setSortVariablesForEventsOtherThanLoginUser((prev) => ({
+  const handleSortFilterVariablesNotMyEventsOrder = (order: "desc" | "asc") => {
+    setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
       ...prev,
       order,
     }));
@@ -386,16 +396,26 @@ export function EventProvider({ children }: EventProviderProps) {
       const q = query(
         eventsCollectionRef,
         orderBy(
-          sortVariablesForEventsOtherThanLoginUser.sortBy,
-          sortVariablesForEventsOtherThanLoginUser.order
+          SortFilterVariablesForEventsOtherThanLoginUser.sortBy,
+          SortFilterVariablesForEventsOtherThanLoginUser.order
         )
       );
       onSnapshot(q, (snapshot) => {
+        // Get the current date
+        const today = new Date();
+
+        // Get yesterday's date
+        const yesterday = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - 1
+        );
+
         let tempEvents: TypeEvent[] = AreNotMyPastEventsRemoved
           ? snapshot.docs
               .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
               .filter((doc) => doc.createdBy !== user?.uid)
-              .filter((doc) => doc.eventDate.toDate() >= new Date())
+              .filter((doc) => doc.eventDate.toDate() >= yesterday)
           : snapshot.docs
               .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
               .filter((doc) => doc.createdBy !== user?.uid);
@@ -404,23 +424,23 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-  const checkSortVariablesForNotMyEventsDefault = () => {
+  const checkSortFilterVariablesForNotMyEventsDefault = () => {
     if (
-      sortVariablesForEventsOtherThanLoginUser.sortBy === "createdAt" &&
-      sortVariablesForEventsOtherThanLoginUser.order === "desc"
+      SortFilterVariablesForEventsOtherThanLoginUser.sortBy === "createdAt" &&
+      SortFilterVariablesForEventsOtherThanLoginUser.order === "desc"
     ) {
-      setIsSortVariablesForEventsOtherThanLoginUserDefault(true);
+      setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     } else {
-      setIsSortVariablesForEventsOtherThanLoginUserDefault(false);
+      setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(false);
     }
   };
 
-  const resetSortVariablesForNotMyEvents = () => {
-    setSortVariablesForEventsOtherThanLoginUser({
+  const resetSortFilterVariablesForNotMyEvents = () => {
+    setSortFilterVariablesForEventsOtherThanLoginUser({
       sortBy: "createdAt",
       order: "desc",
     });
-    setIsSortVariablesForEventsOtherThanLoginUserDefault(true);
+    setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     getEventsNotMine();
   };
 
@@ -452,21 +472,21 @@ export function EventProvider({ children }: EventProviderProps) {
         cheerEvent,
         removeCheerFromEvent,
 
-        handleSortVariablesMyEventsElement,
-        handleSortVariablesMyEventsOrder,
-        sortVariablesForMyEvents,
-        resetSortVariablesForMyEvents,
-        isSortVariablesForMyEventsDefault,
-        checkSortVariablesForMyEventsDefault,
+        handleSortFilterVariablesMyEventsElement,
+        handleSortFilterVariablesMyEventsOrder,
+        SortFilterVariablesForMyEvents,
+        resetSortFilterVariablesForMyEvents,
+        isSortFilterVariablesForMyEventsDefault,
+        checkSortFilterVariablesForMyEventsDefault,
         getLoginUserEventsDefault,
 
-        handleSortVariablesNotMyEventsElement,
-        handleSortVariablesNotMyEventsOrder,
-        sortVariablesForEventsOtherThanLoginUser,
-        isSortVariablesForEventsOtherThanLoginUserDefault,
+        handleSortFilterVariablesNotMyEventsElement,
+        handleSortFilterVariablesNotMyEventsOrder,
+        SortFilterVariablesForEventsOtherThanLoginUser,
+        isSortFilterVariablesForEventsOtherThanLoginUserDefault,
         getEventsOtherThanLoginUserWithSort,
-        checkSortVariablesForNotMyEventsDefault,
-        resetSortVariablesForNotMyEvents,
+        checkSortFilterVariablesForNotMyEventsDefault,
+        resetSortFilterVariablesForNotMyEvents,
 
         AreMyPastEventsRemoved,
         setAreMyPastEventsRemoved,

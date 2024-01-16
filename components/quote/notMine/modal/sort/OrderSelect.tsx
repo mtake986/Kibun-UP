@@ -10,15 +10,16 @@ import { useQuote } from "@/context/QuoteContext";
 import { TypeSortOrder } from "@/types/type";
 
 const OrderSelect = () => {
-  const { updateSortVariablesForNotMine, sortVariablesForNotMine } = useQuote();
+  const { updateSortFilterVariablesForNotMine, SortFilterVariablesForNotMine } =
+    useQuote();
 
   return (
     <Select
       onValueChange={(ele: TypeSortOrder) => {
-        updateSortVariablesForNotMine("order", ele);
+        updateSortFilterVariablesForNotMine("order", ele);
       }}
-      value={sortVariablesForNotMine.order}
-      defaultValue={sortVariablesForNotMine.order}
+      value={SortFilterVariablesForNotMine.order}
+      defaultValue={SortFilterVariablesForNotMine.order}
     >
       <SelectTrigger>
         <SelectValue placeholder="Sort Order" />

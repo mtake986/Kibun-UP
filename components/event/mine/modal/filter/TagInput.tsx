@@ -4,35 +4,36 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const TagInput = () => {
   const {
-    updateSortFilterVariablesForNotMine,
-    SortFilterVariablesForNotMine,
-    isTagToFilterNotMyQuotesDisabled,
-    setIsTagToFilterNotMyQuotesDisabled,
+    updateSortFilterVariablesForMine,
+    SortFilterVariablesForMine,
+    isTagToFilterMyQuotesDisabled,
+    setIsTagToFilterMyQuotesDisabled,
   } = useQuote();
+
   return (
     <div>
       <div className="mb-2 flex items-center space-x-2">
         <Checkbox
-          id="tag-filter-checkbox"
-          checked={isTagToFilterNotMyQuotesDisabled}
+          id="disabled"
+          checked={isTagToFilterMyQuotesDisabled}
           onClick={() => {
-            setIsTagToFilterNotMyQuotesDisabled((prev) => !prev);
+            setIsTagToFilterMyQuotesDisabled((prev) => !prev);
           }}
         />
         <label
-          htmlFor="tag-filter-checkbox"
+          htmlFor="disabled"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Disabled
         </label>
       </div>
-      {isTagToFilterNotMyQuotesDisabled ? null : (
+      {isTagToFilterMyQuotesDisabled ? null : (
         <Input
           onChange={(e) => {
-            updateSortFilterVariablesForNotMine("tag", e.target.value);
+            updateSortFilterVariablesForMine("tag", e.target.value);
           }}
           placeholder="Motivation"
-          value={SortFilterVariablesForNotMine.searchTag}
+          value={SortFilterVariablesForMine.searchTag}
         />
       )}
     </div>

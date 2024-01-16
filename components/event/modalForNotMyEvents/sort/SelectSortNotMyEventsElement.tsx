@@ -11,17 +11,17 @@ import { useSearchParams } from "next/navigation";
 
 const SelectSortNotMyEventsElement = () => {
   const {
-    handleSortVariablesNotMyEventsElement,
-    sortVariablesForEventsOtherThanLoginUser,
+    handleSortFilterVariablesNotMyEventsElement,
+    SortFilterVariablesForEventsOtherThanLoginUser,
   } = useEvent();
 
   return (
     <Select
       onValueChange={(ele) => {
-        handleSortVariablesNotMyEventsElement(ele);
+        handleSortFilterVariablesNotMyEventsElement(ele);
       }}
-      value={sortVariablesForEventsOtherThanLoginUser.sortBy}
-      defaultValue={sortVariablesForEventsOtherThanLoginUser.sortBy}
+      value={SortFilterVariablesForEventsOtherThanLoginUser.sortBy}
+      defaultValue={SortFilterVariablesForEventsOtherThanLoginUser.sortBy}
     >
       <SelectTrigger className="w-full text-xs">
         <SelectValue placeholder="By" />

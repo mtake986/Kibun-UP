@@ -13,17 +13,17 @@ import Filter from "./filter/Filter";
 
 const ModalForNotMyEvents = () => {
   const {
-    isSortVariablesForEventsOtherThanLoginUserDefault,
+    isSortFilterVariablesForEventsOtherThanLoginUserDefault,
     getEventsOtherThanLoginUserWithSort,
-    checkSortVariablesForNotMyEventsDefault,
-    resetSortVariablesForNotMyEvents,
+    checkSortFilterVariablesForNotMyEventsDefault,
+    resetSortFilterVariablesForNotMyEvents,
     AreNotMyPastEventsRemoved,
   } = useEvent();
 
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        {!isSortVariablesForEventsOtherThanLoginUserDefault ||
+        {!isSortFilterVariablesForEventsOtherThanLoginUserDefault ||
         AreNotMyPastEventsRemoved ? (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
         ) : null}
@@ -36,7 +36,7 @@ const ModalForNotMyEvents = () => {
             e.preventDefault();
             try {
               getEventsOtherThanLoginUserWithSort();
-              checkSortVariablesForNotMyEventsDefault();
+              checkSortFilterVariablesForNotMyEventsDefault();
             } catch (error) {
               displayErrorToast(error);
             }
@@ -54,7 +54,7 @@ const ModalForNotMyEvents = () => {
               className="w-full"
               type="reset"
               onClick={() => {
-                resetSortVariablesForNotMyEvents();
+                resetSortFilterVariablesForNotMyEvents();
               }}
             >
               Reset

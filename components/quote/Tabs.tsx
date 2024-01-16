@@ -10,9 +10,9 @@ const SwitchTab = () => {
   const {
     loginUserQuotes,
     quotesNotMine,
-    isSortVariablesForMineDefaultValue,
+    isSortFilterVariablesForMineDefaultValue,
     sortedFilteredMyQuotes,
-    isSortVariablesForNotMineDefaultValue,
+    isSortFilterVariablesForNotMineDefaultValue,
     sortedFilteredNotMyQuotes,
   } = useQuote();
 
@@ -28,7 +28,7 @@ const SwitchTab = () => {
         return (
           <List
             quotes={
-              isSortVariablesForMineDefaultValue
+              isSortFilterVariablesForMineDefaultValue
                 ? loginUserQuotes
                 : sortedFilteredMyQuotes
             }
@@ -38,7 +38,7 @@ const SwitchTab = () => {
         return (
           <ListNotMine
             quotes={
-              isSortVariablesForNotMineDefaultValue
+              isSortFilterVariablesForNotMineDefaultValue
                 ? quotesNotMine
                 : sortedFilteredNotMyQuotes
             }
@@ -50,7 +50,7 @@ const SwitchTab = () => {
         return (
           <List
             quotes={
-              isSortVariablesForMineDefaultValue
+              isSortFilterVariablesForMineDefaultValue
                 ? loginUserQuotes
                 : sortedFilteredMyQuotes
             }

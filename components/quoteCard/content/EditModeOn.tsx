@@ -12,18 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { auth } from "@/config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TypeQuote, ITag, TypeTagErrors, TypeTagError } from "@/types/type";
 import { quoteSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
 import { MdClose } from "react-icons/md";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { changeTagColor } from "@/functions/functions";
-
 import {
   Select,
   SelectContent,
