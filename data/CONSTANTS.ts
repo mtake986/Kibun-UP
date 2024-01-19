@@ -142,4 +142,5 @@ export const SORT_FILTER_VARIABLES_EVENTS: TypeSortFilterVariablesEvents = {
   order: "desc",
   isTagDisabled: true,
   searchTagName: "",
+  remove: []
 };

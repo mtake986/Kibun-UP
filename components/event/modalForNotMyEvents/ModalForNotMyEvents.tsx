@@ -17,14 +17,14 @@ const ModalForNotMyEvents = () => {
     getEventsOtherThanLoginUserWithSort,
     checkSortFilterVariablesForNotMyEventsDefault,
     resetSortFilterVariablesForNotMyEvents,
-    AreNotMyPastEventsRemoved,
+    areNotMyPastEventsRemoved,
   } = useEvent();
 
   return (
     <Dialog>
       <DialogTrigger className="relative">
         {!isSortFilterVariablesForEventsOtherThanLoginUserDefault ||
-        AreNotMyPastEventsRemoved ? (
+        areNotMyPastEventsRemoved ? (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
         ) : null}
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />

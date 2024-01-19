@@ -19,8 +19,8 @@ const SelectSortMyEventsElement = () => {
       onValueChange={(ele) => {
         handleSortFilterVariablesMyEventsElement(ele);
       }}
-      value={sortFilterVariablesForMyEvents.element}
-      defaultValue={sortFilterVariablesForMyEvents.element}
+      value={sortFilterVariablesForMyEvents.sortBy}
+      defaultValue={sortFilterVariablesForMyEvents.sortBy}
     >
       <SelectTrigger className="w-full text-xs">
         <SelectValue placeholder="By" />

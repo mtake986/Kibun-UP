@@ -25,6 +25,7 @@ import {
   TypeEvent,
   TypeEventInputValues,
   TypeSortFilterVariablesEvents,
+  TypeTypeSortFilterVariablesEventsRemove,
 } from "@/types/type";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getRandomNum } from "@/functions/functions";
@@ -87,11 +88,18 @@ type EventContextType = {
   checkSortFilterVariablesForNotMyEventsDefault: () => void;
   resetSortFilterVariablesForNotMyEvents: () => void;
 
-  AreMyPastEventsRemoved: boolean;
+  areMyPastEventsRemoved: boolean;
   setAreMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
 
-  AreNotMyPastEventsRemoved: boolean;
+  areNotMyPastEventsRemoved: boolean;
   setAreNotMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
+
+  getEventsWithSortAndFilter: (
+    who: "loginUser" | "notLoginUser"
+  ) => Promise<void>;
+  handleSortFilterVariablesMyEventsRemove: (
+    removeType: TypeTypeSortFilterVariablesEventsRemove
+  ) => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -119,30 +127,20 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsSortFilterVariablesForMyEventsDefault,
   ] = useState(true);
   const [sortFilterVariablesForMyEvents, setSortFilterVariablesForMyEvents] =
-    useState<TypeSortFilterVariablesEvents>({
-      sortBy: "createdAt",
-      order: "desc",
-      isTagDisabled: true,
-      searchTagName: "",
-    });
+    useState<TypeSortFilterVariablesEvents>(SORT_FILTER_VARIABLES_EVENTS);
 
   const [
     sortFilterVariablesForEventsOtherThanLoginUser,
     setSortFilterVariablesForEventsOtherThanLoginUser,
-  ] = useState<TypeSortFilterVariablesEvents>({
-    sortBy: "createdAt",
-    order: "desc",
-    isTagDisabled: true,
-    searchTagName: "",
-  });
+  ] = useState<TypeSortFilterVariablesEvents>(SORT_FILTER_VARIABLES_EVENTS);
   const [
     isSortFilterVariablesForEventsOtherThanLoginUserDefault,
     setIsSortFilterVariablesForEventsOtherThanLoginUserDefault,
   ] = useState<boolean>(true);
 
-  const [AreMyPastEventsRemoved, setAreMyPastEventsRemoved] =
+  const [areMyPastEventsRemoved, setAreMyPastEventsRemoved] =
     useState<boolean>(false);
-  const [AreNotMyPastEventsRemoved, setAreNotMyPastEventsRemoved] =
+  const [areNotMyPastEventsRemoved, setAreNotMyPastEventsRemoved] =
     useState<boolean>(false);
 
   // ======================
@@ -202,36 +200,6 @@ export function EventProvider({ children }: EventProviderProps) {
           }
         }
       });
-      // onSnapshot(q, (snapshot) => {
-      //   // Get the current date
-      //   const today = new Date();
-
-      //   // Get yesterday's date
-      //   const yesterday = new Date(
-      //     today.getFullYear(),
-      //     today.getMonth(),
-      //     today.getDate() - 1
-      //   );
-
-      //   let tempEvents: TypeEvent[] = AreMyPastEventsRemoved
-      //     ? snapshot.docs
-      //         .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-      //         .filter((doc) => doc.createdBy === user?.uid)
-      //         .filter((doc) => doc.eventDate.toDate() >= yesterday)
-      //     : snapshot.docs
-      //         .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-      //         .filter((doc) => doc.createdBy === user?.uid);
-
-      //   // if (!sortFilterVariablesForMyEvents.isTagDisabled) {
-      //   //   tempEvents.filter((doc) =>
-      //   //     doc?.tags?.some(
-      //   //       (tag) => tag.name === sortFilterVariablesForMyEvents.searchTagName
-      //   //     )
-      //   //   );
-      //   //   console.log("tag filter");
-      //   // }
-      //   setLoginUserEvents(tempEvents);
-      // });
       setLoginUserEvents(tempEvents.filter((q) => q.createdBy === user?.uid));
     }
   };
@@ -397,6 +365,80 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
+  const getEventsWithSortAndFilter = async (
+    who: "loginUser" | "notLoginUser"
+  ) => {
+    if (user?.uid) {
+      const q = query(
+        eventsCollectionRef,
+        // where("createdBy", "==", user?.uid),
+        orderBy(
+          sortFilterVariablesForMyEvents.sortBy,
+          sortFilterVariablesForMyEvents.order
+        )
+      );
+      const querySnapshot = await getDocs(q);
+      // Get the current date
+      const today = new Date();
+
+      // Get yesterday's date
+      const yesterday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - 1
+      );
+      let tempEvents: TypeEvent[] = [];
+      querySnapshot.forEach((doc) => {
+        // No need to filter by tag
+        if (sortFilterVariablesForMyEvents.isTagDisabled) {
+          tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
+        }
+        // If searchTag is empty, leave quotes who have no tags
+        else if (sortFilterVariablesForMyEvents.searchTagName === "") {
+          if (doc.data().tags?.length === 0) {
+            tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
+          }
+        }
+        // If searchTag is not empty, filter by searchTag
+        else {
+          if (
+            doc
+              .data()
+              .tags?.some(
+                (tag: { color: string; name: string }) =>
+                  tag.name === sortFilterVariablesForMyEvents.searchTagName
+              )
+          ) {
+            tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
+          }
+        }
+      });
+
+      if (who === "loginUser") {
+        tempEvents = tempEvents.filter((q) => q.createdBy === user?.uid);
+        if (sortFilterVariablesForMyEvents.remove.includes("future")) {
+          tempEvents = tempEvents.filter(
+            (doc) => doc.eventDate.toDate() < yesterday
+          );
+        }
+        if (sortFilterVariablesForMyEvents.remove.includes("past")) {
+          tempEvents = tempEvents.filter(
+            (doc) => doc.eventDate.toDate() >= yesterday
+          );
+        }
+        setLoginUserEvents(tempEvents);
+      } else {
+        tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
+        if (areNotMyPastEventsRemoved) {
+          tempEvents = tempEvents.filter(
+            (doc) => doc.eventDate.toDate() >= yesterday
+          );
+        }
+        setEventsNotMine(tempEvents);
+      }
+    }
+  };
+
   // My events variables
   const handleSortFilterVariablesMyEventsElement = (element: string) => {
     setSortFilterVariablesForMyEvents((prev) => ({ ...prev, element }));
@@ -414,9 +456,14 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const checkSortFilterVariablesForMyEventsDefault = () => {
     if (
-      sortFilterVariablesForMyEvents.sortBy === "createdAt" &&
-      sortFilterVariablesForMyEvents.order === "desc" &&
-      sortFilterVariablesForMyEvents.isTagDisabled === true
+      sortFilterVariablesForMyEvents.sortBy ===
+        SORT_FILTER_VARIABLES_EVENTS.sortBy &&
+      sortFilterVariablesForMyEvents.order ===
+        SORT_FILTER_VARIABLES_EVENTS.order &&
+      sortFilterVariablesForMyEvents.isTagDisabled ===
+        SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
+      sortFilterVariablesForMyEvents.remove ===
+        SORT_FILTER_VARIABLES_EVENTS.remove
     ) {
       setIsSortFilterVariablesForMyEventsDefault(true);
     } else {
@@ -436,6 +483,25 @@ export function EventProvider({ children }: EventProviderProps) {
       ...sortFilterVariablesForMyEvents,
       searchTagName: tagName,
     });
+  };
+
+  const handleSortFilterVariablesMyEventsRemove = (
+    removeType: TypeTypeSortFilterVariablesEventsRemove
+  ) => {
+    if (sortFilterVariablesForMyEvents.remove.includes(removeType)) {
+      const index = sortFilterVariablesForMyEvents.remove.indexOf(removeType);
+      const prevArr = sortFilterVariablesForMyEvents.remove;
+      prevArr.splice(index, 1);
+      setSortFilterVariablesForMyEvents((prev) => ({
+        ...prev,
+        remove: prevArr,
+      }));
+    } else {
+      setSortFilterVariablesForMyEvents((prev) => ({
+        ...prev,
+        remove: prev.remove.concat(removeType),
+      }));
+    }
   };
 
   // Not my events variables
@@ -473,7 +539,7 @@ export function EventProvider({ children }: EventProviderProps) {
           today.getDate() - 1
         );
 
-        let tempEvents: TypeEvent[] = AreNotMyPastEventsRemoved
+        let tempEvents: TypeEvent[] = areNotMyPastEventsRemoved
           ? snapshot.docs
               .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
               .filter((doc) => doc.createdBy !== user?.uid)
@@ -553,10 +619,13 @@ export function EventProvider({ children }: EventProviderProps) {
         checkSortFilterVariablesForNotMyEventsDefault,
         resetSortFilterVariablesForNotMyEvents,
 
-        AreMyPastEventsRemoved,
+        areMyPastEventsRemoved,
         setAreMyPastEventsRemoved,
-        AreNotMyPastEventsRemoved,
+        areNotMyPastEventsRemoved,
         setAreNotMyPastEventsRemoved,
+
+        getEventsWithSortAndFilter,
+        handleSortFilterVariablesMyEventsRemove,
       }}
     >
       {children}

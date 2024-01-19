@@ -26,15 +26,14 @@ const TagInput = () => {
           Disabled
         </label>
       </div>
-      {sortFilterVariablesForMyEvents.isTagDisabled ? null : (
-        <Input
-          onChange={(e) => {
-            handleSortFilterVariablesMyEventsSearchTagName(e.target.value);
-          }}
-          placeholder="Motivation"
-          value={sortFilterVariablesForMyEvents.searchTagName}
-        />
-      )}
+      <Input
+        onChange={(e) => {
+          handleSortFilterVariablesMyEventsSearchTagName(e.target.value);
+        }}
+        placeholder="Motivation"
+        value={sortFilterVariablesForMyEvents.searchTagName}
+        disabled={sortFilterVariablesForMyEvents.isTagDisabled}
+      />
     </div>
   );
 };
