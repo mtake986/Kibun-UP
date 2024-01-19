@@ -1,39 +1,38 @@
 import { Input } from "@/components/ui/input";
-import { useQuote } from "@/context/QuoteContext";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useEvent } from "@/context/EventContext";
 
 const TagInput = () => {
   const {
-    updateSortFilterVariablesForMine,
-    SortFilterVariablesForMine,
-    isTagToFilterMyQuotesDisabled,
-    setIsTagToFilterMyQuotesDisabled,
-  } = useQuote();
+    handleSortFilterVariablesMyEventsTagDisabled,
+    sortFilterVariablesForMyEvents,
+    handleSortFilterVariablesMyEventsSearchTagName,
+  } = useEvent();
 
   return (
     <div>
       <div className="mb-2 flex items-center space-x-2">
         <Checkbox
-          id="disabled"
-          checked={isTagToFilterMyQuotesDisabled}
+          id="tagDisabled"
+          checked={sortFilterVariablesForMyEvents.isTagDisabled}
           onClick={() => {
-            setIsTagToFilterMyQuotesDisabled((prev) => !prev);
+            handleSortFilterVariablesMyEventsTagDisabled();
           }}
         />
         <label
-          htmlFor="disabled"
+          htmlFor="tagDisabled"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Disabled
         </label>
       </div>
-      {isTagToFilterMyQuotesDisabled ? null : (
+      {sortFilterVariablesForMyEvents.isTagDisabled ? null : (
         <Input
           onChange={(e) => {
-            updateSortFilterVariablesForMine("tag", e.target.value);
+            handleSortFilterVariablesMyEventsSearchTagName(e.target.value);
           }}
           placeholder="Motivation"
-          value={SortFilterVariablesForMine.searchTag}
+          value={sortFilterVariablesForMyEvents.searchTagName}
         />
       )}
     </div>

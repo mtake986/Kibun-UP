@@ -23,7 +23,7 @@ const Info: React.FC<InfoProps> = ({ icon, text }) => (
 );
 const Content = ({ event }: Props) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col space-y-3">
       <h3 className="text-center text-2xl font-semibold">{event.eventTitle}</h3>
 
       {event.place ? (
@@ -47,8 +47,8 @@ const Content = ({ event }: Props) => {
       ) : null}
       {event.description ? (
         <Info icon={<BiInfoCircle size={16} />} text={event.description} />
-      ) : null} 
-      {event?.tags ? <Tags tags={event.tags} /> : null}
+      ) : null}
+      {event?.tags && event?.tags?.length >= 1 ? <Tags tags={event.tags} /> : null}
     </div>
   );
 };

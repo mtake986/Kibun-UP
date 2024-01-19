@@ -185,3 +185,10 @@ export type TypeProposal = {
 
 export type TypeProposalStatusValue = "open" | "closed" | "inProgress";
 export type TypeProposalStatusLabel = "Open" | "Closed" | "In Progress";
+
+export type TypeSortFilterVariablesEvents = {
+  sortBy: string;
+  order: "desc" | "asc";
+  isTagDisabled: boolean;
+  searchTagName: string;
+};
