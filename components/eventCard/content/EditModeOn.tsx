@@ -57,7 +57,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  const { handleUpdate, fetchProfileUserEvents, getLoginUserEventsDefault } =
+  const { handleUpdate, getEventsWithSortAndFilter, fetchProfileUserEvents } =
     useEvent();
   const pathname = usePathname();
     const [inputTagName, setInputTagName] = useState("");
@@ -171,16 +171,14 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-      console.log("1");
-
+    values.tags = inputTags;
     handleUpdate(values, event.id)
       .then(() => {
         if (pathname.includes("profile")) {
           fetchProfileUserEvents(event.createdBy);
         } else {
-          getLoginUserEventsDefault();
+          getEventsWithSortAndFilter('loginUser');
         }
-        console.log('2')
         setIsPending(false);
         setIsUpdateMode(false);
       })
@@ -188,7 +186,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
         setIsPending(false);
         displayErrorToast(err);
       });
-      console.log("3");
   }
 
   return (

@@ -12,7 +12,7 @@ const Tabs = () => {
   const currTab = searchParams.get("tab");
 
   const { loginUserEvents, eventsNotMine } = useEvent();
-  const { loginUser } = useAuth();
+
   // functions =====
   const displayList = () => {
     switch (currTab) {

@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 
 const Modal = () => {
   const {
-    getLoginUserEventsWithSort,
     resetSortFilterVariablesForMyEvents,
     isSortFilterVariablesForMyEventsDefault,
     checkSortFilterVariablesForMyEventsDefault,

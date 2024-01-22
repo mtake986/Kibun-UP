@@ -87,7 +87,7 @@ const Footer = () => {
           {footerListItems.map((item, i) => {
             if (pathname.includes(item.href)) {
               return (
-                <button disabled={true} className="opacity-50 text-violet-500" key={item.href}>
+                <button disabled={true} className="opacity-50 text-violet-500 dark:text-white" key={item.href}>
                   {icons[i]}
                 </button>
               );
