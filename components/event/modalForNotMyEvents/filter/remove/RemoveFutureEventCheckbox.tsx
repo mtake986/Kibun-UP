@@ -4,16 +4,19 @@ import React from "react";
 
 const RemoveFutureEventCheckbox = () => {
   const {
-    handleSortFilterVariablesMyEventsRemove,
-    sortFilterVariablesForMyEvents,
+    handleSortFilterVariablesNotMyEventsRemove,
+    sortFilterVariablesForEventsOtherThanLoginUser,
   } = useEvent();
+
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
         id="removeFutureEventsCheckbox"
-        checked={sortFilterVariablesForMyEvents.remove.includes('future')}
+        checked={sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(
+          "future"
+        )}
         onClick={() => {
-          handleSortFilterVariablesMyEventsRemove('future');
+          handleSortFilterVariablesNotMyEventsRemove("future");
         }}
       />
       <label

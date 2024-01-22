@@ -18,6 +18,7 @@ const ModalForNotMyEvents = () => {
     checkSortFilterVariablesForNotMyEventsDefault,
     resetSortFilterVariablesForNotMyEvents,
     areNotMyPastEventsRemoved,
+    getEventsWithSortAndFilter,
   } = useEvent();
 
   return (
@@ -35,7 +36,7 @@ const ModalForNotMyEvents = () => {
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              getEventsOtherThanLoginUserWithSort();
+              getEventsWithSortAndFilter('notLoginUser');
               checkSortFilterVariablesForNotMyEventsDefault();
             } catch (error) {
               displayErrorToast(error);

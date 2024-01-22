@@ -78,6 +78,9 @@ type EventContextType = {
   getLoginUserEventsDefault: () => Promise<void>;
   handleSortFilterVariablesMyEventsTagDisabled: () => void;
   handleSortFilterVariablesMyEventsSearchTagName: (tagName: string) => void;
+  handleSortFilterVariablesMyEventsRemove: (
+    removeType: TypeTypeSortFilterVariablesEventsRemove
+  ) => void;
 
   // not my events sort filter varialbes
   handleSortFilterVariablesNotMyEventsElement: (sortBy: string) => void;
@@ -87,6 +90,9 @@ type EventContextType = {
   getEventsOtherThanLoginUserWithSort: () => Promise<void>;
   checkSortFilterVariablesForNotMyEventsDefault: () => void;
   resetSortFilterVariablesForNotMyEvents: () => void;
+  handleSortFilterVariablesNotMyEventsRemove: (
+    removeType: TypeTypeSortFilterVariablesEventsRemove
+  ) => void;
 
   areMyPastEventsRemoved: boolean;
   setAreMyPastEventsRemoved: React.Dispatch<React.SetStateAction<boolean>>;
@@ -97,9 +103,6 @@ type EventContextType = {
   getEventsWithSortAndFilter: (
     who: "loginUser" | "notLoginUser"
   ) => Promise<void>;
-  handleSortFilterVariablesMyEventsRemove: (
-    removeType: TypeTypeSortFilterVariablesEventsRemove
-  ) => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -429,7 +432,12 @@ export function EventProvider({ children }: EventProviderProps) {
         setLoginUserEvents(tempEvents);
       } else {
         tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
-        if (areNotMyPastEventsRemoved) {
+        if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("future")) {
+          tempEvents = tempEvents.filter(
+            (doc) => doc.eventDate.toDate() < yesterday
+          );
+        }
+        if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")) {
           tempEvents = tempEvents.filter(
             (doc) => doc.eventDate.toDate() >= yesterday
           );
@@ -554,8 +562,14 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const checkSortFilterVariablesForNotMyEventsDefault = () => {
     if (
-      sortFilterVariablesForEventsOtherThanLoginUser.sortBy === "createdAt" &&
-      sortFilterVariablesForEventsOtherThanLoginUser.order === "desc"
+      sortFilterVariablesForEventsOtherThanLoginUser.sortBy ===
+        SORT_FILTER_VARIABLES_EVENTS.sortBy &&
+      sortFilterVariablesForEventsOtherThanLoginUser.order ===
+        SORT_FILTER_VARIABLES_EVENTS.order &&
+      sortFilterVariablesForEventsOtherThanLoginUser.isTagDisabled ===
+        SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
+      sortFilterVariablesForEventsOtherThanLoginUser.remove ===
+        SORT_FILTER_VARIABLES_EVENTS.remove
     ) {
       setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     } else {
@@ -570,6 +584,27 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     getEventsNotMine();
   };
+
+
+  const handleSortFilterVariablesNotMyEventsRemove = (
+    removeType: TypeTypeSortFilterVariablesEventsRemove
+  ) => {
+    if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(removeType)) {
+      const index = sortFilterVariablesForEventsOtherThanLoginUser.remove.indexOf(removeType);
+      const prevArr = sortFilterVariablesForEventsOtherThanLoginUser.remove;
+      prevArr.splice(index, 1);
+      setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
+        ...prev,
+        remove: prevArr,
+      }));
+    } else {
+      setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
+        ...prev,
+        remove: prev.remove.concat(removeType),
+      }));
+    }
+  };
+
 
   return (
     <EventContext.Provider
@@ -609,6 +644,7 @@ export function EventProvider({ children }: EventProviderProps) {
         getLoginUserEventsDefault,
         handleSortFilterVariablesMyEventsTagDisabled,
         handleSortFilterVariablesMyEventsSearchTagName,
+        handleSortFilterVariablesMyEventsRemove,
 
         // not my events sort filter varialbes
         handleSortFilterVariablesNotMyEventsElement,
@@ -618,6 +654,7 @@ export function EventProvider({ children }: EventProviderProps) {
         getEventsOtherThanLoginUserWithSort,
         checkSortFilterVariablesForNotMyEventsDefault,
         resetSortFilterVariablesForNotMyEvents,
+        handleSortFilterVariablesNotMyEventsRemove,
 
         areMyPastEventsRemoved,
         setAreMyPastEventsRemoved,
@@ -625,7 +662,7 @@ export function EventProvider({ children }: EventProviderProps) {
         setAreNotMyPastEventsRemoved,
 
         getEventsWithSortAndFilter,
-        handleSortFilterVariablesMyEventsRemove,
+
       }}
     >
       {children}
