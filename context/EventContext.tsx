@@ -236,17 +236,6 @@ export function EventProvider({ children }: EventProviderProps) {
     } catch (error) {
       displayErrorToast(error);
     }
-
-    if (lockedEvent?.id === eid) {
-      // alert(lockedEvent?.id + "," + eid);
-      const lockedEventDocRef = user && doc(db, "lockedEvents", user.uid);
-      if (lockedEventDocRef) {
-        await updateDoc(lockedEventDocRef, {
-          ...values,
-          updatedAt: serverTimestamp(),
-        });
-      }
-    }
   };
 
   const handleDelete = async (id: string) => {
