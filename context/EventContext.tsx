@@ -61,7 +61,6 @@ type EventContextType = {
   isRegisterFormOpen: boolean;
   toggleRegisterFormOpen: () => void;
 
-  isUpdateLoading: boolean;
   fetchProfileUserEvents: (uid: string) => Promise<void>;
   profileUserEvents: TypeEvent[] | [];
 
@@ -124,7 +123,6 @@ export function EventProvider({ children }: EventProviderProps) {
   const eventsCollectionRef = collection(db, "events");
   const lockedEventsCollectionRef = collection(db, "lockedEvents");
   const [user] = useAuthState(auth);
-  const [isUpdateLoading, setIsUpdateLoading] = useState<boolean>(false);
   const [
     isSortFilterVariablesForMyEventsDefault,
     setIsSortFilterVariablesForMyEventsDefault,
@@ -457,7 +455,6 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleSortFilterVariablesMyEventsElement = (sortBy: string) => {
     setSortFilterVariablesForMyEvents((prev) => ({ ...prev, sortBy }));
   };
-
   const handleSortFilterVariablesMyEventsOrder = (order: "desc" | "asc") => {
     setSortFilterVariablesForMyEvents((prev) => ({ ...prev, order }));
   };
@@ -467,7 +464,6 @@ export function EventProvider({ children }: EventProviderProps) {
       isTagDisabled: !sortFilterVariablesForMyEvents.isTagDisabled,
     });
   };
-
   const checkSortFilterVariablesForMyEventsDefault = () => {
     if (
       sortFilterVariablesForMyEvents.sortBy ===
@@ -483,21 +479,18 @@ export function EventProvider({ children }: EventProviderProps) {
       setIsSortFilterVariablesForMyEventsDefault(false);
     }
   };
-
   const resetSortFilterVariablesForMyEvents = () => {
     setSortFilterVariablesForMyEvents(SORT_FILTER_VARIABLES_EVENTS);
     setIsSortFilterVariablesForMyEventsDefault(true);
     setAreMyPastEventsRemoved(false);
     getLoginUserEventsDefault();
   };
-
   const handleSortFilterVariablesMyEventsSearchTagName = (tagName: string) => {
     setSortFilterVariablesForMyEvents({
       ...sortFilterVariablesForMyEvents,
       searchTagName: tagName,
     });
   };
-
   const handleSortFilterVariablesMyEventsRemove = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
@@ -525,14 +518,12 @@ export function EventProvider({ children }: EventProviderProps) {
       sortBy,
     }));
   };
-
   const handleSortFilterVariablesNotMyEventsOrder = (order: "desc" | "asc") => {
     setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
       ...prev,
       order,
     }));
   };
-
   const getEventsOtherThanLoginUserWithSort = async () => {
     if (user?.uid) {
       const q = query(
@@ -565,7 +556,6 @@ export function EventProvider({ children }: EventProviderProps) {
       });
     }
   };
-
   const checkSortFilterVariablesForNotMyEventsDefault = () => {
     console.log(sortFilterVariablesForEventsOtherThanLoginUser);
     if (
@@ -582,7 +572,6 @@ export function EventProvider({ children }: EventProviderProps) {
       setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(false);
     }
   };
-
   const resetSortFilterVariablesForNotMyEvents = () => {
     setSortFilterVariablesForEventsOtherThanLoginUser(
       SORT_FILTER_VARIABLES_EVENTS
@@ -590,7 +579,6 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     getEventsNotMine();
   };
-
   const handleSortFilterVariablesNotMyEventsRemove = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
@@ -639,7 +627,6 @@ export function EventProvider({ children }: EventProviderProps) {
         isRegisterFormOpen,
         toggleRegisterFormOpen,
 
-        isUpdateLoading,
         fetchProfileUserEvents,
         profileUserEvents,
         cheerEvent,

@@ -171,13 +171,14 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // Add a new document with a generated id.
-      console.log("1");
-
+    console.log("1", inputTags);
+    values.tags = inputTags;
     handleUpdate(values, event.id)
       .then(() => {
         if (pathname.includes("profile")) {
           fetchProfileUserEvents(event.createdBy);
         } else {
+          // todo: fix below, while sort and filter is applied, no need to reset
           getLoginUserEventsDefault();
         }
         console.log('2')
