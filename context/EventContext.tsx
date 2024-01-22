@@ -432,12 +432,18 @@ export function EventProvider({ children }: EventProviderProps) {
         setLoginUserEvents(tempEvents);
       } else {
         tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
-        if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("future")) {
+        if (
+          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(
+            "future"
+          )
+        ) {
           tempEvents = tempEvents.filter(
             (doc) => doc.eventDate.toDate() < yesterday
           );
         }
-        if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")) {
+        if (
+          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")
+        ) {
           tempEvents = tempEvents.filter(
             (doc) => doc.eventDate.toDate() >= yesterday
           );
@@ -448,8 +454,8 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   // My events variables
-  const handleSortFilterVariablesMyEventsElement = (element: string) => {
-    setSortFilterVariablesForMyEvents((prev) => ({ ...prev, element }));
+  const handleSortFilterVariablesMyEventsElement = (sortBy: string) => {
+    setSortFilterVariablesForMyEvents((prev) => ({ ...prev, sortBy }));
   };
 
   const handleSortFilterVariablesMyEventsOrder = (order: "desc" | "asc") => {
@@ -497,11 +503,12 @@ export function EventProvider({ children }: EventProviderProps) {
   ) => {
     if (sortFilterVariablesForMyEvents.remove.includes(removeType)) {
       const index = sortFilterVariablesForMyEvents.remove.indexOf(removeType);
-      const prevArr = sortFilterVariablesForMyEvents.remove;
-      prevArr.splice(index, 1);
+      const newRemoveArray = [...sortFilterVariablesForMyEvents.remove];
+      newRemoveArray.splice(index, 1);
+
       setSortFilterVariablesForMyEvents((prev) => ({
         ...prev,
-        remove: prevArr,
+        remove: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForMyEvents((prev) => ({
@@ -560,7 +567,7 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const checkSortFilterVariablesForNotMyEventsDefault = () => {
-  console.log(sortFilterVariablesForEventsOtherThanLoginUser);
+    console.log(sortFilterVariablesForEventsOtherThanLoginUser);
     if (
       sortFilterVariablesForEventsOtherThanLoginUser.sortBy ===
         SORT_FILTER_VARIABLES_EVENTS.sortBy &&
@@ -584,17 +591,23 @@ export function EventProvider({ children }: EventProviderProps) {
     getEventsNotMine();
   };
 
-
   const handleSortFilterVariablesNotMyEventsRemove = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
-    if (sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(removeType)) {
-      const index = sortFilterVariablesForEventsOtherThanLoginUser.remove.indexOf(removeType);
-      const prevArr = sortFilterVariablesForEventsOtherThanLoginUser.remove;
-      prevArr.splice(index, 1);
+    if (
+      sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(removeType)
+    ) {
+      const index =
+        sortFilterVariablesForEventsOtherThanLoginUser.remove.indexOf(
+          removeType
+        );
+      const newRemoveArray = [
+        ...sortFilterVariablesForEventsOtherThanLoginUser.remove,
+      ];
+      newRemoveArray.splice(index, 1);
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
         ...prev,
-        remove: prevArr,
+        remove: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
@@ -603,7 +616,6 @@ export function EventProvider({ children }: EventProviderProps) {
       }));
     }
   };
-
 
   return (
     <EventContext.Provider
@@ -661,7 +673,6 @@ export function EventProvider({ children }: EventProviderProps) {
         setAreNotMyPastEventsRemoved,
 
         getEventsWithSortAndFilter,
-
       }}
     >
       {children}
