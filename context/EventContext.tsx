@@ -38,8 +38,6 @@ import { SORT_FILTER_VARIABLES_EVENTS } from "@/data/CONSTANTS";
 type EventContextType = {
   handleUpdate: (values: TypeEventInputValues, eid: string) => Promise<void>;
   handleDelete: (id: string) => void;
-
-  getLoginUserEventsWithSort: () => Promise<void>;
   loginUserEvents: TypeEvent[] | [];
 
   lockThisEvent: (uid: string, data: TypeEvent) => void;
@@ -147,63 +145,23 @@ export function EventProvider({ children }: EventProviderProps) {
   // ======================
   // functions
   // ======================
-  const getLoginUserEventsDefault = async () => {
-    if (user?.uid) {
-      const q = query(
-        eventsCollectionRef,
-        // where("createdBy", "==", user?.uid),
-        orderBy("createdAt", "desc")
-      );
-      onSnapshot(q, (snapshot) => {
-        setLoginUserEvents(
-          snapshot.docs
-            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
-            .filter((doc) => doc.createdBy === user?.uid)
-        );
-      });
-    }
-  };
+  // const getLoginUserEventsDefault = async () => {
+  //   if (user?.uid) {
+  //     const q = query(
+  //       eventsCollectionRef,
+  //       // where("createdBy", "==", user?.uid),
+  //       orderBy("createdAt", "desc")
+  //     );
 
-  const getLoginUserEventsWithSort = async () => {
-    if (user?.uid) {
-      const q = query(
-        eventsCollectionRef,
-        // where("createdBy", "==", user?.uid),
-        orderBy(
-          sortFilterVariablesForMyEvents.sortBy,
-          sortFilterVariablesForMyEvents.order
-        )
-      );
-      const querySnapshot = await getDocs(q);
-      let tempEvents: TypeEvent[] = [];
-      querySnapshot.forEach((doc) => {
-        // No need to filter by tag
-        if (sortFilterVariablesForMyEvents.isTagDisabled) {
-          tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
-        }
-        // If searchTag is empty, leave quotes who have no tags
-        else if (sortFilterVariablesForMyEvents.searchTagName === "") {
-          if (doc.data().tags?.length === 0) {
-            tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
-          }
-        }
-        // If searchTag is not empty, filter by searchTag
-        else {
-          if (
-            doc
-              .data()
-              .tags?.some(
-                (tag: { color: string; name: string }) =>
-                  tag.name === sortFilterVariablesForMyEvents.searchTagName
-              )
-          ) {
-            tempEvents.push({ ...doc.data(), id: doc.id } as TypeEvent);
-          }
-        }
-      });
-      setLoginUserEvents(tempEvents.filter((q) => q.createdBy === user?.uid));
-    }
-  };
+  //     onSnapshot(q, (snapshot) => {
+  //       setLoginUserEvents(
+  //         snapshot.docs
+  //           .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+  //           .filter((doc) => doc.createdBy === user?.uid)
+  //       );
+  //     });
+  //   }
+  // };
 
   const registerEvent = async (values: TypeEventInputValues, uid: string) => {
     try {
@@ -355,6 +313,18 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
+  const getLoginUserEventsDefault = async () => {
+    if (user?.uid) {
+      const q = query(eventsCollectionRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let es: TypeEvent[] = querySnapshot.docs
+        .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+        .filter((doc) => doc.createdBy === user?.uid);
+
+      setLoginUserEvents(es);
+    }
+  };
+
   const getEventsWithSortAndFilter = async (
     who: "loginUser" | "notLoginUser"
   ) => {
@@ -416,6 +386,7 @@ export function EventProvider({ children }: EventProviderProps) {
             (doc) => doc.eventDate.toDate() >= yesterday
           );
         }
+        console.log(tempEvents.length, tempEvents);
         setLoginUserEvents(tempEvents);
       } else {
         tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
@@ -599,7 +570,6 @@ export function EventProvider({ children }: EventProviderProps) {
       value={{
         handleUpdate,
         handleDelete,
-        getLoginUserEventsWithSort,
         loginUserEvents,
         lockThisEvent,
         unlockThisEvent,

@@ -57,7 +57,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
   const [user] = useAuthState(auth);
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  const { handleUpdate, getEventsWithSortAndFilter, fetchProfileUserEvents, getLoginUserEventsDefault } =
+  const { handleUpdate, getEventsWithSortAndFilter, fetchProfileUserEvents } =
     useEvent();
   const pathname = usePathname();
     const [inputTagName, setInputTagName] = useState("");
@@ -177,7 +177,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
         if (pathname.includes("profile")) {
           fetchProfileUserEvents(event.createdBy);
         } else {
-          // getLoginUserEventsDefault();
           getEventsWithSortAndFilter('loginUser');
         }
         setIsPending(false);
