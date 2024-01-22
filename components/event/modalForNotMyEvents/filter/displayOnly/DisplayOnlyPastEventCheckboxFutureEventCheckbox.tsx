@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEvent } from "@/context/EventContext";
 import React from "react";
 
-const RemoveFutureEventCheckbox = () => {
+const DisplayOnlyPastEventCheckboxFutureEventCheckbox = () => {
   const {
     handleSortFilterVariablesNotMyEventsRemove,
     sortFilterVariablesForEventsOtherThanLoginUser,
@@ -12,7 +12,7 @@ const RemoveFutureEventCheckbox = () => {
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
         id="removeFutureEventsCheckbox"
-        checked={sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(
+        checked={sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
           "future"
         )}
         onClick={() => {
@@ -29,4 +29,4 @@ const RemoveFutureEventCheckbox = () => {
   );
 };
 
-export default RemoveFutureEventCheckbox;
+export default DisplayOnlyPastEventCheckboxFutureEventCheckbox;

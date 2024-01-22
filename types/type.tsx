@@ -191,7 +191,7 @@ export type TypeSortFilterVariablesEvents = {
   order: "desc" | "asc";
   isTagDisabled: boolean;
   searchTagName: string;
-  remove: TypeTypeSortFilterVariablesEventsRemove[];
+  displayOnly: TypeTypeSortFilterVariablesEventsRemove[];
 };
 
 export type TypeTypeSortFilterVariablesEventsRemove = "future" | "past";

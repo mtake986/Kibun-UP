@@ -376,37 +376,51 @@ export function EventProvider({ children }: EventProviderProps) {
 
       if (who === "loginUser") {
         tempEvents = tempEvents.filter((q) => q.createdBy === user?.uid);
-        if (sortFilterVariablesForMyEvents.remove.includes("future")) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() < yesterday
-          );
+        if (sortFilterVariablesForMyEvents.displayOnly.length === 0) {
+          setLoginUserEvents([]);
+        } else if (sortFilterVariablesForMyEvents.displayOnly.length === 1) {
+          if (sortFilterVariablesForMyEvents.displayOnly.includes("future")) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() >= yesterday
+            );
+          }
+          if (sortFilterVariablesForMyEvents.displayOnly.includes("past")) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() < yesterday
+            );
+          }
+          console.log(tempEvents.length, tempEvents);
+          setLoginUserEvents(tempEvents);
+        } else {
+          setLoginUserEvents(tempEvents);
         }
-        if (sortFilterVariablesForMyEvents.remove.includes("past")) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() >= yesterday
-          );
-        }
-        console.log(tempEvents.length, tempEvents);
-        setLoginUserEvents(tempEvents);
       } else {
         tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
-        if (
-          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(
-            "future"
-          )
-        ) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() < yesterday
-          );
+        if (sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length === 0) {
+          setEventsNotMine([]);
+        } else if (sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length === 1) {
+          if (
+            sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+              "future"
+            )
+          ) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() >= yesterday
+            );
+          }
+          if (
+            sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+              "past"
+            )
+          ) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() < yesterday
+            );
+          }
+          setEventsNotMine(tempEvents);
+        } else {
+          setEventsNotMine(tempEvents);
         }
-        if (
-          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")
-        ) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() >= yesterday
-          );
-        }
-        setEventsNotMine(tempEvents);
       }
     }
   };
@@ -432,7 +446,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForMyEvents.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForMyEvents.remove.length === 0
+      sortFilterVariablesForMyEvents.displayOnly.length === 2
     ) {
       setIsSortFilterVariablesForMyEventsDefault(true);
     } else {
@@ -454,19 +468,20 @@ export function EventProvider({ children }: EventProviderProps) {
   const handleSortFilterVariablesMyEventsRemove = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
-    if (sortFilterVariablesForMyEvents.remove.includes(removeType)) {
-      const index = sortFilterVariablesForMyEvents.remove.indexOf(removeType);
-      const newRemoveArray = [...sortFilterVariablesForMyEvents.remove];
+    if (sortFilterVariablesForMyEvents.displayOnly.includes(removeType)) {
+      const index =
+        sortFilterVariablesForMyEvents.displayOnly.indexOf(removeType);
+      const newRemoveArray = [...sortFilterVariablesForMyEvents.displayOnly];
       newRemoveArray.splice(index, 1);
 
       setSortFilterVariablesForMyEvents((prev) => ({
         ...prev,
-        remove: newRemoveArray,
+        displayOnly: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForMyEvents((prev) => ({
         ...prev,
-        remove: prev.remove.concat(removeType),
+        displayOnly: prev.displayOnly.concat(removeType),
       }));
     }
   };
@@ -525,7 +540,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForEventsOtherThanLoginUser.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForEventsOtherThanLoginUser.remove.length === 0
+      sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length === 2
     ) {
       setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     } else {
@@ -543,24 +558,26 @@ export function EventProvider({ children }: EventProviderProps) {
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
     if (
-      sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(removeType)
+      sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+        removeType
+      )
     ) {
       const index =
-        sortFilterVariablesForEventsOtherThanLoginUser.remove.indexOf(
+        sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.indexOf(
           removeType
         );
       const newRemoveArray = [
-        ...sortFilterVariablesForEventsOtherThanLoginUser.remove,
+        ...sortFilterVariablesForEventsOtherThanLoginUser.displayOnly,
       ];
       newRemoveArray.splice(index, 1);
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
         ...prev,
-        remove: newRemoveArray,
+        displayOnly: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
         ...prev,
-        remove: prev.remove.concat(removeType),
+        displayOnly: prev.displayOnly.concat(removeType),
       }));
     }
   };
