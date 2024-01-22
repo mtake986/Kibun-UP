@@ -4,7 +4,11 @@ import YouTubeIcon from "../public/icons/youtube.svg";
 import InstagramIcon from "../public/icons/instagram.svg";
 import TwitterIcon from "../public/icons/twitter.svg";
 import GitHubIcon from "../public/icons/github.svg";
-import { TypeAndOr, TypeSortBy } from "@/types/type";
+import {
+  TypeAndOr,
+  TypeSortBy,
+  TypeSortFilterVariablesEvents,
+} from "@/types/type";
 
 export const builtInEvents = [
   {
@@ -132,3 +136,11 @@ export const MONTHS_IN_STR = [
 ];
 
 export const labelsForProposals: string[] = ["bug", "enhancement"];
+
+export const SORT_FILTER_VARIABLES_EVENTS: TypeSortFilterVariablesEvents = {
+  sortBy: "createdAt",
+  order: "desc",
+  isTagDisabled: true,
+  searchTagName: "",
+  remove: []
+};

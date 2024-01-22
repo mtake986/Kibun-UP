@@ -16,30 +16,34 @@ const ListNotMine = ({ quotes }: Props) => {
 
   const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
+    const displayCards = () => {
+      if (currentRecords.length >= 1) {
+        return (
+          <div className="flex flex-col gap-3">
+            {currentRecords.map((doc, i) => (
+              <QuoteCard q={doc} key={doc.id} />
+            ))}
+            {nPages >= 2 && (
+              <PaginationBtns
+                nPages={nPages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            )}
+          </div>
+        );
+      } else {
+        return <NoFetchedData text="No quotes found" />;
+      }
+    };
+
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
-        {nPages >= 2 && (
-          <PaginationBtns
-            nPages={nPages}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
+      <div className="flex justify-between">
+        <p className="text-sm text-gray-400">{quotes.length} quotes found</p>
         <Modal />
       </div>
-      <div className="mb-2 flex flex-col gap-3 text-gray-400">
-        {quotes.length} quotes found
-      </div>
-      {currentRecords.length >= 1 ? (
-        <div className="flex flex-col gap-3">
-          {currentRecords.map((doc, i) => (
-            <QuoteCard key={doc.id} q={doc} />
-          ))}
-        </div>
-      ) : (
-        <NoFetchedData text="No quotes found" />
-      )}
+      {displayCards()}
     </div>
   );
 };

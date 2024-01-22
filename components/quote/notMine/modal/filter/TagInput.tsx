@@ -4,8 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const TagInput = () => {
   const {
-    updateSortVariablesForNotMine,
-    sortVariablesForNotMine,
+    updateSortFilterVariablesForNotMine,
+    SortFilterVariablesForNotMine,
     isTagToFilterNotMyQuotesDisabled,
     setIsTagToFilterNotMyQuotesDisabled,
   } = useQuote();
@@ -29,10 +29,10 @@ const TagInput = () => {
       {isTagToFilterNotMyQuotesDisabled ? null : (
         <Input
           onChange={(e) => {
-            updateSortVariablesForNotMine("tag", e.target.value);
+            updateSortFilterVariablesForNotMine("tag", e.target.value);
           }}
           placeholder="Motivation"
-          value={sortVariablesForNotMine.searchTag}
+          value={SortFilterVariablesForNotMine.searchTag}
         />
       )}
     </div>

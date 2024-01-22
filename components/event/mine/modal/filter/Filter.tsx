@@ -1,13 +1,16 @@
 import React from "react";
-import SectionSubTtl from "../SectionSubTtl";
 import SectionTtl from "../SectionTtl";
-import RemovePastEventCheckbox from "./RemovePastEventCheckbox";
+import Remove from './remove/Remove';
+import TagArea from "./tag/TagArea";
 
 const Filter = () => {
   return (
     <div className="space-y-3">
       <SectionTtl text="Filter" />
-      <RemovePastEventCheckbox />
+      <div className="flex items-center gap-3">
+        <Remove />
+        <TagArea />
+      </div>
     </div>
   );
 };

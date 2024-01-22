@@ -43,22 +43,30 @@ const ListOfRandom = () => {
     if (error) {
       return <div>Error</div>;
     }
-    return (
-      <div className="flex flex-col gap-3">
-        {currentRecords.length > 0 ? (
-          currentRecords.map((doc, i) => (
+
+    if (currentRecords.length > 0) {
+      return (
+        <div className="flex flex-col gap-3">
+          {currentRecords.map((doc, i) => (
             <ApiQuoteCard
               key={doc.id}
               q={doc}
               selectedAuthors={selectedAuthors}
               handleAuthors={handleAuthors}
             />
-          ))
-        ) : (
-          <NoFetchedData text="No quotes found" />
-        )}
-      </div>
-    );
+          ))}
+          {nPages >= 2 && (
+            <PaginationBtns
+              nPages={nPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </div>
+      );
+    } else {
+      return <NoFetchedData text="No quotes found" />;
+    }
   };
 
   if (isListOfAuthors) {
@@ -72,23 +80,17 @@ const ListOfRandom = () => {
   } else {
     return (
       <div className="mb-20">
-        {/* Actions */}
-        <div className="flex items-center justify-between">
-          {nPages >= 2 && (
-            <PaginationBtns
-              nPages={nPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
-          <div className="flex items-center gap-1">
+        <div className="flex justify-between">
+          <p className="text-sm text-gray-400">
+            {currentRecords.length} quotes found
+          </p>
+          <div className="flex gap-3 items-center">
             <MdOutlinePerson
               className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:opacity-70"
               onClick={() => {
                 setIsListOfAuthors((prev) => !prev);
               }}
             />
-
             <Modal
               currentPage={currentPage}
               fetchData={fetchData}
@@ -102,9 +104,6 @@ const ListOfRandom = () => {
               handleSortBy={handleSortBy}
             />
           </div>
-        </div>
-        <div className="mb-2 flex flex-col gap-3 text-gray-400">
-          {totalCount} quotes found
         </div>
         {displayCards()}
       </div>

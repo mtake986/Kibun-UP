@@ -13,10 +13,7 @@ type Props = {
 
 const List = ({ quotes }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { nPages, currentRecords } = usePagination(
-    currentPage,
-    quotes,
-  );
+  const { nPages, currentRecords } = usePagination(currentPage, quotes);
 
   const goPrevAsNoCurrentRecords = () => {
     if (
@@ -39,6 +36,13 @@ const List = ({ quotes }: Props) => {
               goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
             />
           ))}
+          {nPages >= 2 && (
+            <PaginationBtns
+              nPages={nPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </div>
       );
     } else {
@@ -48,18 +52,9 @@ const List = ({ quotes }: Props) => {
 
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
-        {nPages >= 2 && (
-          <PaginationBtns
-            nPages={nPages}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
+      <div className="flex justify-between">
+        <p className="text-sm text-gray-400">{quotes.length} quotes found</p>
         <Modal />
-      </div>
-      <div className="mb-2 flex flex-col gap-3 text-gray-400">
-        {quotes.length} quotes found
       </div>
       {displayCards()}
     </div>

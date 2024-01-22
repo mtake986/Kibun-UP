@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { TypeComment } from "@/types/type";
 import useComments from "../hooks/useComments";
-import LoadingSpinnerXS from "@/components/utils/LoadingSpinnerXS";
 import LoadingCover from "@/components/utils/LoadingCover";
 import { twMerge } from "tailwind-merge";
 
@@ -53,6 +52,7 @@ const CommentUpdateForm = ({ comment, setIsUpdateMode, eid }: Props) => {
       form.reset({
         comment: "",
       });
+      setIsUpdateMode(false);
     }
   }
 

@@ -15,16 +15,17 @@ import { Button } from "@/components/ui/button";
 const Modal = () => {
   const {
     getLoginUserEventsWithSort,
-    resetSortVariablesForMyEvents,
-    isSortVariablesForMyEventsDefault,
-    checkSortVariablesForMyEventsDefault,
-    AreMyPastEventsRemoved,
+    resetSortFilterVariablesForMyEvents,
+    isSortFilterVariablesForMyEventsDefault,
+    checkSortFilterVariablesForMyEventsDefault,
+    areMyPastEventsRemoved,
+    getEventsWithSortAndFilter,
   } = useEvent();
 
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        {!isSortVariablesForMyEventsDefault || AreMyPastEventsRemoved ? (
+        {!isSortFilterVariablesForMyEventsDefault || areMyPastEventsRemoved ? (
           <div className="absolute right-0 top-0 h-1 w-1 rounded-full bg-red-500"></div>
         ) : null}
         <Settings className="h-6 w-6 cursor-pointer p-1 duration-300 ease-in hover:rotate-45 hover:opacity-70" />
@@ -35,8 +36,8 @@ const Modal = () => {
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              getLoginUserEventsWithSort();
-              checkSortVariablesForMyEventsDefault();
+              getEventsWithSortAndFilter("loginUser");
+              checkSortFilterVariablesForMyEventsDefault();
             } catch (error) {
               displayErrorToast(error);
             }
@@ -54,7 +55,7 @@ const Modal = () => {
               className="w-full"
               type="reset"
               onClick={() => {
-                resetSortVariablesForMyEvents();
+                resetSortFilterVariablesForMyEvents();
               }}
             >
               Reset

@@ -58,6 +58,7 @@ const CommentList = ({
   if (!areCommentsShown) return null;
   return (
     <div className="">
+      {displayCards()}
       <div className="flex items-center justify-between">
         {nPages >= 2 && (
           <PaginationBtns
@@ -67,7 +68,6 @@ const CommentList = ({
           />
         )}
       </div>
-      {displayCards()}
     </div>
   );
 };

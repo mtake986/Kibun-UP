@@ -9,16 +9,18 @@ import {
 import { useEvent } from "@/context/EventContext";
 
 const SelectSortMyEventsOrder = () => {
-  const { sortVariablesForMyEvents, handleSortVariablesMyEventsOrder } =
-    useEvent();
+  const {
+    sortFilterVariablesForMyEvents,
+    handleSortFilterVariablesMyEventsOrder,
+  } = useEvent();
 
   return (
     <Select
       onValueChange={(ele: "desc" | "asc") => {
-        handleSortVariablesMyEventsOrder(ele);
+        handleSortFilterVariablesMyEventsOrder(ele);
       }}
-      value={sortVariablesForMyEvents.order}
-      defaultValue={sortVariablesForMyEvents.order}
+      value={sortFilterVariablesForMyEvents.order}
+      defaultValue={sortFilterVariablesForMyEvents.order}
     >
       <SelectTrigger className="w-full text-xs">
         <SelectValue placeholder="Order" />

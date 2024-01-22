@@ -3,22 +3,25 @@ import { useEvent } from "@/context/EventContext";
 import React from "react";
 
 const RemovePastEventCheckbox = () => {
-  const { AreNotMyPastEventsRemoved, setAreNotMyPastEventsRemoved } =
-    useEvent();
+  const {
+    handleSortFilterVariablesNotMyEventsRemove,
+    sortFilterVariablesForEventsOtherThanLoginUser,
+  } = useEvent();
+
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
-        id="disabled"
-        checked={AreNotMyPastEventsRemoved}
+        id="removePastEvents"
+        checked={sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")}
         onClick={() => {
-          setAreNotMyPastEventsRemoved((prev) => !prev);
+          handleSortFilterVariablesNotMyEventsRemove("past");
         }}
       />
       <label
-        htmlFor="disabled"
+        htmlFor="removePastEvents"
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
-        Remove past events
+        Past events
       </label>
     </div>
   );

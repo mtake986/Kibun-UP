@@ -11,6 +11,7 @@ export interface TypeEvent {
   updatedAt?: Date;
   cheeredBy: string[];
   comments?: TypeComment[];
+  tags?: ITag[];
 }
 
 export type TypeQuote = {
@@ -184,3 +185,13 @@ export type TypeProposal = {
 
 export type TypeProposalStatusValue = "open" | "closed" | "inProgress";
 export type TypeProposalStatusLabel = "Open" | "Closed" | "In Progress";
+
+export type TypeSortFilterVariablesEvents = {
+  sortBy: string;
+  order: "desc" | "asc";
+  isTagDisabled: boolean;
+  searchTagName: string;
+  remove: TypeTypeSortFilterVariablesEventsRemove[];
+};
+
+export type TypeTypeSortFilterVariablesEventsRemove = "future" | "past";

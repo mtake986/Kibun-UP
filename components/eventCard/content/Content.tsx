@@ -5,6 +5,7 @@ import { BiInfoCircle, BiTime } from "react-icons/bi";
 import { LuCalendarClock } from "react-icons/lu";
 import { calculateLeftDays } from "@/functions/functions";
 import { returnLeftDaysString } from "./returnLeftDaysString";
+import Tags from "@/components/utils/Tags";
 
 type Props = {
   event: TypeEvent;
@@ -22,7 +23,7 @@ const Info: React.FC<InfoProps> = ({ icon, text }) => (
 );
 const Content = ({ event }: Props) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col space-y-3">
       <h3 className="text-center text-2xl font-semibold">{event.eventTitle}</h3>
 
       {event.place ? (
@@ -47,6 +48,7 @@ const Content = ({ event }: Props) => {
       {event.description ? (
         <Info icon={<BiInfoCircle size={16} />} text={event.description} />
       ) : null}
+      {event?.tags && event?.tags?.length >= 1 ? <Tags tags={event.tags} /> : null}
     </div>
   );
 };

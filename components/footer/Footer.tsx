@@ -2,14 +2,12 @@
 import UrlLink from "../utils/UrlLink";
 import { usePathname } from "next/navigation";
 import { BsChatQuote, BsFlag, BsHouse, BsPerson } from "react-icons/bs";
-import { AiOutlineContacts } from "react-icons/ai";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/Firebase";
-import { BiPaperPlane } from "react-icons/bi";
 import OtherLinks from "./OtherLinks";
 
 const Footer = () => {
-  const today = new Date().getFullYear();
+  // const today = new Date().getFullYear();
   const pathname = usePathname();
   const [user] = useAuthState(auth);
 
@@ -73,7 +71,7 @@ const Footer = () => {
   return (
     <>
       {/* over mobile */}
-      <footer className="bottom-0 z-10 m-auto mt-10 hidden w-full bg-slate-50 py-1 text-center text-xs text-slate-400 dark:bg-slate-900 sm:text-sm md:fixed">
+      {/* <footer className="bottom-0 z-10 m-auto mt-10 hidden w-full bg-slate-50 py-1 text-center text-xs text-slate-400 dark:bg-slate-900 sm:text-sm md:fixed">
         &copy; Copyright <span>{today}</span>{" "}
         <UrlLink
           href="/creator-info"
@@ -81,7 +79,7 @@ const Footer = () => {
           target="_self"
           className="text-sky-500 underline-offset-2 hover:underline"
         />
-      </footer>
+      </footer> */}
 
       {/* mobile */}
       <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
@@ -89,7 +87,7 @@ const Footer = () => {
           {footerListItems.map((item, i) => {
             if (pathname.includes(item.href)) {
               return (
-                <button disabled={true} className="opacity-50" key={item.href}>
+                <button disabled={true} className="opacity-50 text-violet-500" key={item.href}>
                   {icons[i]}
                 </button>
               );
