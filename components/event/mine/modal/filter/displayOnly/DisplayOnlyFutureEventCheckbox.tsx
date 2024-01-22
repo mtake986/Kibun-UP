@@ -4,16 +4,16 @@ import React from "react";
 
 const DisplayOnlyFutureEventCheckbox = () => {
   const {
-    handleSortFilterVariablesMyEventsRemove,
+    handleSortFilterVariablesMyEventsDisplayOnly,
     sortFilterVariablesForMyEvents,
   } = useEvent();
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
         id="removeFutureEventsCheckbox"
-        checked={sortFilterVariablesForMyEvents.displayOnly.includes('future')}
+        checked={sortFilterVariablesForMyEvents.displayOnly.includes("future")}
         onClick={() => {
-          handleSortFilterVariablesMyEventsRemove('future');
+          handleSortFilterVariablesMyEventsDisplayOnly("future");
         }}
       />
       <label
