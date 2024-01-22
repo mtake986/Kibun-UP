@@ -470,8 +470,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForMyEvents.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForMyEvents.remove ===
-        SORT_FILTER_VARIABLES_EVENTS.remove
+      sortFilterVariablesForMyEvents.remove.length === 0
     ) {
       setIsSortFilterVariablesForMyEventsDefault(true);
     } else {
@@ -561,6 +560,7 @@ export function EventProvider({ children }: EventProviderProps) {
   };
 
   const checkSortFilterVariablesForNotMyEventsDefault = () => {
+  console.log(sortFilterVariablesForEventsOtherThanLoginUser);
     if (
       sortFilterVariablesForEventsOtherThanLoginUser.sortBy ===
         SORT_FILTER_VARIABLES_EVENTS.sortBy &&
@@ -568,8 +568,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForEventsOtherThanLoginUser.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForEventsOtherThanLoginUser.remove ===
-        SORT_FILTER_VARIABLES_EVENTS.remove
+      sortFilterVariablesForEventsOtherThanLoginUser.remove.length === 0
     ) {
       setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     } else {
