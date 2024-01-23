@@ -11,7 +11,7 @@ const DisplayOnlyPastEventCheckbox = () => {
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
-        id="removePastEvents"
+        id="displayOnlyNotMyPastEventsCheckbox"
         checked={sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
           "past"
         )}
@@ -20,7 +20,7 @@ const DisplayOnlyPastEventCheckbox = () => {
         }}
       />
       <label
-        htmlFor="removePastEvents"
+        htmlFor="displayOnlyNotMyPastEventsCheckbox"
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         Past events

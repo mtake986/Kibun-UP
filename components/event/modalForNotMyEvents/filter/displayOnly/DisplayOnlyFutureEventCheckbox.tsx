@@ -11,7 +11,7 @@ const DisplayOnlyFutureEventCheckbox = () => {
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
-        id="removeFutureEventsCheckbox"
+        id="displayOnlyNotMyFutureEventsCheckbox"
         checked={sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
           "future"
         )}
@@ -20,7 +20,7 @@ const DisplayOnlyFutureEventCheckbox = () => {
         }}
       />
       <label
-        htmlFor="removeFutureEventsCheckbox"
+        htmlFor="displayOnlyNotMyFutureEventsCheckbox"
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         Future events
