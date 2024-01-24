@@ -59,6 +59,7 @@ const ListHome = ({ proposals, isPending, sortBy, setSortBy }: Props) => {
         );
     }
   };
+  
   return (
     <div className="flex flex-col gap-1">
       <Tabs tabs={tabs} handleTabClick={handleTabClick} />
