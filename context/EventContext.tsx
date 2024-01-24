@@ -75,7 +75,7 @@ type EventContextType = {
   getLoginUserEventsDefault: () => Promise<void>;
   handleSortFilterVariablesMyEventsTagDisabled: () => void;
   handleSortFilterVariablesMyEventsSearchTagName: (tagName: string) => void;
-  handleSortFilterVariablesMyEventsRemove: (
+  handleSortFilterVariablesMyEventsDisplayOnly: (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => void;
 
@@ -87,7 +87,7 @@ type EventContextType = {
   getEventsOtherThanLoginUserWithSort: () => Promise<void>;
   checkSortFilterVariablesForNotMyEventsDefault: () => void;
   resetSortFilterVariablesForNotMyEvents: () => void;
-  handleSortFilterVariablesNotMyEventsRemove: (
+  handleSortFilterVariablesNotMyEventsDisplayOnly: (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => void;
 
@@ -376,37 +376,57 @@ export function EventProvider({ children }: EventProviderProps) {
 
       if (who === "loginUser") {
         tempEvents = tempEvents.filter((q) => q.createdBy === user?.uid);
-        if (sortFilterVariablesForMyEvents.remove.includes("future")) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() < yesterday
-          );
+        if (sortFilterVariablesForMyEvents.displayOnly.length === 0) {
+          setLoginUserEvents([]);
+        } else if (sortFilterVariablesForMyEvents.displayOnly.length === 1) {
+          if (sortFilterVariablesForMyEvents.displayOnly.includes("future")) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() >= yesterday
+            );
+          }
+          if (sortFilterVariablesForMyEvents.displayOnly.includes("past")) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() < yesterday
+            );
+          }
+          console.log(tempEvents.length, tempEvents);
+          setLoginUserEvents(tempEvents);
+        } else {
+          setLoginUserEvents(tempEvents);
         }
-        if (sortFilterVariablesForMyEvents.remove.includes("past")) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() >= yesterday
-          );
-        }
-        console.log(tempEvents.length, tempEvents);
-        setLoginUserEvents(tempEvents);
       } else {
         tempEvents = tempEvents.filter((q) => q.createdBy !== user?.uid);
         if (
-          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(
-            "future"
-          )
+          sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length ===
+          0
         ) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() < yesterday
-          );
-        }
-        if (
-          sortFilterVariablesForEventsOtherThanLoginUser.remove.includes("past")
+          setEventsNotMine([]);
+        } else if (
+          sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length ===
+          1
         ) {
-          tempEvents = tempEvents.filter(
-            (doc) => doc.eventDate.toDate() >= yesterday
-          );
+          if (
+            sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+              "future"
+            )
+          ) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() >= yesterday
+            );
+          }
+          if (
+            sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+              "past"
+            )
+          ) {
+            tempEvents = tempEvents.filter(
+              (doc) => doc.eventDate.toDate() < yesterday
+            );
+          }
+          setEventsNotMine(tempEvents);
+        } else {
+          setEventsNotMine(tempEvents);
         }
-        setEventsNotMine(tempEvents);
       }
     }
   };
@@ -432,7 +452,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForMyEvents.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForMyEvents.remove.length === 0
+      sortFilterVariablesForMyEvents.displayOnly.length === 2
     ) {
       setIsSortFilterVariablesForMyEventsDefault(true);
     } else {
@@ -451,22 +471,23 @@ export function EventProvider({ children }: EventProviderProps) {
       searchTagName: tagName,
     });
   };
-  const handleSortFilterVariablesMyEventsRemove = (
+  const handleSortFilterVariablesMyEventsDisplayOnly = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
-    if (sortFilterVariablesForMyEvents.remove.includes(removeType)) {
-      const index = sortFilterVariablesForMyEvents.remove.indexOf(removeType);
-      const newRemoveArray = [...sortFilterVariablesForMyEvents.remove];
+    if (sortFilterVariablesForMyEvents.displayOnly.includes(removeType)) {
+      const index =
+        sortFilterVariablesForMyEvents.displayOnly.indexOf(removeType);
+      const newRemoveArray = [...sortFilterVariablesForMyEvents.displayOnly];
       newRemoveArray.splice(index, 1);
 
       setSortFilterVariablesForMyEvents((prev) => ({
         ...prev,
-        remove: newRemoveArray,
+        displayOnly: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForMyEvents((prev) => ({
         ...prev,
-        remove: prev.remove.concat(removeType),
+        displayOnly: prev.displayOnly.concat(removeType),
       }));
     }
   };
@@ -525,7 +546,7 @@ export function EventProvider({ children }: EventProviderProps) {
         SORT_FILTER_VARIABLES_EVENTS.order &&
       sortFilterVariablesForEventsOtherThanLoginUser.isTagDisabled ===
         SORT_FILTER_VARIABLES_EVENTS.isTagDisabled &&
-      sortFilterVariablesForEventsOtherThanLoginUser.remove.length === 0
+      sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.length === 2
     ) {
       setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     } else {
@@ -539,28 +560,30 @@ export function EventProvider({ children }: EventProviderProps) {
     setIsSortFilterVariablesForEventsOtherThanLoginUserDefault(true);
     getEventsNotMine();
   };
-  const handleSortFilterVariablesNotMyEventsRemove = (
+  const handleSortFilterVariablesNotMyEventsDisplayOnly = (
     removeType: TypeTypeSortFilterVariablesEventsRemove
   ) => {
     if (
-      sortFilterVariablesForEventsOtherThanLoginUser.remove.includes(removeType)
+      sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.includes(
+        removeType
+      )
     ) {
       const index =
-        sortFilterVariablesForEventsOtherThanLoginUser.remove.indexOf(
+        sortFilterVariablesForEventsOtherThanLoginUser.displayOnly.indexOf(
           removeType
         );
       const newRemoveArray = [
-        ...sortFilterVariablesForEventsOtherThanLoginUser.remove,
+        ...sortFilterVariablesForEventsOtherThanLoginUser.displayOnly,
       ];
       newRemoveArray.splice(index, 1);
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
         ...prev,
-        remove: newRemoveArray,
+        displayOnly: newRemoveArray,
       }));
     } else {
       setSortFilterVariablesForEventsOtherThanLoginUser((prev) => ({
         ...prev,
-        remove: prev.remove.concat(removeType),
+        displayOnly: prev.displayOnly.concat(removeType),
       }));
     }
   };
@@ -601,7 +624,7 @@ export function EventProvider({ children }: EventProviderProps) {
         getLoginUserEventsDefault,
         handleSortFilterVariablesMyEventsTagDisabled,
         handleSortFilterVariablesMyEventsSearchTagName,
-        handleSortFilterVariablesMyEventsRemove,
+        handleSortFilterVariablesMyEventsDisplayOnly,
 
         // not my events sort filter varialbes
         handleSortFilterVariablesNotMyEventsElement,
@@ -611,7 +634,7 @@ export function EventProvider({ children }: EventProviderProps) {
         getEventsOtherThanLoginUserWithSort,
         checkSortFilterVariablesForNotMyEventsDefault,
         resetSortFilterVariablesForNotMyEvents,
-        handleSortFilterVariablesNotMyEventsRemove,
+        handleSortFilterVariablesNotMyEventsDisplayOnly,
 
         areMyPastEventsRemoved,
         setAreMyPastEventsRemoved,

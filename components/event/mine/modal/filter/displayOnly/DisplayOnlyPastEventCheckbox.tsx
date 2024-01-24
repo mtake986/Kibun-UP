@@ -2,23 +2,23 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useEvent } from "@/context/EventContext";
 import React from "react";
 
-const RemovePastEventCheckbox = () => {
+const DisplayOnlyPastEventCheckbox = () => {
   const {
-    handleSortFilterVariablesMyEventsRemove,
+    handleSortFilterVariablesMyEventsDisplayOnly,
     sortFilterVariablesForMyEvents,
   } = useEvent();
 
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Checkbox
-        id="removePastEvents"
-        checked={sortFilterVariablesForMyEvents.remove.includes("past")}
+        id="displayOnlyMyPastEventsCheckbox"
+        checked={sortFilterVariablesForMyEvents.displayOnly.includes("past")}
         onClick={() => {
-          handleSortFilterVariablesMyEventsRemove("past");
+          handleSortFilterVariablesMyEventsDisplayOnly("past");
         }}
       />
       <label
-        htmlFor="removePastEvents"
+        htmlFor="displayOnlyMyPastEventsCheckbox"
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         Past events
@@ -27,4 +27,4 @@ const RemovePastEventCheckbox = () => {
   );
 };
 
-export default RemovePastEventCheckbox;
+export default DisplayOnlyPastEventCheckbox;
