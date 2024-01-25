@@ -1,32 +1,40 @@
-import { TypeProposal } from "@/types/type";
-import React, { useCallback, useState } from "react";
+import { TypeProposal, TypeUserFromFirestore } from "@/types/type";
+import React, { useCallback, useEffect, useState } from "react";
 import Content from "./Content";
-import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import Icons from "./Icons/Icons";
 import UpdateMode from "./UpdateMode";
-import useProposalCard from "./hooks/useProposalCard";
 import { AnimatePresence } from "framer-motion";
 import CommentForm from "./comment/CommentForm";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
+import useProposalComment from "../hooks/useProposalComment";
+import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 
 type Props = {
   proposal: TypeProposal;
 };
 const ProposalCard = ({ proposal }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const { toggleAddMode, isCommentAddMode } = useProposalCard();
+  const { toggleAddMode, isCommentAddMode, fetchComments, addComment, commentsOnProposal } = useProposalComment();
   const { loginUser } = useAuth();
   const creatorImg = useCallback(() => {
-    return (
-      <Image
-        src={loginUser?.photoURL || ""}
-        alt="profile photo"
-        width={40}
-        height={40}
-        className="rounded-full"
-      />
-    );
+    if (loginUser) {
+      return (
+        <Image
+          src={loginUser.photoURL}
+          alt="profile photo"
+          width={40}
+          height={40}
+          className="h-10 w-10 rounded-full"
+        />
+      );
+    } else {
+      return <LoadingSpinnerS />
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchComments(proposal.id);
   }, []);
 
   return (
@@ -50,9 +58,11 @@ const ProposalCard = ({ proposal }: Props) => {
                 loginUser={loginUser}
                 toggleAddMode={toggleAddMode}
                 proposalId={proposal.id}
+                addComment={addComment}
               />
             )}
           </AnimatePresence>
+          <p>{commentsOnProposal.length}</p>
         </>
       )}
     </div>

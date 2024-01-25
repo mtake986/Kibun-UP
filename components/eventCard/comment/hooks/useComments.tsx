@@ -27,7 +27,6 @@ const useComments = () => {
 
   const removeComment = async (commentId: string, eid: string) => {
     const commentRef = doc(db, "events", eid, "comments", commentId);
-
     await deleteDoc(commentRef);
   };
 

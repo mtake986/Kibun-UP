@@ -23,6 +23,7 @@ type Props = {
   loginUser: TypeUserFromFirestore;
   toggleAddMode: () => void;
   proposalId: string;
+  addComment: (uid: string, comment: string, proposalId: string) => void;
 };
 
 const CommentForm = ({
@@ -30,6 +31,7 @@ const CommentForm = ({
   loginUser,
   toggleAddMode,
   proposalId,
+  addComment,
 }: Props) => {
   // const { addComment } = useComments();
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -46,7 +48,7 @@ const CommentForm = ({
   async function onSubmit(values: z.infer<typeof commentSchema>) {
     setIsPending(true);
     try {
-      // await addComment(loginUser.uid, values.comment, proposalId);
+      await addComment(loginUser.uid, values.comment, proposalId);
       console.log(loginUser.uid, values.comment, proposalId);
     } catch (error) {
       // 送信失敗したらalertで表示
@@ -77,33 +79,32 @@ const CommentForm = ({
       animate="enter"
       exit="exit"
       transition={{ type: "linear" }}
-      className="relative mt-5 px-3"
+      className="mt-5 flex gap-3"
     >
+      {creatorImg()}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex items-start gap-3">
-            {creatorImg()}
-            <FormField
-              control={form.control}
-              name="comment"
-              render={({ field }) => (
-                <FormItem className="w-full space-y-0">
-                  <FormControl>
-                    <Textarea
-                      className="min-h-10 border-none bg-slate-50 dark:border-none"
-                      placeholder="Add a comment..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          <FormField
+            control={form.control}
+            name="comment"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-0">
+                <FormControl>
+                  <Textarea
+                    className="min-h-10 border-none bg-slate-50 dark:border-none"
+                    placeholder="Add a comment..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="mt-2 flex items-center justify-end gap-3 text-xs">
             <button
               className="cursor-pointer hover:opacity-70"
               onClick={toggleAddMode}
+              type="button"
             >
               Cancel
             </button>
