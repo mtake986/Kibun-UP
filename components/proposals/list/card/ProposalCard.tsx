@@ -9,13 +9,27 @@ import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import useProposalComment from "../hooks/useProposalComment";
 import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
+import NumOfComments from "./comment/NumOfComments";
+import ToggleCommentsBtn from "./comment/ToggleCommentsBtn";
+import SortBtn from "./comment/SortBtn";
+import CommentList from "./comment/CommentList";
+import { UserIcon } from "lucide-react";
 
 type Props = {
   proposal: TypeProposal;
 };
 const ProposalCard = ({ proposal }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const { toggleAddMode, isCommentAddMode, fetchComments, addComment, commentsOnProposal } = useProposalComment();
+  const {
+    toggleAddMode,
+    isCommentAddMode,
+    fetchComments,
+    addComment,
+    commentsOnProposal,
+    toggleCommentList,
+    areCommentsShown,
+    updateComment,
+  } = useProposalComment();
   const { loginUser } = useAuth();
   const creatorImg = useCallback(() => {
     if (loginUser) {
@@ -29,7 +43,7 @@ const ProposalCard = ({ proposal }: Props) => {
         />
       );
     } else {
-      return <LoadingSpinnerS />
+      return <UserIcon size={16} />
     }
   }, []);
 
@@ -62,7 +76,22 @@ const ProposalCard = ({ proposal }: Props) => {
               />
             )}
           </AnimatePresence>
-          <p>{commentsOnProposal.length}</p>
+          <div className="mb-2 mt-3 flex items-center gap-3">
+            <NumOfComments comments={commentsOnProposal} />
+            <ToggleCommentsBtn
+              areCommentsShown={areCommentsShown}
+              toggleCommentList={toggleCommentList}
+              commentsOnProposal={commentsOnProposal}
+            />
+            <SortBtn commentsOnProposal={commentsOnProposal} />
+          </div>
+          <CommentList
+            areCommentsShown={areCommentsShown}
+            commentsOnProposal={commentsOnProposal}
+            proposalId={proposal.id}
+            proposalCreatorId={proposal.createdBy}
+            updateComment={updateComment}
+          />
         </>
       )}
     </div>

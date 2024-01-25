@@ -15,10 +15,15 @@ import {
 
 const useProposalComment = () => {
   const [isCommentAddMode, setIsCommentAddMode] = useState<boolean>(false);
-
+  const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
+  
   const toggleAddMode = () => {
     setIsCommentAddMode((prev) => !prev);
   };
+
+  const toggleCommentList = () => {
+    setAreCommentsShown((prev) => !prev);
+  }
 
   const [commentsOnProposal, setCommentsOnProposal] = useState<TypeComment[]>([]);
 
@@ -31,23 +36,23 @@ const useProposalComment = () => {
     });
   };
 
-  // const removeComment = async (commentId: string, proposalId: string) => {
-  //   const commentRef = doc(db, "events", proposalId, "comments", commentId);
-  //   await deleteDoc(commentRef);
-  // };
+  const removeComment = async (commentId: string, proposalId: string) => {
+    const commentRef = doc(db, "proposals", proposalId, "comments", commentId);
+    await deleteDoc(commentRef);
+  };
 
-  // const updateComment = async (
-  //   commentId: string,
-  //   updatedComment: string,
-  //   proposalId: string
-  // ) => {
-  //   const commentRef = doc(db, "events", proposalId, "comments", commentId);
+  const updateComment = async (
+    commentId: string,
+    updatedComment: string,
+    proposalId: string
+  ) => {
+    const commentRef = doc(db, "proposals", proposalId, "comments", commentId);
 
-  //   await updateDoc(commentRef, {
-  //     comment: updatedComment,
-  //     updatedAt: serverTimestamp(),
-  //   });
-  // };
+    await updateDoc(commentRef, {
+      comment: updatedComment,
+      updatedAt: serverTimestamp(),
+    });
+  };
 
   const fetchComments = async (proposalId: string) => {
     const q = query(
@@ -72,6 +77,10 @@ const useProposalComment = () => {
     addComment,
     fetchComments,
     commentsOnProposal,
+    toggleCommentList,
+    areCommentsShown,
+    removeComment,
+    updateComment,
   };
 };
 
