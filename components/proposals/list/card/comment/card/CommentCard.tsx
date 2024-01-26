@@ -7,20 +7,20 @@ import { TimeAgo } from "@/functions/timeAgo";
 import ActionBtn from "./ActionBtn";
 import CommentUpdateForm from "./CommendUpdateForm";
 
+// import CommentUpdateForm from "./CommendUpdateForm";
+
 type Props = {
   comment: TypeComment;
-  loginUser: TypeUserFromFirestore;
-  eventCreatorId: string;
-  eid: string;
-  goPrevAsNoCurrentRecords?: () => void;
+  proposalCreatorId: string;
+  proposalId: string;
+  // goPrevAsNoCurrentRecords?: () => void;
 };
 
 const CommentCard = ({
   comment,
-  loginUser,
-  eventCreatorId,
-  eid,
-  goPrevAsNoCurrentRecords,
+  proposalCreatorId,
+  proposalId,
+  // goPrevAsNoCurrentRecords,
 }: Props) => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { creatorImg } = useUserProfileImage({ comment, setIsPending });
@@ -33,11 +33,10 @@ const CommentCard = ({
       <CommentUpdateForm
         comment={comment}
         setIsUpdateMode={setIsUpdateMode}
-        eid={eid}
+        proposalId={proposalId}
       />
     );
   }
-  
   return (
     <div className="flex items-start gap-3">
       <UrlLink
@@ -51,14 +50,12 @@ const CommentCard = ({
           <p className="text-xs text-gray-500">
             {TimeAgo(comment.createdAt?.toMillis() ?? "just now")}
           </p>
-
           <ActionBtn
             comment={comment}
-            loginUser={loginUser}
-            eventCreatorId={eventCreatorId}
-            eid={eid}
+            proposalCreatorId={proposalCreatorId}
+            proposalId={proposalId}
             setIsUpdateMode={setIsUpdateMode}
-            goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
+            // goPrevAsNoCurrentRecords={goPrevAsNoCurrentRecords}
           />
         </div>
 

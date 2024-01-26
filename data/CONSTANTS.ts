@@ -118,6 +118,11 @@ export const insertFromTop = {
 export const insertFromTopS = {
   hidden: { opacity: 0, x: 0, y: -20 },
   enter: { opacity: 1, x: 0, y: 0 },
+  exit: {
+    zIndex: 0,
+    x: 20,
+    opacity: 0,
+  },
 };
 
 export const MONTHS_IN_STR = [
@@ -142,5 +147,5 @@ export const SORT_FILTER_VARIABLES_EVENTS: TypeSortFilterVariablesEvents = {
   order: "desc",
   isTagDisabled: true,
   searchTagName: "",
-  displayOnly: ['future', 'past']
+  displayOnly: ["future", "past"],
 };
