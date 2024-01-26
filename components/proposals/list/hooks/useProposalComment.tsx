@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { db } from "@/config/Firebase";
-import { TypeComment } from "@/types/type";
 import {
   addDoc,
   collection,
   deleteDoc,
   doc,
-  onSnapshot,
-  orderBy,
-  query,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";

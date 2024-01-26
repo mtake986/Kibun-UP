@@ -58,7 +58,7 @@ const SortBtn = ({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger className="text-sm text-gray-400">
-          {selectedSortByForComments}
+          {selectedSortByForComments === "newestFirst" ? "Newest First" : "Oldest First"}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="space-y-2 bg-white py-2 dark:bg-slate-900">
           <SortOption

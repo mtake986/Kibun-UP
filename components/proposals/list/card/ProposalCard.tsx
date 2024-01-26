@@ -50,7 +50,7 @@ const ProposalCard = ({ proposal }: Props) => {
     } else {
       return <UserIcon size={16} />;
     }
-  }, []);
+  }, [loginUser]);
 
   useEffect(() => {
     sortByNewestFirst();
