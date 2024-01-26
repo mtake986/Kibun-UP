@@ -49,13 +49,8 @@ const Icons = ({
   }, [event.createdBy, getCreatorPhoto]);
 
   useEffect(() => {
-    setIsLoading(true)
-    ;
+    setIsLoading(true);
     fetchLoginUser(auth.currentUser);
-    const q = query(
-      collection(db, "events", event.id, "comments"),
-      orderBy("createdAt", "desc")
-    );
 
     sortNewestFirst();
     // Later ...

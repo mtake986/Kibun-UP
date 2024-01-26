@@ -1,4 +1,4 @@
-import { TypeProposal, TypeUserFromFirestore } from "@/types/type";
+import { TypeComment, TypeProposal, TypeSelectedSortByForComments, TypeUserFromFirestore } from "@/types/type";
 import React, { useCallback, useEffect, useState } from "react";
 import Content from "./Content";
 import Icons from "./Icons/Icons";
@@ -8,24 +8,29 @@ import CommentForm from "./comment/CommentForm";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import useProposalComment from "../hooks/useProposalComment";
-import LoadingSpinnerS from "@/components/utils/LoadingSpinnerS";
 import NumOfComments from "./comment/NumOfComments";
 import ToggleCommentsBtn from "./comment/ToggleCommentsBtn";
 import SortBtn from "./comment/SortBtn";
 import CommentList from "./comment/CommentList";
 import { UserIcon } from "lucide-react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "@/config/Firebase";
 
 type Props = {
   proposal: TypeProposal;
 };
 const ProposalCard = ({ proposal }: Props) => {
   const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [commentsOnProposal, setCommentsOnProposal] = useState<TypeComment[]>(
+    []
+  );
+  const [selectedSortByForComments, setSelectedSortByForComments] =
+    useState<TypeSelectedSortByForComments>("newestFirst");
+
   const {
     toggleAddMode,
     isCommentAddMode,
-    fetchComments,
     addComment,
-    commentsOnProposal,
     toggleCommentList,
     areCommentsShown,
     updateComment,
@@ -43,13 +48,34 @@ const ProposalCard = ({ proposal }: Props) => {
         />
       );
     } else {
-      return <UserIcon size={16} />
+      return <UserIcon size={16} />;
     }
   }, []);
 
   useEffect(() => {
-    fetchComments(proposal.id);
+    sortByNewestFirst();
   }, []);
+
+  const sortComments = (order: "asc" | "desc") => {
+    const q = query(
+      collection(db, "proposals", proposal.id, "comments"),
+      orderBy("createdAt", order)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setCommentsOnProposal(
+        snapshot.docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
+        )
+      );
+    });
+    setSelectedSortByForComments(
+      order === "asc" ? "oldestFirst" : "newestFirst"
+    );
+    return unsubscribe;
+  };
+
+  const sortByNewestFirst = () => sortComments("desc");
+  const sortByOldestFirst = () => sortComments("asc");
 
   return (
     <div className="relative rounded-md border px-4 py-6 dark:border-white sm:p-6">
@@ -83,7 +109,13 @@ const ProposalCard = ({ proposal }: Props) => {
               toggleCommentList={toggleCommentList}
               commentsOnProposal={commentsOnProposal}
             />
-            <SortBtn commentsOnProposal={commentsOnProposal} />
+            <SortBtn
+              commentsOnProposal={commentsOnProposal}
+              sortByNewestFirst={sortByNewestFirst}
+              sortByOldestFirst={sortByOldestFirst}
+              selectedSortByForComments={selectedSortByForComments}
+              setSelectedSortByForComments={setSelectedSortByForComments}
+            />
           </div>
           <CommentList
             areCommentsShown={areCommentsShown}

@@ -16,7 +16,7 @@ import {
 const useProposalComment = () => {
   const [isCommentAddMode, setIsCommentAddMode] = useState<boolean>(false);
   const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
-  
+
   const toggleAddMode = () => {
     setIsCommentAddMode((prev) => !prev);
   };
@@ -25,7 +25,6 @@ const useProposalComment = () => {
     setAreCommentsShown((prev) => !prev);
   }
 
-  const [commentsOnProposal, setCommentsOnProposal] = useState<TypeComment[]>([]);
 
   const addComment = async (uid: string, comment: string, proposalId: string) => {
     const currTime = serverTimestamp();
@@ -54,29 +53,10 @@ const useProposalComment = () => {
     });
   };
 
-  const fetchComments = async (proposalId: string) => {
-    const q = query(
-      collection(db, "proposals", proposalId, "comments"),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setCommentsOnProposal(
-        snapshot.docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
-        )
-      );
-    });
-
-    return unsubscribe;
-  };
-
   return {
     toggleAddMode,
     isCommentAddMode,
     addComment,
-    fetchComments,
-    commentsOnProposal,
     toggleCommentList,
     areCommentsShown,
     removeComment,
