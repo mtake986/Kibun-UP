@@ -58,7 +58,7 @@ const ProposalList = ({ proposals, sortBy, setSortBy }: Props) => {
         )}
         {/* <Modal sortBy={sortBy} setSortBy={setSortBy} /> */}
       </div>
-      <div className="mb-2 flex items-center gap-3 text-gray-400">
+      <div className="flex items-center gap-3 text-xs text-gray-400">
         <p>{proposals.length} proposals found</p>
         <ElementSelect sortBy={sortBy} setSortBy={setSortBy} />
       </div>

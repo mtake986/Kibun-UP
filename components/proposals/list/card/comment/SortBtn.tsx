@@ -9,6 +9,8 @@ import { TypeComment, TypeSelectedSortByForComments } from "@/types/type";
 import { BiCheck } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import { Unsubscribe } from "firebase/firestore";
+import { ArrowDownNarrowWide } from "lucide-react";
+import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
   // selectedSortByForComments: TypeSelectedSortByForComments;
@@ -31,7 +33,7 @@ const SortOption = ({
   isSelected: boolean;
 }) => (
   <DropdownMenuItem
-    className={twMerge("p-0", isSelected ? "hover:bg-slate-800" : "")}
+    className={twMerge("p-0", isSelected ? "" : "hover:bg-slate-800")}
   >
     {isSelected && <BiCheck className="mr-1 text-gray-400" size={16} />}
     <button
@@ -47,6 +49,16 @@ const SortOption = ({
   </DropdownMenuItem>
 );
 
+const dropdownMenuTriggerElement = (selectedSortByForComments: 'newestFirst' | 'oldestFirst') => {
+  return (
+    <span className="flex items-center gap-3 text-gray-400 outline-none transition-opacity">
+      {selectedSortByForComments === "newestFirst"
+        ? "Newest First"
+        : "Oldest First"}
+      <IoIosArrowDown size={16} className="" />
+    </span>
+  );
+}
 const SortBtn = ({
   commentsOnProposal,
   sortByNewestFirst,
@@ -57,10 +69,10 @@ const SortBtn = ({
   if (commentsOnProposal.length >= 2) {
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger className="text-sm text-gray-400">
-          {selectedSortByForComments === "newestFirst" ? "Newest First" : "Oldest First"}
+        <DropdownMenuTrigger className="outline-none">
+          {dropdownMenuTriggerElement(selectedSortByForComments)}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="space-y-2 bg-white py-2 dark:bg-slate-900">
+        <DropdownMenuContent className="space-y-2 bg-white py-2 dark:bg-slate-900 border-none">
           <SortOption
             label="Newest First"
             onClick={() => {

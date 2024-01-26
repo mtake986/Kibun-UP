@@ -1,4 +1,9 @@
-import { TypeComment, TypeProposal, TypeSelectedSortByForComments, TypeUserFromFirestore } from "@/types/type";
+import {
+  TypeComment,
+  TypeProposal,
+  TypeSelectedSortByForComments,
+  TypeUserFromFirestore,
+} from "@/types/type";
 import React, { useCallback, useEffect, useState } from "react";
 import Content from "./Content";
 import Icons from "./Icons/Icons";
@@ -102,13 +107,15 @@ const ProposalCard = ({ proposal }: Props) => {
               />
             )}
           </AnimatePresence>
-          <div className="mb-2 mt-3 flex items-center gap-3">
-            <NumOfComments comments={commentsOnProposal} />
-            <ToggleCommentsBtn
-              areCommentsShown={areCommentsShown}
-              toggleCommentList={toggleCommentList}
-              commentsOnProposal={commentsOnProposal}
-            />
+          <div className="mb-2 mt-3 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-3">
+              <NumOfComments comments={commentsOnProposal} />
+              <ToggleCommentsBtn
+                areCommentsShown={areCommentsShown}
+                toggleCommentList={toggleCommentList}
+                commentsOnProposal={commentsOnProposal}
+              />
+            </div>
             <SortBtn
               commentsOnProposal={commentsOnProposal}
               sortByNewestFirst={sortByNewestFirst}
