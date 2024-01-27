@@ -17,7 +17,7 @@ const ToggleCommentsBtn = ({
       return (
         <IoIosArrowUp
           onClick={toggleCommentList}
-          size={16}
+          size={12}
           className="cursor-pointer text-gray-400"
         />
       );
@@ -25,7 +25,7 @@ const ToggleCommentsBtn = ({
       return (
         <IoIosArrowDown
           onClick={toggleCommentList}
-          size={16}
+          size={12}
           className="cursor-pointer text-gray-400"
         />
       );

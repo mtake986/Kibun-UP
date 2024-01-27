@@ -7,13 +7,19 @@ import usePaginationTenItems from "@/components/hooks/usePaginationTenItems";
 import Modal from "./modal/Modal";
 import ElementSelect from "./modal/sort/ElementSelect";
 import useProposals from "../form/hooks/useProposals";
+import { Unsubscribe } from "firebase/firestore";
+
 
 type Props = {
   proposals: TypeProposal[];
   sortBy: "newestFirst" | "mostVotes";
-  setSortBy: React.Dispatch<React.SetStateAction<"newestFirst" | "mostVotes">>;
+  sortProposals: (ele: "newestFirst" | "mostVotes") => Unsubscribe;
 };
-const ProposalList = ({ proposals, sortBy, setSortBy }: Props) => {
+const ProposalList = ({
+  proposals,
+  sortBy,
+  sortProposals,
+}: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { nPages, currentRecords } = usePaginationTenItems(
     currentPage,
@@ -60,7 +66,7 @@ const ProposalList = ({ proposals, sortBy, setSortBy }: Props) => {
       </div>
       <div className="flex items-center gap-3 text-xs text-gray-400">
         <p>{proposals.length} proposals found</p>
-        <ElementSelect sortBy={sortBy} setSortBy={setSortBy} />
+        <ElementSelect sortBy={sortBy} sortProposals={sortProposals} />
       </div>
       {displayCards()}
     </div>

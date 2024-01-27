@@ -5,38 +5,35 @@ import useProposalTab from "./hooks/useProposalTab";
 import { useSearchParams } from "next/navigation";
 import ProposalList from "./ProposalList";
 import LoadingSpinnerM from "@/components/utils/LoadingSpinnerM";
+import { Unsubscribe } from "firebase/firestore";
 
 type Props = {
   proposals: TypeProposal[];
   isPending: boolean;
   sortBy: "newestFirst" | "mostVotes";
-  setSortBy: React.Dispatch<React.SetStateAction<"newestFirst" | "mostVotes">>;
+  sortProposals: (ele: "newestFirst" | "mostVotes") => Unsubscribe;
 };
 
-const ListHome = ({ proposals, isPending, sortBy, setSortBy }: Props) => {
+const ListHome = ({
+  proposals,
+  isPending,
+  sortBy,
+  sortProposals,
+}: Props) => {
   const { tabs, handleTabClick } = useProposalTab();
   const searchParams = useSearchParams();
   const currTab = searchParams.get("tab");
-
+  
   const displayList = () => {
     switch (currTab) {
-      case "open":
-        return (
-          <ProposalList
-            proposals={proposals.filter(
-              (proposal) => proposal.status === "open"
-            )}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-          />
-        );
       case "inProgress":
         return (
           <ProposalList
             proposals={proposals.filter(
               (proposal) => proposal.status === "inProgress"
             )}
-            sortBy={sortBy} setSortBy={setSortBy}
+            sortBy={sortBy}
+            sortProposals={sortProposals}
           />
         );
       case "closed":
@@ -45,7 +42,8 @@ const ListHome = ({ proposals, isPending, sortBy, setSortBy }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "closed"
             )}
-            sortBy={sortBy} setSortBy={setSortBy}
+            sortBy={sortBy}
+            sortProposals={sortProposals}
           />
         );
       default:
@@ -54,12 +52,13 @@ const ListHome = ({ proposals, isPending, sortBy, setSortBy }: Props) => {
             proposals={proposals.filter(
               (proposal) => proposal.status === "open"
             )}
-            sortBy={sortBy} setSortBy={setSortBy}
+            sortBy={sortBy}
+            sortProposals={sortProposals}
           />
         );
     }
   };
-  
+
   return (
     <div className="flex flex-col gap-1">
       <Tabs tabs={tabs} handleTabClick={handleTabClick} />

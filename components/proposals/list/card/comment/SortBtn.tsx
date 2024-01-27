@@ -18,9 +18,6 @@ type Props = {
   sortByNewestFirst: () => Unsubscribe;
   sortByOldestFirst: () => Unsubscribe;
   selectedSortByForComments: TypeSelectedSortByForComments;
-  setSelectedSortByForComments: React.Dispatch<
-    React.SetStateAction<TypeSelectedSortByForComments>
-  >;
 };
 
 const SortOption = ({
@@ -55,7 +52,7 @@ const dropdownMenuTriggerElement = (selectedSortByForComments: 'newestFirst' | '
       {selectedSortByForComments === "newestFirst"
         ? "Newest First"
         : "Oldest First"}
-      <IoIosArrowDown size={16} className="" />
+      <IoIosArrowDown size={12} className="" />
     </span>
   );
 }
@@ -64,7 +61,6 @@ const SortBtn = ({
   sortByNewestFirst,
   sortByOldestFirst,
   selectedSortByForComments,
-  setSelectedSortByForComments
 }: Props) => {
   if (commentsOnProposal.length >= 2) {
     return (
@@ -77,7 +73,6 @@ const SortBtn = ({
             label="Newest First"
             onClick={() => {
               sortByNewestFirst();
-              setSelectedSortByForComments("newestFirst");
             }}
             isSelected={selectedSortByForComments === "newestFirst"}
           />
@@ -85,7 +80,6 @@ const SortBtn = ({
             label="Oldest First"
             onClick={() => {
               sortByOldestFirst();
-              setSelectedSortByForComments("oldestFirst");
             }}
             isSelected={selectedSortByForComments === "oldestFirst"}
           />

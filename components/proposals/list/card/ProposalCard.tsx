@@ -121,7 +121,6 @@ const ProposalCard = ({ proposal }: Props) => {
               sortByNewestFirst={sortByNewestFirst}
               sortByOldestFirst={sortByOldestFirst}
               selectedSortByForComments={selectedSortByForComments}
-              setSelectedSortByForComments={setSelectedSortByForComments}
             />
           </div>
           <CommentList
