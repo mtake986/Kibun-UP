@@ -389,7 +389,6 @@ export function EventProvider({ children }: EventProviderProps) {
               (doc) => doc.eventDate.toDate() < yesterday
             );
           }
-          console.log(tempEvents.length, tempEvents);
           setLoginUserEvents(tempEvents);
         } else {
           setLoginUserEvents(tempEvents);
@@ -538,7 +537,6 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
   const checkSortFilterVariablesForNotMyEventsDefault = () => {
-    console.log(sortFilterVariablesForEventsOtherThanLoginUser);
     if (
       sortFilterVariablesForEventsOtherThanLoginUser.sortBy ===
         SORT_FILTER_VARIABLES_EVENTS.sortBy &&

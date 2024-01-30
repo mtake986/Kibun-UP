@@ -32,7 +32,6 @@ const Quote = () => {
     const fetchDocs = async () => {
       fetchLoginUser(user);
       if (!loginUserQuotes || loginUserQuotes.length === 0) {
-        console.log("fetching login user quotes");
         getLoginUserQuotes();
       }
       if (!lockedQuote) await getLockedQuote();

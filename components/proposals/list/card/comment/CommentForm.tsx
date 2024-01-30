@@ -14,8 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { TypeUserFromFirestore } from "@/types/type";
-import { AnimatePresence, motion } from "framer-motion";
-import { insertFromTopS } from "@/data/CONSTANTS";
+import { motion } from "framer-motion";
 import LoadingCover from "@/components/utils/LoadingCover";
 
 type Props = {
@@ -49,11 +48,10 @@ const CommentForm = ({
     setIsPending(true);
     try {
       await addComment(loginUser.uid, values.comment, proposalId);
-      console.log(loginUser.uid, values.comment, proposalId);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({
-        text: "ERROR: Failed to send email. Please try again. " + error,
+        text: "ERROR: " + error,
         color: "red",
       });
     } finally {

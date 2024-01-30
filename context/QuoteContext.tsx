@@ -223,9 +223,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               createdAt: serverTimestamp(),
               updatedAt: serverTimestamp(),
             });
-          } else {
-            console.log("Quote already exists in the database");
-          }
+          } 
         };
         await registerAPIQuote();
       }

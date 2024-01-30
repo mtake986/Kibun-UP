@@ -12,7 +12,7 @@ type Props = {
 };
 const NumOfComments = ({ comments }: Props) => {
   return (
-    <span className="text-sm text-gray-400">{comments.length} comments</span>
+    <span className="text-xs text-gray-400">{comments.length} comments</span>
   );
 };
 
