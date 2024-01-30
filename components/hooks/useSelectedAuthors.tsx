@@ -7,7 +7,6 @@ const useSelectedAuthors = () => {
   );
 
   const handleAuthors = (value: TypeSelectedAuthors) => {
-    console.log(value);
     setSelectedAuthors((prev) => {
       if (prev.some((ele) => ele.label === value.label)) {
         return prev.filter((ele) => ele.label !== value.label);

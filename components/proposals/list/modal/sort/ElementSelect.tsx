@@ -17,7 +17,6 @@ const ElementSelect = ({ sortBy, sortProposals }: Props) => {
   return (
     <Select
       onValueChange={(ele: "mostVotes" | "newestFirst") => {
-        console.log(ele);
         sortProposals(ele);
       }}
       value={sortBy}

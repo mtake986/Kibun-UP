@@ -50,9 +50,7 @@ const Home = () => {
         });
       } catch (error) {
         displayErrorToast(error);
-      } finally {
-        console.log(auth.currentUser);
-      }
+      } 
     }
   }, [user]);
 

@@ -48,7 +48,6 @@ const CommentForm = ({
     setIsPending(true);
     try {
       await addComment(loginUser.uid, values.comment, proposalId);
-      console.log(loginUser.uid, values.comment, proposalId);
     } catch (error) {
       // 送信失敗したらalertで表示
       displayToast({
