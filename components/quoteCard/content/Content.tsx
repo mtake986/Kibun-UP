@@ -30,7 +30,7 @@ const Content = ({ q }: Props) => {
       <Info icon={<BsChatLeftText size={16} />} text={q.content} />
       <Info icon={<BsFillPersonFill size={16} />} text={q.author} />
       <Info icon={<EyeIcon size={16} />} text={q.draftStatus} />
-      {q.tags ? (
+      {q.tags.length > 0 ? (
         <Tags tags={q.tags} />
       ) : null}
     </div>

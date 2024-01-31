@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProposalsList from "./list/ListHome";
 import ProposalForm from "./form/ProposalForm";
 import useProposals from "./form/hooks/useProposals";
@@ -14,12 +14,12 @@ const ProposalHome = () => {
   const [sortBy, setSortBy] = useState<"newestFirst" | "mostVotes">(
     "newestFirst"
   );
-
   useEffect(() => {
     sortProposals(sortBy);
   }, []);
 
   const sortProposals = (ele: "newestFirst" | "mostVotes") => {
+
     setSortBy(ele)
     setIsPending(true);
     const q = query(collection(db, "proposals"), orderBy("createdAt", 'desc'));

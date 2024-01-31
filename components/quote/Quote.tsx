@@ -15,8 +15,8 @@ import ScrollToTopBtn from "./ScrollToTopBtn";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Quote = () => {
-  const [user] = useAuthState(auth);
-  const { loginUser, fetchLoginUser } = useAuth();
+  // const [user] = useAuthState(auth);
+  const { loginUser, fetchLoginUser, user, isPending } = useAuth();
   const {
     loginUserQuotes,
     getLoginUserQuotes,
@@ -51,9 +51,9 @@ const Quote = () => {
   }, [user]);
   
 
-  if (!user) {
-    return <GoogleLoginBtn />;
-  }
+
+  // if (isPending) return <h1>pending</h1>;
+  // if (user) return user.displayName;
 
   if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;

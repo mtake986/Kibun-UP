@@ -44,7 +44,7 @@ const OtherMenu = () => {
   ];
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="outline-none">
         <BiDotsVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white p-3 flex flex-col gap-1 dark:bg-slate-900">
