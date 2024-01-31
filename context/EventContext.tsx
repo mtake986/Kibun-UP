@@ -198,6 +198,7 @@ export function EventProvider({ children }: EventProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "events", id));
+    setLoginUserEvents(loginUserEvents.filter((event) => event.id !== id));
   };
 
   const lockThisEvent = async (uid: string, data: TypeEvent) => {

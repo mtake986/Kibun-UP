@@ -204,6 +204,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
+    setLoginUserQuotes(loginUserQuotes.filter((q) => q.id !== id));
   };
 
   const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
