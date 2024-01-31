@@ -24,16 +24,6 @@ const SwitchTab = () => {
   // functions =====
   const displayList = () => {
     switch (currTab) {
-      case "mine":
-        return (
-          <List
-            quotes={
-              isSortFilterVariablesForMineDefaultValue
-                ? loginUserQuotes
-                : sortedFilteredMyQuotes
-            }
-          />
-        );
       case "notMine":
         return (
           <ListNotMine
@@ -65,7 +55,7 @@ const SwitchTab = () => {
 
   return (
     <div>
-      <div className="mb-3 flex items-stretch">
+      <div className="mb-1 flex items-stretch">
         {tabs.map((tab) => (
           <span
             key={tab.name}

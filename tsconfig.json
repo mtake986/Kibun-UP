@@ -36,6 +36,6 @@
     "components/hooks/useSelectedTag.tsx",
     "app/profile/[uid]/activity",
     "components/eventCard/comment/NumOfComments.tsx"
-  ],
+, "components/FirebaseContext.js"  ],
   "exclude": ["node_modules"]
 }

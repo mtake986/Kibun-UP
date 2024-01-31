@@ -10,7 +10,7 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 import OtherMenu from "./OtherMenu";
 
 export default function Header() {
-  const { fetchLoginUser, loginUser } = useAuth();
+  const { fetchLoginUser, loginUser } = useAuth();  
   const pathname = usePathname();
   useEffect(() => {
     fetchLoginUser(auth.currentUser);
@@ -44,6 +44,7 @@ export default function Header() {
       className: getLinkStyle(`/profile/${loginUser?.uid}`),
     },
   ];
+
   return (
     <header className="px-5 py-4 text-violet-500 shadow-md shadow-violet-100 dark:bg-slate-950 dark:text-white">
       <nav className="mx-auto flex max-w-xl flex-wrap items-center justify-between ">
