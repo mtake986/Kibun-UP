@@ -3,7 +3,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import { TypeQuote } from "@/types/type";
 import { Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   AlertDialog,
@@ -47,7 +47,8 @@ const IconTrash = ({ q, goPrevAsNoCurrentRecords }: Props) => {
     } catch (e) {
       displayErrorToast(e);
     }
-  };
+  }
+  
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -56,24 +57,23 @@ const IconTrash = ({ q, goPrevAsNoCurrentRecords }: Props) => {
           className="cursor-pointer duration-300 hover:opacity-70"
         />
       </AlertDialogTrigger>
-      <AlertDialogContent className="bg-white dark:bg-slate-900">
+      <AlertDialogContent className="w-72 bg-white dark:bg-slate-900">
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the data
-            from our servers.
+          <AlertDialogTitle className="text-left">
+            Delete proposal
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-left text-gray-500">
+            Delete your proposal permanently?
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="flex items-center gap-3">
-            <MdOutlineCancel size={14} />
+        <AlertDialogFooter className="flex flex-row items-center justify-end gap-3">
+          <AlertDialogCancel className="mt-0 h-auto rounded-full border-none hover:bg-gray-500">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleClick(q)}
-            className="flex items-center gap-3 text-red-500"
+            className="h-auto rounded-full hover:bg-red-500"
           >
-            <Trash size={14} />
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

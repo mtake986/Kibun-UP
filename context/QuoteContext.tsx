@@ -204,6 +204,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
   const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "quotes", id));
+    setLoginUserQuotes(loginUserQuotes.filter((q) => q.id !== id));
   };
 
   const lockThisQuote = async (uid: string, q: TypeQuote | TypeAPIQuote) => {
@@ -452,7 +453,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
+    // setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
+    setLoginUserQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
   };
 
   const updateSortFilterVariablesForMine = (which: TypeSortType, ele: any) => {
@@ -557,7 +559,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    setSortedFilteredNotMyQuotes(
+    // setSortedFilteredNotMyQuotes(
+    //   tempQs.filter((q) => q.createdBy !== user?.uid)
+    // );ta
+    setQuotesNotMine(
       tempQs.filter((q) => q.createdBy !== user?.uid)
     );
   };

@@ -27,11 +27,12 @@ const SwitchTab = () => {
       case "notMine":
         return (
           <ListNotMine
-            quotes={
-              isSortFilterVariablesForNotMineDefaultValue
-                ? quotesNotMine
-                : sortedFilteredNotMyQuotes
-            }
+            // quotes={
+            //   isSortFilterVariablesForNotMineDefaultValue
+            //     ? quotesNotMine
+            //     : sortedFilteredNotMyQuotes
+            // }
+            quotes={quotesNotMine}
           />
         );
       case "api":
@@ -39,11 +40,12 @@ const SwitchTab = () => {
       default:
         return (
           <List
-            quotes={
-              isSortFilterVariablesForMineDefaultValue
-                ? loginUserQuotes
-                : sortedFilteredMyQuotes
-            }
+            // quotes={
+            //   isSortFilterVariablesForMineDefaultValue
+            //     ? loginUserQuotes
+            //     : sortedFilteredMyQuotes
+            // }
+            quotes={loginUserQuotes}
           />
         );
     }

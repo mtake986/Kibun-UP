@@ -24,7 +24,6 @@ type Props = {
 };
 
 const IconTrash = ({ proposal, goPrevAsNoCurrentRecords }: Props) => {
-  const { loginUser } = useAuth();
   const { deleteProposal } = useProposals();
 
   const handleClick = (proposalId: string) => {

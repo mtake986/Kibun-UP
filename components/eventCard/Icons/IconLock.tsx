@@ -16,7 +16,7 @@ const IconLock = ({ event, loginUser }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   if (isLoading) {
-    return <LoadingSpinnerXS num={3} />;
+    return <LoadingSpinnerXS num={3.5} />;
   }
 
   const handleLock = async () => {
