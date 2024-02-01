@@ -3,7 +3,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { displayErrorToast } from "@/functions/displayToast";
 import { TypeQuote } from "@/types/type";
 import { Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   AlertDialog,
@@ -47,7 +47,8 @@ const IconTrash = ({ q, goPrevAsNoCurrentRecords }: Props) => {
     } catch (e) {
       displayErrorToast(e);
     }
-  };
+  }
+  
   return (
     <AlertDialog>
       <AlertDialogTrigger>

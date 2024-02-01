@@ -453,7 +453,8 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
+    // setSortedFilteredMyQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
+    setLoginUserQuotes(tempQs.filter((q) => q.createdBy === user?.uid));
   };
 
   const updateSortFilterVariablesForMine = (which: TypeSortType, ele: any) => {
@@ -558,7 +559,10 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
       }
     });
 
-    setSortedFilteredNotMyQuotes(
+    // setSortedFilteredNotMyQuotes(
+    //   tempQs.filter((q) => q.createdBy !== user?.uid)
+    // );ta
+    setQuotesNotMine(
       tempQs.filter((q) => q.createdBy !== user?.uid)
     );
   };

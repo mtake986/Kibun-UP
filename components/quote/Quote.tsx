@@ -18,27 +18,19 @@ const Quote = () => {
   // const [user] = useAuthState(auth);
   const { loginUser, fetchLoginUser, user, isPending } = useAuth();
   const {
-    loginUserQuotes,
     getLoginUserQuotes,
-    quotesNotMine,
     getLockedQuote,
-    lockedQuote,
     getQuotesNotMine,
-    apiQuotesFromFirestore,
     fetchApiQuotesFromFirestore,
   } = useQuote();
 
   useEffect(() => {
     const fetchDocs = async () => {
       fetchLoginUser(user);
-      if (!loginUserQuotes || loginUserQuotes.length === 0) {
-        getLoginUserQuotes();
-      }
-      if (!lockedQuote) await getLockedQuote();
-      if (!quotesNotMine || quotesNotMine.length === 0)
-        await getQuotesNotMine();
-      if (apiQuotesFromFirestore.length === 0)
-        await fetchApiQuotesFromFirestore();
+      getLoginUserQuotes();
+      getLockedQuote();
+      getQuotesNotMine();
+      fetchApiQuotesFromFirestore();
     };
 
     try {
@@ -49,11 +41,6 @@ const Quote = () => {
       );
     }
   }, [user]);
-  
-
-
-  // if (isPending) return <h1>pending</h1>;
-  // if (user) return user.displayName;
 
   if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;
