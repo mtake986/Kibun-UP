@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
 import Radio from "./Radio";
 import GoogleLoginBtn from "@/components/utils/GoogleLoginBtn";
+import { TypeQuoteTypeForHome } from "@/types/type";
 
-const radios = [
+const radios: { id: TypeQuoteTypeForHome, label: string}[] = [
   {
     id: "mine",
     label: "Mine",
@@ -21,15 +22,17 @@ const radios = [
 ];
 
 const Radios = () => {
-  const { updateQuoteTypeForHome, loginUser } =
-    useAuth();
+  const { updateQuoteTypeForHome, loginUser } = useAuth();
   const { loginUserQuotes } = useQuote();
+  const [quoteTypeForHome, setQuoteTypeForHome] = useState<
+    "bookmarks" | "appChoice" | "mine"
+  >(loginUser?.settings?.quoteTypeForHome ?? 'mine');
 
   if (loginUser) {
     return (
       <RadioGroup
         defaultValue={loginUser.settings.quoteTypeForHome}
-        className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 sm:py-2"
+        className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-5 sm:py-2"
       >
         {radios.map((radio) => (
           <Radio
@@ -38,17 +41,13 @@ const Radios = () => {
             updateQuoteTypeForHome={updateQuoteTypeForHome}
             loginUser={loginUser}
             loginUserQuotes={loginUserQuotes}
+            quoteTypeForHome={quoteTypeForHome}
+            setQuoteTypeForHome={setQuoteTypeForHome}
           />
         ))}
       </RadioGroup>
     );
-  } else
-    return (
-      <div>
-        <GoogleLoginBtn />
-        <p>Please log in to view this content.</p>
-      </div>
-    );
+  } else return <GoogleLoginBtn />;
 };
 
 export default Radios;

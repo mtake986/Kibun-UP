@@ -25,7 +25,7 @@ const Tabs = () => {
   };
 
   return (
-    <div className="mb-3 flex items-stretch">
+    <div className="flex items-stretch">
       {tabs.map((tab) => (
         <span
           key={tab.name}
