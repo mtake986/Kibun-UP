@@ -26,16 +26,6 @@ const ListHome = ({
   
   const displayList = () => {
     switch (currTab) {
-      case "inProgress":
-        return (
-          <ProposalList
-            proposals={proposals.filter(
-              (proposal) => proposal.status === "inProgress"
-            )}
-            sortBy={sortBy}
-            sortProposals={sortProposals}
-          />
-        );
       case "closed":
         return (
           <ProposalList
@@ -60,7 +50,7 @@ const ListHome = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col">
       <Tabs tabs={tabs} handleTabClick={handleTabClick} />
       {isPending ? <LoadingSpinnerM /> : displayList()}
     </div>

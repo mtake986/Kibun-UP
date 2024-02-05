@@ -8,7 +8,7 @@ const useProposalTab = () => {
     value: TypeProposalStatusValue;
   }[] = [
     { label: "Open", value: "open" },
-    { label: "In Progress", value: "inProgress" },
+    // { label: "In Progress", value: "inProgress" },
     { label: "Closed", value: "closed" },
   ];
   const router = useRouter();
