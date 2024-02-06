@@ -10,10 +10,6 @@ const SwitchTab = () => {
   const {
     loginUserQuotes,
     quotesNotMine,
-    isSortFilterVariablesForMineDefaultValue,
-    sortedFilteredMyQuotes,
-    isSortFilterVariablesForNotMineDefaultValue,
-    sortedFilteredNotMyQuotes,
   } = useQuote();
 
   const router = useRouter();
@@ -27,11 +23,6 @@ const SwitchTab = () => {
       case "notMine":
         return (
           <ListNotMine
-            // quotes={
-            //   isSortFilterVariablesForNotMineDefaultValue
-            //     ? quotesNotMine
-            //     : sortedFilteredNotMyQuotes
-            // }
             quotes={quotesNotMine}
           />
         );
@@ -40,11 +31,6 @@ const SwitchTab = () => {
       default:
         return (
           <List
-            // quotes={
-            //   isSortFilterVariablesForMineDefaultValue
-            //     ? loginUserQuotes
-            //     : sortedFilteredMyQuotes
-            // }
             quotes={loginUserQuotes}
           />
         );

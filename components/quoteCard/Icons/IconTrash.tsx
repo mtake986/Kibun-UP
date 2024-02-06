@@ -67,12 +67,12 @@ const IconTrash = ({ q, goPrevAsNoCurrentRecords }: Props) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex flex-row items-center justify-end gap-3">
-          <AlertDialogCancel className="mt-0 h-auto rounded-full border-none hover:bg-gray-500">
+          <AlertDialogCancel className="mt-0 h-auto rounded-full border-none hover:bg-gray-50 dark:hover:bg-gray-500">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleClick(q)}
-            className="h-auto rounded-full hover:bg-red-500"
+            className="h-auto rounded-full hover:bg-red-50 dark:hover:bg-red-500 text-red-500 dark:text-white"
           >
             Delete
           </AlertDialogAction>

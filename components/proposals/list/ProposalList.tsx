@@ -54,7 +54,12 @@ const ProposalList = ({
 
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3 text-xs text-gray-400">
+        <p>{proposals.length} proposals found</p>
+        <ElementSelect sortBy={sortBy} sortProposals={sortProposals} />
+      </div>
+      {displayCards()}
+      <div className="flex items-center mt-1 justify-between">
         {nPages >= 2 && (
           <PaginationBtns
             nPages={nPages}
@@ -64,11 +69,6 @@ const ProposalList = ({
         )}
         {/* <Modal sortBy={sortBy} setSortBy={setSortBy} /> */}
       </div>
-      <div className="flex items-center gap-3 text-xs text-gray-400">
-        <p>{proposals.length} proposals found</p>
-        <ElementSelect sortBy={sortBy} sortProposals={sortProposals} />
-      </div>
-      {displayCards()}
     </div>
   );
 };

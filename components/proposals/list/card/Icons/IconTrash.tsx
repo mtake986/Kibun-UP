@@ -52,13 +52,13 @@ const IconTrash = ({ proposal, goPrevAsNoCurrentRecords }: Props) => {
             Delete your proposal permanently?
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="flex flex-row items-center gap-3 justify-end">
-          <AlertDialogCancel className="mt-0 h-auto border-none hover:bg-gray-500 rounded-full">
+        <AlertDialogFooter className="flex flex-row items-center justify-end gap-3">
+          <AlertDialogCancel className="mt-0 h-auto rounded-full border-none hover:bg-gray-50 dark:hover:bg-gray-500">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleClick(proposal.id)}
-            className="h-auto hover:bg-red-500 rounded-full"
+            className="h-auto rounded-full text-red-500 hover:bg-red-50 dark:text-white dark:hover:bg-red-500"
           >
             Delete
           </AlertDialogAction>

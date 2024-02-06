@@ -81,7 +81,6 @@ type TypeQuoteContext = {
 
   // ========== sort and filter quots =========
   // =========== For My quotes ===========
-  sortedFilteredMyQuotes: TypeQuote[];
   SortFilterVariablesForMine: TypeSortFilterBy;
   isTagToFilterMyQuotesDisabled: boolean;
   isSortFilterVariablesForMineDefaultValue: boolean;
@@ -93,7 +92,6 @@ type TypeQuoteContext = {
   resetSortFilterVariablesForMineDefaultValue: () => void;
   checkSortFilterVariablesForMineDefaultValue: () => void;
   // =========== For Not My quotes ===========
-  sortedFilteredNotMyQuotes: TypeQuote[];
   SortFilterVariablesForNotMine: TypeSortFilterBy;
   isTagToFilterNotMyQuotesDisabled: boolean;
   isSortFilterVariablesForNotMineDefaultValue: boolean;
@@ -398,9 +396,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   // ============   Sort and Fiter Quotes   ================
 
   // ========== My Quotes =================
-  const [sortedFilteredMyQuotes, setSortedFilteredMyQuotes] = useState<
-    TypeQuote[]
-  >([]);
   const [SortFilterVariablesForMine, setSortFilterVariablesForMine] =
     useState<TypeSortFilterBy>({
       order: "desc",
@@ -502,9 +497,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
   // END ============   My Quotes   ================
 
   // ============   Not My Quotes   ================
-  const [sortedFilteredNotMyQuotes, setSortedFilteredNotMyQuotes] = useState<
-    TypeQuote[]
-  >([]);
   const [SortFilterVariablesForNotMine, setSortFilterVariablesForNotMine] =
     useState<TypeSortFilterBy>({
       order: "desc",
@@ -561,7 +553,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
     // setSortedFilteredNotMyQuotes(
     //   tempQs.filter((q) => q.createdBy !== user?.uid)
-    // );ta
+    // );
     setQuotesNotMine(
       tempQs.filter((q) => q.createdBy !== user?.uid)
     );
@@ -841,7 +833,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
         // ========== sort and filter quots =========
         // =========== For My quotes ===========
-        sortedFilteredMyQuotes,
         SortFilterVariablesForMine,
         isTagToFilterMyQuotesDisabled,
         isSortFilterVariablesForMineDefaultValue,
@@ -851,7 +842,6 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
         resetSortFilterVariablesForMineDefaultValue,
         checkSortFilterVariablesForMineDefaultValue,
         // =========== For Not My quotes ===========
-        sortedFilteredNotMyQuotes,
         SortFilterVariablesForNotMine,
         isTagToFilterNotMyQuotesDisabled,
         isSortFilterVariablesForNotMineDefaultValue,

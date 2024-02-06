@@ -45,7 +45,11 @@ const QuoteList = () => {
 
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
+      <div className="my-1 flex flex-col gap-3 text-xs text-gray-400">
+        {profileUserQuotes.length} quotes found
+      </div>
+      {displayCards()}
+      <div className="mt-1 flex items-center justify-between">
         {nPages >= 2 && (
           <PaginationBtns
             nPages={nPages}
@@ -54,10 +58,6 @@ const QuoteList = () => {
           />
         )}
       </div>
-      <div className="mb-2 flex flex-col gap-3 text-gray-400">
-        {profileUserQuotes.length} quotes found
-      </div>
-      {displayCards()}
     </div>
   );
 };
