@@ -256,27 +256,34 @@ export function EventProvider({ children }: EventProviderProps) {
     let events: TypeEvent[] = [];
     if (user?.uid) {
       const q = query(eventsCollectionRef, where("createdBy", "==", user?.uid));
-      onSnapshot(q, (snapshot) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         events = snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
-        );
-        const randomNum = getRandomNum(events.length);
-        const e: TypeEvent = events[randomNum];
-        setRandomEvent(e);
+        ).filter((doc) => doc.id !== randomEvent?.id);
+
+        if (events.length > 0) {
+          const randomNum = getRandomNum(events.length);
+          const e: TypeEvent = events[randomNum];
+          setRandomEvent(e);
+        }
       });
+
+      return unsubscribe;
     }
   };
 
   const getEventsNotMine = async () => {
     if (user) {
       const q = query(eventsCollectionRef, where("createdBy", "!=", user?.uid));
-      onSnapshot(q, (snapshot) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         setEventsNotMine(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
           )
         );
       });
+
+      return unsubscribe;
     }
   };
 

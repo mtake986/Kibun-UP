@@ -23,24 +23,23 @@ const Icons = ({ event, type }: Props) => {
   }
   return (
     <div className="flex items-center justify-end gap-3">
-      <BiRefresh
-        onClick={() => {
-          if (type === "locked") alert("To refresh, unlock this event first.");
-          else {
+      <button disabled={type === "locked"}>
+        <BiRefresh
+          onClick={() => {
             setLoading(true);
-            setTimeout(() => {
-              getRandomEvent();
-              setLoading(false);
-            }, 1000);
-          }
-        }}
-        className={twMerge(
-          type === "locked"
-            ? "cursor-not-allowed opacity-30 duration-300"
-            : "cursor-pointer duration-300 hover:opacity-50"
-        )}
-        size={20}
-      />
+            // setTimeout(() => {
+            getRandomEvent();
+            setLoading(false);
+            // }, 1000);
+          }}
+          className={twMerge(
+            type === "locked"
+              ? "cursor-not-allowed opacity-30 duration-300"
+              : "cursor-pointer duration-300 hover:opacity-50"
+          )}
+          size={20}
+        />
+      </button>
 
       <Target
         onClick={() => {
