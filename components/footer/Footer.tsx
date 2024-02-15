@@ -33,7 +33,7 @@ const Footer = () => {
         disabled={isBtnDisabled(pathname, `/${link}`)}
         className="flex items-center gap-3 text-violet-500 transition duration-300 ease-in hover:opacity-70 dark:text-white"
       >
-        {icon}
+        <span className="text-xl">{icon}</span>
       </button>
     );
   };
@@ -69,26 +69,13 @@ const Footer = () => {
   ];
 
   return (
-    <>
-      {/* over mobile */}
-      {/* <footer className="bottom-0 z-10 m-auto mt-10 hidden w-full bg-slate-50 py-1 text-center text-xs text-slate-400 dark:bg-slate-900 sm:text-sm md:fixed">
-        &copy; Copyright <span>{today}</span>{" "}
-        <UrlLink
-          href="/creator-info"
-          clickOn="Masahiro Takechi"
-          target="_self"
-          className="text-sky-500 underline-offset-2 hover:underline"
-        />
-      </footer> */}
-
-      {/* mobile */}
-      <nav className="fixed bottom-0 z-10 mx-auto w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden">
+      <nav className="fixed bottom-0 m-2 mx-2 z-10 w-full bg-violet-50 py-2 dark:bg-slate-900 sm:hidden rounded-md">
         <div className="m-auto flex w-full items-center justify-around px-5">
           {footerListItems.map((item, i) => {
             if (pathname.includes(item.href)) {
               return (
                 <button disabled={true} className="opacity-50 text-violet-500 dark:text-white" key={item.href}>
-                  {icons[i]}
+                  <span className="text-xl">{icons[i]}</span>
                 </button>
               );
             }
@@ -104,7 +91,6 @@ const Footer = () => {
           <OtherLinks />
         </div>
       </nav>
-    </>
   );
 };
 
