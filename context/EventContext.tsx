@@ -252,23 +252,6 @@ export function EventProvider({ children }: EventProviderProps) {
     }
   };
 
-    // const sortOldestFirst = async (eid: string) => {
-    //   const q = query(
-    //     collection(db, "events", eid, "comments"),
-    //     orderBy("createdAt", "asc")
-    //   );
-
-    //   const unsubscribe = onSnapshot(q, (snapshot) => {
-    //     setComments(
-    //       snapshot.docs.map(
-    //         (doc) => ({ ...doc.data(), id: doc.id } as TypeComment)
-    //       )
-    //     );
-    //   });
-
-    //   return unsubscribe;
-    // };
-
   const getRandomEvent = () => {
     let events: TypeEvent[] = [];
     if (user?.uid) {
@@ -292,13 +275,15 @@ export function EventProvider({ children }: EventProviderProps) {
   const getEventsNotMine = async () => {
     if (user) {
       const q = query(eventsCollectionRef, where("createdBy", "!=", user?.uid));
-      onSnapshot(q, (snapshot) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         setEventsNotMine(
           snapshot.docs.map(
             (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
           )
         );
       });
+
+      return unsubscribe;
     }
   };
 
