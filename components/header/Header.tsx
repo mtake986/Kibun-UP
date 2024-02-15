@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import OtherMenu from "./OtherMenu";
+import LogOutBtn from "./LogOutBtn";
 
 export default function Header() {
   const { fetchLoginUser, loginUser } = useAuth();  
@@ -76,7 +77,7 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-3">
           <ThemeSwitcher />
-          {pathname.includes(`/profile/${loginUser?.uid}`) ? <MenuBtn /> : null}
+          {pathname.includes(`/profile/${loginUser?.uid}`) ? <MenuBtn /> : <LogOutBtn />}
         </div>
       </nav>
     </header>
