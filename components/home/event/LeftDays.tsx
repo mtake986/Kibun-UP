@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   event: TypeEvent;
 };
+
 const LeftDays = ({ event }: Props) => {
   return (
     <div
@@ -19,9 +20,12 @@ const LeftDays = ({ event }: Props) => {
       )}
     >
       {calculateLeftDays(event.eventDate.toDate()) <= 0 ? (
-        <span className="text-center text-3xl">
-          You Can Do It <span className="text-2xl">🎉</span>
-        </span>
+        <>
+          <span className="text-center text-5xl">
+            Believe in yourself!
+          </span>
+          <div className="my-1 text-center text-xs text-transparent">-</div>
+        </>
       ) : (
         <div className="flex flex-col">
           <div className="flex items-end justify-center gap-2 italic">
