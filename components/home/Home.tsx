@@ -30,9 +30,9 @@ const Home = () => {
     setIsEventLoading(true);
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
-      await getLockedEvent();
-      await getEventsWithSortAndFilter('loginUser');
-      await getRandomEvent();
+      getLockedEvent();
+      getEventsWithSortAndFilter('loginUser');
+      getRandomEvent();
     };
     const fetchQuotes = async () => {
       getLockedQuote();
