@@ -35,11 +35,11 @@ const Home = () => {
       await getRandomEvent();
     };
     const fetchQuotes = async () => {
-      await getLockedQuote();
-      await updateRandomQuote();
+      getLockedQuote();
+      updateRandomQuote();
     };
 
-    if (user) {
+    // if (user) {
       try {
         fetchLoginUser(auth.currentUser);
         fetchEvents().then(() => {
@@ -51,7 +51,7 @@ const Home = () => {
       } catch (error) {
         displayErrorToast(error);
       } 
-    }
+    // }
   }, [user]);
 
   if (!auth.currentUser) {
