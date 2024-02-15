@@ -42,6 +42,10 @@ const Quote = () => {
     }
   }, [user]);
 
+  if (!user) {
+    return <GoogleLoginBtn />;
+  }
+
   if (!loginUser) {
     return <LoadingIndicator text={"Loading a Login User..."} />;
   } else {
