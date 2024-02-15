@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
 import QuoteContent from "./QuoteContent";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
+import { TypeAPIQuote, TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import AuthorText from "./AuthorText";
 import Icons from "./Icons";
 import Tags from "./Tags";
-import Loading from "@/components/utils/Loading";
-import { Skeleton } from "@mui/material";
 
 type Props = {
-  quote: TypeQuoteQuotetableAPI | TypeQuote;
+  quote: TypeQuote | TypeAPIQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
-  isPending?: boolean;
+  loginUser: TypeUserFromFirestore;
 };
-const QuoteCard = ({ quote, type, refetch, isPending }: Props) => {
-  console.log(type, quote);
+
+const QuoteCard = ({ quote, type, refetch, loginUser }: Props) => {
   return (
-    <div className="mb-20 p-6 sm:rounded-lg sm:p-12 sm:shadow">
-      <QuoteContent quote={quote} />
-      <AuthorText quote={quote} />
-      <div className="flex items-start justify-between mt-3">
-        <Tags quote={quote} />
-        <Icons quote={quote} type={type} refetch={refetch} />
-      </div>
+    <div className="mb-20 flex flex-col gap-1 rounded-none p-6 sm:rounded-lg sm:p-12 sm:shadow">
+      <QuoteContent content={quote.content} />
+      <AuthorText author={quote.author} />
+      <Tags tags={quote?.tags} />
+      <Icons
+        quote={quote}
+        type={type}
+        refetch={refetch}
+        loginUser={loginUser}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
+"use client";
 import Link from "next/link";
 import React from "react";
-import { Button } from "../ui/button";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   href: string;
@@ -9,14 +10,15 @@ type Props = {
   className?: string;
 };
 
-const UrlLink = (props: Props) => {
+const UrlLink = ({ href, target, clickOn, className }: Props) => {
+
   return (
     <Link
-      href={props.href}
-      target={props.target}
-      className={`${props.className}`}
+      href={href}
+      target={target}
+      className={twMerge('cursor-pointer', className)} 
     >
-      {props.clickOn}
+      {clickOn}
     </Link>
   );
 };

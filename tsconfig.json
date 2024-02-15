@@ -31,7 +31,11 @@
     "components/home/quote",
     "config/firebase-config.js",
     "config/Firebase.js",
-    "app/user/profile/[uid]"
-  ],
+    "app/profile/[uid]",
+    "data/CONSTANTS.ts",
+    "components/hooks/useSelectedTag.tsx",
+    "app/profile/[uid]/activity",
+    "components/eventCard/comment/NumOfComments.tsx"
+, "components/FirebaseContext.js"  ],
   "exclude": ["node_modules"]
 }

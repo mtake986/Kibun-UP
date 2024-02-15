@@ -1,52 +1,55 @@
 "use client";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/config/Firebase";
+import { displayErrorToast } from "@/functions/displayToast";
+import { DEFAULT_URL_FOR_RANDOM_QUOTE } from "@/data/CONSTANTS";
+import { TypeAPIQuote, TypeQuote } from "@/types/type";
+import useSelectedAuthors from "./useSelectedAuthors";
 
-const useFetchQuoteFromQuotableAPI = () => {
+const useFetchQuoteFromQuotableAPI = (url: string) => {
   const { loginUser, fetchLoginUser } = useAuth();
-
-  const tag = loginUser?.settings.tagForQuotableApi;
-
-  const randomNumber = (len: number) => Math.floor(Math.random() * len);
-
-  const [data, setData] = useState<TypeQuoteQuotetableAPI>();
+  const [data, setData] = useState<TypeAPIQuote>();
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | Error | null>(null);
 
   const fetchData = useCallback(async () => {
     setIsPending(true);
     if (!loginUser) fetchLoginUser(auth.currentUser);
-    // const fullUrl = `https://api.quotable.io/random didnt work properly
-    const fullUrl = `https://api.quotable.io/quotes?tags=${
-      tag === "random" ? "famousQuotes" : tag
-    }`;
-    console.log("fetch from: ", fullUrl);
-    fetch(fullUrl)
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw Error(`不具合が発生しました!! status: ${response.status}`);
+          throw Error(
+            `Something went wrong!! status: ${response.status} ${response.statusText}`
+          );
         }
         return response.json();
       })
       .then((res) => {
-        const len = res.results.length;
-        const quote = res.results[randomNumber(len)];
         setData({
-          id: quote._id,
-          author: quote.author,
-          content: quote.content,
-          tags: quote.tags,
-        } as TypeQuoteQuotetableAPI);
-        console.log("len: ", len, "quote: ", quote, "res", res, "data: ", data);
+          id: res[0]._id,
+          author: res[0].author,
+          content: res[0].content,
+          tags: res[0].tags.map((tag: string) => {
+            return { name: tag, color: "white" };
+          }),
+          likedBy: [],
+          bookmarkedBy: [],
+          createdBy: "api",
+          draftStatus: "Public",
+          authorSlug: res[0].authorSlug,
+        });
         setIsPending(false);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((e) => {
+        // error handling when no quote with this user's tag is found
+        displayErrorToast(
+          `Failed to fetch a quote with a tag. Try again later. \n Error: ${e}`
+        );
         setIsPending(false);
       });
-  }, [tag]);
+  }, [url]);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);

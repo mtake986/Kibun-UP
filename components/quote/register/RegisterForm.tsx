@@ -1,26 +1,27 @@
 "use client";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { quoteSchema } from "@/form/schema";
-import { Switch } from "@/components/ui/switch";
 import { useQuote } from "@/context/QuoteContext";
-import { IUserInfo } from "@/types/type";
-import { useState } from "react";
+import {
+  TypeTagErrors,
+  ITag,
+  TypeTagError,
+  TypeUserFromFirestore,
+} from "@/types/type";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MdClose } from "react-icons/md";
 import {
@@ -30,239 +31,357 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { tagColors } from "@/data/CONSTANTS";
-import { ITag } from "@/types/type";
+import { VALIDATION_STATUS, tagColors } from "@/data/CONSTANTS";
 import { changeTagColor } from "@/functions/functions";
 import HeadingTwo from "@/components/utils/HeadingTwo";
 import UrlLink from "@/components/utils/UrlLink";
+import { Separator } from "@/components/ui/separator";
+import { capitalizeFirstLetter } from "@/functions/capitalizeFirstLetter";
+import TagErrors from "@/components/quoteCard/content/TagErrors";
+import { useAuth } from "@/context/AuthContext";
+import { displayErrorToast } from "@/functions/displayToast";
+import LoadingCover from "@/components/utils/LoadingCover";
+import { twMerge } from "tailwind-merge";
 
 export default function RegisterForm() {
-  const [user] = useAuthState(auth);
-  const { registerQuote } = useQuote();
-  const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<ITag[]>([]);
-  const [tagColor, setTagColor] = useState<string>("");
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const { loginUser, fetchLoginUser } = useAuth();
+  const { registerQuote, toggleRegisterFormOpen } = useQuote();
+  const [inputTagName, setInputTagName] = useState("");
+  const [inputTagColor, setInputTagColor] = useState<string>("");
+  const [inputTags, setInputTags] = useState<ITag[]>([]);
+  const [tagErrors, setTagErrors] = useState<TypeTagErrors>({});
+  const isAddBtnDisabled =
+    inputTagName.length <= 0 ||
+    inputTagName.length > 20 ||
+    inputTags.length >= 5 ||
+    inputTags.some((tag) => tag.name === inputTagName);
 
-  const addTag = (tagInput: string) => {
-    if (tagInput.length === 0) {
-      alert("Min. 1 character.");
-    } else if (tagInput.length > 20) {
-      alert("Maximum 20 characters.");
-    } else {
-      if (!tags.map((tag) => tag.tag).includes(tagInput)) {
-        if (tags.length === 0) {
-          setTags([{ tag: tagInput, tagColor }]);
-          setTagInput("");
-          setTagColor("");
-        } else if (tags.length === 5) {
-          alert("Maximum 5 tags.");
-        } else {
-          setTags([...tags, { tag: tagInput, tagColor }]);
-          setTagInput("");
-          setTagColor("");
-        }
-      } else {
-        alert("Not Allowed The Same Tag.");
-      }
+  useEffect(() => {
+    if (auth.currentUser) {
+      if (!loginUser) fetchLoginUser(auth.currentUser);
     }
-  };
-  const removeTag = (tagInput: string) => {
-    setTags(tags.filter((tag) => tag.tag !== tagInput));
+  }, [auth.currentUser, loginUser, fetchLoginUser]);
+
+  const validateInputTags = (): string => {
+    if (inputTags.length === 5) {
+      const error: TypeTagError = {
+        message: "Maximum 5 tags",
+      };
+      setTagErrors({ ...tagErrors, over5tags: error });
+      return VALIDATION_STATUS.FAIL;
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over5tags"];
+        return newErrors;
+      });
+    }
+    if (!inputTagName || inputTagName.length <= 0) {
+      const error: TypeTagError = {
+        message: "Tag name is required",
+      };
+      setTagErrors({ ...tagErrors, undefOrNoChars: error });
+      return VALIDATION_STATUS.FAIL;
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["undefOrNoChars"];
+        return newErrors;
+      });
+    }
+    if (inputTagName.length > 20) {
+      const error: TypeTagError = {
+        message: "Max. 20 characters",
+      };
+      setTagErrors({ ...tagErrors, over20chars: error });
+      return VALIDATION_STATUS.FAIL;
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["over20chars"];
+        return newErrors;
+      });
+    }
+    if (inputTags.map((tag) => tag.name).includes(inputTagName)) {
+      const error: TypeTagError = {
+        message: "Not Allowed The Same Tag",
+      };
+      setTagErrors({ ...tagErrors, sameTagName: error });
+      return VALIDATION_STATUS.FAIL;
+    } else {
+      setTagErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors["sameTagName"];
+        return newErrors;
+      });
+    }
+    return VALIDATION_STATUS.PASS;
   };
 
-  const { reset } = useForm();
+  const addTag = () => {
+    const defaultColor = "white";
+    setInputTags([
+      ...inputTags,
+      { name: inputTagName, color: inputTagColor || defaultColor },
+    ]);
+    setInputTagName("");
+    setInputTagColor("");
+  };
+  const removeTag = (inputTagName: string) => {
+    setInputTags(inputTags.filter((tag) => tag.name !== inputTagName));
+  };
+  const getAddButtonClass = (isDisabled: boolean) => {
+    return isDisabled
+      ? "cursor-not-allowed rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-500 dark:bg-gray-700 dark:text-white"
+      : "cursor-pointer rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-500 duration-300 ease-in hover:bg-blue-100 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600";
+  };
+
+  const resetTagsWhenSubmitted = () => {
+    setInputTags([]);
+    setInputTagName("");
+    setInputTagColor("");
+    setTagErrors({});
+    setIsPending(false);
+  };
   // 1. Define your form.
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
     defaultValues: {
-      person: "",
-      quote: "",
-      isDraft: false,
+      author: "",
+      content: "",
+      draftStatus: "Public",
       tags: [],
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
-    const userInfo: IUserInfo = {
-      uid: user?.uid,
-      displayName: user?.displayName,
-      photoUrl: user?.photoURL,
-    };
-    values.tags = tags;
-    registerQuote(values, userInfo);
-
-    reset({
-      person: "",
-      quote: "",
-      isDraft: false,
-      tags: [],
-    });
-    form.reset();
-    setTags([]);
+    if (loginUser) {
+      setIsPending(true);
+      values.tags = inputTags;
+      registerQuote(values, loginUser.uid).then(() => {
+        form.reset({
+          author: "",
+          content: "",
+          draftStatus: "Public",
+          tags: [],
+        });
+        resetTagsWhenSubmitted();
+      });
+    } else {
+      displayErrorToast("Please log in.");
+    }
   }
+
   return (
-    <div className="px-5 pb-20 pt-10 sm:mb-32 sm:p-0">
-      <Form {...form}>
-        <HeadingTwo text="Register Form" />
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="quote"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>
-                  Quote <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Just Do It"
-                    {...field}
-                    // defaultValue={field.value}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="person"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>
-                  Person <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="NIKE" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="isDraft"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Draft</FormLabel>
-                  <FormDescription>
-                    Check if you do not want to display this on the home page
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <div>
-            <FormLabel>Tags</FormLabel>
-
-            <div className="mt-2 flex items-center gap-5">
-              <Input
-                maxLength={20}
-                placeholder="Motivation"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-              />
-              <Select
-                onValueChange={(color) => {
-                  setTagColor(color);
-                }}
-                value={tagColor}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Color" />
-                </SelectTrigger>
-                <SelectContent>
-                  {tagColors.map((color) => (
-                    <SelectItem
-                      key={color}
-                      className={`${
-                        color === "red"
-                          ? "bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500"
-                          : color === "orange"
-                          ? "bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500"
-                          : color === "green"
-                          ? "bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500"
-                          : color === "blue"
-                          ? "bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500"
-                          : color === "violet"
-                          ? "bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500"
-                          : "bg-white text-black hover:bg-white hover:text-black"
-                      }`}
-                      value={color}
-                    >
-                      {tagInput}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                type="button"
-                onClick={() => {
-                  addTag(tagInput);
-                }}
-                className="flex cursor-pointer items-center gap-1 bg-blue-100 text-blue-600 duration-300 hover:bg-blue-200"
-              >
-                Add
-              </Button>
-            </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              {tags.map((tag, i) => (
-                <Badge
-                  key={i}
-                  onClick={() => removeTag(tag.tag)}
-                  className={`cursor-pointer border-none font-light hover:opacity-70 ${changeTagColor(
-                    tag.tagColor
-                  )}`}
-                >
-                  #{tag.tag}
-                  <MdClose className="ml-1 cursor-pointer rounded-full" />
-                </Badge>
-              ))}
-              {tagInput && (
-                <Badge
-                  className={` border-none font-light hover:opacity-70 ${changeTagColor(
-                    tagColor
-                  )}`}
-                >
-                  #{tagInput}
-                </Badge>
+    <div className="h-full px-5 pb-20 pt-10 sm:p-0">
+      <HeadingTwo text="Register Form" />
+      <div className={twMerge("relative", isPending ? "opacity-50" : "")}>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-0">
+                  <FormLabel>
+                    Content <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Just Do It"
+                      {...field}
+                      // defaultValue={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
               )}
-            </div>
-          </div>
+            />
 
-          <div className="flex items-center gap-3">
-            <Button
-              className="w-full bg-violet-100 text-violet-500 duration-200 hover:bg-violet-200"
-              type="submit"
-            >
-              Submit
-            </Button>
-            <UrlLink clickOn={<CloseBtn />} href="/quote" target="_self" />
-          </div>
-        </form>
-      </Form>
+            <FormField
+              control={form.control}
+              name="author"
+              render={({ field }) => (
+                <FormItem className="w-full space-y-0">
+                  <FormLabel>
+                    Author <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="NIKE" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="draftStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Draft Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={"Public"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Draft">Draft</SelectItem>
+                      <SelectItem value="Public">Public</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+
+            <div>
+              <FormLabel>Tags</FormLabel>
+              <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
+                <Input
+                  maxLength={20}
+                  placeholder={
+                    inputTags.length >= 5 ? "Max. 5 tags" : "Motivation"
+                  }
+                  value={inputTagName}
+                  onChange={(e) =>
+                    setInputTagName(capitalizeFirstLetter(e.target.value))
+                  }
+                  disabled={inputTags.length >= 5}
+                />
+                <div className="flex w-full gap-2 sm:justify-between sm:gap-2">
+                  <Select
+                    onValueChange={(color) => {
+                      setInputTagColor(color);
+                    }}
+                    disabled={inputTagName.length === 0}
+                    defaultValue="white"
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Color" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        disabled={true}
+                        key="inputTagColor"
+                        value="inputTagColor"
+                      >
+                        Tag color
+                      </SelectItem>
+                      <Separator />
+                      {tagColors.map((color) => (
+                        <SelectItem
+                          key={color}
+                          className={twMerge(changeTagColor(color))}
+                          value={color}
+                          placeholder="Color"
+                        >
+                          {inputTagName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      if (validateInputTags() === VALIDATION_STATUS.PASS)
+                        addTag();
+                    }}
+                    disabled={isAddBtnDisabled}
+                    className={getAddButtonClass(isAddBtnDisabled)}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {inputTags.map((tag, i) => (
+                  <Badge
+                    key={i}
+                    onClick={() => removeTag(tag.name)}
+                    className={twMerge(
+                      "cursor-pointer border-none font-light",
+                      changeTagColor(tag.color)
+                    )}
+                  >
+                    #{tag.name}
+                    <MdClose className="ml-1 cursor-pointer rounded-full" />
+                  </Badge>
+                ))}
+                {inputTagName && (
+                  <Badge
+                    className={twMerge(
+                      "border-none font-light hover:opacity-70",
+                      changeTagColor(inputTagColor)
+                    )}
+                  >
+                    #{inputTagName}
+                  </Badge>
+                )}
+              </div>
+              <TagErrors tagErrors={tagErrors} />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Button
+                className="w-full bg-green-50 text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white dark:hover:bg-green-600"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                Submit
+              </Button>
+              <UrlLink
+                clickOn={
+                  <CloseBtn
+                    toggleRegisterFormOpen={toggleRegisterFormOpen}
+                    form={form}
+                    loginUser={loginUser}
+                  />
+                }
+                href="/quote"
+                target="_self"
+              />
+            </div>
+          </form>
+        </Form>
+        {isPending ? <LoadingCover spinnerSize="s" /> : null}
+      </div>
     </div>
   );
 }
 
-const CloseBtn = () => {
-  const { toggleRegisterFormOpen } = useQuote();
-
+const CloseBtn = ({
+  toggleRegisterFormOpen,
+  form,
+  loginUser,
+}: {
+  toggleRegisterFormOpen: () => void;
+  form: UseFormReturn<
+    {
+      content: string;
+      author: string;
+      draftStatus: string;
+      tags: {
+        color: string;
+        name: string;
+      }[];
+    },
+    any,
+    undefined
+  >;
+  loginUser: TypeUserFromFirestore | undefined;
+}) => {
   return (
     <Button
       onClick={toggleRegisterFormOpen}
-      className="w-full bg-red-100 text-red-500 duration-200 hover:bg-red-200"
+      className="w-full bg-red-50 text-red-500 duration-300 ease-in hover:bg-red-100 dark:bg-red-700 dark:text-white dark:hover:bg-red-600"
+      disabled={form.formState.isSubmitting}
     >
       Close
     </Button>

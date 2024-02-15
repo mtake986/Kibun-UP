@@ -9,3 +9,10 @@ https://stackoverflow.com/questions/73004971/vercel-deployment-and-firebase-auth
 Consider how to query before structuring
 https://stackoverflow.com/questions/71000652/firestore-how-to-structure-data-the-most-efficient-way
 
+
+4. Quotable API
+https://github.com/lukePeavey/quotable/issues
+
+
+5. Detect a key is in the object
+```console.log('authorSlug' in q)```

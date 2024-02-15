@@ -1,4 +1,5 @@
 import React from "react";
+import { twMerge } from "tailwind-merge";
 type Props = {
   text: string;
   className?: string;
@@ -7,7 +8,10 @@ type Props = {
 const HeadingFour = (props: Props) => {
   return (
     <h4
-      className={`text-center text-lg font-bold sm:text-xl ${props.className}`}
+      className={twMerge(
+        "text-center text-lg font-bold dark:text-white sm:text-xl",
+        props.className
+      )}
     >
       {props.text}
     </h4>

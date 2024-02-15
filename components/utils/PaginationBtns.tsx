@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   nPages: number;
@@ -8,8 +8,6 @@ type Props = {
 };
 
 const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
-  const pageNumbers = Array.from({ length: nPages }, (_, index) => index + 1);
-
   const nextPage = () => {
     if (currentPage !== nPages) setCurrentPage(currentPage + 1);
   };
@@ -18,139 +16,68 @@ const PaginationBtns = ({ nPages, currentPage, setCurrentPage }: Props) => {
   };
 
   const clsNameFocused =
-    "bg-blue-500 text-white hover:bg-blue-500 hover:text-white hover:opacity-70";
+    "rounded-md bg-blue-500 px-2 py-1 text-xs text-blue-50 dark:bg-slate-800";
 
   const clsNameNotFocused =
-    "border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70";
+    "cursor-pointer rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-500 duration-300 ease-in hover:bg-slate-100 dark:bg-slate-950 dark:text-white dark:hover:opacity-70";
 
-  const displayButtons = () => {
-    if (currentPage === 1) {
-      return (
-        <div className="flex items-center gap-1">
-          <Button
-            key={1}
-            className={clsNameFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </Button>
-          {/* <Button
-            key={currentPage + 1}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            {currentPage + 1}
-          </Button> */}
-          <span>...</span>
-          <Button
-            key={nPages}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </Button>
-        </div>
-      );
-    } else if (currentPage === nPages) {
-      return (
-        <div className="flex items-center gap-1">
-          <Button
-            key={1}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </Button>
-          <span>...</span>
-          {/* <Button
-            key={currentPage - 1}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            {currentPage - 1}
-          </Button> */}
-          <Button
-            key={nPages}
-            className={clsNameFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </Button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="flex items-center gap-1">
-          <Button
-            key={1}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </Button>
-          {1 + 2 <= currentPage && <span>...</span>}
-          {/* currentPage Btn is always shown */}
-          <Button
-            key={currentPage}
-            className={clsNameFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(currentPage)}
-          >
-            {currentPage}
-          </Button>
-          {nPages - 2 >= currentPage && <span>...</span>}
-          <Button
-            key={nPages}
-            className={clsNameNotFocused}
-            variant="outline"
-            onClick={() => setCurrentPage(nPages)}
-          >
-            {nPages}
-          </Button>
-        </div>
-      );
-    }
-  };
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === nPages;
 
   return (
     <nav className="flex gap-1">
-      <Button
-        className={`cursor-pointer border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70`}
-        variant="outline"
+      <button
+        className={twMerge(
+          "px-2 py-1 text-xs text-blue-500 dark:text-white",
+          isFirstPage ? "cursor-default opacity-30" : "cursor-pointer"
+        )}
         onClick={prevPage}
-        disabled={currentPage === 1 && true}
+        disabled={isFirstPage}
       >
         {"<"}
-      </Button>
-      {pageNumbers.length <= 3
-        ? pageNumbers.map((pageNumber) => (
-            <Button
-              key={pageNumber}
-              className={
-                pageNumber === currentPage ? clsNameFocused : clsNameNotFocused
-              }
-              variant="outline"
-              onClick={() => setCurrentPage(pageNumber)}
-            >
-              {pageNumber}
-            </Button>
-          ))
-        : displayButtons()}
-      <Button
-        className={`cursor-pointer border border-blue-500 bg-blue-50 text-blue-500 hover:text-blue-500 hover:opacity-70`}
-        variant="outline"
+      </button>
+      <div className="flex items-center gap-1">
+        <button
+          key={1}
+          disabled={isFirstPage}
+          className={isFirstPage ? clsNameFocused : clsNameNotFocused}
+          onClick={() => setCurrentPage(1)}
+        >
+          1
+        </button>
+
+        {nPages >= 3 && currentPage >= 3 && <span>...</span>}
+        {/* currentPage Btn is always shown */}
+        {!isFirstPage && !isLastPage ? (
+          <button
+            className={twMerge(clsNameFocused)}
+            onClick={() => setCurrentPage(currentPage)}
+            disabled={true}
+          >
+            {currentPage}
+          </button>
+        ) : null}
+        {nPages - 2 >= currentPage && <span>...</span>}
+
+        <button
+          key={nPages}
+          className={isLastPage ? clsNameFocused : clsNameNotFocused}
+          onClick={() => setCurrentPage(nPages)}
+          disabled={isLastPage}
+        >
+          {nPages}
+        </button>
+      </div>
+      <button
+        className={twMerge(
+          "px-2 py-1 text-xs text-blue-500 dark:text-white",
+          isLastPage ? "cursor-default opacity-30" : "cursor-pointer"
+        )}
         onClick={nextPage}
-        disabled={currentPage === nPages && true}
+        disabled={isLastPage}
       >
         {">"}
-      </Button>
+      </button>
     </nav>
   );
 };

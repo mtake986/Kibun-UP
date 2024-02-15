@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,19 +14,19 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { auth } from "@/config/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { contactEmailSchema } from "@/form/schema";
 import { Textarea } from "../ui/textarea";
 import { init, send } from "@emailjs/browser";
-import { toast } from "../ui/use-toast";
 import { useEffect, useState } from "react";
-import Loading from "../utils/Loading";
-import HeadingTwo from "../utils/HeadingTwo";
-import UrlLink from "../utils/UrlLink";
 import { useAuth } from "@/context/AuthContext";
+import { displaySuccessToast, displayToast } from "@/functions/displayToast";
+import Subtitle from "./SubTitle";
+import GoToProposalForm from "./GoToProposalForm";
+import LoadingCover from "../utils/LoadingCover";
+import { twMerge } from "tailwind-merge";
 
 export default function ContactForm() {
-  const [loading, setLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const { fetchLoginUser } = useAuth();
 
@@ -47,7 +46,7 @@ export default function ContactForm() {
   });
 
   const sendEmail = async (values: z.infer<typeof contactEmailSchema>) => {
-    setLoading(true);
+    setIsPending(true);
     // 必要なIDをそれぞれ環境変数から取得
     const userID = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
     const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -68,19 +67,18 @@ export default function ContactForm() {
       // emailJS送信
       try {
         await send(serviceID, templateID, params);
-        toast({
-          className: "border-none bg-green-500 text-white",
-          title: "Success: Sent successfully",
+        displaySuccessToast({
+          text: "Thanks for reaching out to me!!",
         });
         form.reset();
-        setLoading(false);
+        setIsPending(false);
       } catch (error) {
         // 送信失敗したらalertで表示
-        toast({
-          className: "border-none bg-red-500 text-white",
-          title: "ERROR: Failed to send it",
+        displayToast({
+          text: "ERROR: Failed to send email. Please try again. " + error,
+          color: "red",
         });
-        setLoading(false);
+        setIsPending(false);
       }
     }
   };
@@ -93,101 +91,108 @@ export default function ContactForm() {
 
   return (
     <div className="px-5 py-10 pb-20 sm:mb-32 sm:p-0">
-      <HeadingTwo text="Contact Form" />
-      {loading ? (
-        <Loading />
-      ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="sender_name"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>
-                    Name <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John Doe"
-                      {...field}
-                      // defaultValue={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div className="mb-4 flex flex-col">
+        <h2 className="mb-1 text-center text-3xl font-bold">Contact Form</h2>
+        <Subtitle />
+      </div>
+      <div className={twMerge('relative', isPending ? "opacity-50" : "")}>
 
-            <FormField
-              control={form.control}
-              name="sender_email"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>
-                    Email <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="john.doe@gmail.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="sender_name"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-0">
+                <FormLabel>
+                  Name <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="John Doe"
+                    {...field}
+                    // defaultValue={field.value}
+                    className="border-none bg-slate-50 dark:border-none"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>
-                    Title <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="This is Awesome!!" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="sender_email"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-0">
+                <FormLabel>
+                  Email <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="john.doe@gmail.com"
+                    {...field}
+                    className="border-none bg-slate-50 dark:border-none"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-base">
-                    Message <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="This is Awesome!!" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-0">
+                <FormLabel>
+                  Title <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="This is Awesome!!"
+                    {...field}
+                    className="border-none bg-slate-50 dark:border-none"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="flex items-center gap-3">
-              <Button
-                className="w-full bg-violet-100 text-violet-500 hover:bg-violet-100 hover:opacity-70"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-      <p className="sm:text-md mt-5 text-center text-xs">
-        Or, you can{" "}
-        <UrlLink
-          className="text-sky-500 hover:underline"
-          target="_blank"
-          href="https://github.com/mtake986/Kibun-UP/issues"
-          clickOn="create an issue"
-        />{" "}
-        in GitHub.
-      </p>
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-0">
+                <FormLabel>
+                  Message <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="border-none bg-slate-50 dark:border-none"
+                    placeholder="This is Awesome!!"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex items-center gap-3">
+            <button
+              className="w-full cursor-pointer rounded-md bg-green-50 px-3 py-2.5 text-sm text-green-500 duration-300 ease-in hover:bg-green-100 dark:bg-green-700 dark:text-white  dark:hover:bg-green-600"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </Form>
+      {isPending ? <LoadingCover spinnerSize="s" /> : null}
+</div>
+      <GoToProposalForm />
     </div>
   );
 }

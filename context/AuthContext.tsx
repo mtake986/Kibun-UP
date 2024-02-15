@@ -4,14 +4,18 @@ import {
   User,
   onAuthStateChanged,
   signInWithPopup,
-  signOut,
   updateProfile,
 } from "firebase/auth";
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { auth, db, provider, storage } from "../config/Firebase";
 import { useRouter } from "next/navigation";
 import { useSignOut } from "react-firebase-hooks/auth";
-import { toast } from "@/components/ui/use-toast";
 import {
   addDoc,
   collection,
@@ -25,45 +29,76 @@ import {
   where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { TypeLoginUser, TypeUpdateUserInputs } from "@/types/type";
+import {
+  TypeUserFromFirestore,
+  TypeUpdateUserInputs,
+  TypeQuotesPerPage,
+} from "@/types/type";
+import {
+  displayErrorToast,
+  displaySuccessToast,
+  displayToast,
+} from "@/functions/displayToast";
+import firebase from "firebase/app";
 
 type AuthProviderProps = {
   children: ReactNode;
 };
 
-type AuthContextType = {
+type TypeAuthContext = {
   signInWithGoogle: () => void;
   handleLogout: () => void;
   uploadImage: (
     file: File | null,
     newUsername: string,
     newItemsPerPage: number | null,
+    newDescription: string,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
   ) => void;
-  loginUser: TypeLoginUser | undefined;
+  loginUser: TypeUserFromFirestore | undefined;
   updateQuoteTypeForHome: (text: string) => void;
-  fetchLoginUser: (user: any) => void;
-  isFetchingUser: boolean;
+  fetchLoginUser: (user: any) => Promise<void>;
   updateTagForQuotableApi: (text: string) => void;
+  updateQuotesPerPage: (quotesPerPage: TypeQuotesPerPage) => void;
+  fetchUser: (uid: string) => void;
+  profileUser: TypeUserFromFirestore | null;
+
+  user: User | null;
+  isPending: boolean;
 };
 
-const AuthContext = createContext({} as AuthContextType);
+const AuthContext = createContext({} as TypeAuthContext);
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [signOut, loading, error] = useSignOut(auth);
+  const [profileUser, setProfileUser] = useState<TypeUserFromFirestore | null>(
+    null
+  );
+  const [loginUser, setLoginUser] = useState<TypeUserFromFirestore>();
 
-  const [loginUser, setLoginUser] = useState<TypeLoginUser>();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      console.log("User, ", currentUser);
+    });
 
-  const usersCollectionRef = collection(db, "users");
+    return () => {
+      setIsPending(true);
+      unsubscribe();
+      fetchLoginUser(user)
+      setIsPending(false)
+    };
+  }, []);
+  const router = useRouter();
 
-  const [isFetchingUser, setIsFetchingUser] = useState<boolean>(false);
   function signInWithGoogle() {
     signInWithPopup(auth, provider).then(async () => {
       if (auth.currentUser) {
@@ -77,11 +112,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
       }
       fetchLoginUser(auth.currentUser);
-      toast({
-        className: "border-none bg-green-500 text-white",
-        title: "Success: Log In",
+      displaySuccessToast({
+        text: "Logged in",
       });
-      router.push("/");
+      router.push("/home");
     });
   }
 
@@ -94,7 +128,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         displayName,
         photoURL,
+        description: "User description",
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
         settings: {
           itemsPerPage: 10,
           quoteTypeForHome: "appChoice",
@@ -104,18 +140,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const fetchLoginUser = async (user: User | null) => {
-    // if (user) {
-    //   const docRef = doc(db, "users", user?.uid);
-    //   const docSnap = await getDoc(docRef);
-    //   if (docSnap.exists()) {
-    //     setLoginUser(docSnap.data() as TypeLoginUser);
-    //   }
-    // }
     if (user) {
-      const q = query(collection(db, "users"), where("uid", "==", user.uid));
-      onSnapshot(q, (snapshot) => {
-        setLoginUser(snapshot.docs[0]?.data() as TypeLoginUser);
-      });
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setLoginUser(docSnap.data() as TypeUserFromFirestore);
+      } 
     }
   };
 
@@ -124,9 +155,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (success) {
       setLoginUser(undefined);
-      toast({
-        className: "border-none bg-blue-500 text-white",
-        title: "Success: Log Out",
+      displayToast({
+        text: "Logged Out",
+        color: "blue",
       });
       router.push("/");
     }
@@ -136,6 +167,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     file: File | null,
     newUsername: string,
     newItemsPerPage: number | null,
+    newDescription: string,
     currentUser: User,
     setLoading: (boo: boolean) => void,
     setIsEditMode: (boo: boolean) => void
@@ -146,6 +178,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       photoURL: loginUser?.photoURL,
       displayName: "",
       itemsPerPage: 10,
+      description: "",
     };
 
     if (file) {
@@ -163,22 +196,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
         newItemsPerPage || loginUser?.settings.itemsPerPage;
     }
 
+    if (newDescription) {
+      payload.description = newDescription || loginUser?.description;
+    }
+
     if (auth.currentUser) {
       const docRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(docRef, {
         photoURL: payload.photoURL,
         displayName: payload.displayName,
         "settings.itemsPerPage": payload.itemsPerPage,
+        description: payload.description,
       });
     } else {
-      console.warn("No user is signed in");
+      displayErrorToast("No user is signed in");
     }
     updateProfile(currentUser, payload)
       .then(() => {
         // Profile updated!
         // ...
         alert("Successfully Updated");
-        fetchLoginUser(auth.currentUser).then(() => {
+        fetchLoginUser(auth.currentUser);
+        fetchUser(currentUser.uid).then(() => {
           setLoading(false);
           setIsEditMode(false);
         });
@@ -208,6 +247,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const updateQuotesPerPage = async (quotesPerPage: TypeQuotesPerPage) => {
+    if (loginUser) {
+      const docRef = doc(db, "users", loginUser.uid);
+      await updateDoc(docRef, {
+        "settings.apiQuotesPerPage": quotesPerPage,
+      });
+    }
+  };
+
+  const fetchUser = async (uid: string) => {
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setProfileUser(docSnap.data() as TypeUserFromFirestore);
+    } else {
+      // docSnap.data() will be undefined in this case
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -217,8 +276,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loginUser,
         updateQuoteTypeForHome,
         fetchLoginUser,
-        isFetchingUser,
         updateTagForQuotableApi,
+        updateQuotesPerPage,
+        fetchUser,
+        profileUser,
+
+        user, 
+        isPending, 
       }}
     >
       {children}

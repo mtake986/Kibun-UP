@@ -119,7 +119,7 @@ Delete: the trash icon at the bottom-right position
 Clicking the plus icon at the bottom-right position will display a regsiter form of a quote. Create a new quote by filling out the form. The form is validated by the following rules.
 | Property | Rule |
 |-------------|------------------------- |
-| Person | 2 ~ 100 letters |
+| Author | 2 ~ 100 letters |
 | Description | ~ 1000 letters |
 | Draft | Boolean |
 | Tags | Max 5 tags, ~ 30 letters |
@@ -128,7 +128,7 @@ Clicking the plus icon at the bottom-right position will display a regsiter form
 Displaying quotes made by other users. The users can like the quotes by clicking the heart icon at the bottom-left position in the cards. The users can also bookmark the quotes by clicking the bookmark icon next to the heart icon. Bookmarks are displayed under the **Bookmarks** tab in the profile page and can be displayed on the homepage if users set on the profile page.
 
 **List of My Quotes when filtering is on**
-The users can filter the quotes by tags and sort the list by these properties: quote, person, and the time created.
+The users can filter the quotes by tags and sort the list by these properties: quote, author, and the time created.
 
 ### 3. Event Page
 

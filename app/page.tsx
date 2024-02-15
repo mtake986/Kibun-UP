@@ -1,12 +1,7 @@
+import { redirect } from "next/navigation";
 
-import Home from "../components/home/Home";
-
-export const metadata = {
-  title: "Home",
+const TopPage = () => {
+  redirect("/home");
 };
 
-const HomePage = () => {
-  return <Home />;
-};
-
-export default HomePage;
+export default TopPage;

@@ -1,11 +1,9 @@
-import React from 'react'
-
 const NationalityText = () => {
   return (
-    <p className='text-sm text-center'>
-      From: <span className="font-[600]">Kochi, Japan</span>
+    <p className="text-center text-xs">
+    Kochi, Japan
     </p>
   );
-}
+};
 
-export default NationalityText
+export default NationalityText;

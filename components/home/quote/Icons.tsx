@@ -1,38 +1,20 @@
-import useFetchQuoteFromQuotableAPI from "@/components/hooks/useFetchQuoteFromQuotableAPI";
-import { useAuth } from "@/context/AuthContext";
 import { useQuote } from "@/context/QuoteContext";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
-import React, { useEffect } from "react";
+import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
-  quote: TypeQuoteQuotetableAPI | TypeQuote;
+  quote: TypeQuote;
   type: "locked" | "appChoice" | "notAppChoice";
   refetch?: () => void;
+  loginUser: TypeUserFromFirestore;
 };
-const Icons = ({ quote, type, refetch }: Props) => {
-  const {
-    removeLockFromThisQuote,
-    lockThisQuote,
-    updateRandomQuote,
-    myBookmarks,
-    removeQuoteFromBookmarks,
-    storeQuoteInBookmarks,
-    numOfBookmarks,
-    fetchMyBookmarks,
-    fetchNumOfBookmarks,
-  } = useQuote();
-  const { loginUser } = useAuth();
-  // const { refetch } = useFetchQuoteFromQuotableAPI();
-
-  useEffect(() => {
-    fetchMyBookmarks();
-    fetchNumOfBookmarks();
-  }, []);
+const Icons = ({ quote, type, refetch, loginUser }: Props) => {
+  const { removeLockFromThisQuote, lockThisQuote, updateRandomQuote } =
+    useQuote();
 
   return (
-    <div className="flex items-center gap-3 cursor-pointer">
+    <div className="flex cursor-pointer items-center justify-end gap-3">
       <BiRefresh
         size={20}
         onClick={() => {
@@ -44,11 +26,11 @@ const Icons = ({ quote, type, refetch }: Props) => {
             updateRandomQuote();
           }
         }}
-        className={`${
-          type === "locked"
+        className={
+          twMerge(type === "locked"
             ? "cursor-not-allowed opacity-30 duration-300"
-            : "cursor-pointer duration-300 hover:opacity-50"
-        }`}
+            : "cursor-pointer duration-300 hover:opacity-50")
+        }
       />
       {type === "locked" ? (
         <BiLock
@@ -58,49 +40,23 @@ const Icons = ({ quote, type, refetch }: Props) => {
               if (type === "locked") {
                 removeLockFromThisQuote(loginUser.uid);
               } else {
-                lockThisQuote(loginUser.uid, quote as any);
+                lockThisQuote(loginUser.uid, quote);
               }
             }
           }}
-          className={`text-red-500  duration-300 hover:bg-red-50 hover:text-red-500 sm:w-auto`}
+          className="text-red-500  duration-300 hover:text-red-500 hover:opacity-50"
         />
       ) : (
         <BiLockOpen
           size={16}
           onClick={() => {
             if (loginUser) {
-              lockThisQuote(loginUser.uid, quote as any);
+              lockThisQuote(loginUser.uid, quote);
             }
           }}
           className="cursor-pointer duration-300 hover:opacity-50"
         />
       )}
-
-      <div className="flex items-center gap-0.5">
-        {myBookmarks && myBookmarks.qids.includes(quote.id) ? (
-          <BsBookmarkFill
-            size={14}
-            className="text-green-500"
-            onClick={() => {
-              if (loginUser) removeQuoteFromBookmarks(loginUser.uid, quote);
-            }}
-          />
-        ) : (
-          <BsBookmark
-            size={14}
-            className="text-black"
-            onClick={() => {
-              if (loginUser) storeQuoteInBookmarks(loginUser.uid, quote);
-            }}
-          />
-        )}
-        <span className="ml-1 text-xs text-black">
-          {numOfBookmarks?.map((bookmark, i) =>
-            bookmark.qid === quote.id ? bookmark.uids.length : null
-          )}
-        </span>
-        {/* <span>Edit</span> */}
-      </div>
     </div>
   );
 };

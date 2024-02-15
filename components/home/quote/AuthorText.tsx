@@ -1,21 +1,18 @@
 import {
-  fontDancingScript,
   fontMerriweather,
-  fontRaleway,
-  fontRoboto,
 } from "@/components/utils/fonts";
-import { TypeQuote, TypeQuoteQuotetableAPI } from "@/types/type";
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
-  quote: TypeQuoteQuotetableAPI | TypeQuote;
+  author: string;
 };
-const AuthorText = ({ quote }: Props) => {
+const AuthorText = ({ author }: Props) => {
   return (
     <div>
       <span className="text-xs">by </span>
-      <span className={`text-sm ${fontMerriweather.className}`}>
-        {quote ? ("person" in quote ? quote.person : quote.author) : null}
+      <span className={twMerge('text-sm', fontMerriweather.className)}>
+        {author}
       </span>
     </div>
   );

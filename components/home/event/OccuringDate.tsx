@@ -1,18 +1,18 @@
-import { fontMerriweather } from "@/components/utils/fonts"
-import { IEvent } from "@/types/type"
-import React from 'react'
+import { fontMerriweather } from "@/components/utils/fonts";
+import { TypeEvent } from "@/types/type";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
-  event: IEvent
-}
-const OccuringDate = ({event}: Props) => {
+  event: TypeEvent;
+};
+const OccuringDate = ({ event }: Props) => {
   return (
-    <span className={`${fontMerriweather.className}`}>
+    <span className={twMerge(fontMerriweather.className)}>
       {event.eventDate.toDate().getMonth() + 1}/
       {event.eventDate.toDate().getDate()},{" "}
       {event.eventDate.toDate().getFullYear()}
     </span>
   );
-}
+};
 
-export default OccuringDate
+export default OccuringDate;

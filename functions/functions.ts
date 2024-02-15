@@ -7,20 +7,22 @@ export function getRandomNum(max: number) {
 }
 
 const colorMap: { [key: string]: string } = {
-  red: "text-[10px] bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
+  white:
+    "dark:text-white dark:bg-slate-900 text-[10px] bg-white text-black hover:bg-white hover:text-black",
+  red: "dark:bg-slate-900 dark:text-red-200 text-[10px] bg-red-50 text-red-500 hover:bg-red-50 hover:text-red-500",
   orange:
-    "text-[10px] bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",
+    "dark:bg-slate-900 text-[10px] bg-orange-50 text-orange-500 hover:bg-orange-50 hover:text-orange-500",
   green:
-    "text-[10px] bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
-  blue: "text-[10px] bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500",
+    "dark:bg-slate-900 text-[10px] bg-green-50 text-green-500 hover:bg-green-50 hover:text-green-500",
+  blue: "dark:bg-slate-900 text-[10px] bg-blue-50 text-blue-500 hover:bg-blue-50 hover:text-blue-500",
   violet:
-    "text-[10px] bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
-  gray: "text-[10px] bg-gray-50 text-gray-500 hover:bg-gray-50 hover:text-gray-500",
+    "dark:bg-slate-900 text-[10px] bg-violet-50 text-violet-500 hover:bg-violet-50 hover:text-violet-500",
+  // gray: "dark:bg-slate-900 text-[10px] bg-gray-50 text-gray-500 hover:bg-gray-50 hover:text-gray-500",
 };
-export const changeTagColor = (tagColor: string) => {
+export const changeTagColor = (inputTagColor: string) => {
   return (
-    colorMap[tagColor] ||
-    "text-[10px] bg-white text-black hover:bg-white hover:text-black"
+    colorMap[inputTagColor] ||
+    "dark:bg-slate-900 dark:text-white text-[10px] bg-white text-black hover:bg-white hover:text-black"
   );
 };
 
