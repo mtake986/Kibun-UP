@@ -6,15 +6,13 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const Data = () => {
-  // const searchParams = useSearchParams();
-  // const currTab = searchParams.get("tab");
-  const [currTab, setCurrTab] = useState<'quotes' | 'events'>('quotes')
-  // todo: populate it with the profile user
+  const [currTab, setCurrTab] = useState<"quotes" | "events">("quotes");
+
   return (
     <div className="relative mt-10">
       <SectionTitle title="Data" />
       <Tabs currTab={currTab} setCurrTab={setCurrTab} />
-      {currTab === "quotes" || currTab === null ? <QuoteList /> : <EventList />}
+      {currTab === "quotes" ? <QuoteList /> : <EventList />}
     </div>
   );
 };

@@ -20,15 +20,6 @@ const Tabs = ({currTab, setCurrTab}: Props) => {
     { name: "events", length: profileUserEvents.length },
   ];
 
-  // const router = useRouter();
-  // const pathname = usePathname();
-  // const searchParams = useSearchParams();
-  // const currTab = searchParams.get("tab");
-
-  // const handleClick = (val: string) => {
-  //   router.push(pathname + `?tab=${val}`);
-  // };
-
   return (
     <div className="flex items-stretch">
       {tabs.map((tab) => (
