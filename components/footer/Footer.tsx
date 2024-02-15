@@ -69,8 +69,8 @@ const Footer = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 z-10 w-full rounded-md sm:hidden">
-      <div className="m-2 py-3 flex items-center justify-around mx-auto w-[95%] bg-violet-50 dark:bg-slate-900">
+    <nav className="fixed bottom-0 z-10 w-full sm:hidden">
+      <div className="m-2 mx-auto flex w-[95%] items-center justify-around rounded-md bg-violet-50 py-3 dark:bg-slate-900">
         {footerListItems.map((item, i) => {
           if (pathname.includes(item.href)) {
             return (
