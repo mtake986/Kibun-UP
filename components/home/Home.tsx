@@ -30,16 +30,16 @@ const Home = () => {
     setIsEventLoading(true);
     setIsQuoteLoading(true);
     const fetchEvents = async () => {
-      await getLockedEvent();
-      await getEventsWithSortAndFilter('loginUser');
-      await getRandomEvent();
+      getLockedEvent();
+      getEventsWithSortAndFilter('loginUser');
+      getRandomEvent();
     };
     const fetchQuotes = async () => {
-      await getLockedQuote();
-      await updateRandomQuote();
+      getLockedQuote();
+      updateRandomQuote();
     };
 
-    if (user) {
+    // if (user) {
       try {
         fetchLoginUser(auth.currentUser);
         fetchEvents().then(() => {
@@ -51,7 +51,7 @@ const Home = () => {
       } catch (error) {
         displayErrorToast(error);
       } 
-    }
+    // }
   }, [user]);
 
   if (!auth.currentUser) {

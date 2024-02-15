@@ -256,6 +256,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             ...lockedQuoteDoc.data(),
             id: lockedQuoteDoc.id,
           } as TypeTempLockedQuote;
+        } else {
+          setLockedQuote(undefined);
+          return;
         }
 
         // todo: TypeError

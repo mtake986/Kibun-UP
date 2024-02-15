@@ -33,7 +33,6 @@ const Radio = ({
           onClick={(e) => {
             setQuoteTypeForHome(radio.id)
             updateQuoteTypeForHome(radio.id);
-            console.log(loginUser?.settings?.quoteTypeForHome, radio.id);
           }}
         />
         <Label htmlFor={radio.id} className="text-md">
