@@ -33,11 +33,12 @@ const UserActivity = () => {
 
   const item = (text: string, icon: React.JSX.Element) => {
     return (
-      <div className="flex ">
+      <div className="flex cursor-pointer items-center justify-between hover:opacity-70">
         <div className="flex items-center gap-3">
-          {icon}
-          <p>{text}</p>
+          <span>{icon}</span>
+          <span>{text}</span>
         </div>
+        <MdArrowForwardIos size={16} className="text-gray-500" />
       </div>
     );
   };
@@ -54,7 +55,6 @@ const UserActivity = () => {
       clickOn: item("Bookmarks", <Bookmark size={16} />),
     },
   ];
-
 
   if (isLoading) {
     return <LoadingSpinnerL />;
@@ -76,19 +76,14 @@ const UserActivity = () => {
     >
       <UserActivityHeader text="Your Activity" />
       <h4 className="mb-1 text-left text-gray-500">Interactions</h4>
-      <div className="flex w-full flex-col items-center justify-between gap-3 px-10">
+      <div className="flex w-full flex-col gap-3 px-10">
         {listItems.map((item, i) => (
-          <div
-            className="flex w-full cursor-pointer items-center justify-between hover:opacity-70"
+          <UrlLink
+            href={item.href}
+            target={item.target}
+            clickOn={item.clickOn}
             key={item.href}
-          >
-            <UrlLink
-              href={item.href}
-              target={item.target}
-              clickOn={item.clickOn}
-            />
-            <MdArrowForwardIos size={16} className="text-gray-500" />
-          </div>
+          />
         ))}
       </div>
     </motion.div>
