@@ -232,6 +232,9 @@ export function EventProvider({ children }: EventProviderProps) {
             ...lockedEventDoc.data(),
             id: lockedEventDoc.id,
           } as TypeTempLockedEvent;
+        } else {
+          setLockedEvent(undefined);
+          return;
         }
         const q = query(eventsCollectionRef);
         onSnapshot(q, (snapshot) => {
