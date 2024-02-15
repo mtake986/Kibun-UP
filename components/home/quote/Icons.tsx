@@ -39,8 +39,6 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
             if (loginUser) {
               if (type === "locked") {
                 removeLockFromThisQuote(loginUser.uid);
-              } else {
-                lockThisQuote(loginUser.uid, quote);
               }
             }
           }}
