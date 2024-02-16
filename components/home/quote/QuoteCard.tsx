@@ -13,7 +13,7 @@ type Props = {
 
 const QuoteCard = ({ quote, type, refetch, loginUser }: Props) => {
   return (
-    <div className="mb-20 flex flex-col gap-1 rounded-none p-6 sm:rounded-lg sm:p-12 sm:shadow">
+    <div className="mb-20 flex flex-col gap-1 rounded-none p-6 sm:p-12">
       <QuoteContent content={quote.content} />
       <AuthorText author={quote.author} />
       <Tags tags={quote?.tags} />
