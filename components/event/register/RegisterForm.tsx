@@ -328,6 +328,7 @@ export default function RegisterForm() {
                         onSelect={field.onChange}
                         disabled={(date) => date < new Date()}
                         initialFocus
+                        className="!m-0"
                       />
                     </PopoverContent>
                   </Popover>
