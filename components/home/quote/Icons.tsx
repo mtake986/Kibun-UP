@@ -1,5 +1,6 @@
 import { useQuote } from "@/context/QuoteContext";
 import { TypeUserFromFirestore, TypeQuote } from "@/types/type";
+import { useState } from "react";
 import { BiLockOpen, BiLock, BiRefresh } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 
@@ -13,6 +14,9 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
   const { removeLockFromThisQuote, lockThisQuote, updateRandomQuote } =
     useQuote();
 
+  const [isPending, setIsPending] = useState<boolean>(false);
+
+  if (isPending) return <div>123</div>;
   return (
     <div className="flex cursor-pointer items-center justify-end gap-3">
       <BiRefresh
@@ -26,30 +30,32 @@ const Icons = ({ quote, type, refetch, loginUser }: Props) => {
             updateRandomQuote();
           }
         }}
-        className={
-          twMerge(type === "locked"
+        className={twMerge(
+          type === "locked"
             ? "cursor-not-allowed opacity-30 duration-300"
-            : "cursor-pointer duration-300 hover:opacity-50")
-        }
+            : "cursor-pointer duration-300 hover:opacity-50"
+        )}
       />
       {type === "locked" ? (
         <BiLock
           size={16}
           onClick={() => {
             if (loginUser) {
-              if (type === "locked") {
-                removeLockFromThisQuote(loginUser.uid);
-              }
+              setIsPending(true);
+              removeLockFromThisQuote(loginUser.uid);
+              setIsPending(false);
             }
           }}
-          className="text-red-500  duration-300 hover:text-red-500 hover:opacity-50"
+          className="text-red-500 duration-300 hover:text-red-500 hover:opacity-50"
         />
       ) : (
         <BiLockOpen
           size={16}
           onClick={() => {
             if (loginUser) {
+              setIsPending(true);
               lockThisQuote(loginUser.uid, quote);
+              setIsPending(false);
             }
           }}
           className="cursor-pointer duration-300 hover:opacity-50"

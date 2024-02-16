@@ -39,6 +39,7 @@ const Home = () => {
       await updateRandomQuote();
     };
 
+    console.log('useeffect inside')
     if (user) {
       try {
         fetchLoginUser(auth.currentUser);

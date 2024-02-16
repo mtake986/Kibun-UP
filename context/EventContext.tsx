@@ -238,7 +238,6 @@ export function EventProvider({ children }: EventProviderProps) {
           } as TypeTempLockedEvent;
         } else {
           setLockedEvent(undefined);
-          return;
         }
         const q = query(eventsCollectionRef);
         onSnapshot(q, (snapshot) => {
