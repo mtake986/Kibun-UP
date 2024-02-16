@@ -288,11 +288,9 @@ export function EventProvider({ children }: EventProviderProps) {
             .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
             .filter((doc) => doc.id !== randomEvent?.id);
 
-          if (events.length >= 2) {
-            const randomNum = getRandomNum(events.length);
-            const e: TypeEvent = events[randomNum];
-            setRandomEvent(e);
-          }
+          const randomNum = getRandomNum(events.length);
+          const e: TypeEvent = events[randomNum];
+          setRandomEvent(e);
         }
       });
 
