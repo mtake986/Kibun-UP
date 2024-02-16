@@ -263,7 +263,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
                       onSelect={field.onChange}
                       // disabled={(date) => date < new Date()}
                       initialFocus
-                      className="bg-slate-50 dark:border-none dark:bg-slate-900"
+                      className="bg-slate-50 dark:border-none dark:bg-slate-900 !m-0"
                     />
                   </PopoverContent>
                 </Popover>
