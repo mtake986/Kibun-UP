@@ -34,6 +34,7 @@ import {
   displaySuccessToast,
 } from "@/functions/displayToast";
 import { SORT_FILTER_VARIABLES_EVENTS } from "@/data/CONSTANTS";
+import { toast } from "@/components/ui/use-toast";
 
 type EventContextType = {
   handleUpdate: (values: TypeEventInputValues, eid: string) => Promise<void>;
@@ -261,10 +262,12 @@ export function EventProvider({ children }: EventProviderProps) {
           (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
         ).filter((doc) => doc.id !== randomEvent?.id);
 
-        if (events.length > 0) {
+        if (events.length >= 2) {
           const randomNum = getRandomNum(events.length);
           const e: TypeEvent = events[randomNum];
           setRandomEvent(e);
+        } else if (events.length === 1) {
+          toast
         }
       });
 
