@@ -16,7 +16,7 @@ const Icons = ({ event, type }: Props) => {
 
   const { loginUser } = useAuth();
 
-  const { getRandomEvent, lockThisEvent, unlockThisEvent } = useEvent();
+  const { refreshRandomEvent, lockThisEvent, unlockThisEvent } = useEvent();
 
   if (loading) {
     return <LoadingSpinnerS />;
@@ -28,7 +28,7 @@ const Icons = ({ event, type }: Props) => {
           onClick={() => {
             setLoading(true);
             // setTimeout(() => {
-            getRandomEvent();
+            refreshRandomEvent();
             setLoading(false);
             // }, 1000);
           }}
