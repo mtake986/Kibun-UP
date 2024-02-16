@@ -222,7 +222,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
               createdAt: serverTimestamp(),
               updatedAt: serverTimestamp(),
             });
-          } 
+          }
         };
         await registerAPIQuote();
       }
@@ -233,6 +233,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     } catch (error) {
       displayErrorToast({ text: `Error: ${error}` });
     }
+    getLockedQuote();
   };
 
   const removeLockFromThisQuote = async (uid: string) => {
@@ -249,18 +250,14 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
 
     if (user?.uid) {
       const q = query(lockedQuotesCollectionRef);
-      onSnapshot(q, (snapshot) => {
-        const lockedQuoteDoc = snapshot.docs.find((doc) => doc.id === user.uid);
-        if (lockedQuoteDoc) {
-          tempLockedQuote = {
-            ...lockedQuoteDoc.data(),
-            id: lockedQuoteDoc.id,
-          } as TypeTempLockedQuote;
-        } else {
-          setLockedQuote(undefined);
-          return;
-        }
 
+      const quoteDocRef = doc(db, "lockedQuotes", user.uid);
+      const quoteDocSnap = await getDoc(quoteDocRef);
+      if (quoteDocSnap.exists()) {
+        tempLockedQuote = {
+          ...quoteDocSnap.data(),
+          id: quoteDocSnap.id,
+        } as TypeTempLockedQuote;
         // todo: TypeError
         const isAPI = tempLockedQuote?.createdBy === "api";
         if (isAPI) {
@@ -290,7 +287,9 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
             }
           });
         }
-      });
+      } else {
+        setLockedQuote(undefined);
+      }
     }
   };
 
@@ -557,9 +556,7 @@ export function QuoteProvider({ children }: QuoteProviderProps) {
     // setSortedFilteredNotMyQuotes(
     //   tempQs.filter((q) => q.createdBy !== user?.uid)
     // );
-    setQuotesNotMine(
-      tempQs.filter((q) => q.createdBy !== user?.uid)
-    );
+    setQuotesNotMine(tempQs.filter((q) => q.createdBy !== user?.uid));
   };
   const updateSortFilterVariablesForNotMine = (
     which: TypeSortType,
