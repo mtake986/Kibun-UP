@@ -32,8 +32,10 @@ import { getRandomNum } from "@/functions/functions";
 import {
   displayErrorToast,
   displaySuccessToast,
+  displayToast,
 } from "@/functions/displayToast";
 import { SORT_FILTER_VARIABLES_EVENTS } from "@/data/CONSTANTS";
+import { toast } from "@/components/ui/use-toast";
 
 type EventContextType = {
   handleUpdate: (values: TypeEventInputValues, eid: string) => Promise<void>;
@@ -100,6 +102,8 @@ type EventContextType = {
   getEventsWithSortAndFilter: (
     who: "loginUser" | "notLoginUser"
   ) => Promise<void>;
+
+  refreshRandomEvent: () => void;
 };
 
 const EventContext = createContext({} as EventContextType);
@@ -255,16 +259,40 @@ export function EventProvider({ children }: EventProviderProps) {
   const getRandomEvent = () => {
     let events: TypeEvent[] = [];
     if (user?.uid) {
-      const q = query(eventsCollectionRef, where("createdBy", "==", user?.uid));
+      console.log(user.uid);
+      const q = query(eventsCollectionRef, where("createdBy", "==", user.uid));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         events = snapshot.docs.map(
           (doc) => ({ ...doc.data(), id: doc.id } as TypeEvent)
-        ).filter((doc) => doc.id !== randomEvent?.id);
+        );
 
-        if (events.length > 0) {
-          const randomNum = getRandomNum(events.length);
-          const e: TypeEvent = events[randomNum];
-          setRandomEvent(e);
+        const randomNum = getRandomNum(events.length);
+        const e: TypeEvent = events[randomNum];
+        setRandomEvent(e);
+      });
+
+      return unsubscribe;
+    }
+  };
+
+  const refreshRandomEvent = () => {
+    let events: TypeEvent[] = [];
+    if (user?.uid) {
+      console.log(user.uid);
+      const q = query(eventsCollectionRef, where("createdBy", "==", user.uid));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        if (snapshot.docs.length === 1) {
+          displayErrorToast("You have only one event coming up.");
+        } else {
+          events = snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as TypeEvent))
+            .filter((doc) => doc.id !== randomEvent?.id);
+
+          if (events.length >= 2) {
+            const randomNum = getRandomNum(events.length);
+            const e: TypeEvent = events[randomNum];
+            setRandomEvent(e);
+          }
         }
       });
 
@@ -651,6 +679,7 @@ export function EventProvider({ children }: EventProviderProps) {
         setAreNotMyPastEventsRemoved,
 
         getEventsWithSortAndFilter,
+        refreshRandomEvent,
       }}
     >
       {children}
