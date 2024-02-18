@@ -42,8 +42,9 @@ function Calendar({
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
         ),
         day_selected:
-          "text-primary-foreground hover:text-primary-foreground focus:text-primary-foreground bg-slate-200 dark:bg-slate-500 rounded-lg",
-        day_today: "text-accent-foreground bg-red-100 dark:bg-red-500 rounded-lg",
+          "text-primary-foreground hover:text-primary-foreground focus:text-primary-foreground bg-violet-100 dark:bg-violet-500 rounded-lg",
+        day_today:
+          "text-accent-foreground bg-red-100 dark:bg-red-500 !rounded-full",
         day_outside: "text-muted-foreground opacity-50",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle: "aria-selected:text-accent-foreground",
