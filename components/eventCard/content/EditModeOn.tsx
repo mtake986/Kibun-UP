@@ -259,6 +259,7 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
                   >
                     <Calendar
                       mode="single"
+                      defaultMonth={field.value}
                       selected={field.value}
                       onSelect={field.onChange}
                       // disabled={(date) => date < new Date()}
@@ -383,7 +384,6 @@ export default function EditModeOn({ event, setIsUpdateMode }: Props) {
             </div>
             <TagErrors tagErrors={tagErrors} />
           </div>
-
 
           <div className="flex items-center gap-3">
             <button
