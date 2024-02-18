@@ -18,6 +18,7 @@ import { AiOutlineContacts } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 import { capitalize } from "@mui/material";
 import { twMerge } from "tailwind-merge";
+import LogOutBtnWithText from "./LogOutBtnWithText";
 
 type Anchor = "right";
 
@@ -102,7 +103,7 @@ export default function MenuBtn() {
           />
         ))}
         {/* </div> */}
-        {user ? <LogOutBtn /> : <GoogleLoginBtn />}
+        {user ? <LogOutBtnWithText /> : null}
       </ul>
     </Box>
   );
